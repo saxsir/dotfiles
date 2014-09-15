@@ -38,7 +38,6 @@ ln -Fis "$PWD/gitconfig" ~/.gitconfig
 ln -Fis "$PWD/vimrc" ~/.vimrc
 ln -Fis "$PWD/gemrc" ~/.gemrc
 ln -Fis "$PWD/vimperator" ~/.vimperator
-ln -Fis "$PWD/gemrc" ~/.gemrc
 if [ ! -e ~/.vimperator/plugin ]; then
   mkdir -p ~/.vimperator/plugin
 fi
