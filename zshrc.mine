@@ -1,0 +1,38 @@
+# 自分固有のzsh設定(∩´∀｀)∩ﾜｰｲ
+# とりあえず試してみる設定とかはこっちに書く
+
+# sudo の後ろでコマンド名を補完する
+zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
+
+# 日本語ファイル名を表示可能にする
+setopt print_eight_bit
+
+# beep を無効にする
+setopt no_beep
+
+# ディレクトリ名だけでcdする
+setopt auto_cd
+
+#########
+# alias
+# ls
+alias l='ls'
+alias la='ls -la'
+alias ll='ls -lH'
+
+# git
+alias g='git'
+alias gst='git status'
+alias gl='git log'
+alias ga='git add'
+alias gc='git commit'
+alias gb='git branch'
+alias gco='git checkout'
+
+# gem
+alias be="bundle exec"
+
+#########
+# global alias
+alias -g G='| grep'
+alias -g L='| less'
