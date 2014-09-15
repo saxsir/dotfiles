@@ -1,0 +1,10 @@
+# gitignore setting
+
+###
+# defaultでignoreしたいファイル群
+*.swp
+*~
+.DS_Store
+
+
+
