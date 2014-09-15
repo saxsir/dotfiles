@@ -23,7 +23,7 @@ echo "Updating vimperator-plugins"
 if [ -e "$PWD/vimperator/vimperator-plugins" ]; then
   cd vimperator/vimperator-plugins
   git checkout master
-  cd ..
+  cd ../..
 fi
 
 
@@ -31,7 +31,7 @@ fi
 echo "Creating symbolic links..."
 ln -Fis "$PWD/zshenv" ~/.zshenv
 ln -Fis "$PWD/zshrc" ~/.zshrc
-ln -Fis "$PWD/zshrc.mine" ~/.zsh.mine
+ln -Fis "$PWD/zshrc.mine" ~/.zshrc.mine
 ln -Fis "$PWD/oh-my-zsh" ~/.oh-my-zsh
 ln -Fis "$PWD/gitignore_global" ~/.gitignore_global
 ln -Fis "$PWD/gitconfig" ~/.gitconfig
