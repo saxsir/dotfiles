@@ -43,7 +43,7 @@ NeoBundleCheck
 
 " バックアップディレクトリの指定
 if !isdirectory(expand("~/.vimbackup"))
-  !mkdir -p ~/.vimbakup
+  !mkdir -p ~/.vimbackup
 endif
 set backupdir=$HOME/.vimbackup
 
