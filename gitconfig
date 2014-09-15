@@ -1,3 +1,5 @@
 [user]
 	name = saxsir
 	email = saxsir.256@gmail.com
+[core]
+        excludesfile = ~/.gitignore_global
