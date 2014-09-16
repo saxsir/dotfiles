@@ -36,3 +36,5 @@ alias be="bundle exec"
 # global alias
 alias -g G='| grep'
 alias -g L='| less'
+
+source ~/zshrc.mba13
