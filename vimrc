@@ -26,11 +26,17 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " ファイルをtree表示してくれる
 NeoBundle 'scrooloose/nerdtree'
 
-" インデントに色を付けて見やすくする
-NeoBundle 'nathanaelkane/vim-indent-guides'
-
 " emmet for vim
 NeoBundle 'mattn/emmet-vim'
+
+" jsのインデント
+NeoBundle 'Simple-Javascript-Indenter'
+
+" 癒やし
+NeoBundle 'drillbits/nyan-modoki.vim'
+
+" 色をよしなに
+" NeoBundle 'altercation/vim-colors-solarized'
 
 call neobundle#end()
 
@@ -53,6 +59,13 @@ set backupdir=$HOME/.vimbackup
 set number
 " 行番号の色
 highlight LineNr ctermfg=darkyellow
+" 癒やし
+set laststatus=2
+set statusline=%{g:NyanModoki()}
+let g:nyan_modoki_select_cat_face_number = 2
+let g:nayn_modoki_animation_enabled= 1
+" カラースキーマ
+colorscheme slate
 
 """""
 " 入力機能
@@ -64,6 +77,8 @@ set shiftwidth=2
 set expandtab
 " 改行時に前の行のインデントを継続する
 set autoindent
+
+let g:SimpleJsIndenter_BriefMode = 1
 
 """""
 " 検索機能
