@@ -36,7 +36,10 @@ NeoBundle 'Simple-Javascript-Indenter'
 NeoBundle 'drillbits/nyan-modoki.vim'
 
 " 色をよしなに
-" NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'altercation/vim-colors-solarized'
+
+" 行末の半角スペースを可視化
+NeoBundle 'bronson/vim-trailing-whitespace'
 
 call neobundle#end()
 
@@ -64,8 +67,12 @@ set laststatus=2
 set statusline=%{g:NyanModoki()}
 let g:nyan_modoki_select_cat_face_number = 2
 let g:nayn_modoki_animation_enabled= 1
+
 " カラースキーマ
-colorscheme slate
+syntax enable
+let g:solarized_termcolors=256
+colorscheme solarized
+"colorscheme slate
 
 """""
 " 入力機能
@@ -78,7 +85,9 @@ set expandtab
 " 改行時に前の行のインデントを継続する
 set autoindent
 
-let g:SimpleJsIndenter_BriefMode = 1
+" In Brief Mode script will not indent more than one shiftwidth each line.
+" http://www.vim.org/scripts/script.php?script_id=3227
+" let g:SimpleJsIndenter_BriefMode = 1
 
 """""
 " 検索機能
