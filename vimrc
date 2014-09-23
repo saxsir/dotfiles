@@ -71,6 +71,7 @@ let g:nayn_modoki_animation_enabled= 1
 " カラースキーマ
 syntax enable
 let g:solarized_termcolors=256
+set background=dark
 colorscheme solarized
 "colorscheme slate
 
