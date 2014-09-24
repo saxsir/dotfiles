@@ -55,6 +55,9 @@ if !isdirectory(expand("~/.vimbackup"))
 endif
 set backupdir=$HOME/.vimbackup
 
+" インサートモード時にバックスペースを使う
+set backspace=indent,eol,start
+
 " ========
 " 表示機能
 " ========
