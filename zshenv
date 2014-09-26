@@ -6,9 +6,11 @@ export LANG=ja_JP.UTF-8
 export PATH=/usr/local/bin:$PATH
 
 #####
-# rbenvの設定
+# rbenvの設定（for Mac）
 # ログイン時にrbenvが初期化されるように設定
-eval "$(rbenv init -)"
+if [ -x /usr/local/Cellar/rbenv/0.4.0/bin/rbenv ]; then
+  eval "$(rbenv init -)"
+fi
 
 #####
 # oh-my-zshの設定
