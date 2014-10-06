@@ -1,5 +1,11 @@
 # シェルを起動する度に読み込まれる
 
+#FIXME: 原因究明
+# ログイン時に読み込まれてるはずなのになぜか設定が反映されていないので
+# ここでもう一度読み込む
+source ~/.zshenv
+echo "zshrc"
+
 #####
 # 補完
 # /usr/local/share/zsh-completions をfpathに登録(autoload関数が使えるようになる）
