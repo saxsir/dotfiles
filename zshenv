@@ -13,6 +13,12 @@ if [ -x /usr/local/Cellar/rbenv/0.4.0/bin/rbenv ]; then
 fi
 
 #####
+# nvmの設定
+if [ -f ~/.nvm/nvm.sh ]; then
+  source ~/.nvm/nvm.sh
+fi
+
+#####
 # oh-my-zshの設定
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
