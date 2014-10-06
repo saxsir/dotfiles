@@ -40,6 +40,9 @@ NeoBundle 'altercation/vim-colors-solarized'
 " 行末の半角スペースを可視化
 NeoBundle 'bronson/vim-trailing-whitespace'
 
+" rustのシンタックス
+NeoBundle "wting/rust.vim"
+
 call neobundle#end()
 
 " If there are uninstalled bundles found on startup,
