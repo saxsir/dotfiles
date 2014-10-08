@@ -43,6 +43,16 @@ NeoBundle 'bronson/vim-trailing-whitespace'
 " rustのシンタックス
 NeoBundle "wting/rust.vim"
 
+" scalaのシンタックス
+NeoBundle "derekwyatt/vim-scala"
+
+" markdownのシンタックス
+NeoBundle "godlygeek/tabular"
+NeoBundle "plasticboy/vim-markdown"
+
+" 複数行コメントアウト
+NeoBundle "tyru/caw.vim.git"
+
 call neobundle#end()
 
 " If there are uninstalled bundles found on startup,
@@ -60,6 +70,13 @@ set backupdir=$HOME/.vimbackup
 
 " インサートモード時にバックスペースを使う
 set backspace=indent,eol,start
+
+" 隠しファイルをデフォルトで表示させる
+let NERDTreeShowHidden = 1
+
+" デフォルトでツリーを表示させる
+autocmd VimEnter * execute 'NERDTree'
+
 
 " ========
 " 表示機能
@@ -113,6 +130,10 @@ imap jj <Esc>
 
 " ctrl+eでNERDTreeを開く
 nnoremap <C-e> :NERDTreeToggle<CR>
+
+" ctrl+kで複数行コメントアウト
+nmap <C-K> <Plug>(caw:i:toggle)
+vmap <C-K> <Plug>(caw:i:toggle)
 
 " ==================================================
 " 最後の方に書いといた方がいい処理
