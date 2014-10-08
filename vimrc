@@ -111,7 +111,8 @@ set expandtab
 set autoindent
 " 改行時に自動でコメントが挿入されるのをやめたい
 " http://katahirado.hatenablog.com/entry/20090117/1232209418
-autocmd FileType * setlocal formatoptions-=ro
+" http://ysmt.blog21.fc2.com/blog-entry-328.html
+setlocal formatoptions-=ro
 
 " In Brief Mode script will not indent more than one shiftwidth each line.
 " http://www.vim.org/scripts/script.php?script_id=3227
