@@ -77,7 +77,6 @@ let NERDTreeShowHidden = 1
 " デフォルトでツリーを表示させる
 autocmd VimEnter * execute 'NERDTree'
 
-
 " ========
 " 表示機能
 " ========
@@ -112,7 +111,7 @@ set autoindent
 
 " In Brief Mode script will not indent more than one shiftwidth each line.
 " http://www.vim.org/scripts/script.php?script_id=3227
-" let g:SimpleJsIndenter_BriefMode = 1
+let g:SimpleJsIndenter_BriefMode = 1
 
 " ========
 " 検索機能
