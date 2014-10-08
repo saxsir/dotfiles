@@ -46,6 +46,10 @@ NeoBundle "wting/rust.vim"
 " scalaのシンタックス
 NeoBundle "derekwyatt/vim-scala"
 
+" markdownのシンタックス
+NeoBundle "godlygeek/tabular"
+NeoBundle "plasticboy/vim-markdown"
+
 call neobundle#end()
 
 " If there are uninstalled bundles found on startup,
