@@ -10,7 +10,8 @@ export PATH=/usr/local/bin:$PATH
 #####
 # rbenvの設定（for Mac）
 # ログイン時にrbenvが初期化されるように設定
-if [ -x /usr/local/Cellar/rbenv/0.4.0/bin/rbenv ]; then
+export PATH=$HOME/.rbenv/bin:$PATH
+if [ -x /usr/local/Cellar/rbenv/0.4.0/bin/rbenv ] || [ -x ~/.rbenv/bin/rbenv ]; then
   eval "$(rbenv init -)"
 fi
 
