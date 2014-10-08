@@ -10,6 +10,10 @@ autoload -Uz compinit
 compinit -u
 
 #####
+# プロンプト
+export RPROMPT="${HOST}"
+
+#####
 # Command history configuration
 # =の前後に空白入れたらダメ
 HISTFILE=${HOME}/.zsh_history
