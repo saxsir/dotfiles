@@ -50,6 +50,9 @@ NeoBundle "derekwyatt/vim-scala"
 NeoBundle "godlygeek/tabular"
 NeoBundle "plasticboy/vim-markdown"
 
+" 複数行コメントアウト
+NeoBundle "tyru/caw.vim.git"
+
 call neobundle#end()
 
 " If there are uninstalled bundles found on startup,
@@ -120,6 +123,10 @@ imap jj <Esc>
 
 " ctrl+eでNERDTreeを開く
 nnoremap <C-e> :NERDTreeToggle<CR>
+
+" ctrl+kで複数行コメントアウト
+nmap <C-K> <Plug>(caw:i:toggle)
+vmap <C-K> <Plug>(caw:i:toggle)
 
 " ==================================================
 " 最後の方に書いといた方がいい処理
