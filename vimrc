@@ -75,7 +75,8 @@ set backspace=indent,eol,start
 let NERDTreeShowHidden = 1
 
 " デフォルトでツリーを表示させる
-autocmd VimEnter * execute 'NERDTree'
+" 邪魔だったから消す
+" autocmd VimEnter * execute 'NERDTree'
 
 " ========
 " 表示機能
@@ -108,6 +109,9 @@ set shiftwidth=2
 set expandtab
 " 改行時に前の行のインデントを継続する
 set autoindent
+" 改行時に自動でコメントが挿入されるのをやめたい
+" http://katahirado.hatenablog.com/entry/20090117/1232209418
+autocmd FileType * setlocal formatoptions-=ro
 
 " In Brief Mode script will not indent more than one shiftwidth each line.
 " http://www.vim.org/scripts/script.php?script_id=3227
