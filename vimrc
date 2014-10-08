@@ -43,6 +43,9 @@ NeoBundle 'bronson/vim-trailing-whitespace'
 " rustのシンタックス
 NeoBundle "wting/rust.vim"
 
+" scalaのシンタックス
+NeoBundle "derekwyatt/vim-scala"
+
 call neobundle#end()
 
 " If there are uninstalled bundles found on startup,
