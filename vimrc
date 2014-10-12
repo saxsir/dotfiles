@@ -109,10 +109,6 @@ set shiftwidth=2
 set expandtab
 " 改行時に前の行のインデントを継続する
 set autoindent
-" 改行時に自動でコメントが挿入されるのをやめたい
-" http://katahirado.hatenablog.com/entry/20090117/1232209418
-" http://ysmt.blog21.fc2.com/blog-entry-328.html
-setlocal formatoptions-=ro
 
 " In Brief Mode script will not indent more than one shiftwidth each line.
 " http://www.vim.org/scripts/script.php?script_id=3227
@@ -147,3 +143,10 @@ vmap <C-K> <Plug>(caw:i:toggle)
 filetype on
 " Required for neobundle
 filetype plugin indent on
+
+" 改行時に自動でコメントが挿入されるのをやめたい
+" http://katahirado.hatenablog.com/entry/20090117/1232209418
+" http://ysmt.blog21.fc2.com/blog-entry-328.html
+" プラグインが全部読み込まれた後に設定しないと上書きされるので最後に記述
+" setlocal formatoptions-=ro
+autocmd FileType * setlocal formatoptions-=ro
