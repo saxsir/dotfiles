@@ -53,6 +53,12 @@ NeoBundle "plasticboy/vim-markdown"
 " 複数行コメントアウト
 NeoBundle "tyru/caw.vim.git"
 
+" phpのシンタックス
+NeoBundle "2072/PHP-Indenting-for-VIm"
+
+" slimのシンタックス
+NeoBundle "evidens/vim-twig"
+
 call neobundle#end()
 
 " If there are uninstalled bundles found on startup,
@@ -148,5 +154,4 @@ filetype plugin indent on
 " http://katahirado.hatenablog.com/entry/20090117/1232209418
 " http://ysmt.blog21.fc2.com/blog-entry-328.html
 " プラグインが全部読み込まれた後に設定しないと上書きされるので最後に記述
-" setlocal formatoptions-=ro
 autocmd FileType * setlocal formatoptions-=ro
