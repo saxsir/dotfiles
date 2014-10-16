@@ -1,5 +1,3 @@
-echo "zshenv"
-
 # ログイン時に一度だけ読み込まれる
 
 #####
@@ -52,5 +50,3 @@ DISABLE_AUTO_UPDATE="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
-
-source $ZSH/oh-my-zsh.sh
