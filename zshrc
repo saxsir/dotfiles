@@ -1,5 +1,9 @@
 # シェルを起動する度に読み込まれる
 
+###
+# zshのテーマを設定
+source $ZSH/oh-my-zsh.sh
+
 #####
 # 補完
 # /usr/local/share/zsh-completions をfpathに登録(autoload関数が使えるようになる）
