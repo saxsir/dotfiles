@@ -141,6 +141,10 @@ nnoremap <C-e> :NERDTreeToggle<CR>
 nmap <C-K> <Plug>(caw:i:toggle)
 vmap <C-K> <Plug>(caw:i:toggle)
 
+" ノーマルモード時だけ ; と : を入れ替える
+nnoremap ; :
+nnoremap : ;
+
 " ==================================================
 " 最後の方に書いといた方がいい処理
 " ==================================================
