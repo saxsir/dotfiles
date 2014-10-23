@@ -163,6 +163,10 @@ vmap <C-K> <Plug>(caw:i:toggle)
 nnoremap ; :
 nnoremap : ;
 
+" reload vimrc
+noremap <C-c><C-e>e :edit $HOME/.vimrc<CR>
+noremap <C-c><C-e>s :source $HOME/.vimrc<CR>
+
 " ==================================================
 " 最後の方に書いといた方がいい処理
 " ==================================================
