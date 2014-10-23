@@ -44,3 +44,8 @@ fi
 ln -Fis "$PWD/vimperator/colors" ~/.vimperator/colors
 ln -Fis "$PWD/vimperator/vimperator-plugins" ~/.vimperator/
 ln -Fis "$PWD/vimperator/vimperator-plugins/plugin_loader.js" ~/.vimperator/plugin/
+if [ ! -e ~/.vim ]; then
+  mkdir -p ~/.vim
+fi
+ln -Fis "$PWD/vim/dict" ~/.vim/dict
+
