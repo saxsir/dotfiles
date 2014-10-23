@@ -119,10 +119,12 @@ set expandtab
 " 改行時に前の行のインデントを継続する
 set autoindent
 
+" jsのインデント
 " In Brief Mode script will not indent more than one shiftwidth each line.
 " http://www.vim.org/scripts/script.php?script_id=3227
 let g:SimpleJsIndenter_BriefMode = 1
 
+" 入力候補の補完
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_min_syntax_length = 3
@@ -130,6 +132,18 @@ let g:neocomplcache_dictionary_filetype_lists = {
   \ 'default' : '',
   \ 'scala' : $HOME . '/.vim/dict/scala.dict',
   \ }
+
+" カッコ補完
+inoremap { {}<Left>
+inoremap ( ()<Left>
+inoremap [ []<Left>
+inoremap { {}<Left>
+inoremap < <><Left>
+inoremap " ""<Left>
+inoremap ' ''<Left>
+inoremap {<Enter> {}<Left><CR><ESC><S-o>
+inoremap [<Enter> []<Left><CR><ESC><S-o>
+inoremap (<Enter> ()<Left><CR><ESC><S-o>
 
 " ========
 " 検索機能
