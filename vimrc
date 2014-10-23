@@ -59,6 +59,9 @@ NeoBundle "2072/PHP-Indenting-for-VIm"
 " slimのシンタックス
 NeoBundle "evidens/vim-twig"
 
+" 入力補助
+NeoBundle 'Shougo/neocomplcache.git'
+
 call neobundle#end()
 
 " If there are uninstalled bundles found on startup,
@@ -120,6 +123,14 @@ set autoindent
 " http://www.vim.org/scripts/script.php?script_id=3227
 let g:SimpleJsIndenter_BriefMode = 1
 
+let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_smart_case = 1
+let g:neocomplcache_min_syntax_length = 3
+let g:neocomplcache_dictionary_filetype_lists = {
+  \ 'default' : '',
+  \ 'scala' : $HOME . '/.vim/dict/scala.dict',
+  \ }
+
 " ========
 " 検索機能
 " ========
@@ -127,6 +138,13 @@ let g:SimpleJsIndenter_BriefMode = 1
 set incsearch
 " 検索結果をハイライト表示する
 set hlsearch
+
+" ======
+" scala
+" ======
+" make
+autocmd FileType scala :compiler sbt
+autocmd QuickFixCmdPost make if len(getqflist()) != 0 | copen | endif
 
 " ====================
 " オレオレキー割り当て
