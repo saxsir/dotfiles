@@ -62,6 +62,8 @@ NeoBundle "evidens/vim-twig"
 " 入力補助
 NeoBundle 'Shougo/neocomplcache.git'
 
+" gitる
+NeoBundle 'tpope/vim-fugitive'
 call neobundle#end()
 
 " If there are uninstalled bundles found on startup,
