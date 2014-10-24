@@ -64,6 +64,7 @@ NeoBundle 'Shougo/neocomplcache.git'
 
 " gitる
 NeoBundle 'tpope/vim-fugitive'
+
 call neobundle#end()
 
 " If there are uninstalled bundles found on startup,
@@ -182,6 +183,18 @@ nnoremap : ;
 " reload vimrc
 noremap <C-c><C-e>e :edit $HOME/.vimrc<CR>
 noremap <C-c><C-e>s :source $HOME/.vimrc<CR>
+
+" neocomplcache
+" 前回行われた補完をキャンセル。補完した文字を消す
+inoremap <expr><C-g>     neocomplcache#undo_completion()
+" 補完候補の中から、共通する部分を補完
+inoremap <expr><C-l>     neocomplcache#complete_common_string()
+" 補完候補の選択
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" 補完キャンセル
+inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplcache#close_popup()
 
 " ==================================================
 " 最後の方に書いといた方がいい処理
