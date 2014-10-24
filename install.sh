@@ -41,7 +41,7 @@ fi
 if [ ! -e ~/.vimperator/plugin ]; then
   mkdir -p ~/.vimperator/plugin
 fi
-ln -Fis "$PWD/vimperator/colors" ~/.vimperator/colors
+ln -Fis "$PWD/vimperator/colors" ~/.vimperator/
 ln -Fis "$PWD/vimperator/vimperator-plugins" ~/.vimperator/
 ln -Fis "$PWD/vimperator/vimperator-plugins/plugin_loader.js" ~/.vimperator/plugin/
 if [ ! -e ~/.vim ]; then
