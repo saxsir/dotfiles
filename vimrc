@@ -65,6 +65,9 @@ NeoBundle 'Shougo/neocomplcache.git'
 " gitる
 NeoBundle 'tpope/vim-fugitive'
 
+" coffee-scriptのシンタックス
+NeoBundle 'kchmck/vim-coffee-script'
+
 call neobundle#end()
 
 " If there are uninstalled bundles found on startup,
@@ -159,9 +162,19 @@ set hlsearch
 " ======
 " scala
 " ======
+" scalaはセミコロン使わないので ; と : を入れ替える
+autocmd BufNewFile,BufRead *.scala inoremap ; :
+autocmd BufNewFile,BufRead *.scala inoremap : ;
+
 " make
 autocmd FileType scala :compiler sbt
 autocmd QuickFixCmdPost make if len(getqflist()) != 0 | copen | endif
+
+" =============
+" coffee-script
+" =============
+autocmd BufNewFile,BufRead *.coffee inoremap ; :
+autocmd BufNewFile,BufRead *.coffee inoremap : ;
 
 " ====================
 " オレオレキー割り当て
