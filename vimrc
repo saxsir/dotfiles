@@ -68,6 +68,9 @@ NeoBundle 'tpope/vim-fugitive'
 " coffee-scriptのシンタックス
 NeoBundle 'kchmck/vim-coffee-script'
 
+" html5
+NeoBundle 'othree/html5.vim'
+
 call neobundle#end()
 
 " If there are uninstalled bundles found on startup,
