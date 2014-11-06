@@ -147,7 +147,7 @@ inoremap { {}<Left>
 inoremap ( ()<Left>
 inoremap [ []<Left>
 inoremap { {}<Left>
-inoremap < <><Left>
+" inoremap < <><Left>
 inoremap " ""<Left>
 inoremap ' ''<Left>
 inoremap {<Enter> {}<Left><CR><ESC><S-o>
@@ -168,10 +168,6 @@ set hlsearch
 " scalaはセミコロン使わないので ; と : を入れ替える
 autocmd BufNewFile,BufRead *.scala inoremap ; :
 autocmd BufNewFile,BufRead *.scala inoremap : ;
-
-" make
-autocmd FileType scala :compiler sbt
-autocmd QuickFixCmdPost make if len(getqflist()) != 0 | copen | endif
 
 " =============
 " coffee-script
