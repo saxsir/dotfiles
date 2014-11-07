@@ -10,7 +10,7 @@ if [ ! -e ~/.vim/bundle/neobundle.vim'' ]; then
 fi
 
 # update submodule
-echo "Updating submodules(oh-my-zsh, vimperator-plugins)..."
+echo "Updating submodules(oh-my-zsh, vimperator-plugins, zsh-completions)..."
 git submodule init
 git submodule update
 if [ -e "$PWD/oh-my-zsh" ]; then
@@ -22,6 +22,11 @@ if [ -e "$PWD/vimperator/vimperator-plugins" ]; then
   cd vimperator/vimperator-plugins
   git checkout master
   cd ../..
+fi
+if [ -e "$PWD/zsh-completions" ]; then
+  cd zsh-completions
+  git checkout master
+  cd ..
 fi
 
 # create symbolic link
@@ -36,16 +41,20 @@ ln -Fis "$PWD/vimrc" ~/.vimrc
 ln -Fis "$PWD/gemrc" ~/.gemrc
 ln -Fis "$PWD/vimperatorrc" ~/.vimperatorrc
 if [ ! -e ~/.vimperator ]; then
-  mkdir -p ~/.vimperator
+  mkdir ~/.vimperator
 fi
 if [ ! -e ~/.vimperator/plugin ]; then
-  mkdir -p ~/.vimperator/plugin
+  mkdir ~/.vimperator/plugin
 fi
 ln -Fis "$PWD/vimperator/colors" ~/.vimperator/
 ln -Fis "$PWD/vimperator/vimperator-plugins" ~/.vimperator/
 ln -Fis "$PWD/vimperator/vimperator-plugins/plugin_loader.js" ~/.vimperator/plugin/
 if [ ! -e ~/.vim ]; then
-  mkdir -p ~/.vim
+  mkdir ~/.vim
 fi
 ln -Fis "$PWD/vim/dict" ~/.vim/
 
+if [ ! -e ~/.zsh ]; then
+  mkdir ~/.zsh
+fi
+ln -Fis "$PWD/zsh-completions" ~/.zsh

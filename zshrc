@@ -7,7 +7,7 @@ source $ZSH/oh-my-zsh.sh
 #####
 # 補完
 # /usr/local/share/zsh-completions をfpathに登録(autoload関数が使えるようになる）
-fpath=(/usr/local/share/zsh-completions $fpath)
+fpath=(~/.zsh/zsh-completions/src(N-/) $fpath)
 
 # 補完を有効にする
 autoload -Uz compinit
