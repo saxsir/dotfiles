@@ -96,6 +96,9 @@ let NERDTreeShowHidden = 1
 " 邪魔だったから消す
 " autocmd VimEnter * execute 'NERDTree'
 
+" 開いているファイルのディレクトリに自動で移動する
+:set autochdir
+
 " ========
 " 表示機能
 " ========
