@@ -71,6 +71,9 @@ NeoBundle 'kchmck/vim-coffee-script'
 " html5
 NeoBundle 'othree/html5.vim'
 
+" sudo権限でvimりたい時用
+NeoBundle 'sudo.vim'
+
 call neobundle#end()
 
 " If there are uninstalled bundles found on startup,
