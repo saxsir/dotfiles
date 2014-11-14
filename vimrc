@@ -71,6 +71,9 @@ NeoBundle 'kchmck/vim-coffee-script'
 " html5
 NeoBundle 'othree/html5.vim'
 
+" sudo権限でvimりたい時用
+NeoBundle 'sudo.vim'
+
 call neobundle#end()
 
 " If there are uninstalled bundles found on startup,
@@ -210,6 +213,9 @@ inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplcache#close_popup()
+
+" save with sudo
+noremap <C-w><C-r>2 :w sudo:%<CR>
 
 " ==================================================
 " 最後の方に書いといた方がいい処理
