@@ -161,6 +161,8 @@ inoremap (<Enter> ()<Left><CR><ESC><S-o>
 set incsearch
 " 検索結果をハイライト表示する
 set hlsearch
+" 選択した部分を検索
+" vnoremap * "zy;let @/ = @z<CR>n
 
 " ======
 " scala
