@@ -9,7 +9,7 @@ scriptencoding utf-8
 set nocompatible
 
 " zshrcの読み込みに時間がかかるのでbashに変更
-set shell=bash\ -i
+" set shell=bash\ -i
 
 " 一旦ファイルタイプ関連を無効化する
 filetype off
