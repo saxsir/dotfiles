@@ -29,6 +29,10 @@ set focuscontent
 " ヒントモードでアルファベットを使う
 set hintchars=jklasdfuiopqwerghtnmcv
 
+" コマンドラインモード時に自動でimeをOFFにする
+"コピペ元ページ　 http://vimperator.g.hatena.ne.jp/teramako/20090311/1236776437
+style -name commandline-ime chrome://* #liberator-commandline-command input {ime-mode: inactive;}
+
 "======================================================================
 " keymaps
 "======================================================================
