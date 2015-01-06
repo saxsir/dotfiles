@@ -186,6 +186,11 @@ autocmd BufNewFile,BufRead *.scala inoremap : ;
 autocmd BufNewFile,BufRead *.coffee inoremap ; :
 autocmd BufNewFile,BufRead *.coffee inoremap : ;
 
+" =============
+" markdown
+" =============
+let g:vim_markdown_folding_disabled=1
+
 " ====================
 " オレオレキー割り当て
 " ====================
