@@ -177,8 +177,12 @@ set hlsearch
 " scala
 " ======
 " scalaはセミコロン使わないので ; と : を入れ替える
+" scalaはダブルコーテーションの方が使うので ' と " を入れ替える
 autocmd BufNewFile,BufRead *.scala inoremap ; :
 autocmd BufNewFile,BufRead *.scala inoremap : ;
+autocmd BufNewFile,BufRead *.scala inoremap ' "
+autocmd BufNewFile,BufRead *.scala inoremap " '
+
 
 " =============
 " coffee-script
