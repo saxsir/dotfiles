@@ -98,6 +98,9 @@ set backspace=indent,eol,start
 " 隠しファイルをデフォルトで表示させる
 let NERDTreeShowHidden = 1
 
+" クリップボード連携
+set clipboard+=unnamed
+
 " デフォルトでツリーを表示させる
 " 邪魔だったから消す
 " autocmd VimEnter * execute 'NERDTree'

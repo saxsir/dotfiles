@@ -77,4 +77,12 @@ alias be="bundle exec"
 alias -g G='| grep'
 alias -g L='| less'
 
+if which pbcopy >/dev/null 2>&1 ; then
+  # Mac
+  alias -g C='| pbcopy'
+elif which xsel >/dev/null 2>&1 ; then
+  # Linux
+  alias -g C='| xsel --input --clipboard'
+fi
+
 source $HOME/.zshrc.mine
