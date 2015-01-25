@@ -25,7 +25,9 @@ fi
 echo "Creating symbolic links..."
 ln -Fis "$PWD/zshenv" ~/.zshenv
 ln -Fis "$PWD/zshrc" ~/.zshrc
-ln -Fis "$PWD/oh-my-zsh" ~/.oh-my-zsh
+if [ ! -e ~/.oh-my-zsh ]; then
+  ln -Fis "$PWD/oh-my-zsh" ~/.oh-my-zsh
+fi
 ln -Fis "$PWD/gitignore_global" ~/.gitignore_global
 ln -Fis "$PWD/gitconfig" ~/.gitconfig
 ln -Fis "$PWD/vimrc" ~/.vimrc
