@@ -26,7 +26,13 @@ source ~/.vim/conf.d/plugins-vim-colors-solarized.vimrc
 source ~/.vim/conf.d/color.vimrc
 source ~/.vim/conf.d/key-mapping.vimrc
 
-" 最後に書く
+" =================================================
+" These settings should be written in end of vimrc
+" =================================================
+" 構文ハイライト
+" cf. http://rbtnn.hateblo.jp/entry/2014/11/30/174749
+syntax enable
+
 " cf. http://d.hatena.ne.jp/wiredool/20120618/1340019962
 filetype on
 filetype plugin indent on

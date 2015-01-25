@@ -5,9 +5,6 @@
 " ================
 " Editing function
 " ================
-" 構文ハイライト
-syntax enable
-
 " 行番号の表示
 set number
 
