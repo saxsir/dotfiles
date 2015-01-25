@@ -9,7 +9,7 @@ imap jj <ESC>
 " ctrl+eでNERDTreeを開く
 nnoremap <C-e> :NERDTreeToggle<CR>
 
-" ノーマルモード時だけ ; と : を入れ替える
+" ノーマルモード時だけ ; と : を入れ替える(USキーボード仕様)
 nnoremap ; :
 nnoremap : ;
 
