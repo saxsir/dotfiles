@@ -1,6 +1,7 @@
 " ===============================
 " neobundleによるプラグインの管理
 " ===============================
+echo "Read neobundle configuration"
 
 " Skip initialization for vim-tiny or vim-small.
 if !1 | finish | endif
@@ -15,10 +16,10 @@ call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " ファイルをtree表示してくれる
-NeoBundle 'scrooloose/nerdtree'
+" NeoBundle 'scrooloose/nerdtree'
 
 " 行末の半角スペースを可視化
-NeoBundle 'bronson/vim-trailing-whitespace'
+" NeoBundle 'bronson/vim-trailing-whitespace'
 
 call neobundle#end()
 
