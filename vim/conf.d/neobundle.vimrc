@@ -21,6 +21,9 @@ NeoBundle 'scrooloose/nerdtree'
 " 行末の半角スペースを可視化
 NeoBundle 'bronson/vim-trailing-whitespace'
 
+" 複数行コメントアウト
+NeoBundle 'tyru/caw.vim.git'
+
 call neobundle#end()
 
 " If there are uninstalled bundles found on startup, this will conveniently prompt you to install them.

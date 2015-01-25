@@ -9,6 +9,10 @@ inoremap jj <ESC>
 " ctrl+eでNERDTreeを開く
 nnoremap <C-e> :NERDTreeToggle<CR>
 
+" ctrl+kで複数行コメントアウト
+nmap <C-K> <Plug>(caw:i:toggle)
+vmap <C-K> <Plug>(caw:i:toggle)
+
 " ノーマルモード時だけ ; と : を入れ替える(USキーボード仕様)
 nnoremap ; :
 nnoremap : ;
