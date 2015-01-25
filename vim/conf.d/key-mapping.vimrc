@@ -1,7 +1,6 @@
 " ===================
 " Key mapping configuration
 " ===================
-echo "Read key mapping configuration"
 
 " jjでエスケープ
 inoremap jj <ESC>
@@ -20,3 +19,5 @@ nnoremap : ;
 " reload vimrc
 noremap <C-c><C-e>e :edit $HOME/.vimrc<CR>
 noremap <C-c><C-e>s :source $HOME/.vimrc<CR>
+
+echo "Read key mapping configuration"

@@ -5,10 +5,10 @@
 let OSTYPE = system('uname')
 
 if OSTYPE == "Darwin\n"
-  echo "Read extra configuration for mac"
-
   " クリップボード連携
   set clipboard+=unnamed
+
+  echo "Read extra configuration for mac"
 endif
 
 unlet OSTYPE

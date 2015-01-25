@@ -1,7 +1,6 @@
 " ============================================
 " Basic configuration (Not depends on plugins)
 " ============================================
-echo "Read basic configuration"
 
 " ================
 " Editing function
@@ -47,3 +46,5 @@ if !isdirectory(expand("~/.vimbackup"))
   !mkdir -p ~/.vimbackup
 endif
 set backupdir=$HOME/.vimbackup
+
+echo "Read basic configuration"
