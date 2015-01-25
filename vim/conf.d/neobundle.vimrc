@@ -19,7 +19,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'scrooloose/nerdtree'
 
 " 行末の半角スペースを可視化
-" NeoBundle 'bronson/vim-trailing-whitespace'
+NeoBundle 'bronson/vim-trailing-whitespace'
 
 call neobundle#end()
 
