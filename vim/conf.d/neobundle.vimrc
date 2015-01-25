@@ -1,8 +1,6 @@
 " ===============================
 " neobundleによるプラグインの管理
 " ===============================
-echo "Read neobundle configuration"
-
 " Skip initialization for vim-tiny or vim-small.
 if !1 | finish | endif
 
@@ -24,7 +22,12 @@ NeoBundle 'bronson/vim-trailing-whitespace'
 " 複数行コメントアウト
 NeoBundle 'tyru/caw.vim.git'
 
+" 色をよしなに
+NeoBundle 'altercation/vim-colors-solarized'
+
 call neobundle#end()
 
 " If there are uninstalled bundles found on startup, this will conveniently prompt you to install them.
 NeoBundleCheck
+
+echo "Read neobundle configuration"

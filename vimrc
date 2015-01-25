@@ -20,9 +20,11 @@ filetype plugin indent off
 " ==========================
 source ~/.vim/conf.d/basic.vimrc
 source ~/.vim/conf.d/neobundle.vimrc
+source ~/.vim/conf.d/plugins-nerdtree.vimrc
+source ~/.vim/conf.d/plugins-vim-colors-solarized.vimrc
+" source ~/.vim/conf.d/plugins-***.vimrc
 source ~/.vim/conf.d/color.vimrc
 source ~/.vim/conf.d/key-mapping.vimrc
-source ~/.vim/conf.d/plugins-nerdtree.vimrc
 
 " 最後に書く
 " cf. http://d.hatena.ne.jp/wiredool/20120618/1340019962
