@@ -57,6 +57,7 @@ if [ ! -e ~/.vim ]; then
   mkdir ~/.vim
 fi
 ln -Fis "$PWD/vim/dict" ~/.vim/
+ln -Fis "$PWD/vim/conf.d" ~/.vim/
 
 if [ ! -e ~/.zsh ]; then
   mkdir ~/.zsh
