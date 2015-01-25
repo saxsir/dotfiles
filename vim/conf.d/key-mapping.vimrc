@@ -4,7 +4,7 @@
 echo "Read key mapping configuration"
 
 " jjでエスケープ
-imap jj <ESC>
+inoremap jj <ESC>
 
 " ctrl+eでNERDTreeを開く
 nnoremap <C-e> :NERDTreeToggle<CR>
