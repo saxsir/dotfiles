@@ -1,3 +1,5 @@
+scriptencoding utf-8
+
 " ===================
 " Vim-colors-solarized configuration
 " ===================

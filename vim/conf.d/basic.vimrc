@@ -1,3 +1,5 @@
+scriptencoding utf-8
+
 " ============================================
 " Basic configuration (Not depends on plugins)
 " ============================================
