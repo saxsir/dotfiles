@@ -53,6 +53,16 @@ setopt no_beep
 # ディレクトリ名だけでcdする
 setopt auto_cd
 
+# cdと同時にlsとgit status(可能であれば)もする
+function chpwd() {
+  ls
+  if [ "$(git rev-parse --is-inside-work-tree 2> /dev/null)" = 'true' ]; then
+    echo -e "\e[0;33m--- git status ---\e[0m"
+    git status -sb
+  fi
+}
+
+
 #########
 # alias
 # ls
