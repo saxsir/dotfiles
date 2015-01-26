@@ -23,8 +23,11 @@ source ~/.vim/conf.d/neobundle.vimrc
 source ~/.vim/conf.d/plugins-nerdtree.vimrc
 source ~/.vim/conf.d/plugins-vim-colors-solarized.vimrc
 " source ~/.vim/conf.d/plugins-***.vimrc
+"
 source ~/.vim/conf.d/color.vimrc
 source ~/.vim/conf.d/key-mapping.vimrc
+
+source ~/.vim/conf.d/mac.vimrc
 
 " =================================================
 " These settings should be written in end of vimrc
