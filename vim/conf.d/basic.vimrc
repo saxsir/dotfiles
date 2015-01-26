@@ -3,19 +3,22 @@
 " ============================================
 
 " ================
-" Editing function
+" Display function
 " ================
 " 行番号の表示
 set number
 
+" タブ文字の表示幅
+set tabstop=2
+
+" ================
+" Editing function
+" ================
 " インサートモード時にバックスペースを使う
 set backspace=indent,eol,start
 
 " 開いているファイルのディレクトリに自動で移動する
 set autochdir
-
-" タブ文字の表示幅
-set tabstop=2
 
 " Vimが挿入するインデントの幅
 set shiftwidth=2
