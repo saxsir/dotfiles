@@ -8,8 +8,7 @@ let g:lightline = {
       \ 'colorscheme': 'solarized_dark',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'readonly', 'absolutepath', 'modified' ] ],
-      \   'right': [ [], [] ]
+      \             [ 'readonly', 'absolutepath', 'modified' ] ]
       \ },
       \ 'component': {
       \   'readonly': '%{&readonly?"[read only]":""}',
