@@ -13,6 +13,9 @@ set number
 " タブ文字の表示幅
 set tabstop=2
 
+" ステータスラインの表示
+set laststatus=2
+
 " ================
 " Editing function
 " ================

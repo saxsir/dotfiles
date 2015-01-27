@@ -27,6 +27,9 @@ NeoBundle 'tyru/caw.vim.git'
 " 色をよしなに
 NeoBundle 'altercation/vim-colors-solarized'
 
+" ステータスラインをよしなに
+NeoBundle 'itchyny/lightline.vim'
+
 call neobundle#end()
 
 " If there are uninstalled bundles found on startup, this will conveniently prompt you to install them.
