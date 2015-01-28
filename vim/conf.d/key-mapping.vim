@@ -22,4 +22,15 @@ nnoremap : ;
 noremap <C-c><C-e>e :edit $HOME/.vimrc<CR>
 noremap <C-c><C-e>s :source $HOME/.vimrc<CR>
 
+" ======
+" scala
+" ======
+" scalaはセミコロン使わないので ; と : を入れ替える
+autocmd vimrc BufNewFile,BufRead *.scala inoremap ; :
+autocmd vimrc BufNewFile,BufRead *.scala inoremap : ;
+
+" scalaはダブルコーテーションの方が使うので ' と " を入れ替える
+autocmd vimrc BufNewFile,BufRead *.scala inoremap ' "
+autocmd vimrc BufNewFile,BufRead *.scala inoremap " '
+
 echo "Read key mapping configuration"

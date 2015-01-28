@@ -15,6 +15,12 @@ scriptencoding utf-8
 filetype off
 filetype plugin indent off
 
+" autocmdが毎回実行されるのを防ぐ
+" cf. http://rbtnn.hateblo.jp/entry/2014/11/30/174749
+augroup vimrc
+  autocmd!
+augroup END
+
 " ==========================
 " Import configuration files
 " ==========================
