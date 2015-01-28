@@ -30,6 +30,9 @@ NeoBundle 'altercation/vim-colors-solarized'
 " ステータスラインをよしなに
 NeoBundle 'itchyny/lightline.vim'
 
+" scalaのシンタックス
+NeoBundle "derekwyatt/vim-scala"
+
 call neobundle#end()
 
 " If there are uninstalled bundles found on startup, this will conveniently prompt you to install them.
