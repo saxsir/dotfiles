@@ -18,17 +18,17 @@ filetype plugin indent off
 " ==========================
 " Import configuration files
 " ==========================
-source ~/.vim/conf.d/basic.vimrc
-source ~/.vim/conf.d/neobundle.vimrc
-source ~/.vim/conf.d/plugins-nerdtree.vimrc
-source ~/.vim/conf.d/plugins-vim-colors-solarized.vimrc
-source ~/.vim/conf.d/plugins-lightline.vimrc
-" source ~/.vim/conf.d/plugins-***.vimrc
+source ~/.vim/conf.d/basic.vim
+source ~/.vim/conf.d/neobundle.vim
+source ~/.vim/conf.d/plugins-nerdtree.vim
+source ~/.vim/conf.d/plugins-vim-colors-solarized.vim
+source ~/.vim/conf.d/plugins-lightline.vim
+" source ~/.vim/conf.d/plugins-***.vim
 
-source ~/.vim/conf.d/color.vimrc
-source ~/.vim/conf.d/key-mapping.vimrc
+source ~/.vim/conf.d/color.vim
+source ~/.vim/conf.d/key-mapping.vim
 
-source ~/.vim/conf.d/mac.vimrc
+source ~/.vim/conf.d/mac.vim
 
 " =================================================
 " These settings should be written in end of vimrc
