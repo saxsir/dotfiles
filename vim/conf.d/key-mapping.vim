@@ -22,6 +22,16 @@ nnoremap : ;
 noremap <C-c><C-e>e :edit $HOME/.vimrc<CR>
 noremap <C-c><C-e>s :source $HOME/.vimrc<CR>
 
+" カッコ補完
+inoremap { {}<Left>
+inoremap {<Enter> {}<Left><CR><ESC><S-o>
+inoremap ( ()<Left>
+inoremap (<Enter> ()<Left><CR><ESC><S-o>
+inoremap [ []<Left>
+inoremap [<Enter> []<Left><CR><ESC><S-o>
+inoremap " ""<Left>
+inoremap ' ''<Left>
+
 " ======
 " scala
 " ======
