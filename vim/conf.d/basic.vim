@@ -52,4 +52,4 @@ if !isdirectory(expand("~/.vimbackup"))
 endif
 set backupdir=$HOME/.vimbackup
 
-echo "Read basic configuration"
+" echo "Read basic configuration"

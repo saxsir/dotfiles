@@ -20,4 +20,4 @@ let g:lightline = {
 " let g:nayn_modoki_animation_enabled= 1
 " let g:nyan_modoki_select_cat_face_number = 2
 
-echo "Read [plugin] lightline configuration"
+" echo "Read [plugin] lightline configuration"

@@ -10,5 +10,5 @@ if s:OSTYPE == "Darwin\n"
   " クリップボード連携
   set clipboard+=unnamed
 
-  echo "Read extra configuration for mac"
+  " echo "Read extra configuration for mac"
 endif

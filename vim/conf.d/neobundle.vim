@@ -40,4 +40,4 @@ call neobundle#end()
 " If there are uninstalled bundles found on startup, this will conveniently prompt you to install them.
 NeoBundleCheck
 
-echo "Read neobundle configuration"
+" echo "Read neobundle configuration"

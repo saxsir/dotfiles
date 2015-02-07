@@ -43,4 +43,4 @@ autocmd vimrc BufNewFile,BufRead *.scala inoremap : ;
 autocmd vimrc BufNewFile,BufRead *.scala inoremap ' "
 autocmd vimrc BufNewFile,BufRead *.scala inoremap " '
 
-echo "Read key mapping configuration"
+" echo "Read key mapping configuration"

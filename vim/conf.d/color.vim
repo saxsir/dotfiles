@@ -10,4 +10,4 @@ syntax enable
 set background=dark
 colorscheme solarized
 
-echo "Read color configuration"
+" echo "Read color configuration"
