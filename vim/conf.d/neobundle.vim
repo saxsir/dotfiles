@@ -33,6 +33,7 @@ NeoBundle 'itchyny/lightline.vim'
 " scalaのシンタックス
 NeoBundle "derekwyatt/vim-scala"
 
+" 指定範囲を括弧とかで囲いたい
 NeoBundle 'tpope/vim-surround'
 
 call neobundle#end()
