@@ -38,7 +38,7 @@ ln -Fis "$PWD/zshrc" ~/.zshrc
 cp -fi  "$PWD/zshrc.mine.sample" ~/.zshrc.mine
 ln -Fis "$PWD/oh-my-zsh" ~/.oh-my-zsh
 ln -Fis "$PWD/gitignore_global" ~/.gitignore_global
-ln -Fis "$PWD/gitconfig" ~/.gitconfig
+# ln -Fis "$PWD/gitconfig" ~/.gitconfig
 ln -Fis "$PWD/vimrc" ~/.vimrc
 ln -Fis "$PWD/gemrc" ~/.gemrc
 if test $OS = "mac"; then
