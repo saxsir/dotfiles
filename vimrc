@@ -33,6 +33,7 @@ source ~/.vim/conf.d/plugins-lightline.vim
 
 source ~/.vim/conf.d/color.vim
 source ~/.vim/conf.d/key-mapping.vim
+source ~/.vim/conf.d/template.vim
 
 source ~/.vim/conf.d/mac.vim
 
