@@ -73,11 +73,12 @@ alias ll='ls -lH'
 # git
 alias g='git'
 alias gst='git status'
-alias gl='git log'
+alias gl='git log --oneline'
 alias ga='git add'
 alias gc='git commit'
 alias gb='git branch'
 alias gco='git checkout'
+
 
 # gem
 alias be="bundle exec"
