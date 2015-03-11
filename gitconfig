@@ -6,3 +6,5 @@
 	editor = vim -c \"set fenc=utf-8\"
 [alias]
 	nffmerge = merge --no-ff
+[url "https://"]
+	insteadOf = git://
