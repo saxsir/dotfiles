@@ -77,6 +77,7 @@ alias gl='git log --oneline'
 alias ga='git add'
 alias gc='git commit'
 alias gb='git branch'
+alias gm='git nffmerge'
 alias gco='git checkout'
 
 
