@@ -8,6 +8,9 @@
 # zshのテーマを設定
 source $ZSH/oh-my-zsh.sh
 
+# プロンプトを上書き
+RPROMPT='${HOST}'
+
 # =======
 # Aliases
 # =======
