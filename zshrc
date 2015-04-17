@@ -1,100 +1,83 @@
-# シェルを起動する度に読み込まれる
-
-###
+# =================
+# Zsh configuration, This file
+# - is sourced in interactive shells,
+# - should contain commands to set up aliases, functions, options, key bindings, etc.
+#
+# refs http://zsh.sourceforge.net/Intro/intro_3.html
+# =================
 # zshのテーマを設定
 source $ZSH/oh-my-zsh.sh
 
-#####
-# 補完
-# /usr/local/share/zsh-completions をfpathに登録(autoload関数が使えるようになる）
-fpath=(~/.zsh/zsh-completions/src(N-/) $fpath)
-
-# 補完を有効にする
-autoload -Uz compinit
-compinit -u
-
-#####
-# プロンプト
-export RPROMPT="${HOST}"
-
-#####
-# Command history configuration
-# =の前後に空白入れたらダメ
-HISTFILE=${HOME}/.zsh_history
-HISTSIZE=50000
-SAVEHIST=50000
-
-setopt hist_ignore_dups # ignore duplication command history list
-setopt share_history # share command history data
-
-#####
-# zshで特定のコマンドをヒストリに追加しない条件を柔軟に設定する - mollifier delta blog
-# http://mollifier.hatenablog.com/entry/20090728/p1
-# 3文字以下 or コマンド名がmかmanのいずれかだったらヒストリに追加しない
-zshaddhistory() {
-    local line=${1%%$'\n'}
-    local cmd=${line%% *}
-
-    # 以下の条件をすべて満たすものだけをヒストリに追加する
-    [[ ${#line} -ge 4
-        && ${cmd} != (m|man)
-    ]]
-}
-
-# sudo の後ろでコマンド名を補完する
-zstyle ':completion:*:sudo:*' command-path /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
-
-# 日本語ファイル名を表示可能にする
-setopt print_eight_bit
-
-# beep を無効にする
-setopt no_beep
-
-# ディレクトリ名だけでcdする
-setopt auto_cd
-
-# cdと同時にlsとgit status(可能であれば)もする
-function chpwd() {
-  ls
-  if [ "$(git rev-parse --is-inside-work-tree 2> /dev/null)" = 'true' ]; then
-    echo -e "\e[0;33m--- git status ---\e[0m"
-    git status -sb
-  fi
-}
-
-
-#########
-# alias
-# ls
-alias l='ls'
-alias la='ls -la'
-alias ll='ls -lH'
-
-# git
-alias g='git'
-alias gst='git status'
-alias gl='git log --oneline'
-alias ga='git add'
-alias gc='git commit'
-alias gb='git branch'
-alias gm='git nffmerge'
-alias gco='git checkout'
-
-
-# gem
-alias be="bundle exec"
-
-#########
-# global alias
+# =======
+# Aliases
+# =======
+# global
 alias -g G='| grep'
 alias -g L='| less'
 
-if which pbcopy >/dev/null 2>&1 ; then
-  # Mac
-  alias -g C='| pbcopy'
-elif which xsel >/dev/null 2>&1 ; then
-  # Linux
-  alias -g C='| xsel --input --clipboard'
-fi
+# git
+# - g, gst, gd, gds, gdc, gdt, gp, gc, gc!, gco, gcm, gr, grv, gb, gba, ga, gm,
+#   ggpull, ggpush
+#
+# refs https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/git/git.plugin.zsh
+alias g='git'
+compdef g=git
+alias gst='git status'
+compdef _git gst=git-status
+alias gd='git diff'
+compdef _git gd=git-diff
+alias gds='git diff --stat'
+compdef _git gds=git-diff
+alias gdc='git diff --cached'
+compdef _git gdc=git-diff
+alias gdt='git difftool'
+compdef _git gdt=git-diff
+alias gp='git push'
+compdef _git gp=git-push
+alias gc='git commit -v'
+compdef _git gc=git-commit
+alias gc!='git commit -v --amend'
+compdef _git gc!=git-commit
+alias gco='git checkout'
+compdef _git gco=git-checkout
+alias gcm='git checkout master'
+alias gr='git remote'
+compdef _git gr=git-remote
+alias grv='git remote -v'
+compdef _git grv=git-remote
+alias gb='git branch'
+compdef _git gb=git-branch
+alias gba='git branch -a'
+compdef _git gba=git-branch
+alias ga='git add'
+compdef _git ga=git-add
+alias gm='git merge'
+compdef _git gm=git-merge
+alias ggpull='git pull origin $(current_branch)'
+compdef ggpull=git
+alias ggpush='git push origin $(current_branch)'
+compdef ggpush=git
 
+# =============
+# user function
+# =============
+# Will return the current branch name
+# Usage example: git pull origin $(current_branch)
+#
+# Will return the current branch name
+# Usage example: git pull origin $(current_branch)
+#
+function current_branch() {
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || \
+  ref=$(git rev-parse --short HEAD 2> /dev/null) || return
+  echo ${ref#refs/heads/}
+}
+
+function current_repository() {
+  ref=$(git symbolic-ref HEAD 2> /dev/null) || \
+  ref=$(git rev-parse --short HEAD 2> /dev/null) || return
+  echo $(git remote -v | cut -d':' -f 2)
+}
+
+# 環境固有の設定を読み込み
 source $HOME/.zshrc.mine
