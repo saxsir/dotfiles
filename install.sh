@@ -49,6 +49,7 @@ ln -Fis "$PWD/oh-my-zsh" ~/.oh-my-zsh
 mkdir -p ~/.vim/bundle
 ln -Fis "$PWD/vimrc" ~/.vimrc
 ln -Fis "$PWD/neobundle.vim" ~/.vim/bundle/neobundle.vim
+ln -Fis "$PWD/vim/editorconfig" ~/.vim/.editorconfig
 
 # gem
 ln -Fis "$PWD/gemrc" ~/.gemrc

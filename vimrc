@@ -36,6 +36,8 @@ NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'tyru/caw.vim.git'
 NeoBundle 'evidens/vim-twig'
 NeoBundle 'ConradIrwin/vim-bracketed-paste'
+NeoBundle 'maksimr/vim-jsbeautify'
+
 
 call neobundle#end()
 
@@ -106,6 +108,11 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+
+" html, css, jsの整形
+autocmd FileType html noremap <buffer> <Leader>f :call HtmlBeautify()<cr>
+autocmd FileType css noremap <buffer> <Leader>f :call CSSBeautify()<cr>
+autocmd FileType javascript noremap <buffer>  <Leader>f :call JsBeautify()<cr>
 
 " ===========
 " Input
