@@ -125,7 +125,7 @@ set backspace=indent,eol,start
 " タブ入力を複数の空白入力に置き換える
 set expandtab
 " Vimが挿入するインデントの幅(autoindent等)
-set shiftwidth=4
+set shiftwidth=2
 
 " ===========
 " Status Line
