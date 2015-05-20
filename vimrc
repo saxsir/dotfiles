@@ -59,7 +59,7 @@ let g:lightline = {
       \ },
       \ 'component': {
       \   'readonly': '%{&readonly?"[read only]":""}',
-      \   'fugitive': '[%{fugitive#head()}]',
+      \   'fugitive': '[%{exists("*fugitive#head")?fugitive#head():""}]'
       \ },
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' }
