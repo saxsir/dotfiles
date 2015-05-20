@@ -37,7 +37,7 @@ NeoBundle 'tyru/caw.vim.git'
 NeoBundle 'evidens/vim-twig'
 NeoBundle 'ConradIrwin/vim-bracketed-paste'
 NeoBundle 'maksimr/vim-jsbeautify'
-
+NeoBundle 'tpope/vim-fugitive'
 
 call neobundle#end()
 
@@ -52,13 +52,14 @@ NeoBundleCheck
 " lightline plugin configuration
 " ==============================
 let g:lightline = {
-      \ 'colorscheme': 'solarized_dark',
+      \ 'colorscheme': 'solarized',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'readonly', 'absolutepath', 'modified' ] ]
+      \             [ 'fugitive', 'readonly', 'absolutepath', 'modified' ] ]
       \ },
       \ 'component': {
       \   'readonly': '%{&readonly?"[read only]":""}',
+      \   'fugitive': '[%{fugitive#head()}]',
       \ },
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' }
