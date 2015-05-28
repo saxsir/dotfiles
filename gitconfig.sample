@@ -20,5 +20,5 @@
     ll = log --stat --abbrev-commit
     lp = log --oneline -n 20 -p
     ls = log --stat --abbrev-commit -n 1 # display previous log
-    delete-merged-branches = !git branch --merged | grep -v \\* | xargs -I % git branch -d %
+    delete-merged-branches = !git branch --merged | grep -vE '^\\*|master$|develop$' | xargs -I % git branch -d %
     fetch-pulls = fetch origin +refs/pull/*:refs/remotes/pull/*
