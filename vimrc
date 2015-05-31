@@ -38,6 +38,8 @@ NeoBundle 'evidens/vim-twig'
 NeoBundle 'ConradIrwin/vim-bracketed-paste'
 NeoBundle 'maksimr/vim-jsbeautify'
 NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'Yggdroot/indentLine'
 
 call neobundle#end()
 
