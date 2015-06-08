@@ -120,6 +120,13 @@ autocmd FileType html vnoremap <buffer> <Leader>f :call RangeHtmlBeautify()<cr>
 autocmd FileType css vnoremap <buffer> <Leader>f :call RangeCSSBeautify()<cr>
 autocmd FileType javascript vnoremap <Leader>f :call RangeJsBeautify()<cr>
 
+" git-fugitiveコマンドのエイリアス
+noremap <Leader>gst :Gstatus<CR>
+noremap <Leader>gb :Gblame<CR>
+noremap <Leader>gd :Gdiff<CR>
+" noremap <Leader>ga :Gwrite<CR>
+" noremap <Leader>gc :Gcommit<CR>
+
 " ===========
 " Input
 " ===========
