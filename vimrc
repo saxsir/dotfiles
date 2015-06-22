@@ -40,6 +40,7 @@ NeoBundle 'maksimr/vim-jsbeautify'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'Yggdroot/indentLine'
+NeoBundle 'mattn/emmet-vim'
 
 call neobundle#end()
 
