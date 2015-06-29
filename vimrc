@@ -177,3 +177,9 @@ endif
 " Twig
 " ===========
 autocmd BufNewFile,BufRead *.twig set filetype=html
+
+" ===========
+" Dictionary
+" ===========
+autocmd FileType php :set dictionary=~/.vim/dict/php.dict
+autocmd FileType javascript :set dictionary=~/.vim/dict/javascript.dict
