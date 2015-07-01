@@ -45,11 +45,15 @@ ln -Fis "$PWD/zshrc" ~/.zshrc
 cp -fi  "$PWD/zshrc.mine.sample" ~/.zshrc.mine
 ln -Fis "$PWD/oh-my-zsh" ~/.oh-my-zsh
 
+# tmux
+ln -Fis "$PWD/tmux.conf" ~/.tmux.conf
+
 # vim
 mkdir -p ~/.vim/bundle
 ln -Fis "$PWD/vimrc" ~/.vimrc
 ln -Fis "$PWD/neobundle.vim" ~/.vim/bundle/neobundle.vim
 ln -Fis "$PWD/vim/editorconfig" ~/.vim/.editorconfig
+ln -Fis "$PWD/vim/dict" ~/.vim/dict
 
 # gem
 ln -Fis "$PWD/gemrc" ~/.gemrc
