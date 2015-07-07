@@ -5,12 +5,12 @@
 filetype off                " required!
 filetype plugin indent off
 
-" ================================
-" Plugins installation (NeoBundle)
-" ================================
 " Skip initialization for vim-tiny or vim-small.
 if !1 | finish | endif
 
+" ================================
+" Plugins installation (NeoBundle)
+" ================================
 if has('vim_starting')
   if &compatible
     set nocompatible      " Be iMproved
@@ -30,17 +30,23 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " My Bundles here:
 " Refer to |:NeoBundle-examples|.
 " Note: You don't set neobundle setting in .gvimrc!
+
+" Filer
+NeoBundle 'justinmk/vim-dirvish'
+NeoBundle "ctrlpvim/ctrlp.vim"
+" Visual
 NeoBundle 'itchyny/lightline.vim'
-NeoBundle 'bronson/vim-trailing-whitespace'
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'tyru/caw.vim.git'
-NeoBundle 'evidens/vim-twig'
-NeoBundle 'ConradIrwin/vim-bracketed-paste'
-NeoBundle 'maksimr/vim-jsbeautify'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'Yggdroot/indentLine'
+NeoBundle 'bronson/vim-trailing-whitespace'
+" Editing
+NeoBundle 'tyru/caw.vim.git'
+NeoBundle 'ConradIrwin/vim-bracketed-paste'
+NeoBundle 'tpope/vim-surround'
+" Each langs
 NeoBundle 'mattn/emmet-vim'
+NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'maksimr/vim-jsbeautify'
+NeoBundle 'evidens/vim-twig'
 
 call neobundle#end()
 
@@ -68,16 +74,9 @@ let g:lightline = {
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
 
-" ==============================
-" NERD Tree plugin configuration
-" ==============================
-" 隠しファイルを表示
-let g:NERDTreeShowHidden = 1
-
 " ===========
 " Key mapping
 " ===========
-" leader is ,
 let mapleader = ","
 
 " reload vimrc
@@ -92,7 +91,7 @@ nnoremap ; :
 nnoremap : ;
 
 " ctrl+eでNERDTreeを開く
-nnoremap <silent><C-e> :NERDTreeToggle<CR>
+" nnoremap <silent><C-e> :ls<CR>
 
 " , cでコメントアウト(複数行可)
 nmap <Leader>c <Plug>(caw:i:toggle)
@@ -120,13 +119,6 @@ autocmd FileType javascript noremap <buffer>  <Leader>f :call JsBeautify()<cr>
 autocmd FileType html vnoremap <buffer> <Leader>f :call RangeHtmlBeautify()<cr>
 autocmd FileType css vnoremap <buffer> <Leader>f :call RangeCSSBeautify()<cr>
 autocmd FileType javascript vnoremap <Leader>f :call RangeJsBeautify()<cr>
-
-" git-fugitiveコマンドのエイリアス
-noremap <Leader>gst :Gstatus<CR>
-noremap <Leader>gb :Gblame<CR>
-noremap <Leader>gd :Gdiff<CR>
-" noremap <Leader>ga :Gwrite<CR>
-" noremap <Leader>gc :Gcommit<CR>
 
 " ===========
 " Input
