@@ -208,6 +208,17 @@ NeoBundle 'ConradIrwin/vim-bracketed-paste'
 " 選択したテキストを囲う
 NeoBundle 'tpope/vim-surround'
 
+" レジスタの履歴を再利用する
+NeoBundle 'LeafCage/yankround.vim'
+nmap p <Plug>(yankround-p)
+xmap p <Plug>(yankround-p)
+nmap P <Plug>(yankround-P)
+nmap gp <Plug>(yankround-gp)
+xmap gp <Plug>(yankround-gp)
+nmap gP <Plug>(yankround-gP)
+nmap <C-p> <Plug>(yankround-prev)
+nmap <C-n> <Plug>(yankround-next)
+
 " html, css, jsの整形
 NeoBundle 'maksimr/vim-jsbeautify'
 autocmd FileType html noremap <buffer> <Leader>f :call HtmlBeautify()<cr>
@@ -221,7 +232,6 @@ autocmd FileType javascript vnoremap <Leader>f :call RangeJsBeautify()<cr>
 NeoBundle 'othree/html5.vim'
 NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'mattn/emmet-vim'
-
 " PHP
 NeoBundle '2072/PHP-Indenting-for-VIm'
 " Twig
