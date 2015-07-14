@@ -29,6 +29,8 @@ colorscheme slate
 if system('uname') == "Darwin\n"
   set clipboard+=unnamed
 endif
+set undodir=$HOME/.vim/undodir
+set undofile
 
 " ===========
 " Key mapping
