@@ -193,6 +193,16 @@ map #  <Plug>(incsearch-nohl-#)
 map g* <Plug>(incsearch-nohl-g*)
 map g# <Plug>(incsearch-nohl-g#)
 
+" quickrun
+NeoBundle 'thinca/vim-quickrun'
+let g:quickrun_config = {
+\   "_" : {
+\       "outputter/buffer/split" : ":botright 8sp",
+\       "outputter/buffer/close_on_empty" : 1,
+\       "hook/time/enable" : 1
+\   },
+\}
+
 " コメントアウトを簡単に
 NeoBundle 'tyru/caw.vim.git'
 nmap <Leader>c <Plug>(caw:i:toggle)
