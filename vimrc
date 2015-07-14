@@ -65,7 +65,7 @@ call neobundle#begin(expand('~/.vim/bundle/'))    " required!
 NeoBundleFetch 'Shougo/neobundle.vim'    " required!
 
 " ファイラー
-NeoBundle "justinmk/vim-dirvish"
+" NeoBundle "justinmk/vim-dirvish"    " undoの調子が悪くなったので一旦コメントアウト
 
 " 開いているディレクトリ以下のファイル検索
 NeoBundle "ctrlpvim/ctrlp.vim"
