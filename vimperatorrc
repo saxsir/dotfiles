@@ -67,8 +67,8 @@ nnoremap <silent> ,r :mapc<CR>:cmapc<CR>:imapc<CR>:so ~/.vimperatorrc<CR>
 " ignorekeys
 ignorekeys clear
 ignorekeys add mail\\.google\\.com -except t,h,l,<C-n>,<C-p>,:
-ignorekeys add trello\\.com -except t,h,l,<C-n>,<C-p>,:""
 ignorekeys add facebook\\.com
+ignorekeys add docs.google\\.com
 ignorekeys add docs.google\\.com
 
 "======================================================================

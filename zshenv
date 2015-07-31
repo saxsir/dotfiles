@@ -7,9 +7,6 @@
 # refs http://zsh.sourceforge.net/Intro/intro_3.html
 # =================
 
-# Path to zsh functions
-fpath=(/usr/share/zsh/4.3.10/functions ${fpath})
-
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
