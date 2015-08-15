@@ -38,8 +38,8 @@ fi
 # =====================
 # git
 cp ~/dotfiles/gitconfig.sample ./gitconfig
-sed -i -e 's/"your name"/saxsir/' ./gitconfig
-sed -i -e 's/"your email"/saxsir.256+github@gmail.com/' ./gitconfig
+# sed -i -e 's/"your name"/saxsir/' ./gitconfig
+# sed -i -e 's/"your email"/saxsir.256+github@gmail.com/' ./gitconfig
 ln -Fis "$PWD/gitconfig" ~/.gitconfig
 ln -Fis "$PWD/gitignore_global" ~/.gitignore_global
 
