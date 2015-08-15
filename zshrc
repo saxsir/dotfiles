@@ -5,8 +5,13 @@
 #
 # refs http://zsh.sourceforge.net/Intro/intro_3.html
 # =================
-# zshのテーマを設定
+
+# enable zsh theme
 source $ZSH/oh-my-zsh.sh
+
+# enable zsh completions
+plugins+=(zsh-completions)
+autoload -U compinit && compinit
 
 # プロンプトを上書き
 RPROMPT='${HOST}'
