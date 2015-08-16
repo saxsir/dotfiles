@@ -23,6 +23,13 @@ RPROMPT='${HOST}'
 alias -g G='| grep'
 alias -g L='| less'
 
+# curl
+function xhr() {
+  curl -s -H 'X-Requested-With: XMLHttpRequest' $1 | jq .
+}
+alias xhr='xhr'
+compdef xhr=curl
+
 # git
 # - g, gst, gd, gds, gdc, gdt, gp, gc, gc!, gco, gcm, gr, grv, gb, gba, ga, gm,
 #   ggpull, ggpush
