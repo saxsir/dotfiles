@@ -3,11 +3,10 @@
 OS="linux"
 cd $(dirname $0)
 
-# ==================
-# Install submodules
-# ==================
+# oh-my-zsh, neobundle, zsh-completions, vimperator(if OS is Mac)
 git submodule init oh-my-zsh
 git submodule init neobundle.vim
+git submodule init zsh-completions
 if [ $OS = "mac" ]; then
   git submodule init vimperator/vimperator-plugins
 fi
@@ -23,6 +22,11 @@ if [ -e "$PWD/neobundle.vim" ]; then
     git checkout master
     cd ..
 fi
+if [ -e "$PWD/neobundle.vim" ]; then
+    cd zsh-completions
+    git checkout master
+    cd ..
+fi
 if [ $OS = "mac" ]; then
   cd vimperator/vimperator-plugins
   git checkout master
@@ -34,8 +38,8 @@ fi
 # =====================
 # git
 cp ~/dotfiles/gitconfig.sample ./gitconfig
-sed -i -e 's/\<your name\>/saxsir/' ./gitconfig
-sed -i -e 's/\<your email\>/saxsir.256+github@gmail.com/' ./gitconfig
+# sed -i -e 's/"your name"/saxsir/' ./gitconfig
+# sed -i -e 's/"your email"/saxsir.256+github@gmail.com/' ./gitconfig
 ln -Fis "$PWD/gitconfig" ~/.gitconfig
 ln -Fis "$PWD/gitignore_global" ~/.gitignore_global
 
@@ -44,6 +48,7 @@ ln -Fis "$PWD/zshenv" ~/.zshenv
 ln -Fis "$PWD/zshrc" ~/.zshrc
 cp -fi  "$PWD/zshrc.mine.sample" ~/.zshrc.mine
 ln -Fis "$PWD/oh-my-zsh" ~/.oh-my-zsh
+ln -Fis "$PWD/zsh-completions" ~/.oh-my-zsh/custom/plugins/zsh-completions
 
 # tmux
 ln -Fis "$PWD/tmux.conf" ~/.tmux.conf
@@ -59,7 +64,7 @@ ln -Fis "$PWD/vim/dict" ~/.vim/dict
 ln -Fis "$PWD/gemrc" ~/.gemrc
 
 # ==========================
-# Vimperator(Macintosh only)
+# Vimperator(Mac only)
 # ==========================
 if [ $OS = "mac" ]; then
   ln -Fis "$PWD/vimperatorrc" ~/.vimperatorrc

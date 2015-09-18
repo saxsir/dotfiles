@@ -5,8 +5,13 @@
 #
 # refs http://zsh.sourceforge.net/Intro/intro_3.html
 # =================
-# zshのテーマを設定
+
+# enable zsh theme
 source $ZSH/oh-my-zsh.sh
+
+# enable zsh completions
+plugins+=(zsh-completions)
+autoload -U compinit && compinit
 
 # プロンプトを上書き
 RPROMPT='${HOST}'
@@ -17,6 +22,13 @@ RPROMPT='${HOST}'
 # global
 alias -g G='| grep'
 alias -g L='| less'
+
+# curl
+function xhr() {
+  curl -s -H 'X-Requested-With: XMLHttpRequest' $1 | jq .
+}
+alias xhr='xhr'
+compdef xhr=curl
 
 # git
 # - g, gst, gd, gds, gdc, gdt, gp, gc, gc!, gco, gcm, gr, grv, gb, gba, ga, gm,

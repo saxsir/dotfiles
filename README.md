@@ -18,3 +18,17 @@ dotfiles
   $ ./install.sh OS=mac
 
 ```
+
+### gitconfigは手動で変更
+
+```sh
+
+  $ vim gitconfig
+
+  ...
+
+  [user]
+      name = GitHubのユーザー名
+      email = GiHubに登録してあるアドレス
+
+```
