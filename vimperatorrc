@@ -51,10 +51,6 @@ nnoremap F f
 " <C-f> is also opening multiple tabs
 nnoremap <C-f> ;F
 
-" disable <C-n>
-" inoremap <C-n> <Nop>
-" cnoremap <C-n> <Nop>
-
 " searching in google
 nnoremap s :tabopen<Space>google<Space>
 
@@ -68,7 +64,6 @@ nnoremap <silent> ,r :mapc<CR>:cmapc<CR>:imapc<CR>:so ~/.vimperatorrc<CR>
 ignorekeys clear
 ignorekeys add mail\\.google\\.com -except t,h,l,<C-n>,<C-p>,:
 ignorekeys add facebook\\.com
-ignorekeys add docs.google\\.com
 ignorekeys add docs.google\\.com
 
 "======================================================================
