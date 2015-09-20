@@ -22,7 +22,7 @@ if [ -e "$PWD/neobundle.vim" ]; then
     git checkout master
     cd ..
 fi
-if [ -e "$PWD/neobundle.vim" ]; then
+if [ -e "$PWD/zsh-completions" ]; then
     cd zsh-completions
     git checkout master
     cd ..

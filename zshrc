@@ -11,7 +11,7 @@ source $ZSH/oh-my-zsh.sh
 
 # enable zsh completions
 plugins+=(zsh-completions)
-autoload -U compinit && compinit
+autoload -U compinit && compinit -u
 
 # プロンプトを上書き
 RPROMPT='${HOST}'
