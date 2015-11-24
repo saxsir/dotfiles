@@ -248,6 +248,8 @@ NeoBundle 'mattn/emmet-vim'
 NeoBundle '2072/PHP-Indenting-for-VIm'
 " Twig
 autocmd BufNewFile,BufRead *.twig set filetype=html
+" jade
+NeoBundle 'digitaltoad/vim-jade'
 
 " NeoBundle 'mattn/sonictemplate-vim'
 " NeoBundle 'mattn/gist-vim', {'depends': 'mattn/webapi-vim'}
