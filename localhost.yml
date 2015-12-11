@@ -6,6 +6,7 @@
       - gemrc
       - gitconfig
       - gitignore_global
+      - gitmessage.txt
       - tmux.conf
       - vimperatorrc
       - vimrc

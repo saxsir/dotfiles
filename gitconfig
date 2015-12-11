@@ -1,16 +1,24 @@
+# vim:set ft=dosini :
 [user]
-    name = "your name"
-    email = "your email"
+    name = saxsir
+    email = saxsir.256+github@gmail.com
 
 [core]
     excludesfile = ~/.gitignore_global
     editor = vim -c \"set fenc=utf-8\"
+    pager = lv -c
+
+[color]
+    ui = true
+
+[commit]
+    template = ~/.gitmessage.txt
 
 [url "https://"]
     insteadOf = git://
 
-[color]
-    ui = true
+[ghq]
+	root = ~/src
 
 [alias]
     # refs http://suzuken.hatenablog.jp/entry/2015/04/07/134847
@@ -19,6 +27,5 @@
     l = log --graph -n 20 --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(green)- %an, %cr%Creset'
     ll = log --stat --abbrev-commit
     lp = log --oneline -n 20 -p
-    ls = log --stat --abbrev-commit -n 1 # display previous log
     delete-merged-branches = !git branch --merged | grep -vE '^\\*|master$|develop$' | xargs -I % git branch -d %
     fetch-pulls = fetch origin +refs/pull/*:refs/remotes/pull/*
