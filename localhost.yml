@@ -19,6 +19,10 @@
     - name: zshrc.mineをコピー
       copy: src={{ ansible_env.PWD }}/zshrc.mine.sample dest={{ ansible_env.HOME }}/.zshrc.mine force=no
 
+    - name: vimperatorrcをコピー
+      file: src={{ ansible_env.PWD }}/vimperatorrc dest={{ ansible_env.HOME }}/.vimperatorrc state=link
+      when: ansible_os_family == 'Darwin'
+
     # For zshrc
     - name: oh-my-zsh のインストール
       git: repo=git://github.com/robbyrussell/oh-my-zsh.git
@@ -30,13 +34,19 @@
       notify: source .zshrc
 
     # For vimrc
-    - name: create ~/.vim/bundle directory
-      shell: mkdir -p ~/.vim/bundle
+    - name: create ~/.vim/bundle
+      file: path={{ ansible_env.HOME }}/.vim/bundle state=directory
     - name: neobundle.vim のインストール
       git: repo=git://github.com/Shougo/neobundle.vim.git
            dest={{ ansible_env.HOME }}/.vim/bundle/neobundle.vim
 
+    # For vimperatorrc
+    - name: create ~/.vimperator
+      file: path={{ ansible_env.HOME }}/.vimperator state=directory
+      when: ansible_os_family == 'Darwin'
+    - name: link ~/.vimperator/colors to vimperator/colors
+      file: src={{ ansible_env.PWD }}/vimperator/colors dest={{ ansible_env.HOME }}/.vimperator/colors state=link
+
   handlers:
     - name: source .zshrc
       shell: source ~/.zshrc
-
