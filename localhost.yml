@@ -1,0 +1,24 @@
+- hosts: localhost
+  connection: local
+  sudo: no
+  vars:
+    dotfiles:
+      - gemrc
+      - gitconfig
+      - gitignore_global
+      - tmux.conf
+      - vimperatorrc
+      - vimrc
+      - zshrc
+  tasks:
+    - name: dotfilesを設置
+      file: src={{ ansible_env.PWD }}/{{ item }} dest={{ ansible_env.HOME }}/.{{ item }} state=link
+      with_items: dotfiles
+      notify: source .zshrc
+    - name: zshrc.mineをコピー
+      copy: src={{ ansible_env.PWD }}/zshrc.mine.sample dest={{ ansible_env.HOME }}/.zshrc.mine force=no
+
+  handlers:
+    - name: source .zshrc
+      shell: source ~/.zshrc
+
