@@ -15,8 +15,26 @@
       file: src={{ ansible_env.PWD }}/{{ item }} dest={{ ansible_env.HOME }}/.{{ item }} state=link
       with_items: dotfiles
       notify: source .zshrc
+
     - name: zshrc.mineをコピー
       copy: src={{ ansible_env.PWD }}/zshrc.mine.sample dest={{ ansible_env.HOME }}/.zshrc.mine force=no
+
+    # For zshrc
+    - name: oh-my-zsh のインストール
+      git: repo=git://github.com/robbyrussell/oh-my-zsh.git
+           dest={{ ansible_env.HOME }}/.oh-my-zsh
+      notify: source .zshrc
+    - name: zsh-completionsのインストール
+      git: repo=git://github.com/zsh-users/zsh-completions.git
+           dest={{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-completions
+      notify: source .zshrc
+
+    # For vimrc
+    - name: create ~/.vim/bundle directory
+      shell: mkdir -p ~/.vim/bundle
+    - name: neobundle.vim のインストール
+      git: repo=git://github.com/Shougo/neobundle.vim.git
+           dest={{ ansible_env.HOME }}/.vim/bundle/neobundle.vim
 
   handlers:
     - name: source .zshrc
