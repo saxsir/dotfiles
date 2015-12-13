@@ -1,5 +1,4 @@
 " Run commands quickly.
-
 NeoBundle 'thinca/vim-quickrun'
 let g:quickrun_config = {
 \   "_" : {

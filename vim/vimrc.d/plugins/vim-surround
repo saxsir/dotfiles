@@ -1,2 +1,0 @@
-" 選択したテキストを囲う
-NeoBundle 'tpope/vim-surround'

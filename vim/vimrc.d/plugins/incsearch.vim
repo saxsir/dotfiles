@@ -1,6 +1,5 @@
 " Improved incremental searching for Vim
-" incsearch.vim incrementally highlights ALL pattern matches unlike default 'incsearch'.
-
+" Incremental searchを快適に
 NeoBundle 'haya14busa/incsearch.vim'
 set hlsearch
 set ignorecase

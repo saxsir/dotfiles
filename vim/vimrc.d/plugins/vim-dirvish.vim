@@ -1,1 +1,0 @@
-" NeoBundle "justinmk/vim-dirvish"
