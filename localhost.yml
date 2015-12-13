@@ -59,3 +59,4 @@
       when: ansible_os_family == 'Darwin'
     - name: link ~/.vimperator/colors to vimperator/colors
       file: src={{ ansible_env.PWD }}/vimperator/colors dest={{ ansible_env.HOME }}/.vimperator/colors state=link
+      when: ansible_os_family == 'Darwin'
