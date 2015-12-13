@@ -1,5 +1,25 @@
-###
 # デフォルトでignoreしたいファイル群
-*.swp
-*~
+
+# refs https://github.com/github/gitignore/blob/master/Global/OSX.gitignore
 .DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+# refs https://github.com/github/gitignore/blob/master/Global/Vim.gitignore
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
+
+# refs https://github.com/github/gitignore/blob/master/Global/IPythonNotebook.gitignore
+.ipynb_checkpoints/

@@ -1,46 +1,29 @@
 " vim:set ft=vim :
-"======================================================================
 
-"======================================================================
-" plugin_loader
-"======================================================================
-let g:plugin_loader_roots = "~/.vimperator/vimperator-plugins/ ~/.vimperator/load/"
-let g:plugin_loader_plugins = ""
-
-"======================================================================
-" general settings
-"======================================================================
-" color
+" 見た目
 colorscheme solarized
+
+" 検索エンジン設定
+set defsearch=google
+
+" ヒントモードでアルファベットを使う
+set hintchars=jklasdfuiopqwerghtnmcv
 
 " 検索時(:tとか)の補完候補をサーチエンジン、履歴に限定
 set complete=sl
 
-" 検索エンジン設定
-set defsearch=google
+" 入力欄に自動フォーカスしない
+set focuscontent
 
 " 音を鳴らさない
 set visualbell
 highlight Bell display:none
 
-" 入力欄に自動フォーカスしない
-set focuscontent
-
-" ヒントモードでアルファベットを使う
-set hintchars=jklasdfuiopqwerghtnmcv
-
-" コマンドラインモード時に自動でimeをOFFにする
-"コピペ元ページ　 http://vimperator.g.hatena.ne.jp/teramako/20090311/1236776437
-style -name commandline-ime chrome://* #liberator-commandline-command input {ime-mode: inactive;}
-
-"======================================================================
-" keymaps
-"======================================================================
-" extend move height for j, k
+" j, kで縦スクロール
 nnoremap j <C-d>
 nnoremap k <C-u>
 
-" simply moving next and back tab
+" h, lでタブ移動
 nnoremap h <C-p>
 nnoremap l <C-n>
 
@@ -51,16 +34,13 @@ nnoremap F f
 " <C-f> is also opening multiple tabs
 nnoremap <C-f> ;F
 
-" searching in google
-nnoremap s :tabopen<Space>google<Space>
-
-" duplicate current tab
+" Duplicate current tab
 nnoremap <S-t> :tabduplicate<CR>
 
-" reload .vimperatorrc
+" Reload .vimperatorrc
 nnoremap <silent> ,r :mapc<CR>:cmapc<CR>:imapc<CR>:so ~/.vimperatorrc<CR>
 
-" ignorekeys
+" Ignorekeys
 ignorekeys clear
 ignorekeys add mail\\.google\\.com -except t,h,l,<C-n>,<C-p>,:
 ignorekeys add facebook\\.com
