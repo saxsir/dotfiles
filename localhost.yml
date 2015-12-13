@@ -36,6 +36,7 @@
       with_items:
         - dict
         - syntax
+        - vimrc.d
 
     # For zsh
     - name: oh-my-zsh のインストール
