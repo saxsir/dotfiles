@@ -19,3 +19,8 @@ set laststatus=2
 " 色
 set background=dark
 colorscheme slate
+
+" Macのみクリップボード連携
+if system('uname') == "Darwin\n"
+  set clipboard+=unnamed
+endif
