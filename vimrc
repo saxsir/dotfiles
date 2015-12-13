@@ -20,6 +20,6 @@ NeoBundleFetch 'Shougo/neobundle.vim'    " required!
 runtime! vimrc.d/plugins/*.vim
 call neobundle#end()    " required!
 
+syntax on
 filetype plugin indent on    " required!
 NeoBundleCheck
-syntax on
