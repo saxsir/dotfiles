@@ -1,4 +1,4 @@
-GIT := $(shell which git)
+ANSIBLE_PLAYBOOK := $(shell which ansible-playbook)
 
-submodule-update:
-	$(GIT) submodule foreach git pull origin master
+install:
+	$(ANSIBLE_PLAYBOOK) -i hosts -vv localhost.yml

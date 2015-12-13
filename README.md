@@ -3,32 +3,28 @@ dotfiles
 
 設定ファイルとかとか
 
-## インストール方法
-
-```sh
-
-  $ ./install.sh
-
+## Requirement
+```
+$ ansible-playbook --version
+ansible-playbook 1.9.4
 ```
 
-### OS=mac をつけて実行するとvimperatorも入る
-
-```sh
-
-  $ ./install.sh OS=mac
-
+## Install
+```
+$ make install
 ```
 
-### gitconfigは手動で変更
+The ansible recipes are creating symbolic links to dotfiles, and installing some useful bundles(oh-myzsh, zsh-completions, and so on).
 
-```sh
 
-  $ vim gitconfig
+Details => see `localhost.yml`.
 
-  ...
-
-  [user]
-      name = GitHubのユーザー名
-      email = GiHubに登録してあるアドレス
+## Important
+If you want to use my dotfiles, you MUST change username and email in gitconfig.
 
 ```
+[user]
+    name = your username on GitHub
+    email = your email on GitHub
+```
+
