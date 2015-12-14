@@ -10,20 +10,21 @@ augroup vim-autoformat
 augroup END
 
 " 開いているディレクトリ以下のファイル検索
-" NeoBundle "ctrlpvim/ctrlp.vim"
+" http://qiita.com/oahiroaki/items/d71337fb9d28303a54a8
+NeoBundle "ctrlpvim/ctrlp.vim"
 
 " ローカルリポジトリの検索
-" NeoBundle "mattn/ctrlp-ghq"
-" noremap <leader>g :<c-u>CtrlPGhq<cr>
+NeoBundle "mattn/ctrlp-ghq"
+noremap <leader>g :<c-u>CtrlPGhq<cr>
 
 " gistに即アップロード
 " NeoBundle 'mattn/gist-vim', {'depends': 'mattn/webapi-vim'}
 
 " ファイルタイプ別にテンプレートを選べる
-" NeoBundle 'mattn/sonictemplate-vim'
+NeoBundle 'mattn/sonictemplate-vim'
 
 " シンプルなファイラー
-" NeoBundle "justinmk/vim-dirvish"
+NeoBundle "justinmk/vim-dirvish"
 
 " golang
 " NeoBundle 'fatih/vim-go'
@@ -40,4 +41,3 @@ augroup END
 " au FileType go nmap <Leader>s <Plug>(go-implements)
 " au FileType go nmap <Leader>i <Plug>(go-info)
 " au FileType go nmap <Leader>e <Plug>(go-rename)
-
