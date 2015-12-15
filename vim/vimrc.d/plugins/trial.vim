@@ -24,7 +24,7 @@ noremap <leader>g :<c-u>CtrlPGhq<cr>
 NeoBundle 'mattn/sonictemplate-vim'
 
 " シンプルなファイラー
-NeoBundle "justinmk/vim-dirvish"
+" NeoBundle "justinmk/vim-dirvish"
 
 " golang
 " NeoBundle 'fatih/vim-go'
