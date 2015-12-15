@@ -10,6 +10,7 @@
       - tmux.conf
       - vimperatorrc
       - vimrc
+      - zshenv
       - zshrc
   tasks:
     - name: dotfilesを設置
