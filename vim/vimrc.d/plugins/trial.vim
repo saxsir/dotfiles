@@ -23,6 +23,17 @@ noremap <leader>g :<c-u>CtrlPGhq<cr>
 " ファイルタイプ別にテンプレートを選べる
 NeoBundle 'mattn/sonictemplate-vim'
 
+" asynchronous execution library for Vim
+NeoBundle 'Shougo/vimproc.vim', {
+\ 'build' : {
+\     'windows' : 'tools\\update-dll-mingw',
+\     'cygwin' : 'make -f make_cygwin.mak',
+\     'mac' : 'make',
+\     'linux' : 'make',
+\     'unix' : 'gmake',
+\    },
+\ }
+
 " シンプルなファイラー
 " NeoBundle "justinmk/vim-dirvish"
 
