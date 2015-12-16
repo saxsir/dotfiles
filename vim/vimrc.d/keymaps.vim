@@ -9,7 +9,7 @@ nnoremap ; :
 nnoremap : ;
 " Tab操作を簡単に。
 nnoremap <C-t>  <Nop>
-nnoremap <C-t>n  :<C-u>tabnew<CR>
+nnoremap <C-t>t  :<C-u>tabnew<CR>
 nnoremap <C-t>c  :<C-u>tabclose<CR>
 nnoremap <C-t>l :<C-u>execute 'tabnext' 1 + (tabpagenr() + v:count1 - 1) % tabpagenr('$')<CR>
 nnoremap <C-t>h  gT
