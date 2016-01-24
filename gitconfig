@@ -10,14 +10,11 @@
 [color]
     ui = true
 
-[commit]
-    template = ~/.gitmessage.txt
-
 [url "https://"]
     insteadOf = git://
 
 [ghq]
-	root = ~/src
+    root = ~/src
 
 [alias]
     # refs http://suzuken.hatenablog.jp/entry/2015/04/07/134847
