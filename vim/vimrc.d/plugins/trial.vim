@@ -35,7 +35,7 @@ NeoBundle 'Shougo/vimproc.vim', {
 \ }
 
 " シンプルなファイラー
-" NeoBundle "justinmk/vim-dirvish"
+" NeoBundle 'justinmk/vim-dirvish'
 
 " golang
 " NeoBundle 'fatih/vim-go'
@@ -52,3 +52,10 @@ NeoBundle 'Shougo/vimproc.vim', {
 " au FileType go nmap <Leader>s <Plug>(go-implements)
 " au FileType go nmap <Leader>i <Plug>(go-info)
 " au FileType go nmap <Leader>e <Plug>(go-rename)
+
+"
+" NeoBundle 'kakkyz81/evervim'
+" nnoremap <Leader>l :EvervimNotebookList<CR>
+" nnoremap <Leader>s :EvervimSearchByQuery<Space>
+" nnoremap <Leader>c :EvervimCreateNote<CR>
+" nnoremap <Leader>t :EvervimListTags<CR>
