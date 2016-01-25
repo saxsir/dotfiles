@@ -35,7 +35,7 @@ NeoBundle 'Shougo/vimproc.vim', {
 \ }
 
 " シンプルなファイラー
-" NeoBundle 'justinmk/vim-dirvish'
+NeoBundle 'justinmk/vim-dirvish'
 
 " golang
 " NeoBundle 'fatih/vim-go'
