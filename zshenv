@@ -13,3 +13,26 @@ else
     source $RBENV_ZSH_FILE
   fi
 fi
+
+# pyenv
+PYENV_ZSH_FILE="$HOME/.pyenv-zsh"
+if [ -f "$PYENV_ZSH_FILE" ]; then
+  source $PYENV_ZSH_FILE
+else
+  if which pyenv > /dev/null; then
+    echo "$(pyenv init - --no-rehash)" > $PYENV_ZSH_FILE
+    source $PYENV_ZSH_FILE
+  fi
+fi
+
+# pyenv-virtualenv
+PYENV_VIRTUALENV_ZSH_FILE="$HOME/.pyenv-virtualenv-zsh"
+if [ -f "$PYENV_VIRTUALENV_ZSH_FILE" ]; then
+  eval "$(pyenv virtualenv-init -)"
+  source $PYENV_VIRTUALENV_ZSH_FILE
+else
+  if which pyenv-virtualenv > /dev/null; then
+    echo "$(pyenv virtualenv-init -)" > $PYENV_VIRTUALENV_ZSH_FILE
+    source $PYENV_VIRTUALENV_ZSH_FILE
+  fi
+fi
