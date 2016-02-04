@@ -1,5 +1,5 @@
 # コメント外すと起動時間を計測する
-# zmodload zsh/zprof && zpro
+# zmodload zsh/zprof
 
 export EDITOR=vim
 
@@ -36,3 +36,6 @@ else
     source $PYENV_VIRTUALENV_ZSH_FILE
   fi
 fi
+
+# direnv
+if which direnv > /dev/null; then eval "$(direnv hook zsh)"; fi

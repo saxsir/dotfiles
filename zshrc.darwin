@@ -15,16 +15,8 @@ else
   alias ls='ls -G'
 fi
 
-# pyenv
-export PYENV_ROOT=/usr/local/var/pyenv
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
-if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
-
 # nodebrew
-export NODEBREW_ROOT=/usr/local/var/nodebrew
-
-# direnv
-if which direnv > /dev/null; then eval "$(direnv hook zsh)"; fi
+export PATH=$HOME/.nodebrew/current/bin:$PATH
 
 # aliases
 alias -g C='| pbcopy'
