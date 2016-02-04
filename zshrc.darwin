@@ -15,8 +15,10 @@ else
   alias ls='ls -G'
 fi
 
-# nodebrew
+export RBENV_ROOT=/usr/local/var/rbenv
+export PYENV_ROOT=/usr/local/var/pyenv
 export PATH=$HOME/.nodebrew/current/bin:$PATH
+
 
 # aliases
 alias -g C='| pbcopy'
