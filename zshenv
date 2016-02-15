@@ -1,7 +1,9 @@
-# コメント外すと起動時間を計測する
-# zmodload zsh/zprof
+# このファイルにはPATHの設定を書く
 
-export EDITOR=vim
+# コメント外すと起動時間を計測する
+# modload zsh/zprof
+
+setopt no_global_rcs
 
 # rbenv
 RBENV_ZSH_FILE="$HOME/.rbenv-zsh"
@@ -36,5 +38,16 @@ else
   fi
 fi
 
+# nodebrew
+if which nodebrew > /dev/null; then
+  export PATH=$HOME/.nodebrew/current/bin:$PATH
+fi
+
 # direnv
-if which direnv > /dev/null; then eval "$(direnv hook zsh)"; fi
+if which direnv > /dev/null; then
+  eval "$(direnv hook zsh)"
+fi
+
+# go, ghq
+export GOPATH=$HOME
+export PATH=$GOPATH/bin:$PATH

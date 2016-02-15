@@ -1,3 +1,5 @@
+export EDITOR=vim
+
 # oh-my-zsh
 export ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="amuse"
@@ -40,6 +42,9 @@ function peco-src () {
 zle -N peco-src
 bindkey '^p' peco-src
 
+# hub
+eval "$(hub alias -s)"
+
 # OS依存の設定
 case ${OSTYPE} in
   darwin*)
@@ -50,5 +55,18 @@ case ${OSTYPE} in
     ;;
 esac
 
-# マシンごとの設定
+# ローカル固有で設定したい何かがあれば
 source ~/.zshrc.local
+
+# 重複してるパスを除去
+typeset -U path
+
+# 次回からはコンパイルしたものを使う
+if [ ! -f ~/.zshrc.zwc -o ~/.zshrc -nt ~/.zshrc.zwc ]; then
+   zcompile ~/.zshrc
+fi
+
+# 時間計測
+if (which zprof > /dev/null); then
+  zprof | less
+fi
