@@ -6,6 +6,7 @@
 setopt no_global_rcs
 
 # rbenv
+export RBENV_ROOT=/usr/local/var/rbenv
 RBENV_ZSH_FILE="$HOME/.rbenv-zsh"
 if [ -f "$RBENV_ZSH_FILE" ]; then
   source $RBENV_ZSH_FILE
@@ -17,6 +18,7 @@ else
 fi
 
 # pyenv
+export PYENV_ROOT=/usr/local/var/pyenv
 PYENV_ZSH_FILE="$HOME/.pyenv-zsh"
 if [ -f "$PYENV_ZSH_FILE" ]; then
   source $PYENV_ZSH_FILE

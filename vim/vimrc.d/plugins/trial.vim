@@ -59,3 +59,7 @@ NeoBundle 'justinmk/vim-dirvish'
 " nnoremap <Leader>s :EvervimSearchByQuery<Space>
 " nnoremap <Leader>c :EvervimCreateNote<CR>
 " nnoremap <Leader>t :EvervimListTags<CR>
+"
+" refs. http://qiita.com/karur4n/items/a26007236c59c5fb8735
+NeoBundle 'elzr/vim-json'
+let g:vim_json_syntax_conceal = 0

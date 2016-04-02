@@ -14,6 +14,7 @@ RPROMPT='${HOST}'
 # aliases
 alias -g G='| grep'
 alias -g L='| lv'
+alias gce='git commit --allow-empty'
 
 # peco
 setopt hist_ignore_all_dups
@@ -43,7 +44,7 @@ zle -N peco-src
 bindkey '^p' peco-src
 
 # hub
-eval "$(hub alias -s)"
+alias git=hub
 
 # OS依存の設定
 case ${OSTYPE} in
