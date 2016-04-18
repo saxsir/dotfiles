@@ -1,25 +1,31 @@
 " Skip initialization for vim-tiny or vim-small.
 if !1 | finish | endif
 
-filetype off                " required!
-filetype plugin indent off
-
-if has('vim_starting')
-  if &compatible
-    set nocompatible      " Be iMproved
-  endif
-  set runtimepath+=~/.vim/bundle/neobundle.vim/    " required!
+if &compatible
+  set nocompatible
 endif
+set runtimepath^='~/src/github.com/Shougo/dein.vim'
 
 " プラグインに依存していない設定の読み込み
-runtime! vimrc.d/*.vim
+" runtime! vimrc.d/*.vim
 
-" プラグインの読み込み
-call neobundle#begin(expand('~/.vim/bundle/'))    " required!
-NeoBundleFetch 'Shougo/neobundle.vim'    " required!
-runtime! vimrc.d/plugins/*.vim
-call neobundle#end()    " required!
+call dein#begin(expand('~/.cache/dein'))
+call dein#add('Shougo/dein.vim')
 
-syntax on
-filetype plugin indent on    " required!
-NeoBundleCheck
+" Add or remove your plugins here:
+call dein#add('Shougo/neosnippet.vim')
+call dein#add('Shougo/neosnippet-snippets')
+
+" You can specify revision/branch/tag.
+call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
+
+" runtime! vimrc.d/plugins/*.vim
+
+call dein#end()
+
+filetype plugin indent on
+
+" If you want to install not installed plugins on startup.
+if dein#check_install()
+ call dein#install()
+endif
