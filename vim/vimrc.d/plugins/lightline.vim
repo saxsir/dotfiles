@@ -1,5 +1,5 @@
 " ステータスライン
-NeoBundle 'itchyny/lightline.vim'
+call dein#add('itchyny/lightline.vim')
 let g:lightline = {
       \ 'colorscheme': 'solarized',
       \ 'active': {

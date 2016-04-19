@@ -1,5 +1,5 @@
 " Run commands quickly.
-NeoBundle 'thinca/vim-quickrun'
+call dein#add('thinca/vim-quickrun')
 let g:quickrun_config = {
 \   "_" : {
 \       "outputter/buffer/split" : ":botright 8sp",

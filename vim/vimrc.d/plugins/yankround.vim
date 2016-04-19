@@ -1,5 +1,5 @@
 " レジスタの履歴を再利用する
-NeoBundle 'LeafCage/yankround.vim'
+call dein#add('LeafCage/yankround.vim')
 nmap p <Plug>(yankround-p)
 xmap p <Plug>(yankround-p)
 nmap P <Plug>(yankround-P)
