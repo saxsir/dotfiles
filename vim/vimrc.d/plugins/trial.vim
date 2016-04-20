@@ -1,40 +1,26 @@
 " とりあえず使ってみるプラグインをここに書く
 " 整理するタイミングでよく使ってたらmainに移す
 
-" Provide easy code formatting in Vim by integrating existing code formatters.
-call dein#add("Chiel92/vim-autoformat")
 augroup vim-autoformat
   autocmd!
   noremap <Leader>f :Autoformat<CR>
   " autocmd BufWrite * :Autoformat
 augroup END
 
-" 開いているディレクトリ以下のファイル検索
-" http://qiita.com/oahiroaki/items/d71337fb9d28303a54a8
-call dein#add("ctrlpvim/ctrlp.vim")
-
-" ローカルリポジトリの検索
-call dein#add("mattn/ctrlp-ghq")
 noremap <leader>g :<c-u>CtrlPGhq<cr>
 
 " gistに即アップロード
 " call dein#add('mattn/gist-vim', {'depends': 'mattn/webapi-vim'})
 
-" ファイルタイプ別にテンプレートを選べる
-call dein#add('mattn/sonictemplate-vim')
-
 " asynchronous execution library for Vim
-call dein#add('Shougo/vimproc', {
-          \ 'build': {
-          \     'windows': 'tools\\update-dll-mingw',
-          \     'cygwin': 'make -f make_cygwin.mak',
-          \     'mac': 'make -f make_mac.mak',
-          \     'linux': 'make',
-          \     'unix': 'gmake'}})
+" call dein#add('Shougo/vimproc', {
+"           \ 'build': {
+"           \     'windows': 'tools\\update-dll-mingw',
+"           \     'cygwin': 'make -f make_cygwin.mak',
+"           \     'mac': 'make -f make_mac.mak',
+"           \     'linux': 'make',
+"           \     'unix': 'gmake'}})
 
-
-" シンプルなファイラー
-call dein#add('justinmk/vim-dirvish')
 
 " golang
 " call dein#add('fatih/vim-go')
@@ -60,5 +46,4 @@ call dein#add('justinmk/vim-dirvish')
 " nnoremap <Leader>t :EvervimListTags<CR>
 "
 " refs. http://qiita.com/karur4n/items/a26007236c59c5fb8735
-call dein#add('elzr/vim-json')
 let g:vim_json_syntax_conceal = 0

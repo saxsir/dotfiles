@@ -1,5 +1,4 @@
 " ステータスライン
-call dein#add('itchyny/lightline.vim')
 let g:lightline = {
       \ 'colorscheme': 'solarized',
       \ 'active': {

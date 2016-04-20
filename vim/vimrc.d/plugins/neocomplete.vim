@@ -1,6 +1,3 @@
-" 入力補完
-call dein#add('Shougo/neocomplete')
-
 function! s:set_neo_complete_config ()
   let g:neocomplete#enable_at_startup = 1
   let g:neocomplete#enable_ignore_case = 1

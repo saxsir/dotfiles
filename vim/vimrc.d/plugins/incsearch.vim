@@ -1,6 +1,3 @@
-" Improved incremental searching for Vim
-" Incremental searchを快適に
-call dein#add('haya14busa/incsearch.vim')
 set hlsearch
 set ignorecase
 map /  <Plug>(incsearch-forward)
