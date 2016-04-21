@@ -1,13 +1,3 @@
-" とりあえず使ってみるプラグインをここに書く
-" 整理するタイミングでよく使ってたらmainに移す
-
-augroup vim-autoformat
-  autocmd!
-  noremap <Leader>f :Autoformat<CR>
-  " autocmd BufWrite * :Autoformat
-augroup END
-
-noremap <leader>g :<c-u>CtrlPGhq<cr>
 
 " gistに即アップロード
 " call dein#add('mattn/gist-vim', {'depends': 'mattn/webapi-vim'})
@@ -44,6 +34,3 @@ noremap <leader>g :<c-u>CtrlPGhq<cr>
 " nnoremap <Leader>s :EvervimSearchByQuery<Space>
 " nnoremap <Leader>c :EvervimCreateNote<CR>
 " nnoremap <Leader>t :EvervimListTags<CR>
-"
-" refs. http://qiita.com/karur4n/items/a26007236c59c5fb8735
-let g:vim_json_syntax_conceal = 0

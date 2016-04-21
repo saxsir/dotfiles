@@ -2,10 +2,10 @@
 repo = 'Shougo/dein.vim'
 
 [[plugins]]
-repo = 'Shougo/vimshell'
+repo = 'Shougo/vimproc'
+build = 'make'
 
 [[plugins]]
-# 入力補完
 repo = 'Shougo/neocomplete'
 
 [[plugins]]
@@ -18,52 +18,43 @@ repo = 'Shougo/neosnippet-snippets'
 repo = 'honza/vim-snippets'
 
 [[plugins]]
-# HTML5 + inline SVG omnicomplete function, indent and syntax for Vim.
-repo = 'Shougo/neocomplete'
+repo = 'cespare/vim-toml'
+on_ft = 'toml'
 
 [[plugins]]
-# Add CSS3 syntax support to vim's built-in `syntax/css.vim`.
+repo = 'othree/html5.vim'
+
+[[plugins]]
 repo = 'hail2u/vim-css3-syntax'
 
 [[plugins]]
-# Syntax highlighting for Jade templates.
 repo = 'digitaltoad/vim-jade'
 
-[[plugins]]
-# Improved incremental searching for Vim
-# Incremental searchを快適に
+[[plugins]]    # Improved incremental searching for Vim
 repo = 'haya14busa/incsearch.vim'
 
-[[plugins]]
-# ステータスライン
+[[plugins]]    # Statusline
 repo = 'itchyny/lightline.vim'
 
-[[plugins]]
-# コメントアウトを簡単に
+[[plugins]]    # コメントアウト
 repo = 'tyru/caw.vim'
 
-[[plugins]]
-# 爆速HTMLコーディング
+[[plugins]]    # 爆速HTMLコーディング
 repo = 'mattn/emmet-vim'
 
-[[plugins]]
-# ファイルのインデントを可視化
+[[plugins]]    # ファイルのインデントを可視化
 repo = 'Yggdroot/indentLine'
 
 [[plugins]]
-# 適当なファイルをすぐつくる
 repo = 'Shougo/junkfile.vim'
 
-[[plugins]]
-# 貼り付け時は自動でペーストモード
+[[plugins]]    # 貼り付け時は自動でペーストモード
 repo = 'ConradIrwin/vim-bracketed-paste'
 
-[[plugins]]
-# 選択したテキストを囲う
+[[plugins]]    # 選択したテキストを囲う
 repo = 'tpope/vim-surround'
 
-[[plugins]]
-# 行末の空白を可視化
+[[plugins]]    # 行末の空白を可視化
 repo = 'bronson/vim-trailing-whitespace'
 
 [[plugins]]
@@ -83,9 +74,6 @@ repo = "mattn/ctrlp-ghq"
 # ファイルタイプ別にテンプレートを選べる
 repo = 'mattn/sonictemplate-vim'
 
-[[plugins]]
-repo = 'Shougo/vimproc'
-build = 'make'
 
 [[plugins]]
 # シンプルなファイラー
