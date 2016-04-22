@@ -88,3 +88,6 @@ repo = 'thinca/vim-quickrun'
 [[plugins]]
 # レジスタの履歴を再利用する
 repo = 'LeafCage/yankround.vim'
+
+[[plugins]]
+repo = 'fatih/vim-go'
