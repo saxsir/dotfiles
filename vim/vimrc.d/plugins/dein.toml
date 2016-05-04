@@ -97,3 +97,6 @@ depends = ['mattn/webapi-vim']
 
 [[plugins]]
 repo = 'mattn/webapi-vim'
+
+[[plugins]]
+repo = 'Shougo/unite.vim'
