@@ -90,3 +90,10 @@ repo = 'LeafCage/yankround.vim'
 
 [[plugins]]
 repo = 'fatih/vim-go'
+
+[[plugins]] # gistに即upload
+repo = 'mattn/gist-vim'
+depends = ['mattn/webapi-vim']
+
+[[plugins]]
+repo = 'mattn/webapi-vim'
