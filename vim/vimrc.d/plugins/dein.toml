@@ -100,3 +100,6 @@ repo = 'mattn/webapi-vim'
 
 [[plugins]]
 repo = 'Shougo/unite.vim'
+
+[[plugins]]
+repo = 'Shougo/neomru.vim'
