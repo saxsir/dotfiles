@@ -3,6 +3,7 @@ set backspace=indent,eol,start
 
 " タブを複数のスペースに置き換える
 set expandtab
+
 " タブ文字の幅
 set tabstop=4
 
