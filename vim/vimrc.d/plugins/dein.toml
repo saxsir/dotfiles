@@ -103,3 +103,6 @@ repo = 'Shougo/unite.vim'
 
 [[plugins]]
 repo = 'Shougo/neomru.vim'
+
+[[plugins]]
+repo = 'simeji/winresizer'
