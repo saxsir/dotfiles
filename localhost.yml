@@ -32,6 +32,9 @@
     - name: zshrc.localをコピー
       copy: src={{ ansible_env.PWD }}/zshrc.local.sample dest={{ ansible_env.HOME }}/.zshrc.local force=no
 
+    - name: create ~/.vim/ directory
+      file: path={{ ansible_env.HOME }}/.vim/ state=directory mode=0755
+
     - name: ~/.vim/配下のディレクトリを設置
       file: src={{ ansible_env.PWD }}/vim/{{ item }} dest={{ ansible_env.HOME }}/.vim/{{ item }} state=link
       with_items:
