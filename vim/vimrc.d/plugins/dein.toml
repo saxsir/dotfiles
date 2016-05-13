@@ -109,3 +109,10 @@ repo = 'simeji/winresizer'
 
 [[plugins]]
 repo = 'majutsushi/tagbar'
+
+[[plugins]]
+repo = 'tyru/open-browser-github.vim'
+depends = ['tyru/open-browser.vim']
+
+[[plugins]]
+repo = 'tyru/open-browser.vim'
