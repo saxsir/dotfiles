@@ -17,6 +17,7 @@ let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 
 nmap gs <Plug>(go-def-split)
+nmap gv <Plug>(go-def-vertical)
 
 autocmd FileType go :highlight goErr cterm=bold ctermfg=214
 autocmd FileType go :match goErr /\<err\>/
