@@ -1,2 +1,1 @@
-" あとで設定する
-" nmap <C-t> :TagbarToggle<CR>
+noremap <leader>t :<c-u>TagbarToggle<cr>
