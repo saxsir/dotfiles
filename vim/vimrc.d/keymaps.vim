@@ -32,3 +32,11 @@ cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 " inoremap {<Enter> {}<Left><CR><ESC><S-o>
 " inoremap ( ()<ESC>i
 " inoremap (<Enter> ()<Left><CR><ESC><S-o>
+"
+" when move to search results, move to center.
+noremap n nzz
+noremap N Nzz
+noremap * *zz
+noremap # #zz
+noremap g* g*zz
+noremap g# g#zz
