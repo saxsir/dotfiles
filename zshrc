@@ -46,6 +46,9 @@ bindkey '^p' peco-src
 # hub
 alias git=hub
 
+# elasticmq
+alias elasticmq="java -jar ~/bin/elasticmq-server-0.9.3.jar"
+
 # OS依存の設定
 case ${OSTYPE} in
   darwin*)
