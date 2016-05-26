@@ -40,3 +40,6 @@ noremap * *zz
 noremap # #zz
 noremap g* g*zz
 noremap g# g#zz
+
+" omni completion
+inoremap <C-x><C-n> <C-x><C-o>
