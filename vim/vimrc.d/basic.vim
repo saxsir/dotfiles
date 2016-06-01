@@ -25,3 +25,8 @@ colorscheme slate
 if system('uname') == "Darwin\n"
   set clipboard+=unnamed
 endif
+
+" fold
+set foldmethod=syntax
+set foldlevel=1
+noremap <Leader><Space> :foldc<CR>

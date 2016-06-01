@@ -5,7 +5,6 @@
 " au FileType go nmap <Leader>ds <Plug>(go-def-split)
 " au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
 " au FileType go nmap <Leader>dt <Plug>(go-def-tab)
-" au FileType go nmap <Leader>gd <Plug>(go-doc)
 " au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
 " au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
 " au FileType go nmap <Leader>s <Plug>(go-implements)
@@ -15,9 +14,11 @@
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
+let g:go_fmt_experimental = 1
 
-nmap gs <Plug>(go-def-split)
-nmap gv <Plug>(go-def-vertical)
+au FileType go nmap <Leader>gd <Plug>(go-doc)
+au FileType go nmap gs <Plug>(go-def-split)
+au FileType go nmap gv <Plug>(go-def-vertical)
 
 autocmd FileType go :highlight goErr cterm=bold ctermfg=214
 autocmd FileType go :match goErr /\<err\>/
