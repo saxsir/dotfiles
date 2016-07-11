@@ -11,10 +11,13 @@
 " au FileType go nmap <Leader>i <Plug>(go-info)
 " au FileType go nmap <Leader>e <Plug>(go-rename)
 
+let g:go_fmt_command = "goimports"
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_fmt_experimental = 1
+" let g:go_metalinter_autosave = 1
+" let g:go_metalinter_autosave_enabled = ['vet']
 
 au FileType go nmap <Leader>gd <Plug>(go-doc)
 au FileType go nmap gs <Plug>(go-def-split)

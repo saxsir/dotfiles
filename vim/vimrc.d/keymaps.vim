@@ -43,3 +43,6 @@ noremap g# g#zz
 
 " omni completion
 inoremap <C-x><C-n> <C-x><C-o>
+
+" fold
+noremap <Leader><Space> :foldc<CR>

@@ -47,7 +47,7 @@ ignorekeys add docs.google\\.com
 " plugins
 "let g:plugin_loader_roots = "~/.vimperator/plugin/ ~/.vimperator/load/"
 let g:plugin_loader_roots = "~/.vimperator/plugin/ ~/.vimperator/vimperator-plugins/"
-let g:plugin_loader_plugins = "_libly,copy"
+let g:plugin_loader_plugins = "_libly,copy,amazon_simple_uri"
 
 "copy.js
 "copy関係はyを割り当て。
@@ -70,8 +70,7 @@ javascript <<EOM
                 var title = content.document.title;
                 var url = content.document.location.href;
                 return "[" + title + "](" + url + ")";
-        }},
-        { label: 'ASIN',   value: 'copy ASIN code from Amazon', custom: function(){return content.document.getElementById('ASIN').value;} },
+        }}
     ];
 })();
 EOM
@@ -82,6 +81,10 @@ nnoremap ys :copy selanchor<CR>
 nnoremap yq :copy htmlblockquote<CR>
 nnoremap yh :copy hiki<CR>
 nnoremap ym :copy markdown<CR>
+
+" amazon_simple_url
+let g:amazon_asamashi = "?tag=azhp-22"
+nnoremap ac :amazoncopy +a<CR>
 
 "======================================================================
 " 読み込みおわったらメッセージ

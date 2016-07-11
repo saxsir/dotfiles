@@ -29,4 +29,3 @@ endif
 " fold
 set foldmethod=syntax
 set foldlevel=1
-noremap <Leader><Space> :foldc<CR>
