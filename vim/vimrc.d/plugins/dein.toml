@@ -116,3 +116,6 @@ depends = ['tyru/open-browser.vim']
 
 [[plugins]]
 repo = 'tyru/open-browser.vim'
+
+[[plugins]]
+repo = 'nishigori/increment-activator'
