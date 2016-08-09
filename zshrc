@@ -43,6 +43,8 @@ function peco-src () {
 zle -N peco-src
 bindkey '^p' peco-src
 
+# alias gd="godoc $(ghq list --full-path | peco) | $PAGER"
+
 # hub
 alias git=hub
 
@@ -74,3 +76,9 @@ fi
 if (which zprof > /dev/null); then
   zprof | less
 fi
+
+# The next line updates PATH for the Google Cloud SDK.
+source '/Users/s-sasamoto/google-cloud-sdk/path.zsh.inc'
+
+# The next line enables shell command completion for gcloud.
+source '/Users/s-sasamoto/google-cloud-sdk/completion.zsh.inc'

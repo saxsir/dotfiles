@@ -9,6 +9,9 @@
 [color]
     ui = true
 
+[diff]
+	tool = vimdiff
+
 [url "https://"]
     insteadOf = git://
 
@@ -24,9 +27,15 @@
     lp = log --oneline -n 20 -p
     delete-merged-branches = !git branch --merged | grep -vE '^\\*|master$|develop$' | xargs -I % git branch -d %
     fetch-pulls = fetch origin +refs/pull/*:refs/remotes/pull/*
+    current-branch = symbolic-ref --short HEAD
+
 [filter "lfs"]
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
 	required = true
+
 [github]
 	user = saxsir
+
+[difftool]
+	prompt = false
