@@ -51,6 +51,7 @@ if which direnv > /dev/null; then
 fi
 
 # go, ghq
+export PATH=/usr/local/go/bin:$PATH
 export GOPATH=$HOME
 export PATH=$GOPATH/bin:$PATH
 
