@@ -87,6 +87,9 @@ nnoremap ym :copy markdown<CR>
 let g:amazon_asamashi = "?tag=azhp-22"
 nnoremap ac :amazoncopy +a<CR>
 
+" https://github.com/vimperator/vimperator-labs/issues/590#issuecomment-248833125
+js services.services.autoCompleteSearch.class_="@mozilla.org/autocomplete/search;1?name=unifiedcomplete"
+
 "======================================================================
 " 読み込みおわったらメッセージ
 "======================================================================
