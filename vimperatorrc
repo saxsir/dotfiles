@@ -3,6 +3,7 @@ colorscheme solarized
 
 " 検索エンジン設定
 set defsearch=google
+set history=511
 
 " ヒントモードでアルファベットを使う
 set hintchars=jklasdfuiopqwerghtnmcv
