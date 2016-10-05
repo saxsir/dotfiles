@@ -43,3 +43,5 @@
 
 [difftool]
 	prompt = false
+[grep]
+	lineNumber = true
