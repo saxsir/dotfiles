@@ -19,15 +19,16 @@ fi
 
 # pyenv
 export PYENV_ROOT=/usr/local/var/pyenv
-PYENV_ZSH_FILE="$HOME/.pyenv-zsh"
-if [ -f "$PYENV_ZSH_FILE" ]; then
-  source $PYENV_ZSH_FILE
-else
-  if which pyenv > /dev/null; then
-    echo "$(pyenv init - --no-rehash)" > $PYENV_ZSH_FILE
-    source $PYENV_ZSH_FILE
-  fi
-fi
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+# PYENV_ZSH_FILE="$HOME/.pyenv-zsh"
+# if [ -f "$PYENV_ZSH_FILE" ]; then
+#   source $PYENV_ZSH_FILE
+# else
+#   if which pyenv > /dev/null; then
+#     echo "$(pyenv init - --no-rehash)" > $PYENV_ZSH_FILE
+#     source $PYENV_ZSH_FILE
+#   fi
+# fi
 
 # pyenv-virtualenv
 PYENV_VIRTUALENV_ZSH_FILE="$HOME/.pyenv-virtualenv-zsh"

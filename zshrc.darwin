@@ -15,6 +15,7 @@ else
   alias ls='ls -G'
 fi
 
+# go
 export PATH=/usr/local/go/bin:$PATH
 
 # aliases
