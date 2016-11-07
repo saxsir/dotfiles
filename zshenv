@@ -5,18 +5,6 @@
 
 setopt no_global_rcs
 
-# rbenv
-export RBENV_ROOT=/usr/local/var/rbenv
-RBENV_ZSH_FILE="$HOME/.rbenv-zsh"
-if [ -f "$RBENV_ZSH_FILE" ]; then
-  source $RBENV_ZSH_FILE
-else
-  if which rbenv > /dev/null; then
-    echo "$(rbenv init - --no-rehash)" > $RBENV_ZSH_FILE
-    source $RBENV_ZSH_FILE
-  fi
-fi
-
 # pyenv
 export PYENV_ROOT=/usr/local/var/pyenv
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi

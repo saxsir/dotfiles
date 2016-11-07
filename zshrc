@@ -15,6 +15,7 @@ RPROMPT='${HOST}'
 alias -g G='| grep'
 alias -g L='| lv'
 alias gce='git commit --allow-empty'
+alias vi='vi -u NONE'
 
 # peco
 setopt hist_ignore_all_dups

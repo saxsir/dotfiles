@@ -119,3 +119,9 @@ repo = 'tyru/open-browser.vim'
 
 [[plugins]]
 repo = 'nishigori/increment-activator'
+
+# [[plugins]] # for python
+# repo = 'davidhalter/jedi-vim'
+
+[[plugins]]
+repo = 'mattn/vim-sqlfmt'

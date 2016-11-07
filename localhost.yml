@@ -21,6 +21,7 @@
         - dict
         - syntax
         - vimrc.d
+        - template
 
     - name: create ~/.vim/bundle
       file: path={{ ansible_env.HOME }}/.vim/bundle state=directory
