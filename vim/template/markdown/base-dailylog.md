@@ -4,7 +4,8 @@
 # yotei
 
 # yrkt
-- [ ]
+- [ ] 日報読み
+- [ ] インプット
 
 ---
 # log
@@ -14,10 +15,3 @@
 
 {{_expr_:strftime('%Y/%m/%d(%a)', localtime())}}
 
-# TODO
-
-# KEEP
-
-# PROBLEM
-
-# MEMO
