@@ -38,10 +38,8 @@
 	smudge = git-lfs smudge %f
 	required = true
 
-[github]
-	user = saxsir
-
 [difftool]
 	prompt = false
+
 [grep]
 	lineNumber = true
