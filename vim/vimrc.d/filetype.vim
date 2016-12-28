@@ -5,4 +5,5 @@ augroup filetypedetect
   autocmd BufNewFile,BufRead tmux.conf set filetype=tmux
   autocmd BufNewFile,BufRead vimperatorrc set filetype=vim
   autocmd BufNewFile,BufRead *.twig set filetype=html
+  autocmd BufNewFile,BufRead *.erb set filetype=eruby
 augroup END
