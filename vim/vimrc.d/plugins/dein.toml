@@ -135,3 +135,11 @@ repo = 'mattn/vim-sqlfmt'
 [[plugins]]
 repo = 'pangloss/vim-javascript'
 on_ft = 'js'
+
+[[plugins]]
+repo = 'kannokanno/previm'
+on_ft = 'markdown'
+
+[[plugins]]
+repo = 'jszakmeister/markdown2ctags'
+on_ft = 'markdown'
