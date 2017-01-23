@@ -61,3 +61,6 @@ endfunction
 command! -nargs=1 -complete=buffer Gg call Ggrep(<q-args>)
 command! -nargs=1 -complete=buffer Ggrep call Ggrep(<q-args>)
 nnoremap <Leader>G :exec ':silent Ggrep ' . expand('<cword>')<CR>
+
+" move buffer
+nnoremap <Leader>b :ls<CR>:b<Space>
