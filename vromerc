@@ -1,0 +1,23 @@
+" Change key mapping in normal mode, please check Vrome Features for available key mapping
+
+" Page scrolling
+map j 10j
+map f 10f
+
+" Tabs manipulation
+map l gt
+map h gT
+map d D
+
+" Click links. Opening new pages is always in the new tab.
+map f F
+
+" Define search engines. the value should be valid json looks like below.
+" Please remember the first searchengine is the default one. in the below one, it is google
+set searchengines={"google":"http://www.google.com/search?q={{keyword}}"}
+
+" You could also add some new searchengines without overwrite build in.
+set searchengines+={"twitter": "https://twitter.com/search?q={{keyword}}"}
+
+" Follow new opened tab or not. 1 follow, 0 doesn't
+set follow_new_tab=1
