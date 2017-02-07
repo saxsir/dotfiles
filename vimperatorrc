@@ -46,7 +46,6 @@ ignorekeys add facebook\\.com
 ignorekeys add docs.google\\.com
 
 " plugins
-"let g:plugin_loader_roots = "~/.vimperator/plugin/ ~/.vimperator/load/"
 let g:plugin_loader_roots = "~/.vimperator/plugin/ ~/.vimperator/vimperator-plugins/"
 let g:plugin_loader_plugins = "_libly,copy,amazon_simple_uri"
 

@@ -7,4 +7,3 @@ let g:sonictemplate_vim_vars = {
       \   'author': '@saxsir',
       \ },
       \}
-
