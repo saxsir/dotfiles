@@ -55,4 +55,4 @@ export GOPATH=$HOME
 export PATH=$GOPATH/bin:$PATH
 
 # elasticsearch
-export PATH=~/bin/elasticsearch-2.3.0/bin:$PATH
+export PATH=~/bin/elasticsearch-2.4.4/bin:$PATH
