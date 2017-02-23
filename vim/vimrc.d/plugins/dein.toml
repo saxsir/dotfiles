@@ -143,3 +143,7 @@ on_ft = 'markdown'
 [[plugins]]
 repo = 'jszakmeister/markdown2ctags'
 on_ft = 'markdown'
+
+[[plugins]]
+repo = 'derekwyatt/vim-scala'
+on_ft = 'scala'

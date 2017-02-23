@@ -26,10 +26,6 @@
     - name: create ~/.vim/bundle
       file: path={{ ansible_env.HOME }}/.vim/bundle state=directory
 
-    - name: neobundle.vim のインストール
-      git: repo=git://github.com/Shougo/neobundle.vim.git
-           dest={{ ansible_env.HOME }}/.vim/bundle/neobundle.vim
-
     # For vimperator
     - name: create ~/.vimperator
       file: path={{ ansible_env.HOME }}/.vimperator state=directory
