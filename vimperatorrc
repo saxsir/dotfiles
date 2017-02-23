@@ -3,6 +3,7 @@ colorscheme solarized
 
 " 検索エンジン設定
 set defsearch=google
+set history=511
 
 " ヒントモードでアルファベットを使う
 set hintchars=jklasdfuiopqwerghtnmcv
@@ -43,6 +44,50 @@ ignorekeys clear
 ignorekeys add mail\\.google\\.com -except t,h,l,<C-n>,<C-p>,:
 ignorekeys add facebook\\.com
 ignorekeys add docs.google\\.com
+
+" plugins
+let g:plugin_loader_roots = "~/.vimperator/plugin/ ~/.vimperator/vimperator-plugins/"
+let g:plugin_loader_plugins = "_libly,copy,amazon_simple_uri"
+
+"copy.js
+"copy関係はyを割り当て。
+javascript <<EOM
+(function(){
+    liberator.globalVariables.copy_templates = [
+        { label: 'titleAndURL',    value: '%TITLE%\n%URL%' },
+        { label: 'title',          value: '%TITLE%', map: ',y' },
+        { label: 'anchor',         value: '<a href="%URL%">%TITLE%</a>' },
+        { label: 'selanchor',      value: '<a href="%URL%" title="%TITLE%">%SEL%</a>' },
+        { label: 'htmlblockquote', value: '<blockquote cite="%URL%" title="%TITLE%">%HTMLSEL%</blockquote>' },
+        { label: 'hiki',    value: 'copy for hiki',
+            custom: function(){
+                var title=content.document.title;
+                var url = content.document.location.href;
+                return "* " + title + "\n** " + url;
+        }},
+        { label: 'markdown',    value: 'copy for markdown',
+            custom: function(){
+                var title = content.document.title;
+                var url = content.document.location.href;
+                return "[" + title + "](" + url + ")";
+        }}
+    ];
+})();
+EOM
+nnoremap ya :copy anchor<CR>
+nnoremap yp :copy titleAndURL<CR>
+nnoremap yt :copy title<CR>
+nnoremap ys :copy selanchor<CR>
+nnoremap yq :copy htmlblockquote<CR>
+nnoremap yh :copy hiki<CR>
+nnoremap ym :copy markdown<CR>
+
+" amazon_simple_url
+let g:amazon_asamashi = "?tag=azhp-22"
+nnoremap ac :amazoncopy +a<CR>
+
+" https://github.com/vimperator/vimperator-labs/issues/590#issuecomment-248833125
+js services.services.autoCompleteSearch.class_="@mozilla.org/autocomplete/search;1?name=unifiedcomplete"
 
 "======================================================================
 " 読み込みおわったらメッセージ

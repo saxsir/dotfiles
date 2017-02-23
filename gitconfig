@@ -9,6 +9,9 @@
 [color]
     ui = true
 
+[diff]
+	tool = vimdiff
+
 [url "https://"]
     insteadOf = git://
 
@@ -24,9 +27,19 @@
     lp = log --oneline -n 20 -p
     delete-merged-branches = !git branch --merged | grep -vE '^\\*|master$|develop$' | xargs -I % git branch -d %
     fetch-pulls = fetch origin +refs/pull/*:refs/remotes/pull/*
+    current-branch = symbolic-ref --short HEAD
+
+    # http://qiita.com/awakia/items/f14dc6310e469964a8f7
+    showpr = !"f() { git log --merges --oneline --reverse --ancestry-path $1...master | grep 'Merge pull request #' | head -n 1; }; f"
+    openpr = "!f() { export BROWSER=echo; hub browse -- `git log --merges --oneline --reverse --ancestry-path $1...master | grep 'Merge pull request #' | head -n 1 | cut -f5 -d' ' | sed -e 's%#%pull/%'`; }; f"
+
 [filter "lfs"]
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
 	required = true
-[github]
-	user = saxsir
+
+[difftool]
+	prompt = false
+
+[grep]
+	lineNumber = true

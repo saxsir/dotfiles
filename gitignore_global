@@ -1,4 +1,4 @@
-# デフォルトでignoreしたいファイル群
+# プロジェクトに関係なくignoreしたいファイル群が書いてあります
 
 # refs https://github.com/github/gitignore/blob/master/Global/OSX.gitignore
 .DS_Store

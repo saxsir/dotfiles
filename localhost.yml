@@ -14,24 +14,18 @@
       - zshrc
       - vromerc
   tasks:
-    - name: dotfilesを設置
-      file: src={{ ansible_env.PWD }}/{{ item }} dest={{ ansible_env.HOME }}/.{{ item }} state=link
-      with_items: dotfiles
+    # For zsh
+    - name: oh-my-zsh のインストール
+      git: repo=git://github.com/robbyrussell/oh-my-zsh.git
+           dest={{ ansible_env.HOME }}/.oh-my-zsh
 
-    - name: zshrc.darwinを設置
-      file: src={{ ansible_env.PWD }}/zshrc.darwin dest={{ ansible_env.HOME }}/.zshrc.darwin state=link
-      when: ansible_os_family == 'Darwin'
+    - name: zsh-completionsのインストール
+      git: repo=git://github.com/zsh-users/zsh-completions.git
+           dest={{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-completions
 
-    - name: zshrc.linuxを設置
-      file: src={{ ansible_env.PWD }}/zshrc.linux dest={{ ansible_env.HOME }}/.zshrc.linux state=link
-      when: ansible_os_family == 'RedHat' or ansible_os_family == 'Debian'
-
-    - name: vimperatorrcを設置
-      file: src={{ ansible_env.PWD }}/vimperatorrc dest={{ ansible_env.HOME }}/.vimperatorrc state=link
-      when: ansible_os_family == 'Darwin'
-
-    - name: zshrc.localをコピー
-      copy: src={{ ansible_env.PWD }}/zshrc.local.sample dest={{ ansible_env.HOME }}/.zshrc.local force=no
+    # For vim
+    - name: create ~/.vim/ directory
+      file: path={{ ansible_env.HOME }}/.vim/ state=directory mode=0755
 
     - name: ~/.vim/配下のディレクトリを設置
       file: src={{ ansible_env.PWD }}/vim/{{ item }} dest={{ ansible_env.HOME }}/.vim/{{ item }} state=link
@@ -39,26 +33,46 @@
         - dict
         - syntax
         - vimrc.d
+        - template
 
-    # For zsh
-    - name: oh-my-zsh のインストール
-      git: repo=git://github.com/robbyrussell/oh-my-zsh.git
-           dest={{ ansible_env.HOME }}/.oh-my-zsh
-    - name: zsh-completionsのインストール
-      git: repo=git://github.com/zsh-users/zsh-completions.git
-           dest={{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-completions
-
-    # For vim
     - name: create ~/.vim/bundle
       file: path={{ ansible_env.HOME }}/.vim/bundle state=directory
-    - name: neobundle.vim のインストール
-      git: repo=git://github.com/Shougo/neobundle.vim.git
-           dest={{ ansible_env.HOME }}/.vim/bundle/neobundle.vim
 
-    # For vimperatorrc
+    # For vimperator
     - name: create ~/.vimperator
       file: path={{ ansible_env.HOME }}/.vimperator state=directory
       when: ansible_os_family == 'Darwin'
-    - name: link ~/.vimperator/colors to vimperator/colors
-      file: src={{ ansible_env.PWD }}/vimperator/colors dest={{ ansible_env.HOME }}/.vimperator/colors state=link
+
+    - name: install vimperator-plugins
+      git: repo=git@github.com:vimpr/vimperator-plugins.git
+           dest={{ ansible_env.HOME }}/.vimperator/vimperator-plugins
+
+    - name: link plugin_loader.js
+      file: src={{ ansible_env.HOME }}/.vimperator/vimperator-plugins/plugin_loader.js dest={{ ansible_env.HOME }}/.vimperator/plugin/plugin_loader.js state=link
+
+    # dotfilesの設置
+    - name: 共通のdotfilesを設置
+      file: src={{ ansible_env.PWD }}/{{ item }} dest={{ ansible_env.HOME }}/.{{ item }} state=link
+      with_items:
+        - gemrc
+        - gitconfig
+        - gitignore_global
+        - gitmessage.txt
+        - tmux.conf
+        - vimperatorrc
+        - vimrc
+        - zshenv
+        - zshrc
+        - zshrc.darwin
+        - zshrc.linux
+
+    - name: zshrc.localをコピー
+      copy: src={{ ansible_env.PWD }}/zshrc.local.sample dest={{ ansible_env.HOME }}/.zshrc.local force=no
+
+    - name: for vimperator
+      file: src={{ ansible_env.PWD }}/{{ item }} dest={{ ansible_env.HOME }}/.{{ item }} state=link
+      with_items:
+        - vimperator/colors
+        - vimperator/plugin
+        - vimperator/vimperator-plugins
       when: ansible_os_family == 'Darwin'

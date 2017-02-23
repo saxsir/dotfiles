@@ -1,3 +1,5 @@
+all: install
+
 ANSIBLE_PLAYBOOK := $(shell which ansible-playbook)
 
 install:

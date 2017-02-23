@@ -5,29 +5,18 @@
 
 setopt no_global_rcs
 
-# rbenv
-export RBENV_ROOT=/usr/local/var/rbenv
-RBENV_ZSH_FILE="$HOME/.rbenv-zsh"
-if [ -f "$RBENV_ZSH_FILE" ]; then
-  source $RBENV_ZSH_FILE
-else
-  if which rbenv > /dev/null; then
-    echo "$(rbenv init - --no-rehash)" > $RBENV_ZSH_FILE
-    source $RBENV_ZSH_FILE
-  fi
-fi
-
 # pyenv
 export PYENV_ROOT=/usr/local/var/pyenv
-PYENV_ZSH_FILE="$HOME/.pyenv-zsh"
-if [ -f "$PYENV_ZSH_FILE" ]; then
-  source $PYENV_ZSH_FILE
-else
-  if which pyenv > /dev/null; then
-    echo "$(pyenv init - --no-rehash)" > $PYENV_ZSH_FILE
-    source $PYENV_ZSH_FILE
-  fi
-fi
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+# PYENV_ZSH_FILE="$HOME/.pyenv-zsh"
+# if [ -f "$PYENV_ZSH_FILE" ]; then
+#   source $PYENV_ZSH_FILE
+# else
+#   if which pyenv > /dev/null; then
+#     echo "$(pyenv init - --no-rehash)" > $PYENV_ZSH_FILE
+#     source $PYENV_ZSH_FILE
+#   fi
+# fi
 
 # pyenv-virtualenv
 PYENV_VIRTUALENV_ZSH_FILE="$HOME/.pyenv-virtualenv-zsh"
@@ -51,6 +40,7 @@ if which direnv > /dev/null; then
 fi
 
 # go, ghq
+export PATH=/usr/local/go/bin:$PATH
 export GOPATH=$HOME
 export PATH=$GOPATH/bin:$PATH
 

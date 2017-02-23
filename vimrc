@@ -1,10 +1,6 @@
 " Skip initialization for vim-tiny or vim-small.
 if !1 | finish | endif
 
-if &compatible
-  set nocompatible
-endif
-
 " dein本体の自動インストール
 let s:cache_home = empty($XDG_CACHE_HOME) ? expand('~/.cache') : $XDG_CACHE_HOME
 let s:dein_dir = s:cache_home . '/dein'

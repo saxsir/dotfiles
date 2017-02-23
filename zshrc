@@ -15,6 +15,7 @@ RPROMPT='${HOST}'
 alias -g G='| grep'
 alias -g L='| lv'
 alias gce='git commit --allow-empty'
+alias vi='vi -u NONE'
 
 # peco
 setopt hist_ignore_all_dups
@@ -43,8 +44,13 @@ function peco-src () {
 zle -N peco-src
 bindkey '^p' peco-src
 
+# alias gd="godoc $(ghq list --full-path | peco) | $PAGER"
+
 # hub
 alias git=hub
+
+# elasticmq
+alias elasticmq="java -jar ~/bin/elasticmq-server-0.9.3.jar"
 
 # OS依存の設定
 case ${OSTYPE} in
@@ -71,3 +77,9 @@ fi
 if (which zprof > /dev/null); then
   zprof | less
 fi
+
+# The next line updates PATH for the Google Cloud SDK.
+source $HOME/google-cloud-sdk/path.zsh.inc
+
+# The next line enables shell command completion for gcloud.
+source $HOME/google-cloud-sdk/completion.zsh.inc
