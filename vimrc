@@ -1,34 +1,179 @@
-" Skip initialization for vim-tiny or vim-small.
-if !1 | finish | endif
+" ======================
+" vim configuration file
+" @author saxsir (https://github.com/saxsir)
+" ======================
 
-" dein本体の自動インストール
-let s:cache_home = empty($XDG_CACHE_HOME) ? expand('~/.cache') : $XDG_CACHE_HOME
-let s:dein_dir = s:cache_home . '/dein'
-let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-if !isdirectory(s:dein_repo_dir)
-  call system('git clone git@github.com:Shougo/dein.vim.git ' . shellescape(s:dein_repo_dir))
-endif
-let &runtimepath = s:dein_repo_dir .",". &runtimepath
+" use https://github.com/junegunn/vim-plug
+call plug#begin()
 
-" プラグイン読み込み
-let s:toml_file = expand('~/.vim/vimrc.d/plugins/dein.toml')
-if dein#load_state(s:dein_dir)
-  call dein#begin(s:dein_dir, [$MYVIMRC, s:toml_file])
-  call dein#load_toml(s:toml_file)
-  call dein#end()
-  call dein#save_state()    " キャッシュ作成
-endif
+" Plug 'mattn/benchvimrc-vim'
+" Plug 'mattn/ctrlp-ghq'
+" Plug 'mattn/emmet-vim'
+" Plug 'mattn/gist-vim'
+" Plug 'mattn/sonictemplate-vim'
+" Plug 'mattn/webapi-vim', {'on': 'Gist'}
+Plug 'Shougo/junkfile.vim'
+" Plug 'Shougo/vimproc.vim', {'do': 'make'}
+" Plug 'bronson/vim-trailing-whitespace'
+" Plug 'Chiel92/vim-autoformat'
+" Plug 'ConradIrwin/vim-bracketed-paste'
+" Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'haya14busa/incsearch.vim'
+Plug 'itchyny/lightline.vim'
+" Plug 'LeafCage/yankround.vim'
+" Plug 'thinca/vim-quickrun'
+Plug 'tyru/caw.vim'
+Plug 'justinmk/vim-dirvish'
+Plug 'Yggdroot/indentLine'
 
-" プラグインの自動インストール
-if has('vim_starting') && dein#check_install()
-  call dein#install()
-endif
+" for each languages
+" Plug 'fatih/vim-go', {'for': 'go'}
+" Plug 'vim-ruby/vim-ruby', {'for': 'ruby'}
+" Plug 'vim-php/tagbar-phpctags.vim', {'for': 'php'}
+" Plug 'shawncplus/phpcomplete.vim', {'for': 'php'}
+" Plug 'sumpygump/php-documentor-vim', {'for': 'php'}
+" Plug '2072/PHP-Indenting-for-VIm', {'for': 'php'}
+" Plug 'derekwyatt/vim-scala', {'for': 'scala'}
+" Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
+" Plug 'othree/yajs.vim', {'for': 'javascript'}
+" Plug 'ekalinin/Dockerfile.vim'
+" Plug 'puppetlabs/puppet-syntax-vim'
 
-" プラグインに依存していない設定の読み込み
-runtime! vimrc.d/*.vim
+" unknown
+"'altercation/vim-colors-solarized'
+"'Modeliner'
+"'tpope/vim-fugitive'
+"'ShowMarks'
+"'mileszs/ack.vim'
+"'majutsushi/tagbar'
+"'editorconfig/editorconfig-vim'
+"'glidenote/memolist.vim'
+"'tomtom/tlib_vim'
+"'MarcWeber/vim-addon-mw-utils'
+"'garbas/vim-snipmate'
+"'jszakmeister/markdown2ctags', {'for': 'markdown'}
+"'kannokanno/previm', {'for': 'markdown'}
+"'mattn/vim-sqlfmt', {'for': 'sql'}
+"'davidhalter/jedi-vim', {'for': 'python'}
+"'nishigori/increment-activator'
+"'tyru/open-browser.vim', {'on': ''}
+"'tyru/open-browser-github.vim'
+"'majutsushi/tagbar'
+"'simeji/winresizer'
+"'Shougo/neomru.vim'
+"'Shougo/unite.vim'
+"'Shougo/neocomplete'
+"'Shougo/neosnippet'
+"'Shougo/neosnippet-snippets'
+"'honza/vim-snippets'
 
-" プラグイン関連の設定読み込み
-runtime! vimrc.d/plugins/*.vim
+call plug#end()
 
-syntax on
-filetype plugin indent on
+" Automatically executes filetype plugin indent on and syntax enable. by vim-plug
+" syntax on
+" filetype plugin indent on
+
+"==========================
+" language
+"==========================
+set encoding=utf-8
+set fileformats=unix,dos,mac
+
+"==========================
+" input
+"==========================
+set expandtab    " タブを複数のスペースに置き換える
+set tabstop=4    " タブ文字の幅
+set shiftwidth=2    " 自動インデント幅
+set backspace=indent,eol,start    " バックスペースで文字削除
+
+"==========================
+" clipboard
+"==========================
+set clipboard+=unnamed    " クリップボード連携
+
+"==========================
+" programming
+"==========================
+set foldmethod=syntax
+set foldlevel=1
+
+"==========================
+" color, visual
+"==========================
+set laststatus=2    " ステータスラインを常に表示
+set background=dark
+colorscheme slate
+
+"==========================
+" backup
+"==========================
+set hidden
+set backup
+set backupdir=$HOME/.vimback
+set directory=$HOME/.vimtmp
+set history=10000
+set updatetime=500
+set undofile    " vim終了してもundoできるように
+set undodir=$HOME/.vimundo
+
+"==========================
+" key bind
+"==========================
+let mapleader = ","
+" reload vimrc
+nnoremap <C-c><C-e>e :edit $HOME/.vimrc<CR>
+nnoremap <C-c><C-e>s :source $HOME/.vimrc<CR>
+
+" when move to search results, move to center.
+noremap n nzz
+noremap N Nzz
+noremap * *zz
+noremap # #zz
+noremap g* g*zz
+noremap g# g#zz
+
+inoremap jj <ESC>
+nnoremap ; :
+
+" splitの移動を簡単に。ctrl押しながらhjkl
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" アクティブなファイルが含まれるディレクトリを展開
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+
+"==========================
+" caw
+"==========================
+nmap <Leader>c <Plug>(caw:hatpos:toggle)
+vmap <Leader>c <Plug>(caw:hatpos:toggle)
+nmap <Leader>a <Plug>(caw:a:toggle)
+
+"==========================
+" junkfile
+"==========================
+let g:junkfile#directory = $HOME . '/.memo'
+command! -nargs=0 DailyLog call junkfile#open_immediately(
+      \ strftime('%Y-%m-%d.md'))
+
+"==========================
+" lightline
+"==========================
+let g:lightline = {
+      \ 'colorscheme': 'solarized',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'fugitive', 'readonly', 'absolutepath', 'modified' ] ]
+      \ },
+      \ 'component': {
+      \   'readonly': '%{&readonly?"[read only]":""}',
+      \   'fugitive': '[%{exists("*fugitive#head")?fugitive#head():""}]'
+      \ },
+      \ 'separator': { 'left': '', 'right': '' },
+      \ 'subseparator': { 'left': '', 'right': '' }
+      \ }
+
+" runtime! vimrc.d/input.vim
