@@ -15,7 +15,7 @@ call plug#begin()
 Plug 'Shougo/junkfile.vim'
 " Plug 'Shougo/vimproc.vim', {'do': 'make'}
 " Plug 'bronson/vim-trailing-whitespace'
-" Plug 'Chiel92/vim-autoformat'
+Plug 'Chiel92/vim-autoformat'
 " Plug 'ConradIrwin/vim-bracketed-paste'
 " Plug 'ctrlpvim/ctrlp.vim'
 " Plug 'haya14busa/incsearch.vim'
@@ -175,5 +175,10 @@ let g:lightline = {
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
+
+"==========================
+" autoformat
+"==========================
+noremap <leader>f :Autoformat<CR>
 
 " runtime! vimrc.d/input.vim
