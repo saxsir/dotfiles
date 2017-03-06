@@ -33,7 +33,7 @@ Plug 'Yggdroot/indentLine'
 " Plug 'shawncplus/phpcomplete.vim', {'for': 'php'}
 " Plug 'sumpygump/php-documentor-vim', {'for': 'php'}
 " Plug '2072/PHP-Indenting-for-VIm', {'for': 'php'}
-" Plug 'derekwyatt/vim-scala', {'for': 'scala'}
+Plug 'derekwyatt/vim-scala', {'for': 'scala'}
 " Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
 " Plug 'othree/yajs.vim', {'for': 'javascript'}
 " Plug 'ekalinin/Dockerfile.vim'
