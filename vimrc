@@ -15,7 +15,7 @@ call plug#begin()
 Plug 'Shougo/junkfile.vim'
 " Plug 'Shougo/vimproc.vim', {'do': 'make'}
 " Plug 'bronson/vim-trailing-whitespace'
-" Plug 'Chiel92/vim-autoformat'
+Plug 'Chiel92/vim-autoformat'
 " Plug 'ConradIrwin/vim-bracketed-paste'
 " Plug 'ctrlpvim/ctrlp.vim'
 " Plug 'haya14busa/incsearch.vim'
@@ -33,7 +33,7 @@ Plug 'Yggdroot/indentLine'
 " Plug 'shawncplus/phpcomplete.vim', {'for': 'php'}
 " Plug 'sumpygump/php-documentor-vim', {'for': 'php'}
 " Plug '2072/PHP-Indenting-for-VIm', {'for': 'php'}
-" Plug 'derekwyatt/vim-scala', {'for': 'scala'}
+Plug 'derekwyatt/vim-scala', {'for': 'scala'}
 " Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
 " Plug 'othree/yajs.vim', {'for': 'javascript'}
 " Plug 'ekalinin/Dockerfile.vim'
@@ -175,5 +175,10 @@ let g:lightline = {
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
+
+"==========================
+" autoformat
+"==========================
+noremap <leader>f :Autoformat<CR>
 
 " runtime! vimrc.d/input.vim
