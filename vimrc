@@ -10,7 +10,7 @@ call plug#begin()
 " Plug 'mattn/ctrlp-ghq'
 " Plug 'mattn/emmet-vim'
 " Plug 'mattn/gist-vim'
-" Plug 'mattn/sonictemplate-vim'
+Plug 'mattn/sonictemplate-vim'
 " Plug 'mattn/webapi-vim', {'on': 'Gist'}
 Plug 'Shougo/junkfile.vim'
 " Plug 'Shougo/vimproc.vim', {'do': 'make'}
@@ -180,5 +180,12 @@ let g:lightline = {
 " vim-autoformat
 "==========================
 noremap <leader>f :Autoformat<CR>
+
+"==========================
+" sonictemplate
+"==========================
+let g:sonictemplate_vim_template_dir = [
+      \ '$HOME/.vim/template',
+      \]
 
 " runtime! vimrc.d/input.vim
