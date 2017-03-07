@@ -27,7 +27,7 @@ Plug 'justinmk/vim-dirvish'
 Plug 'Yggdroot/indentLine'
 
 " for each languages
-" Plug 'fatih/vim-go', {'for': 'go'}
+Plug 'fatih/vim-go', {'for': 'go'}
 " Plug 'vim-ruby/vim-ruby', {'for': 'ruby'}
 " Plug 'vim-php/tagbar-phpctags.vim', {'for': 'php'}
 " Plug 'shawncplus/phpcomplete.vim', {'for': 'php'}

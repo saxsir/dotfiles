@@ -3,3 +3,4 @@ vimperator/plugin
 vimperator/vimperator-plugins
 vim/autoload/plug.vim
 vim/plugged/*
+vim/view
