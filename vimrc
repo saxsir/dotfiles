@@ -14,7 +14,7 @@ call plug#begin()
 " Plug 'mattn/webapi-vim', {'on': 'Gist'}
 Plug 'Shougo/junkfile.vim'
 " Plug 'Shougo/vimproc.vim', {'do': 'make'}
-" Plug 'bronson/vim-trailing-whitespace'
+Plug 'bronson/vim-trailing-whitespace'
 Plug 'Chiel92/vim-autoformat'
 " Plug 'ConradIrwin/vim-bracketed-paste'
 " Plug 'ctrlpvim/ctrlp.vim'
@@ -52,7 +52,7 @@ Plug 'derekwyatt/vim-scala', {'for': 'scala'}
 "'MarcWeber/vim-addon-mw-utils'
 "'garbas/vim-snipmate'
 "'jszakmeister/markdown2ctags', {'for': 'markdown'}
-"'kannokanno/previm', {'for': 'markdown'}
+Plug 'kannokanno/previm', {'for': 'markdown'}
 "'mattn/vim-sqlfmt', {'for': 'sql'}
 "'davidhalter/jedi-vim', {'for': 'python'}
 "'nishigori/increment-activator'
@@ -177,7 +177,7 @@ let g:lightline = {
       \ }
 
 "==========================
-" autoformat
+" vim-autoformat
 "==========================
 noremap <leader>f :Autoformat<CR>
 
