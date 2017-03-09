@@ -1,4 +1,5 @@
 vim/vimrc.d/secret.vim
+vimperator/info
 vimperator/plugin
 vimperator/vimperator-plugins
 vim/autoload/plug.vim

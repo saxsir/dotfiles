@@ -46,7 +46,7 @@ ignorekeys add facebook\\.com
 ignorekeys add docs.google\\.com
 
 " plugins
-let g:plugin_loader_roots = "~/.vimperator/plugin/ ~/.vimperator/vimperator-plugins/"
+let g:plugin_loader_roots = "~/.vimperator/vimperator-plugins/ ~/.vimperator/load/"
 let g:plugin_loader_plugins = "_libly,copy,amazon_simple_uri"
 
 "copy.js
@@ -85,9 +85,6 @@ nnoremap ym :copy markdown<CR>
 " amazon_simple_url
 let g:amazon_asamashi = "?tag=azhp-22"
 nnoremap ac :amazoncopy +a<CR>
-
-" https://github.com/vimperator/vimperator-labs/issues/590#issuecomment-248833125
-js services.services.autoCompleteSearch.class_="@mozilla.org/autocomplete/search;1?name=unifiedcomplete"
 
 "======================================================================
 " 読み込みおわったらメッセージ
