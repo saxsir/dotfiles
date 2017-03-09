@@ -47,7 +47,7 @@ ignorekeys add docs.google\\.com
 
 " plugins
 let g:plugin_loader_roots = "~/.vimperator/vimperator-plugins/ ~/.vimperator/load/"
-let g:plugin_loader_plugins = "_libly,copy,amazon_simple_uri"
+let g:plugin_loader_plugins = "_libly,copy,amazon_simple_uri,garoon"
 
 "copy.js
 "copy関係はyを割り当て。
@@ -85,6 +85,9 @@ nnoremap ym :copy markdown<CR>
 " amazon_simple_url
 let g:amazon_asamashi = "?tag=azhp-22"
 nnoremap ac :amazoncopy +a<CR>
+
+" garoon検索
+nnoremap ga :garoon
 
 "======================================================================
 " 読み込みおわったらメッセージ
