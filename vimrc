@@ -59,7 +59,7 @@ Plug 'kannokanno/previm', {'for': 'markdown'}
 "'tyru/open-browser.vim', {'on': ''}
 "'tyru/open-browser-github.vim'
 "'majutsushi/tagbar'
-"'simeji/winresizer'
+Plug 'simeji/winresizer'
 "'Shougo/neomru.vim'
 "'Shougo/unite.vim'
 "'Shougo/neocomplete'
