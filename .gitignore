@@ -1,7 +1,7 @@
-vim/vimrc.d/secret.vim
-vimperator/info
-vimperator/plugin
-vimperator/vimperator-plugins
 vim/autoload/plug.vim
-vim/plugged/*
-vim/view
+vim/plugged/
+vim/view/
+oh-my-zsh/
+vimperator/info/
+vimperator/plugin/
+vimperator/vimperator-plugins/
