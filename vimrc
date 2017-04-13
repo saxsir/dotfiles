@@ -21,7 +21,7 @@ Plug 'Chiel92/vim-autoformat'
 " Plug 'haya14busa/incsearch.vim'
 Plug 'itchyny/lightline.vim'
 " Plug 'LeafCage/yankround.vim'
-" Plug 'thinca/vim-quickrun'
+Plug 'thinca/vim-quickrun'
 Plug 'tyru/caw.vim'
 Plug 'justinmk/vim-dirvish'
 Plug 'Yggdroot/indentLine'
@@ -53,7 +53,7 @@ Plug 'derekwyatt/vim-scala', {'for': 'scala'}
 "'garbas/vim-snipmate'
 "'jszakmeister/markdown2ctags', {'for': 'markdown'}
 Plug 'kannokanno/previm', {'for': 'markdown'}
-"'mattn/vim-sqlfmt', {'for': 'sql'}
+" Plug 'mattn/vim-sqlfmt', {'for': 'sql'}
 "'davidhalter/jedi-vim', {'for': 'python'}
 "'nishigori/increment-activator'
 "'tyru/open-browser.vim', {'on': ''}
