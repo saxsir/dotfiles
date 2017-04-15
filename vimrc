@@ -34,7 +34,7 @@ Plug 'fatih/vim-go', {'for': 'go'}
 " Plug 'sumpygump/php-documentor-vim', {'for': 'php'}
 " Plug '2072/PHP-Indenting-for-VIm', {'for': 'php'}
 Plug 'derekwyatt/vim-scala', {'for': 'scala'}
-" Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
+Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
 " Plug 'othree/yajs.vim', {'for': 'javascript'}
 " Plug 'ekalinin/Dockerfile.vim'
 " Plug 'puppetlabs/puppet-syntax-vim'
@@ -54,7 +54,7 @@ Plug 'derekwyatt/vim-scala', {'for': 'scala'}
 "'jszakmeister/markdown2ctags', {'for': 'markdown'}
 Plug 'kannokanno/previm', {'for': 'markdown'}
 " Plug 'mattn/vim-sqlfmt', {'for': 'sql'}
-"'davidhalter/jedi-vim', {'for': 'python'}
+" Plug 'davidhalter/jedi-vim', {'for': 'python'}
 "'nishigori/increment-activator'
 "'tyru/open-browser.vim', {'on': ''}
 "'tyru/open-browser-github.vim'
