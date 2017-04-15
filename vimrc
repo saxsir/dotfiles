@@ -28,6 +28,8 @@ Plug 'Yggdroot/indentLine'
 
 " for each languages
 Plug 'fatih/vim-go', {'for': 'go'}
+Plug 'AndrewRadev/splitjoin.vim', {'for': 'go'}
+Plug 'SirVer/ultisnips'
 " Plug 'vim-ruby/vim-ruby', {'for': 'ruby'}
 " Plug 'vim-php/tagbar-phpctags.vim', {'for': 'php'}
 " Plug 'shawncplus/phpcomplete.vim', {'for': 'php'}
@@ -123,7 +125,7 @@ set undodir=$HOME/.vimundo
 let mapleader = ","
 " reload vimrc
 nnoremap <C-c><C-e>e :edit $HOME/.vimrc<CR>
-nnoremap <C-c><C-e>s :source $HOME/.vimrc<CR>
+nnoremap <C-c><C-e>s :source $MYVIMRC<CR>
 
 " when move to search results, move to center.
 noremap n nzz
@@ -148,9 +150,8 @@ cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 "==========================
 " caw
 "==========================
-nmap <Leader>c <Plug>(caw:hatpos:toggle)
-vmap <Leader>c <Plug>(caw:hatpos:toggle)
-nmap <Leader>a <Plug>(caw:a:toggle)
+map <Leader>c <Plug>(caw:hatpos:toggle)
+map <Leader>a <Plug>(caw:a:toggle)
 
 "==========================
 " junkfile
@@ -188,4 +189,7 @@ let g:sonictemplate_vim_template_dir = [
       \ '$HOME/.vim/template',
       \]
 
-" runtime! vimrc.d/input.vim
+"==========================
+" vim-go debug
+"==========================
+set updatetime=200

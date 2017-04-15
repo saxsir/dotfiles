@@ -42,6 +42,7 @@ fi
 # go, ghq
 export PATH=/usr/local/go/bin:$PATH
 export GOPATH=$HOME
+export GOROOT=$( go env GOROOT )
 export PATH=$GOPATH/bin:$PATH
 
 # elasticsearch
