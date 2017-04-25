@@ -10,12 +10,12 @@ endfunction
 
 nmap <Leader>r <Plug>(go-run)
 nmap <Leader>b :<C-u>call <SID>build_go_files()<CR>
-nmap <Leader>t <Plug>(go-test)
-nmap <Leader>c <Plug>(go-coverage-toggle)
+" nmap <Leader>t <Plug>(go-test)
+" nmap <Leader>c <Plug>(go-coverage-toggle)
 
 map <C-n> :cnext<CR>
 map <C-m> :cprevious<CR>
-nmap <Leader>a :cclose<CR>
+" nmap <Leader>a :cclose<CR>
 
 let g:go_fmt_command = "goimports"
 " let g:go_fmt_fail_silently = 1
@@ -34,8 +34,9 @@ let g:go_highlight_build_constraints = 1
 " let g:go_metalinter_autosave_enabled = ['vet', 'golint']
 
 let g:go_def_mapping_enabled = 'godef'
+let g:go_def_reuse_buffer=1
 nmap gs <Plug>(go-def-split)
-nmap <Leader>i <Plug>(go-info)
-let g:go_auto_sameids = 1
+nmap gi <Plug>(go-info)
+nmap <Leader>gd <Plug>(go-doc)
 
 let g:go_play_browser_command = "chrome"

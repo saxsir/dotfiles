@@ -30,6 +30,7 @@ Plug 'Yggdroot/indentLine'
 Plug 'fatih/vim-go', {'for': 'go'}
 Plug 'AndrewRadev/splitjoin.vim', {'for': 'go'}
 Plug 'SirVer/ultisnips'
+Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh', 'for': 'go'}
 " Plug 'vim-ruby/vim-ruby', {'for': 'ruby'}
 " Plug 'vim-php/tagbar-phpctags.vim', {'for': 'php'}
 " Plug 'shawncplus/phpcomplete.vim', {'for': 'php'}
@@ -47,7 +48,7 @@ Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
 "'tpope/vim-fugitive'
 "'ShowMarks'
 "'mileszs/ack.vim'
-"'majutsushi/tagbar'
+Plug 'majutsushi/tagbar'
 "'editorconfig/editorconfig-vim'
 "'glidenote/memolist.vim'
 "'tomtom/tlib_vim'
@@ -60,7 +61,6 @@ Plug 'kannokanno/previm', {'for': 'markdown'}
 "'nishigori/increment-activator'
 "'tyru/open-browser.vim', {'on': ''}
 "'tyru/open-browser-github.vim'
-"'majutsushi/tagbar'
 Plug 'simeji/winresizer'
 "'Shougo/neomru.vim'
 "'Shougo/unite.vim'
@@ -193,3 +193,8 @@ let g:sonictemplate_vim_template_dir = [
 " vim-go debug
 "==========================
 set updatetime=200
+
+"==========================
+" tagbar
+"==========================
+noremap <leader>t :<c-u>TagbarToggle<cr>
