@@ -35,8 +35,9 @@ let g:go_highlight_build_constraints = 1
 
 let g:go_def_mapping_enabled = 'godef'
 let g:go_def_reuse_buffer=1
+nmap gv <Plug>(go-def-vertical)
 nmap gs <Plug>(go-def-split)
 nmap gi <Plug>(go-info)
-nmap <Leader>gd <Plug>(go-doc)
+" nmap <Leader>gd <Plug>(go-doc)
 
 let g:go_play_browser_command = "chrome"

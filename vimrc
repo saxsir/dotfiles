@@ -37,7 +37,8 @@ Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh',
 " Plug 'sumpygump/php-documentor-vim', {'for': 'php'}
 " Plug '2072/PHP-Indenting-for-VIm', {'for': 'php'}
 Plug 'derekwyatt/vim-scala', {'for': 'scala'}
-Plug 'hynek/vim-python-pep8-indent', {'for': 'python'}
+Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
+Plug 'nvie/vim-flake8', {'for': 'python'}
 " Plug 'othree/yajs.vim', {'for': 'javascript'}
 " Plug 'ekalinin/Dockerfile.vim'
 " Plug 'puppetlabs/puppet-syntax-vim'
