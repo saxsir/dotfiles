@@ -19,6 +19,7 @@ source $ZSH/oh-my-zsh.sh
 RPROMPT='${HOST}'
 
 # homebrew
+export PATH=/usr/local/bin:$PATH
 if which brew > /dev/null; then
   export PATH=/usr/local/bin:$PATH
   alias brew="env PATH=${PATH/\/usr\/local\/var\/pyenv\/shims:?/} brew"
