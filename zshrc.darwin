@@ -16,7 +16,8 @@ autoload -U compinit && compinit -C
 source $ZSH/oh-my-zsh.sh
 
 # prompt
-RPROMPT='${HOST}'
+# RPROMPT='${HOST}'
+RPROMPT=''
 
 # homebrew
 export PATH=/usr/local/bin:$PATH

@@ -23,3 +23,6 @@ Session.vim
 
 # refs https://github.com/github/gitignore/blob/master/Global/IPythonNotebook.gitignore
 .ipynb_checkpoints/
+
+# direnv
+.envrc
