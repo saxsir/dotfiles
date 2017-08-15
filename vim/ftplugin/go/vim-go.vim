@@ -35,6 +35,7 @@ let g:go_highlight_build_constraints = 1
 
 let g:go_def_mapping_enabled = 'godef'
 let g:go_def_reuse_buffer=1
+nmap gd <Plug>(go-def)
 nmap gv <Plug>(go-def-vertical)
 nmap gs <Plug>(go-def-split)
 nmap gi <Plug>(go-info)

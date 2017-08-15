@@ -46,7 +46,7 @@ Plug 'nvie/vim-flake8', {'for': 'python'}
 " unknown
 "'altercation/vim-colors-solarized'
 "'Modeliner'
-"'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 "'ShowMarks'
 "'mileszs/ack.vim'
 Plug 'majutsushi/tagbar'
@@ -60,8 +60,8 @@ Plug 'kannokanno/previm', {'for': 'markdown'}
 " Plug 'mattn/vim-sqlfmt', {'for': 'sql'}
 " Plug 'davidhalter/jedi-vim', {'for': 'python'}
 "'nishigori/increment-activator'
-"'tyru/open-browser.vim', {'on': ''}
-"'tyru/open-browser-github.vim'
+Plug 'tyru/open-browser.vim'
+Plug 'tyru/open-browser-github.vim'
 Plug 'simeji/winresizer'
 "'Shougo/neomru.vim'
 "'Shougo/unite.vim'
@@ -147,6 +147,13 @@ nnoremap <C-l> <C-w>l
 
 " アクティブなファイルが含まれるディレクトリを展開
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
+
+" 編集しているファイル名をコピー
+function! g:CopyFilePath()
+    let @* = expand("%:p")
+    echo @*
+endfunction
+command! CopyFilePath :call g:CopyFilePath()
 
 "==========================
 " caw

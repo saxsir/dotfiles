@@ -26,3 +26,7 @@ Session.vim
 
 # direnv
 .envrc
+
+# local_dump
+# 本番環境のDB dumpとかをよく置く
+.local_dump/
