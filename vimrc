@@ -7,7 +7,6 @@
 call plug#begin()
 
 " Plug 'mattn/benchvimrc-vim'
-" Plug 'mattn/ctrlp-ghq'
 " Plug 'mattn/emmet-vim'
 " Plug 'mattn/gist-vim'
 Plug 'mattn/sonictemplate-vim'
@@ -17,7 +16,7 @@ Plug 'Shougo/junkfile.vim'
 Plug 'bronson/vim-trailing-whitespace'
 Plug 'Chiel92/vim-autoformat'
 " Plug 'ConradIrwin/vim-bracketed-paste'
-" Plug 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim' | Plug 'mattn/ctrlp-ghq'
 " Plug 'haya14busa/incsearch.vim'
 Plug 'itchyny/lightline.vim'
 " Plug 'LeafCage/yankround.vim'
@@ -206,3 +205,9 @@ set updatetime=200
 " tagbar
 "==========================
 noremap <leader>t :<c-u>TagbarToggle<cr>
+
+"==========================
+" ctrlp-ghq
+"==========================
+noremap <leader>g :<c-u>CtrlPGhq<cr>
+let ctrlp_ghq_default_action = 'e'
