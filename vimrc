@@ -14,7 +14,7 @@ Plug 'mattn/sonictemplate-vim'
 Plug 'Shougo/junkfile.vim'
 " Plug 'Shougo/vimproc.vim', {'do': 'make'}
 Plug 'bronson/vim-trailing-whitespace'
-Plug 'Chiel92/vim-autoformat'
+" Plug 'Chiel92/vim-autoformat'
 " Plug 'ConradIrwin/vim-bracketed-paste'
 Plug 'ctrlpvim/ctrlp.vim' | Plug 'mattn/ctrlp-ghq'
 " Plug 'haya14busa/incsearch.vim'
@@ -28,7 +28,7 @@ Plug 'Yggdroot/indentLine'
 " for each languages
 Plug 'fatih/vim-go', {'for': 'go'}
 Plug 'AndrewRadev/splitjoin.vim', {'for': 'go'}
-Plug 'SirVer/ultisnips'
+" Plug 'SirVer/ultisnips'
 Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh', 'for': 'go'}
 " Plug 'vim-ruby/vim-ruby', {'for': 'ruby'}
 " Plug 'vim-php/tagbar-phpctags.vim', {'for': 'php'}
@@ -187,7 +187,7 @@ let g:lightline = {
 "==========================
 " vim-autoformat
 "==========================
-noremap <leader>f :Autoformat<CR>
+" noremap <leader>f :Autoformat<CR>
 
 "==========================
 " sonictemplate

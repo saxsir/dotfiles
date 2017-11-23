@@ -1,0 +1,34 @@
+" クリップボード連携
+set clipboard+=unnamed
+" タブを複数のスペースに置き換える
+set expandtab
+" タブ文字の幅
+set tabstop=4
+" 自動インデント幅
+set shiftwidth=2
+" バックスペースで文字削除
+set backspace=indent,eol,start
+" 検索するときに大文字小文字を区別しない
+set ignorecase
+" 検索時に大文字を含んでいたら大/小を区別
+set smartcase
+" インクリメンタル検索 (検索ワードの最初の文字を入力した時点で検索が開始)
+set incsearchet
+" 対応する括弧やブレースを表示
+set showmatch matchtime=1
+" 行末のスペースを可視化
+set listchars=tab:^\ ,trail:~
+
+"==========================
+" key map
+"==========================
+" jjでエスケープしたり, USキーボード最適化
+inoremap jj <ESC>
+nnoremap ; :
+
+" splitの移動を簡単に。ctrl押しながらhjkl
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
