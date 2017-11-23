@@ -35,9 +35,9 @@ Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh',
 " Plug 'shawncplus/phpcomplete.vim', {'for': 'php'}
 " Plug 'sumpygump/php-documentor-vim', {'for': 'php'}
 " Plug '2072/PHP-Indenting-for-VIm', {'for': 'php'}
-Plug 'derekwyatt/vim-scala', {'for': 'scala'}
-Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
-Plug 'nvie/vim-flake8', {'for': 'python'}
+" Plug 'derekwyatt/vim-scala', {'for': 'scala'}
+" Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
+" Plug 'nvie/vim-flake8', {'for': 'python'}
 " Plug 'othree/yajs.vim', {'for': 'javascript'}
 " Plug 'ekalinin/Dockerfile.vim'
 " Plug 'puppetlabs/puppet-syntax-vim'
@@ -55,7 +55,7 @@ Plug 'majutsushi/tagbar'
 "'MarcWeber/vim-addon-mw-utils'
 "'garbas/vim-snipmate'
 "'jszakmeister/markdown2ctags', {'for': 'markdown'}
-Plug 'kannokanno/previm', {'for': 'markdown'}
+" Plug 'kannokanno/previm', {'for': 'markdown'}
 " Plug 'mattn/vim-sqlfmt', {'for': 'sql'}
 " Plug 'davidhalter/jedi-vim', {'for': 'python'}
 "'nishigori/increment-activator'
