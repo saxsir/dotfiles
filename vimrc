@@ -6,68 +6,27 @@
 " use https://github.com/junegunn/vim-plug
 call plug#begin()
 
-" Plug 'mattn/benchvimrc-vim'
-" Plug 'mattn/emmet-vim'
-" Plug 'mattn/gist-vim'
 Plug 'mattn/sonictemplate-vim'
-" Plug 'mattn/webapi-vim', {'on': 'Gist'}
 Plug 'Shougo/junkfile.vim'
-" Plug 'Shougo/vimproc.vim', {'do': 'make'}
+Plug 'Shougo/vimproc.vim', {'do': 'make'}
 Plug 'bronson/vim-trailing-whitespace'
-" Plug 'Chiel92/vim-autoformat'
-" Plug 'ConradIrwin/vim-bracketed-paste'
-Plug 'ctrlpvim/ctrlp.vim' | Plug 'mattn/ctrlp-ghq'
-" Plug 'haya14busa/incsearch.vim'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'mattn/ctrlp-ghq'
 Plug 'itchyny/lightline.vim'
-" Plug 'LeafCage/yankround.vim'
 Plug 'thinca/vim-quickrun'
 Plug 'tyru/caw.vim'
 Plug 'justinmk/vim-dirvish'
 Plug 'Yggdroot/indentLine'
 
-" for each languages
+" golang
 Plug 'fatih/vim-go', {'for': 'go'}
-Plug 'AndrewRadev/splitjoin.vim', {'for': 'go'}
-" Plug 'SirVer/ultisnips'
 Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh', 'for': 'go'}
-" Plug 'vim-ruby/vim-ruby', {'for': 'ruby'}
-" Plug 'vim-php/tagbar-phpctags.vim', {'for': 'php'}
-" Plug 'shawncplus/phpcomplete.vim', {'for': 'php'}
-" Plug 'sumpygump/php-documentor-vim', {'for': 'php'}
-" Plug '2072/PHP-Indenting-for-VIm', {'for': 'php'}
-" Plug 'derekwyatt/vim-scala', {'for': 'scala'}
-" Plug 'Vimjas/vim-python-pep8-indent', {'for': 'python'}
-" Plug 'nvie/vim-flake8', {'for': 'python'}
-" Plug 'othree/yajs.vim', {'for': 'javascript'}
-" Plug 'ekalinin/Dockerfile.vim'
-" Plug 'puppetlabs/puppet-syntax-vim'
 
-" unknown
-"'altercation/vim-colors-solarized'
-"'Modeliner'
 Plug 'tpope/vim-fugitive'
-"'ShowMarks'
-"'mileszs/ack.vim'
 Plug 'majutsushi/tagbar'
-"'editorconfig/editorconfig-vim'
-"'glidenote/memolist.vim'
-"'tomtom/tlib_vim'
-"'MarcWeber/vim-addon-mw-utils'
-"'garbas/vim-snipmate'
-"'jszakmeister/markdown2ctags', {'for': 'markdown'}
-" Plug 'kannokanno/previm', {'for': 'markdown'}
-" Plug 'mattn/vim-sqlfmt', {'for': 'sql'}
-" Plug 'davidhalter/jedi-vim', {'for': 'python'}
-"'nishigori/increment-activator'
 Plug 'tyru/open-browser.vim'
 Plug 'tyru/open-browser-github.vim'
 Plug 'simeji/winresizer'
-"'Shougo/neomru.vim'
-"'Shougo/unite.vim'
-"'Shougo/neocomplete'
-"'Shougo/neosnippet'
-"'Shougo/neosnippet-snippets'
-"'honza/vim-snippets'
 
 call plug#end()
 
@@ -183,11 +142,6 @@ let g:lightline = {
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
-
-"==========================
-" vim-autoformat
-"==========================
-" noremap <leader>f :Autoformat<CR>
 
 "==========================
 " sonictemplate
