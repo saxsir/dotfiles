@@ -33,6 +33,8 @@
     showpr = !"f() { git log --merges --oneline --reverse --ancestry-path $1...master | grep 'Merge pull request #' | head -n 1; }; f"
     openpr = "!f() { export BROWSER=echo; hub browse -- `git log --merges --oneline --reverse --ancestry-path $1...master | grep 'Merge pull request #' | head -n 1 | cut -f5 -d' ' | sed -e 's%#%pull/%'`; }; f"
 
+    ce = commit --allow-empty
+
 [filter "lfs"]
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f

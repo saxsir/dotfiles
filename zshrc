@@ -1,6 +1,7 @@
 # common aliases
 alias vi='vi -u NONE'
 alias -g G='| grep'
+alias -g L='| lv'
 
 # OS依存の設定
 case ${OSTYPE} in
