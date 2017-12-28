@@ -6,6 +6,7 @@ alias deckset="open -a /Applications/Deckset.app/Contents/MacOS/Deckset"
 alias matrix="cmatrix -s -u 6"
 alias -g L='| lv'
 alias gce='git commit --allow-empty'
+alias blame='~/.misc/bin/git-blame-pr.pl'
 
 # oh-my-zsh
 export ZSH=$HOME/.oh-my-zsh
@@ -23,6 +24,7 @@ RPROMPT=''
 export PATH=/usr/local/bin:$PATH
 if which brew > /dev/null; then
   export PATH=/usr/local/bin:$PATH
+  export PATH=/usr/local/sbin:$PATH
   alias brew="env PATH=${PATH/\/usr\/local\/var\/pyenv\/shims:?/} brew"
 fi
 

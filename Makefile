@@ -1,26 +1,21 @@
 PWD := $(shell pwd)
 srcs := \
   gitconfig gitignore_global gitmessage.txt \
-  vimrc vimperatorrc tmux.conf \
-  zshenv zshrc zshrc.darwin zshrc.linux
-
+  vimrc tmux.conf \
+  zshenv zshrc zshrc.darwin zshrc.linux \
+  misc/bin/git-blame-pr.pl \
+  misc/com.googlecode.iterm2.plist
 
 all: deps symlink
 
-deps: vim/autoload/plug.vim vimperator/plugin/plugin_loader.js oh-my-zsh/custom/plugins/zsh-completions $(HOME)/.vim $(HOME)/.oh-my-zsh
+deps: vim/autoload/plug.vim oh-my-zsh/custom/plugins/zsh-completions $(HOME)/.vim $(HOME)/.oh-my-zsh
 	mkdir -p $(HOME)/.vimtmp
 	mkdir -p $(HOME)/.vimback
 	mkdir -p $(HOME)/.vimundo
+	mkdir -p $(HOME)/.misc/bin
 
 vim/autoload/plug.vim:
 	curl -fLo $@ --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-vimperator/plugin/plugin_loader.js: vimperator/vimperator-plugins
-	mkdir -p vimperator/plugin
-	cp vimperator/vimperator-plugins/plugin_loader.js $@
-
-vimperator/vimperator-plugins:
-	git clone git@github.com:vimpr/vimperator-plugins.git $(PWD)/$@
 
 oh-my-zsh/custom/plugins/zsh-completions: oh-my-zsh
 	git clone git://github.com/zsh-users/zsh-completions.git $@
