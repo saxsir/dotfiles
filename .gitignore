@@ -2,6 +2,3 @@ vim/autoload/plug.vim
 vim/plugged/
 vim/view/
 oh-my-zsh/
-vimperator/info/
-vimperator/plugin/
-vimperator/vimperator-plugins/

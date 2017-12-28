@@ -2,17 +2,14 @@ PWD := $(shell pwd)
 srcs := \
   gitconfig gitignore_global gitmessage.txt \
   vimrc tmux.conf \
-  zshenv zshrc zshrc.darwin zshrc.linux \
-  misc/bin/git-blame-pr.pl \
-  misc/com.googlecode.iterm2.plist
+  zshenv zshrc zshrc.darwin zshrc.linux
 
 all: deps symlink
 
-deps: vim/autoload/plug.vim oh-my-zsh/custom/plugins/zsh-completions $(HOME)/.vim $(HOME)/.oh-my-zsh
+deps: vim/autoload/plug.vim oh-my-zsh/custom/plugins/zsh-completions
 	mkdir -p $(HOME)/.vimtmp
 	mkdir -p $(HOME)/.vimback
 	mkdir -p $(HOME)/.vimundo
-	mkdir -p $(HOME)/.misc/bin
 
 vim/autoload/plug.vim:
 	curl -fLo $@ --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -26,7 +23,7 @@ oh-my-zsh:
 #
 # File symlinks
 #
-symlink: $(HOME)/.vim $(HOME)/.oh-my-zsh
+symlink: $(HOME)/.vim $(HOME)/.oh-my-zsh $(HOME)/.misc
 	$(foreach src, $(srcs), \
 	  ln -fs $(PWD)/$(src) $(HOME)/.$(src); \
 	  )
@@ -42,3 +39,6 @@ $(HOME)/.vim:
 
 $(HOME)/.oh-my-zsh:
 	ln -Fs $(PWD)/oh-my-zsh/ $@
+
+$(HOME)/.misc:
+	ln -Fs $(PWD)/misc/ $@
