@@ -1356,7 +1356,7 @@
 	<key>NSFontPanelAttributes</key>
 	<string>1, 10</string>
 	<key>NSNavLastRootDirectory</key>
-	<string>~/00_すぐアクセスしたいファイル</string>
+	<string>~</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
 	<string>{712, 459}</string>
 	<key>NSQuotedKeystrokeBinding</key>
@@ -1402,9 +1402,9 @@
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>972 786 620 392 0 0 2560 1440 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
-	<string>269 144 606 456 0 0 2560 1417 </string>
+	<string>269 146 606 469 0 0 2560 1440 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>981 329 918 485 0 0 2560 1440 </string>
+	<string>358 206 770 429 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
 	<string>4 0 810 502 0 0 2560 1417 </string>
 	<key>NeverWarnAboutShortLivedSessions_2136B093-5C9E-4B0D-B409-2E17BBA9D750</key>
@@ -3019,7 +3019,7 @@
 		</dict>
 	</dict>
 	<key>PrefsCustomFolder</key>
-	<string>/Users/s-sasamoto/Preferences</string>
+	<string>/Users/s-sasamoto/.misc</string>
 	<key>PromptOnClose</key>
 	<true/>
 	<key>PromptOnQuit</key>
@@ -3041,7 +3041,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2017-10-12T06:42:41Z</date>
+	<date>2018-01-18T05:44:40Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>Show Toolbelt</key>
@@ -3086,9 +3086,11 @@
 	<string>/-+\~_.</string>
 	<key>findIgnoreCase_iTerm</key>
 	<true/>
+	<key>findMode_iTerm</key>
+	<integer>0</integer>
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.1.3</string>
+	<string>3.1.5</string>
 </dict>
 </plist>
