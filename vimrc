@@ -27,6 +27,7 @@ Plug 'majutsushi/tagbar'
 Plug 'tyru/open-browser.vim'
 Plug 'tyru/open-browser-github.vim'
 Plug 'simeji/winresizer'
+Plug 'mattn/gist-vim' | Plug 'mattn/webapi-vim'
 
 call plug#end()
 
@@ -165,3 +166,10 @@ noremap <leader>t :<c-u>TagbarToggle<cr>
 "==========================
 noremap <leader>g :<c-u>CtrlPGhq<cr>
 let ctrlp_ghq_default_action = 'e'
+
+
+"==========================
+" gist-vim
+"==========================
+let g:gist_clip_command = 'pbcopy'
+let g:gist_open_browser_after_post = 1

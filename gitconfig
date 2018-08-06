@@ -45,3 +45,6 @@
 
 [grep]
 	lineNumber = true
+# gist-vim
+[github]
+	user = saxsir
