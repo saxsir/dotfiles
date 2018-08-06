@@ -1400,13 +1400,15 @@
 	<key>NSWindow Frame Preferences</key>
 	<string>712 601 606 456 0 0 1920 1057 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>972 786 620 392 0 0 2560 1440 </string>
+	<string>412 381 620 392 0 0 1440 900 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
-	<string>269 146 606 469 0 0 2560 1440 </string>
+	<string>269 146 606 469 0 0 2560 1417 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>358 206 770 429 0 0 1440 900 </string>
+	<string>981 346 937 512 0 0 2560 1440 </string>
+	<key>NSWindow Frame UKCrashReporter</key>
+	<string>230 833 592 584 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>4 0 810 502 0 0 2560 1417 </string>
+	<string>4 23 2556 1394 0 0 2560 1417 </string>
 	<key>NeverWarnAboutShortLivedSessions_2136B093-5C9E-4B0D-B409-2E17BBA9D750</key>
 	<true/>
 	<key>New Bookmarks</key>
@@ -3020,6 +3022,8 @@
 	</dict>
 	<key>PrefsCustomFolder</key>
 	<string>/Users/s-sasamoto/.misc</string>
+	<key>Print In Black And White</key>
+	<true/>
 	<key>PromptOnClose</key>
 	<true/>
 	<key>PromptOnQuit</key>
@@ -3041,7 +3045,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2018-01-18T05:44:40Z</date>
+	<date>2018-06-08T06:28:18Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>Show Toolbelt</key>
@@ -3066,6 +3070,8 @@
 	<integer>10</integer>
 	<key>TripleClickSelectsFullWrappedLines</key>
 	<false/>
+	<key>UKCrashReporterLastCrashReportDate</key>
+	<real>1523247104</real>
 	<key>URLHandlersByGuid</key>
 	<dict/>
 	<key>UseBorder</key>
@@ -3091,6 +3097,6 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.1.5</string>
+	<string>3.1.6</string>
 </dict>
 </plist>
