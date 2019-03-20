@@ -24,3 +24,4 @@ typeset -U path
 if [ ! -f ~/.zshrc.zwc -o ~/.zshrc -nt ~/.zshrc.zwc ]; then
   zcompile ~/.zshrc
 fi
+export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
