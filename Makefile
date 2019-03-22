@@ -20,25 +20,16 @@ oh-my-zsh/custom/plugins/zsh-completions: oh-my-zsh
 oh-my-zsh:
 	git clone git://github.com/robbyrussell/oh-my-zsh.git $(PWD)/$@
 
-#
-# File symlinks
-#
-symlink: $(HOME)/.vim $(HOME)/.oh-my-zsh $(HOME)/.misc
+symlink: $(HOME)/.vim $(HOME)/.oh-my-zsh
 	$(foreach src, $(srcs), \
 	  ln -fs $(PWD)/$(src) $(HOME)/.$(src); \
 	  )
 
-$(HOME)/.zshrc.local:
-	cp zshrc.local.sample $@
-
-#
-# Directory symlinks
-#
 $(HOME)/.vim:
 	ln -Fs $(PWD)/vim/ $@
 
 $(HOME)/.oh-my-zsh:
 	ln -Fs $(PWD)/oh-my-zsh/ $@
 
-$(HOME)/.misc:
-	ln -Fs $(PWD)/misc/ $@
+$(HOME)/.zshrc.local:
+	cp zshrc.local.sample $@
