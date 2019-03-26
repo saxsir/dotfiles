@@ -123,7 +123,7 @@ map <Leader>a <Plug>(caw:a:toggle)
 "==========================
 " junkfile
 "==========================
-let g:junkfile#directory = $HOME . '/.memo'
+let g:junkfile#directory = $HOME . '/src/github.com/saxsir/memo'
 command! -nargs=0 DailyLog call junkfile#open_immediately(
       \ strftime('%Y-%m-%d.md'))
 
