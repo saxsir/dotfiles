@@ -37,6 +37,9 @@ else
   alias ls='ls -G'
 fi
 
+# mysql
+export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+
 # direnv
 if which direnv > /dev/null; then eval "$(direnv hook zsh)"; fi
 
@@ -96,8 +99,3 @@ function peco-src () {
 }
 zle -N peco-src
 bindkey '^p' peco-src
-
-# 起動時間のプロファイリング
-if type zprof > /dev/null 2>&1; then
-  zprof | less
-fi

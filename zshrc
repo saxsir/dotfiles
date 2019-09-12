@@ -20,8 +20,12 @@ source ~/.zshrc.local
 # 重複してるパスを除去
 typeset -U path
 
+# 起動時間のプロファイリング
+# if type zprof > /dev/null 2>&1; then
+#   zprof | less
+# fi
+
 # compile済みファイルがない or zshrcの方が修正されていたらコンパイルする
 if [ ! -f ~/.zshrc.zwc -o ~/.zshrc -nt ~/.zshrc.zwc ]; then
   zcompile ~/.zshrc
 fi
-export PATH="/usr/local/opt/mysql@5.7/bin:$PATH"
