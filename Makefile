@@ -2,7 +2,7 @@ PWD := $(shell pwd)
 srcs := \
   gitconfig gitignore_global gitmessage.txt \
   vimrc tmux.conf \
-  zshenv zshrc zshrc.darwin zshrc.linux
+  zshenv zshrc zshrc.darwin zshrc.linux ideavimrc
 
 all: deps symlink
 
