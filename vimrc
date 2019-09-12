@@ -17,17 +17,26 @@ Plug 'thinca/vim-quickrun'
 Plug 'tyru/caw.vim'
 Plug 'justinmk/vim-dirvish'
 Plug 'Yggdroot/indentLine'
-
-" golang
-Plug 'fatih/vim-go', {'for': 'go'}
-Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh', 'for': 'go'}
-
 Plug 'tpope/vim-fugitive'
 Plug 'majutsushi/tagbar'
 Plug 'tyru/open-browser.vim'
 Plug 'tyru/open-browser-github.vim'
 Plug 'simeji/winresizer'
 Plug 'mattn/gist-vim' | Plug 'mattn/webapi-vim'
+
+" golang
+Plug 'fatih/vim-go', {'for': 'go', 'do': ':GoUpdateBinaries'}
+
+" lsp
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
+" js
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'npm install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 call plug#end()
 
@@ -155,6 +164,7 @@ let g:sonictemplate_vim_template_dir = [
 " vim-go debug
 "==========================
 set updatetime=200
+let g:go_def_mode='gopls'
 
 "==========================
 " tagbar
@@ -167,10 +177,29 @@ noremap <leader>t :<c-u>TagbarToggle<cr>
 noremap <leader>g :<c-u>CtrlPGhq<cr>
 let ctrlp_ghq_default_action = 'e'
 
-
 "==========================
 " gist-vim
 "==========================
 let g:gist_clip_command = 'pbcopy'
 let g:gist_open_browser_after_post = 1
 let g:gist_post_private = 1
+
+"==========================
+" golang
+"==========================
+if executable('gopls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'gopls',
+        \ 'cmd': {server_info->['gopls', '-mode', 'stdio']},
+        \ 'whitelist': ['go'],
+        \ })
+    autocmd FileType go setlocal omnifunc=lsp#complete
+endif
+
+"==========================
+" autocomplete
+"==========================
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+let g:lsp_async_completion = 1
