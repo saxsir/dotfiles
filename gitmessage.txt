@@ -1,20 +1,5 @@
 ...
 
-refs: #X
-
-Why:
-
-* ...
-
-This change addresses the need by:
-
-* ...
-
-Todo:
-
-- [ ] ...
-
-
 # commit prefixes sample
 #
 # feat: A new feature
