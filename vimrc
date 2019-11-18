@@ -38,6 +38,10 @@ Plug 'prettier/vim-prettier', {
   \ 'do': 'npm install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
+" markdown
+Plug 'tpope/vim-markdown'
+Plug 'kannokanno/previm'
+
 call plug#end()
 
 " Automatically executes filetype plugin indent on and syntax enable. by vim-plug
@@ -203,3 +207,12 @@ inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 let g:lsp_async_completion = 1
+
+"==========================
+" vim-markdown, previm
+"==========================
+autocmd BufRead,BufNewFile *.md  set filetype=markdown
+nnoremap <leader>r :PrevimOpen<CR>
+let g:vim_markdown_folding_disabled=1
+let g:previm_enable_realtime = 1
+
