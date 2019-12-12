@@ -2,6 +2,7 @@
 alias vi='vi -u NONE'
 alias -g G='| grep'
 alias -g L='| lv'
+alias -g V='| vim -'
 
 # OS依存の設定
 case ${OSTYPE} in
