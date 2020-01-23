@@ -2,9 +2,10 @@ PWD := $(shell pwd)
 srcs := \
   gitconfig gitignore_global gitmessage.txt \
   vimrc tmux.conf \
-  zshenv zshrc zshrc.darwin zshrc.linux ideavimrc
+  zshenv zshrc zshrc.darwin zshrc.linux ideavimrc mackup.cfg
 
 all: deps symlink
+	mackup restore
 
 deps: vim/autoload/plug.vim oh-my-zsh/custom/plugins/zsh-completions
 	mkdir -p $(HOME)/.vimtmp
