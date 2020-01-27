@@ -3,51 +3,6 @@
 " @author saxsir (https://github.com/saxsir)
 " ======================
 
-" use https://github.com/junegunn/vim-plug
-call plug#begin()
-
-Plug 'mattn/sonictemplate-vim'
-Plug 'Shougo/junkfile.vim'
-Plug 'Shougo/vimproc.vim', {'do': 'make'}
-Plug 'bronson/vim-trailing-whitespace'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'mattn/ctrlp-ghq'
-Plug 'itchyny/lightline.vim'
-Plug 'thinca/vim-quickrun'
-Plug 'tyru/caw.vim'
-Plug 'justinmk/vim-dirvish'
-Plug 'Yggdroot/indentLine'
-Plug 'tpope/vim-fugitive'
-Plug 'majutsushi/tagbar'
-Plug 'tyru/open-browser.vim'
-Plug 'tyru/open-browser-github.vim'
-Plug 'simeji/winresizer'
-Plug 'mattn/gist-vim' | Plug 'mattn/webapi-vim'
-
-" golang
-Plug 'fatih/vim-go', {'for': 'go', 'do': ':GoUpdateBinaries'}
-
-" lsp
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-
-" js
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'npm install',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
-
-" markdown
-Plug 'tpope/vim-markdown'
-Plug 'kannokanno/previm'
-
-call plug#end()
-
-" Automatically executes filetype plugin indent on and syntax enable. by vim-plug
-" syntax on
-" filetype plugin indent on
-
 "==========================
 " language
 "==========================
@@ -96,6 +51,7 @@ set undodir=$HOME/.vimundo
 " key bind
 "==========================
 let mapleader = ","
+
 " reload vimrc
 nnoremap <C-c><C-e>e :edit $HOME/.vimrc<CR>
 nnoremap <C-c><C-e>s :source $MYVIMRC<CR>
@@ -126,6 +82,59 @@ function! g:CopyFilePath()
     echo @*
 endfunction
 command! CopyFilePath :call g:CopyFilePath()
+
+" git commit時はプラグイン読み込まない
+if $HOME != $USERPROFILE && $GIT_EXEC_PATH != ''
+    finish
+end
+
+" plugin読み込み
+" use https://github.com/junegunn/vim-plug
+call plug#begin()
+
+Plug 'mattn/sonictemplate-vim'
+Plug 'Shougo/junkfile.vim'
+Plug 'Shougo/vimproc.vim', {'do': 'make'}
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'mattn/ctrlp-ghq'
+Plug 'itchyny/lightline.vim'
+Plug 'thinca/vim-quickrun'
+Plug 'tyru/caw.vim'
+Plug 'justinmk/vim-dirvish'
+Plug 'Yggdroot/indentLine'
+Plug 'tpope/vim-fugitive'
+Plug 'majutsushi/tagbar'
+Plug 'tyru/open-browser.vim'
+Plug 'tyru/open-browser-github.vim'
+Plug 'simeji/winresizer'
+Plug 'mattn/gist-vim' | Plug 'mattn/webapi-vim'
+
+" golang
+Plug 'fatih/vim-go', {'for': 'go', 'do': ':GoUpdateBinaries'}
+
+" lsp
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
+" js
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'npm install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+
+" markdown
+Plug 'tpope/vim-markdown'
+Plug 'kannokanno/previm'
+
+call plug#end()
+" Automatically executes filetype plugin indent on and syntax enable. by vim-plug
+" syntax on
+" filetype plugin indent on
+
+" 各種設定の読み込み
+
 
 "==========================
 " caw
@@ -216,3 +225,4 @@ nnoremap <leader>r :PrevimOpen<CR>
 let g:vim_markdown_folding_disabled=1
 let g:previm_enable_realtime = 1
 
+call map(sort(split(globpath(&runtimepath, '_config/*.vim'))), {->[execute('exec "so" v:val')]})
