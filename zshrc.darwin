@@ -35,6 +35,9 @@ else
   alias ls='ls -G'
 fi
 
+# awscli v1.x
+export PATH="/usr/local/opt/awscli@1/bin:$PATH"
+
 # mysql
 export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 

@@ -7,7 +7,7 @@
 " language
 "==========================
 set encoding=utf-8
-set fileformats=unix,dos,mac
+set fileformats=unix,mac,dos
 
 "==========================
 " input
@@ -90,7 +90,7 @@ end
 
 " plugin読み込み
 " use https://github.com/junegunn/vim-plug
-call plug#begin()
+call plug#begin("~/.vim/plugged")
 
 Plug 'mattn/sonictemplate-vim'
 Plug 'Shougo/junkfile.vim'
@@ -225,4 +225,4 @@ nnoremap <leader>r :PrevimOpen<CR>
 let g:vim_markdown_folding_disabled=1
 let g:previm_enable_realtime = 1
 
-call map(sort(split(globpath(&runtimepath, '_config/*.vim'))), {->[execute('exec "so" v:val')]})
+" call map(sort(split(globpath(&runtimepath, '_config/*.vim'))), {->[execute('exec "so" v:val')]})
