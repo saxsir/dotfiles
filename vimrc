@@ -109,6 +109,7 @@ Plug 'tyru/open-browser.vim'
 Plug 'tyru/open-browser-github.vim'
 Plug 'simeji/winresizer'
 Plug 'mattn/gist-vim' | Plug 'mattn/webapi-vim'
+Plug 'moznion/hateblo.vim' | Plug 'mattn/webapi-vim'
 
 " golang
 Plug 'fatih/vim-go', {'for': 'go', 'do': ':GoUpdateBinaries'}
@@ -220,9 +221,10 @@ let g:lsp_async_completion = 1
 "==========================
 " vim-markdown, previm
 "==========================
-autocmd BufRead,BufNewFile *.md  set filetype=markdown
+autocmd BufRead,BufNewFile *.md set filetype=markdown
 nnoremap <leader>r :PrevimOpen<CR>
 let g:vim_markdown_folding_disabled=1
 let g:previm_enable_realtime = 1
 
 " call map(sort(split(globpath(&runtimepath, '_config/*.vim'))), {->[execute('exec "so" v:val')]})
+
