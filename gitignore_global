@@ -34,3 +34,6 @@ Session.vim
 # IntelliJ
 .idea
 *.iml
+
+# bundler
+.bundle/
