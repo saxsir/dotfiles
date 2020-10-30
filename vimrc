@@ -110,6 +110,7 @@ Plug 'tyru/open-browser-github.vim'
 Plug 'simeji/winresizer'
 Plug 'mattn/gist-vim' | Plug 'mattn/webapi-vim'
 Plug 'moznion/hateblo.vim' | Plug 'mattn/webapi-vim'
+Plug 'zxqfl/tabnine-vim'
 
 " golang
 Plug 'fatih/vim-go', {'for': 'go', 'do': ':GoUpdateBinaries'}
@@ -120,9 +121,12 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
+" html
+Plug 'mattn/emmet-vim', {'for': 'html' }
+
 " js
 Plug 'prettier/vim-prettier', {
-  \ 'do': 'npm install',
+  \ 'do': 'yarn install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 " markdown
@@ -222,9 +226,13 @@ let g:lsp_async_completion = 1
 " vim-markdown, previm
 "==========================
 autocmd BufRead,BufNewFile *.md set filetype=markdown
-nnoremap <leader>r :PrevimOpen<CR>
+nnoremap <leader>p :PrevimOpen<CR>
 let g:vim_markdown_folding_disabled=1
 let g:previm_enable_realtime = 1
 
-" call map(sort(split(globpath(&runtimepath, '_config/*.vim'))), {->[execute('exec "so" v:val')]})
+"==========================
+" vim-prettier
+"==========================
+let g:prettier#autoformat = 1
+nmap <Leader>f <Plug>(Prettier)
 
