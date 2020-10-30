@@ -15,7 +15,9 @@
 
 日報 - {{_expr_:strftime('%Y/%m/%d(%a)', localtime())}}: ...
 
-## やったこと
+## yt
+
+## yr
 
 ## 学んだこと
 
