@@ -110,7 +110,8 @@ Plug 'tyru/open-browser-github.vim'
 Plug 'simeji/winresizer'
 Plug 'mattn/gist-vim' | Plug 'mattn/webapi-vim'
 Plug 'moznion/hateblo.vim' | Plug 'mattn/webapi-vim'
-Plug 'zxqfl/tabnine-vim'
+" Plug 'zxqfl/tabnine-vim'
+Plug 'editorconfig/editorconfig-vim'
 
 " golang
 Plug 'fatih/vim-go', {'for': 'go', 'do': ':GoUpdateBinaries'}
@@ -126,7 +127,7 @@ Plug 'mattn/emmet-vim', {'for': 'html' }
 
 " js
 Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install',
+  \ 'do': 'npm install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 " markdown
@@ -145,7 +146,7 @@ call plug#end()
 " caw
 "==========================
 map <Leader>c <Plug>(caw:hatpos:toggle)
-map <Leader>a <Plug>(caw:a:toggle)
+map <Leader>a <Plug>(caw:dollarpos:toggle)
 
 "==========================
 " junkfile
