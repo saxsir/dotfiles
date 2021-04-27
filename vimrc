@@ -236,4 +236,3 @@ let g:previm_enable_realtime = 1
 "==========================
 let g:prettier#autoformat = 1
 nmap <Leader>f <Plug>(Prettier)
-

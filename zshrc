@@ -5,6 +5,11 @@ alias -g L='| lv'
 alias -g V='| vim -'
 alias gce='git commit --allow-empty'
 
+function avt {
+  profile=$1; shift
+  aws-vault exec $profile -- aws "$@";
+}
+
 # OS依存の設定
 case ${OSTYPE} in
   darwin*)
