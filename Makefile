@@ -7,7 +7,7 @@ srcs := \
 all: deps symlink
 	mackup restore
 
-deps: vim/autoload/plug.vim oh-my-zsh/custom/plugins/zsh-completions
+deps: vim/autoload/plug.vim oh-my-zsh/custom/plugins/zsh-completions oh-my-zsh/custom/plugins/zsh-autosuggestions
 	mkdir -p $(HOME)/.vimtmp
 	mkdir -p $(HOME)/.vimback
 	mkdir -p $(HOME)/.vimundo
@@ -18,10 +18,12 @@ vim/autoload/plug.vim:
 oh-my-zsh/custom/plugins/zsh-completions: oh-my-zsh
 	git clone git://github.com/zsh-users/zsh-completions.git $@
 
+oh-my-zsh/custom/plugins/zsh-autosuggestions: oh-my-zsh
+	git clone git://github.com/zsh-users/zsh-autosuggestions $@
+
 oh-my-zsh:
 	git clone git://github.com/robbyrussell/oh-my-zsh.git $(PWD)/$@
 
-# もう少しシンプルにーーー
 symlink: $(HOME)/.vim $(HOME)/.oh-my-zsh
 	$(foreach src, $(srcs), \
 	  ln -fs $(PWD)/$(src) $(HOME)/.$(src); \
