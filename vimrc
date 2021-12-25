@@ -103,13 +103,13 @@ Plug 'thinca/vim-quickrun'
 Plug 'tyru/caw.vim'
 Plug 'justinmk/vim-dirvish'
 Plug 'Yggdroot/indentLine'
-Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-fugitive'
 Plug 'majutsushi/tagbar'
 Plug 'tyru/open-browser.vim'
 Plug 'tyru/open-browser-github.vim'
 Plug 'simeji/winresizer'
 Plug 'mattn/gist-vim' | Plug 'mattn/webapi-vim'
-Plug 'moznion/hateblo.vim' | Plug 'mattn/webapi-vim'
+" Plug 'moznion/hateblo.vim' | Plug 'mattn/webapi-vim'
 " Plug 'zxqfl/tabnine-vim'
 Plug 'editorconfig/editorconfig-vim'
 
@@ -127,6 +127,10 @@ Plug 'mattn/emmet-vim', {'for': 'html' }
 
 " js
 Plug 'prettier/vim-prettier', {
+  \ 'do': 'npm install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+
+Plug 'maksimr/vim-jsbeautify', {
   \ 'do': 'npm install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
@@ -236,3 +240,9 @@ let g:previm_enable_realtime = 1
 "==========================
 let g:prettier#autoformat = 1
 nmap <Leader>f <Plug>(Prettier)
+
+"==========================
+" js-beautify
+"==========================
+" map <c-f> :call JsBeautify()<cr>
+autocmd FileType javascript vnoremap <buffer> <c-j> :call RangeJsBeautify()<cr>
