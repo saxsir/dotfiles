@@ -23,7 +23,7 @@ oh-my-zsh/custom/plugins/zsh-autosuggestions: oh-my-zsh
 oh-my-zsh:
 	git clone git://github.com/robbyrussell/oh-my-zsh.git $(PWD)/$@
 
-symlink: $(HOME)/.vim $(HOME)/.oh-my-zsh
+symlink: $(HOME)/.vim $(HOME)/.oh-my-zsh $(HOME)/.zshrc.local
 	$(foreach src, $(srcs), \
 	  ln -fs $(PWD)/$(src) $(HOME)/.$(src); \
 	  )
