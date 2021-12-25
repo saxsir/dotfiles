@@ -30,9 +30,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=green,bold"
 
 # homebrew
 if which brew > /dev/null; then
-  export PATH=/usr/local/bin:$PATH
-  export PATH=/usr/local/sbin:$PATH
-  alias brew="env PATH=${PATH/\/usr\/local\/var\/pyenv\/shims:?/} brew"
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 # coreutils
