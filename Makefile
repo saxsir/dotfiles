@@ -5,7 +5,6 @@ srcs := \
   zshenv zshrc zshrc.darwin zshrc.linux ideavimrc mackup.cfg
 
 all: deps symlink
-	mackup restore
 
 deps: vim/autoload/plug.vim oh-my-zsh/custom/plugins/zsh-completions oh-my-zsh/custom/plugins/zsh-autosuggestions
 	mkdir -p $(HOME)/.vimtmp
