@@ -200,7 +200,7 @@ noremap <leader>t :<c-u>TagbarToggle<cr>
 "==========================
 " ctrlp-ghq
 "==========================
-noremap <leader>p :<c-u>CtrlPGhq<cr>
+noremap <leader>g :<c-u>CtrlPGhq<cr>
 let ctrlp_ghq_default_action = 'e'
 
 "==========================
