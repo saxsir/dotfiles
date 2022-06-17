@@ -37,3 +37,8 @@ Session.vim
 
 # bundler
 .bundle/
+
+# php-cs-fixer
+*.cache
+
+*.backup
