@@ -1,5 +1,5 @@
 # 起動時間のプロファイリングしたい時はコメントアウトを外す
-zmodload zsh/zprof
+# zmodload zsh/zprof
 
 # oh-my-zsh
 export ZSH=$HOME/.oh-my-zsh
