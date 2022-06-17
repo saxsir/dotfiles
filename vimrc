@@ -33,7 +33,7 @@ set foldlevel=1
 "==========================
 set laststatus=2    " ステータスラインを常に表示
 set background=dark
-colorscheme slate
+colorscheme industry
 
 "==========================
 " backup
