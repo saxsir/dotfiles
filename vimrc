@@ -113,6 +113,9 @@ Plug 'mattn/gist-vim' | Plug 'mattn/webapi-vim'
 " Plug 'zxqfl/tabnine-vim'
 Plug 'editorconfig/editorconfig-vim'
 
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
 " golang
 Plug 'fatih/vim-go', {'for': 'go', 'do': ':GoUpdateBinaries'}
 
@@ -197,7 +200,7 @@ noremap <leader>t :<c-u>TagbarToggle<cr>
 "==========================
 " ctrlp-ghq
 "==========================
-noremap <leader>g :<c-u>CtrlPGhq<cr>
+noremap <leader>p :<c-u>CtrlPGhq<cr>
 let ctrlp_ghq_default_action = 'e'
 
 "==========================
@@ -231,7 +234,6 @@ let g:lsp_async_completion = 1
 " vim-markdown, previm
 "==========================
 autocmd BufRead,BufNewFile *.md set filetype=markdown
-nnoremap <leader>p :PrevimOpen<CR>
 let g:vim_markdown_folding_disabled=1
 let g:previm_enable_realtime = 1
 
@@ -246,3 +248,28 @@ nmap <Leader>f <Plug>(Prettier)
 "==========================
 " map <c-f> :call JsBeautify()<cr>
 autocmd FileType javascript vnoremap <buffer> <c-j> :call RangeJsBeautify()<cr>
+
+"==========================
+" fzf-vim
+"==========================
+" git grep w/ fzf
+command! -bang -nargs=* GGrep
+  \ call fzf#vim#grep(
+  \   'git grep --line-number -- '.shellescape(<q-args>), 0,
+  \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
+
+" rg w/ fzf
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
+nnoremap <silent> <Leader>gg :GGrep<CR>
+nnoremap <silent> <Leader>rg :RG<CR>
+
+
