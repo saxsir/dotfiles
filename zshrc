@@ -13,10 +13,6 @@ plugins+=(
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=green,bold"
 source $ZSH/oh-my-zsh.sh
 
-# 補完
-autoload -U compinit
-compinit
-
 # common aliases
 alias vi='vi -u NONE'
 alias -g G='| grep'
