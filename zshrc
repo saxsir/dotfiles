@@ -1,3 +1,6 @@
+# 起動時間のプロファイリングしたい時はコメントアウトを外す
+zmodload zsh/zprof
+
 # common aliases
 alias vi='vi -u NONE'
 alias -g G='| grep'
@@ -28,9 +31,9 @@ source ~/.zshrc.local
 typeset -U path
 
 # 起動時間のプロファイリング
-# if type zprof > /dev/null 2>&1; then
-#   zprof | less
-# fi
+if type zprof > /dev/null 2>&1; then
+  zprof | less
+fi
 
 # compile済みファイルがない or zshrcの方が修正されていたらコンパイルする
 if [ ! -f ~/.zshrc.zwc -o ~/.zshrc -nt ~/.zshrc.zwc ]; then
