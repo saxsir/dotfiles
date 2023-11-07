@@ -227,7 +227,7 @@ endif
 "==========================
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+" inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 let g:lsp_async_completion = 1
 
 "==========================
@@ -271,5 +271,3 @@ command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
 nnoremap <silent> <Leader>gg :GGrep<CR>
 nnoremap <silent> <Leader>rg :RG<CR>
-
-

@@ -8,10 +8,7 @@
 [color]
     ui = true
 
-[diff]
-	tool = vimdiff
-
-[url "git@github.com:"]
+[url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
 
 [ghq]
@@ -33,6 +30,21 @@
     openpr = "!f() { export BROWSER=echo; hub browse -- `git log --merges --oneline --reverse --ancestry-path $1...master | grep 'Merge pull request #' | head -n 1 | cut -f5 -d' ' | sed -e 's%#%pull/%'`; }; f"
 
     ce = commit --allow-empty
+
+    findpr = "!f() { \
+        local default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'); \
+        local pr_number=$(git log --merges --ancestry-path --oneline \"$1\"..$default_branch | tail -1 | awk '{print $5}' | cut -d# -f2); \
+        if [ -z \"$pr_number\" ]; then \
+            echo \"PR番号が見つからんかったわ。\"; \
+            return 1; \
+        fi; \
+        local repo_url=$(git remote get-url origin | sed -E 's/^.+@github\\.com/https:\\/\\/github.com/' | sed 's/\\.git$//'); \
+        if [ -z \"$repo_url\" ]; then \
+            echo \"リポジトリのURLが取れんかったわ。\"; \
+            return 1; \
+        fi; \
+        open \"${repo_url}/pull/${pr_number}\"; \
+    }; f"
 
 [filter "lfs"]
 	clean = git-lfs clean %f

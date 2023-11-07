@@ -10,10 +10,9 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # coreutils
 # refs http://qiita.com/catatsuy/items/00ebf78f56960b6d43c2#2-4
-if [ -d /usr/local/opt/coreutils/libexec/gnubin ]; then
-  export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
-  export MANPATH=/usr/local/opt/coreutils/libexec/gnuman:$MANPATH
-  alias ls='ls --color=auto'
+if [ -d /opt/homebrew/opt/coreutils/libexec/gnubin ]; then
+  export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+  export MANPATH=/opt/homebrew/opt/coreutils/libexec/gnuman:$MANPATH
 else
   export LSCOLORS=gxfxcxdxbxegedabagacad
   alias ls='ls -G'
@@ -64,3 +63,12 @@ if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then source "$HOME/google-cloud
 
 # The next line enables shell command completion for gcloud.
 if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then source "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
+
+# flutter
+export PATH="$PATH:$HOME/.flutter/flutter/bin"
+
+# Android Studio (for flutter)
+export ANDROID_HOME=/Users/saxsir/Library/Android/sdk
+export PATH="$PATH:$ANDROID_HOME/cmdline-tools/latest/bin"
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+export CPPFLAGS="-I/opt/homebrew/opt/openjdk/include"

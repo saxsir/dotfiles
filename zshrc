@@ -78,3 +78,9 @@ fi
 if [ ! -f ~/.zshrc.zwc -o ~/.zshrc -nt ~/.zshrc.zwc ]; then
   zcompile ~/.zshrc
 fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/saxsir/Desktop/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/saxsir/Desktop/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/saxsir/Desktop/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/saxsir/Desktop/google-cloud-sdk/completion.zsh.inc'; fi
