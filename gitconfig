@@ -46,6 +46,8 @@
         open \"${repo_url}/pull/${pr_number}\"; \
     }; f"
 
+    com = !git switch $(git symbolic-ref refs/remotes/origin/HEAD | cut -d '/' -f4)
+
 [filter "lfs"]
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f

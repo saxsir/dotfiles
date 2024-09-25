@@ -3,14 +3,14 @@
 
 # oh-my-zsh
 export ZSH=$HOME/.oh-my-zsh
-ZSH_THEME="jbergantine"
 plugins+=(
     git
-    docker
-    zsh-completions
-    zsh-autosuggestions
 )
+ZSH_THEME="jbergantine"
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=green,bold"
+DISABLE_AUTO_UPDATE="true"
+DISABLE_MAGIC_FUNCTIONS="true"
+DISABLE_AUTO_TITLE="true"
 source $ZSH/oh-my-zsh.sh
 
 # common aliases
@@ -69,6 +69,14 @@ source ~/.zshrc.local
 # 重複してるパスを除去
 typeset -U path
 
+# 補完の初期化を遅延させる
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
+
 # 起動時間のプロファイリング
 if type zprof > /dev/null 2>&1; then
   zprof | less
@@ -78,13 +86,6 @@ fi
 if [ ! -f ~/.zshrc.zwc -o ~/.zshrc -nt ~/.zshrc.zwc ]; then
   zcompile ~/.zshrc
 fi
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/ca00622/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ca00622/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/ca00622/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ca00622/google-cloud-sdk/completion.zsh.inc'; fi
+if [ ! -f ~/.zcompdump.zwc -o ~/.zcompdump -nt ~/.zcompdump.zwc ]; then
+  zrecompile ~/.zshrc ~/.zcompdump
+fi
