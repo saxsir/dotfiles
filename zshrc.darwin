@@ -44,6 +44,12 @@ if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 # nodebrew
 if which nodebrew > /dev/null; then export PATH=$HOME/.nodebrew/current/bin:$PATH; fi
 
+# volta
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
+# npm
+export PATH=~/.npm-global/bin:$PATH
+
 # go
 if [ -d "/usr/local/go/" ]; then
   export PATH=/usr/local/go/bin:$PATH

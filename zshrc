@@ -89,3 +89,6 @@ fi
 if [ ! -f ~/.zcompdump.zwc -o ~/.zcompdump -nt ~/.zcompdump.zwc ]; then
   zrecompile ~/.zshrc ~/.zcompdump
 fi
+alias claude="$HOME/.claude/local/claude"
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
