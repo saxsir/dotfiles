@@ -19,6 +19,7 @@ alias -g G='| grep'
 alias -g L='| lv'
 alias -g V='| vim -'
 alias gce='git commit --allow-empty'
+alias claude='~/.claude/local/claude'
 
 function avt {
   profile=$1; shift
@@ -89,3 +90,15 @@ fi
 if [ ! -f ~/.zcompdump.zwc -o ~/.zcompdump -nt ~/.zcompdump.zwc ]; then
   zrecompile ~/.zshrc ~/.zcompdump
 fi
+
+. "$HOME/.local/bin/env"
+
+# pnpm
+export PNPM_HOME="/Users/saxsir/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+alias claude="/Users/saxsir/.claude/local/claude"
