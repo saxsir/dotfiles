@@ -77,7 +77,6 @@ return {
         "lua_ls",
         "gopls",
         "ts_ls",
-        "pyright",
       },
       automatic_installation = true,
       handlers = {

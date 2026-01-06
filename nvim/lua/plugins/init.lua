@@ -20,13 +20,10 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   spec = {
     { import = "plugins.colorscheme" },
-    { import = "plugins.ui" },
-    { import = "plugins.editor" },
     { import = "plugins.lsp" },
     { import = "plugins.completion" },
     { import = "plugins.treesitter" },
     { import = "plugins.telescope" },
-    { import = "plugins.git" },
   },
   defaults = {
     lazy = true,
@@ -35,15 +32,12 @@ require("lazy").setup({
     colorscheme = { "tokyonight" },
   },
   checker = {
-    enabled = true,
-    notify = false,
+    enabled = false,
   },
   performance = {
     rtp = {
       disabled_plugins = {
         "gzip",
-        "matchit",
-        "matchparen",
         "netrwPlugin",
         "tarPlugin",
         "tohtml",

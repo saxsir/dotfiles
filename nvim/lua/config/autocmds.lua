@@ -22,7 +22,7 @@ autocmd("BufWritePre", {
   pattern = "*",
   callback = function()
     local save_cursor = vim.fn.getpos(".")
-    vim.cmd([[%s/\s\+$//e]])
+    vim.cmd("%s/\\s\\+$//e")
     vim.fn.setpos(".", save_cursor)
   end,
 })
@@ -40,20 +40,10 @@ autocmd("BufReadPost", {
 })
 
 -- Filetype specific settings
-local filetype = augroup("FileType", { clear = true })
+local ft_settings = augroup("FiletypeSettings", { clear = true })
 
 autocmd("FileType", {
-  group = filetype,
-  pattern = "markdown",
-  callback = function()
-    vim.opt_local.wrap = true
-    vim.opt_local.spell = true
-  end,
-})
-
--- Skip certain filetypes for trailing whitespace removal
-autocmd("FileType", {
-  group = filetype,
+  group = ft_settings,
   pattern = { "markdown" },
   callback = function()
     vim.b.disable_trailing_whitespace = true

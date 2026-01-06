@@ -18,8 +18,9 @@ opt.backspace = { "indent", "eol", "start" }
 opt.clipboard:append("unnamedplus")
 
 -- Folding
-opt.foldmethod = "syntax"
-opt.foldlevel = 1
+opt.foldmethod = "expr"
+opt.foldexpr = "nvim_treesitter#foldexpr()"
+opt.foldlevel = 99
 
 -- Appearance
 opt.laststatus = 2
