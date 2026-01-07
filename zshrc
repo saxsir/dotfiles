@@ -1,6 +1,11 @@
 # 起動時間のプロファイリングしたい時はコメントアウトを外す
 # zmodload zsh/zprof
 
+# $HOME/.zsh/fatima.sh
+# export OPENAI_API_BASE=https://fatima.adingo.jp/openai/v1
+# export OPENAI_API_KEY=$(jq -r .access_token $HOME/.fatima/auth0_token.json)
+# $HOME/.zsh/update_cursor_api_key.sh
+
 # oh-my-zsh
 export ZSH=$HOME/.oh-my-zsh
 plugins+=(
@@ -53,6 +58,44 @@ function peco-src () {
 zle -N peco-src
 bindkey '^p' peco-src
 
+function select_worktree() {
+  local worktrees
+  worktrees=$(git worktree list --porcelain | awk '/worktree / {print $2}')
+  if [[ -z "$worktrees" ]]; then
+    echo "No worktrees found."
+    return 1
+  fi
+  local selected
+  selected=$(echo "$worktrees" | fzf)
+  if [[ -n "$selected" ]]; then
+    echo "$selected"
+    cd "$selected"
+  fi
+}
+zle -N select_worktree
+bindkey '^j' select_worktree
+
+alias claude="~/.claude/local/claude"
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+
+# Added by Antigravity
+export PATH="/Users/ca00622/.antigravity/antigravity/bin:$PATH"
+
+# mise
+eval "$(mise activate zsh)"
+
+# pnpm
+export PNPM_HOME="/Users/ca00622/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+
+alias npm='pnpm'
+alias npx='pnpm dlx'
+# pnpm end
+
 # OS依存の設定
 case ${OSTYPE} in
   darwin*)
@@ -90,13 +133,3 @@ fi
 if [ ! -f ~/.zcompdump.zwc -o ~/.zcompdump -nt ~/.zcompdump.zwc ]; then
   zrecompile ~/.zshrc ~/.zcompdump
 fi
-
-# pnpm
-export PNPM_HOME="/Users/saxsir/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"

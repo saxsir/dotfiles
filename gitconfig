@@ -47,6 +47,8 @@
     }; f"
 
     com = !git switch $(git symbolic-ref refs/remotes/origin/HEAD | cut -d '/' -f4)
+    wb = "!f() { WORKTREE_PATH=../$(basename $(pwd))-${1}; git worktree add $WORKTREE_PATH $2; }; f"
+    wd = worktree remove .
 
 [filter "lfs"]
 	clean = git-lfs clean %f

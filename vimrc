@@ -161,6 +161,8 @@ map <Leader>a <Plug>(caw:dollarpos:toggle)
 let g:junkfile#directory = $HOME . '/src/github.com/saxsir/memo'
 command! -nargs=0 DailyLog call junkfile#open_immediately(
       \ strftime('%Y-%m-%d.md'))
+command! -nargs=0 JunkfileOpen call junkfile#open(
+      \ '%Y-%m-%d-%H%M%S.'->strftime())
 
 "==========================
 " lightline
