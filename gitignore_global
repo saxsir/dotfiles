@@ -45,3 +45,5 @@ Session.vim
 *.cache
 
 *.backup
+
+.claude

@@ -19,6 +19,7 @@ alias -g G='| grep'
 alias -g L='| lv'
 alias -g V='| vim -'
 alias gce='git commit --allow-empty'
+alias claude="$HOME/.claude/local/claude"
 
 function avt {
   profile=$1; shift
@@ -89,6 +90,13 @@ fi
 if [ ! -f ~/.zcompdump.zwc -o ~/.zcompdump -nt ~/.zcompdump.zwc ]; then
   zrecompile ~/.zshrc ~/.zcompdump
 fi
-alias claude="$HOME/.claude/local/claude"
+
+# pnpm
+export PNPM_HOME="/Users/saxsir/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
 
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
