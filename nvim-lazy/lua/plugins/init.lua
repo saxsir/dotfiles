@@ -24,6 +24,7 @@ require("lazy").setup({
     { import = "plugins.completion" },
     { import = "plugins.treesitter" },
     { import = "plugins.telescope" },
+    { import = "plugins.oil" },
   },
   defaults = {
     lazy = true,
