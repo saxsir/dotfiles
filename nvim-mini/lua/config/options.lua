@@ -51,5 +51,7 @@ opt.incsearch = true
 opt.completeopt = { "menu", "menuone", "noselect" }
 
 -- Leader key
-vim.g.mapleader = "<Space>"
-vim.g.maplocalleader = "<Space>"
+-- VimScript equivalent: let mapleader = "\<Space>"
+local SPACE_KEY = " "
+vim.g.mapleader = SPACE_KEY
+vim.g.maplocalleader = SPACE_KEY

@@ -26,7 +26,7 @@ return {
     end, { desc = "Find files" })
 
     vim.keymap.set("n", "<Leader>fg", function()
-      Pick.builtin.pickers.grep_live()
+      Pick.builtin.grep_live()
     end, { desc = "Live grep" })
 
     vim.keymap.set("n", "<Leader>fb", function()
@@ -36,5 +36,10 @@ return {
     vim.keymap.set("n", "<Leader>fh", function()
       Pick.builtin.help()
     end, { desc = "Help tags" })
+
+    -- Recent files (from mini.extra)
+    vim.keymap.set("n", "<Leader>fr", function()
+      Extra.pickers.oldfiles()
+    end, { desc = "Recent files" })
   end,
 }
