@@ -49,7 +49,23 @@ end)
 now(function()
   require("mini.icons").setup()
   require("mini.statusline").setup()
+end)
 
+now(function()
+  require('mini.notify').setup()
+  vim.notify = require('mini.notify').make_notify({
+    ERROR = { duration = 10000 }
+  })
+  vim.api.nvim_create_user_command('NotifyHistory', function()
+    -- Open in a new split to avoid winfixbuf issues
+    vim.cmd('vsplit')
+    MiniNotify.show_history()
+    -- Press 'q' to delete the history buffer
+    vim.keymap.set('n', 'q', '<cmd>bdelete<cr>', { buffer = true })
+  end, { desc = 'Show notify history' })
+end)
+
+now(function()
   -- nvim-treesister does NOT support lazy loading
   -- https://github.com/nvim-treesitter/nvim-treesitter/blob/de878155ca66c49b027b1380e4e60a6c665b2630/README.md?plain=1#L46
   add({
