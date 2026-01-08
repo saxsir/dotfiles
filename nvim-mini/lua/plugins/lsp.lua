@@ -13,9 +13,23 @@ return {
     require("mason-lspconfig").setup({
       ensure_installed = { "lua_ls", "gopls", "ts_ls" },
       automatic_installation = true,
+      handlers = {
+        -- Default handler for all servers
+        function(server_name)
+          vim.lsp.config(server_name, {})
+        end,
+        -- Custom handler for lua_ls
+        ["lua_ls"] = function()
+          vim.lsp.config("lua_ls", {
+            settings = {
+              Lua = {
+                diagnostics = { globals = { "vim" } },
+              },
+            },
+          })
+        end,
+      },
     })
-
-    local lspconfig = require("lspconfig")
 
     -- LSP keymaps (auto-attached when LSP starts)
     vim.api.nvim_create_autocmd("LspAttach", {
@@ -42,17 +56,5 @@ return {
         vim.lsp.buf.format({ async = false })
       end,
     })
-
-    -- Setup LSP servers
-    lspconfig.lua_ls.setup({
-      settings = {
-        Lua = {
-          diagnostics = { globals = { "vim" } },
-        },
-      },
-    })
-    lspconfig.gopls.setup({})
-    lspconfig.ts_ls.setup({})
-    lspconfig.pyright.setup({})
   end,
 }
