@@ -20,6 +20,7 @@ source $ZSH/oh-my-zsh.sh
 
 # common aliases
 alias vi='vi -u NONE'
+alias vim='nvim'
 alias -g G='| grep'
 alias -g L='| lv'
 alias -g V='| vim -'
