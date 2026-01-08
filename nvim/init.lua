@@ -12,6 +12,7 @@ end)
 require("config.options")
 require("config.keymaps")
 require("config.autocmds")
+require("config.commands")
 
 -- Load plugins
 require("plugins")
