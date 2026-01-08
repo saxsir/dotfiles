@@ -24,6 +24,13 @@ return {
             settings = {
               Lua = {
                 diagnostics = { globals = { "vim" } },
+                -- Match StyLua default format settings
+                format = {
+                  defaultConfig = {
+                    indent_style = "tab",
+                    indent_size = "4",
+                  },
+                },
               },
             },
           })
