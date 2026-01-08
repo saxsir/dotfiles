@@ -23,7 +23,7 @@ oh-my-zsh/custom/plugins/zsh-autosuggestions: oh-my-zsh
 oh-my-zsh:
 	git clone git@github.com:ohmyzsh/ohmyzsh.git $(PWD)/$@
 
-symlink: $(HOME)/.vim $(HOME)/.oh-my-zsh $(HOME)/.zshrc.local $(HOME)/.config/nvim-lazy $(HOME)/.config/nvim-mini
+symlink: $(HOME)/.vim $(HOME)/.oh-my-zsh $(HOME)/.zshrc.local $(HOME)/.config/nvim
 	$(foreach src, $(srcs), \
 	  ln -fs $(PWD)/$(src) $(HOME)/.$(src); \
 	  )
@@ -37,10 +37,6 @@ $(HOME)/.oh-my-zsh:
 $(HOME)/.zshrc.local:
 	cp zshrc.local.sample $@
 
-$(HOME)/.config/nvim-lazy:
+$(HOME)/.config/nvim:
 	mkdir -p $(HOME)/.config
-	ln -Fs $(PWD)/nvim-lazy/ $@
-
-$(HOME)/.config/nvim-mini:
-	mkdir -p $(HOME)/.config
-	ln -Fs $(PWD)/nvim-mini/ $@
+	ln -Fs $(PWD)/nvim/ $@
