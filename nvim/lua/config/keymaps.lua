@@ -38,3 +38,14 @@ keymap("n", "<Esc>", ":nohlsearch<CR>", opts)
 -- Better indenting
 keymap("v", "<", "<gv", opts)
 keymap("v", ">", ">gv", opts)
+
+-- Terminal mode navigation
+-- Exit terminal mode and move to window directly (instead of Esc then Ctrl+hjkl)
+keymap("t", "<C-h>", "<C-\\><C-n><C-w>h", { desc = "Exit terminal and move left" })
+keymap("t", "<C-j>", "<C-\\><C-n><C-w>j", { desc = "Exit terminal and move down" })
+keymap("t", "<C-k>", "<C-\\><C-n><C-w>k", { desc = "Exit terminal and move up" })
+keymap("t", "<C-l>", "<C-\\><C-n><C-w>l", { desc = "Exit terminal and move right" })
+
+-- Exit terminal mode and return to previous window with Esc
+-- Useful for quickly toggling between editor and terminal (e.g., Claude Code)
+keymap("t", "<Esc>", "<C-\\><C-n><C-w>p", { desc = "Exit terminal and return to previous window" })

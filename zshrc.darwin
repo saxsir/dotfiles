@@ -84,5 +84,5 @@ if [ -f '/Users/ca00622/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ca00622
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/ca00622/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ca00622/google-cloud-sdk/completion.zsh.inc'; fi
 
-export EDITOR="vim"
+export EDITOR="nvim"
 export VISUAL="$EDITOR"
