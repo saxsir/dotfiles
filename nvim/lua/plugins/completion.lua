@@ -5,10 +5,19 @@
 return {
     source = "echasnovski/mini.nvim",
     config = function()
-        require("mini.completion").setup({
+        local completion = require("mini.completion")
+        completion.setup({
             lsp_completion = {
                 source_func = "omnifunc",
                 auto_setup = true,
+                -- mini.snippets automatically integrates with completion
+                -- Snippets will be expanded after selecting completion item
+                process_items = function(items, base)
+                    -- Filter items based on base
+                    return vim.tbl_filter(function(item)
+                        return vim.startswith(item.word or item.label, base)
+                    end, items)
+                end,
             },
             window = {
                 info = { border = "single" },
@@ -22,5 +31,23 @@ return {
                 vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
             end,
         })
+
+        -- Snippet expansion keybinding
+        -- mini.snippets will automatically handle <Tab> for jumping between placeholders
+        vim.keymap.set('i', '<Tab>', function()
+            if vim.snippet and vim.snippet.active({ direction = 1 }) then
+                return '<Cmd>lua vim.snippet.jump(1)<CR>'
+            else
+                return '<Tab>'
+            end
+        end, { expr = true })
+
+        vim.keymap.set('i', '<S-Tab>', function()
+            if vim.snippet and vim.snippet.active({ direction = -1 }) then
+                return '<Cmd>lua vim.snippet.jump(-1)<CR>'
+            else
+                return '<S-Tab>'
+            end
+        end, { expr = true })
     end,
 }
