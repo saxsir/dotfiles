@@ -17,9 +17,6 @@ return {
       },
     })
 
-    local Extra = require("mini.extra")
-    Extra.setup()
-
     -- Keymaps (Telescope-like)
     vim.keymap.set("n", "<Leader>ff", function()
       Pick.builtin.files()
@@ -37,9 +34,20 @@ return {
       Pick.builtin.help()
     end, { desc = "Help tags" })
 
+    local Extra = require("mini.extra")
+    Extra.setup()
+
     -- Recent files (from mini.extra)
     vim.keymap.set("n", "<Leader>fr", function()
       Extra.pickers.oldfiles()
     end, { desc = "Recent files" })
+
+    -- LSP pickers with preview
+    vim.keymap.set('n', 'gd', function() Extra.pickers.lsp({ scope = 'definition' }) end, { desc = 'LSP Definition' })
+    vim.keymap.set('n', 'gr', function() Extra.pickers.lsp({ scope = 'references' }) end, { desc = 'LSP References' })
+    vim.keymap.set('n', '<Leader>ss', function() Extra.pickers.lsp({ scope = 'document_symbol' }) end,
+      { desc = 'Document Symbols' })
+    vim.keymap.set('n', '<Leader>ws', function() Extra.pickers.lsp({ scope = 'workspace_symbol' }) end,
+      { desc = 'Workspace Symbols' })
   end,
 }
