@@ -24,15 +24,23 @@ Deps.setup({ path = { package = path_package } })
 -- Define helpers
 local add, now, later = Deps.add, Deps.now, Deps.later
 
--- Color schema
 now(function()
+  -- Color schema
   vim.o.termguicolors = true
-  vim.cmd("colorscheme miniwinter")
+  require('mini.hues').setup({ background = '#19213a', foreground = '#c4c6cd' }) -- blue
+
+  require("mini.icons").setup()
+  require("mini.statusline").setup()
 end)
 
 now(function()
   local Files = require("mini.files")
   Files.setup({
+    windows = {
+      max_number = math.huge,
+      preview = true,
+      width_preview = 80,
+    },
     mappings = {
       go_in = "<CR>",
       go_in_plus = "l",
@@ -44,11 +52,6 @@ now(function()
   vim.keymap.set("n", "-", function()
     Files.open(vim.api.nvim_buf_get_name(0))
   end, { desc = "Open mini.files" })
-end)
-
-now(function()
-  require("mini.icons").setup()
-  require("mini.statusline").setup()
 end)
 
 now(function()
