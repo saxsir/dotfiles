@@ -42,9 +42,27 @@ return {
       Extra.pickers.oldfiles()
     end, { desc = "Recent files" })
 
-    -- LSP pickers with preview (always show picker for selection)
+    -- LSP pickers with preview (smart definition jump)
     vim.keymap.set('n', 'gd', function()
-      Extra.pickers.lsp({ scope = 'definition' })
+      -- Check the number of definition results
+      local params = vim.lsp.util.make_position_params()
+      vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result, ctx, config)
+        if err or not result or vim.tbl_isempty(result) then
+          vim.notify('No definition found', vim.log.levels.INFO)
+          return
+        end
+
+        -- Normalize result (can be Location or Location[])
+        local locations = vim.tbl_islist(result) and result or { result }
+
+        if #locations == 1 then
+          -- Single result: jump directly
+          vim.lsp.util.jump_to_location(locations[1], 'utf-8')
+        else
+          -- Multiple results: show picker
+          Extra.pickers.lsp({ scope = 'definition' })
+        end
+      end)
     end, { desc = 'LSP Definition' })
 
     vim.keymap.set('n', 'gr', function()
