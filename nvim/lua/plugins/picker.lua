@@ -42,13 +42,25 @@ return {
       Extra.pickers.oldfiles()
     end, { desc = "Recent files" })
 
-    -- LSP pickers with preview
-    vim.keymap.set('n', 'gd', function() Extra.pickers.lsp({ scope = 'definition' }) end, { desc = 'LSP Definition' })
-    vim.keymap.set('n', 'gr', function() Extra.pickers.lsp({ scope = 'references' }) end, { desc = 'LSP References' })
-    vim.keymap.set('n', 'gi', function() Extra.pickers.lsp({ scope = 'implementation' }) end, { desc = 'LSP Implementation' })
-    vim.keymap.set('n', '<Leader>ss', function() Extra.pickers.lsp({ scope = 'document_symbol' }) end,
-      { desc = 'Document Symbols' })
-    vim.keymap.set('n', '<Leader>ws', function() Extra.pickers.lsp({ scope = 'workspace_symbol' }) end,
-      { desc = 'Workspace Symbols' })
+    -- LSP pickers with preview (always show picker for selection)
+    vim.keymap.set('n', 'gd', function()
+      Extra.pickers.lsp({ scope = 'definition' })
+    end, { desc = 'LSP Definition' })
+
+    vim.keymap.set('n', 'gr', function()
+      Extra.pickers.lsp({ scope = 'references' })
+    end, { desc = 'LSP References' })
+
+    vim.keymap.set('n', 'gi', function()
+      Extra.pickers.lsp({ scope = 'implementation' })
+    end, { desc = 'LSP Implementation' })
+
+    vim.keymap.set('n', '<Leader>ss', function()
+      Extra.pickers.lsp({ scope = 'document_symbol' })
+    end, { desc = 'Document Symbols' })
+
+    vim.keymap.set('n', '<Leader>ws', function()
+      Extra.pickers.lsp({ scope = 'workspace_symbol' })
+    end, { desc = 'Workspace Symbols' })
   end,
 }
