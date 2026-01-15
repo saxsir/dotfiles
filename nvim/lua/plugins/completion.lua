@@ -32,25 +32,5 @@ return {
         vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
       end,
     })
-
-    -- Snippet expansion keybinding
-    -- Use mini.snippets session for jumping between placeholders
-    vim.keymap.set('i', '<Tab>', function()
-      local session = require('mini.snippets').session
-      if session.get() ~= nil then
-        return session.jump('next')
-      else
-        return '<Tab>'
-      end
-    end, { expr = true, desc = 'Jump to next snippet placeholder or insert tab' })
-
-    vim.keymap.set('i', '<S-Tab>', function()
-      local session = require('mini.snippets').session
-      if session.get() ~= nil then
-        return session.jump('prev')
-      else
-        return '<S-Tab>'
-      end
-    end, { expr = true, desc = 'Jump to previous snippet placeholder' })
   end,
 }

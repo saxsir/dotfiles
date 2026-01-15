@@ -19,6 +19,12 @@ return {
         snippets.gen_loader.from_file(snippets_path),
         snippets.gen_loader.from_lang(),
       },
+      mappings = {
+        expand = '<C-j>',   -- Expand snippet
+        jump_next = '<C-n>', -- Jump to next placeholder
+        jump_prev = '<C-p>', -- Jump to previous placeholder
+        stop = '<C-c>',     -- Stop snippet session
+      },
     })
   end,
 }

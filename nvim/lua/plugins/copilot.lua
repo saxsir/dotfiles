@@ -8,8 +8,8 @@ return {
     -- <Tab> は mini.snippets と競合するため無効化
     vim.g.copilot_no_tab_map = true
 
-    -- <C-l> で Copilot の提案を受け入れる
-    vim.api.nvim_set_keymap('i', '<C-l>', 'copilot#Accept("<CR>")', {
+    -- <C-y> で Copilot の提案を受け入れる
+    vim.api.nvim_set_keymap('i', '<C-y>', 'copilot#Accept("<CR>")', {
       expr = true,
       silent = true,
       replace_keycodes = false,
