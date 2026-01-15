@@ -5,7 +5,7 @@
 
 -- Initialization
 pcall(function()
-	vim.loader.enable()
+  vim.loader.enable()
 end)
 
 -- Load core configurations

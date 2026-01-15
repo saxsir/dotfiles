@@ -3,8 +3,12 @@
 -- ======================
 
 return {
-    source = "echasnovski/mini.nvim",
-    config = function()
-        require("mini.pairs").setup()
-    end,
+  source = "echasnovski/mini.nvim",
+  config = function()
+    require("mini.pairs").setup({
+      mappings = {
+        ['`'] = false, -- Disable backtick auto-pairing
+      },
+    })
+  end,
 }
