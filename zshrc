@@ -25,7 +25,8 @@ alias -g G='| grep'
 alias -g L='| lv'
 alias -g V='| vim -'
 alias gce='git commit --allow-empty'
-alias claude="~/.claude/local/claude"
+export CLAUDE_PATH="$HOME/.claude/local/claude"
+alias claude="$CLAUDE_PATH"
 
 function avt {
   profile=$1; shift
