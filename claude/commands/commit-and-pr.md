@@ -1,59 +1,41 @@
+
 ---
-allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*), Bash(git diff:*), Bash(git log:*), Bash(git push:*), Bash(git rev-parse:*), Bash(gh pr create:*)
-description: Commit, Push, and Create PR Command
+allowed-tools: Bash(git checkout --branch:*), Bash(git add:*), Bash(git status:*), Bash(git push:*), Bash(git commit:*), Bash(gh pr create:*), Bash(git diff:*), Bash(git log:*)
+description: Commit, push, and open a Draft PR
 ---
 
 ## Context
 
-- Git status: !`git status --short --branch`
-- Git diff (staged + unstaged): !`git diff HEAD`
+- Current git status: !`git status`
+- Current git diff (staged and unstaged changes): !`git diff HEAD`
+- Current branch: !`git branch --show-current`
 - Changed files stats: !`git diff --stat HEAD`
-- Recent commits: !`git log --oneline -5`
-- Current branch: !`git rev-parse --abbrev-ref HEAD`
 
 ## Your task
 
-変更をコミット→プッシュ→draft PR作成まで一気に実行します。
+Based on the above changes:
 
-### 実行手順
-
-1. **変更内容の確認と分析**
-   - ステージングされている変更とされていない変更を確認
-   - 変更の意図と影響範囲を把握
-   - コミットメッセージの内容を考える
-
-2. **必要なファイルをステージング**
-   - 関連する変更ファイルを `git add` でステージング
-
-3. **コミットメッセージの作成**
-   - 最近のコミット履歴のスタイルに合わせて、明確なコミットメッセージを作成
-   - 形式: `<type>: <subject>`
-
-4. **コミット実行**
-
-5. **プッシュ**
-   - `git push -u origin <branch-name>`
-
-6. **PR説明文の生成**
-   - CLAUDE.mdの形式に従ってPR説明文を生成
-   - 形式:
+1. Create a new branch if on main (or master)
+2. Create a single commit with an appropriate message
+3. Push the branch to origin
+4. Generate PR title and description:
+   - First check if the repository has a pull request template (`.github/PULL_REQUEST_TEMPLATE.md` or similar)
+   - If a template exists, follow that template structure
+   - If no template exists, use this default format:
      ```
      ## What
-     {{ なにを変えたか？の事実を記載する }}
+     {{ what was changed - facts }}
 
      ## Why
-     {{ なぜこの変更が必要だったのか？を記載する }}
+     {{ why this change was necessary }}
+
+     ## 🔗 Related Issues
+
+     ## 💡 Discussion Points / Technical Concerns
      ```
+5. **IMPORTANT**: Present the generated PR title and description to the user for confirmation and allow them to make edits before proceeding
+6. After user approval, create a draft pull request using `gh pr create --draft`
 
-7. **PR文言の確認**
-   - PR作成前に、生成したタイトルと説明文をユーザーに提示して確認・修正してもらう
+## Important Notes
 
-8. **Draft PR作成**
-   - ユーザーが承認したら、`gh pr create --draft` でdraft PRを作成
-
-## 注意事項
-
-- コミット前にgit statusで変更を必ず確認
-- PRタイトルと説明文は必ずユーザー確認を経てから作成
-- Draft PRとして作成（Ready for reviewはユーザーが手動で切り替え）
-- 秘密情報（.env、credentials.jsonなど）をコミットしないよう注意
+- Never commit secrets (.env, credentials.json, etc.)

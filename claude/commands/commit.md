@@ -1,6 +1,6 @@
 ---
 allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*), Bash(git diff:*), Bash(git log:*)
-description: 現在の変更を確認し、コミットしてください。
+description: Create a git commit
 ---
 
 ## Context
@@ -12,5 +12,5 @@ description: 現在の変更を確認し、コミットしてください。
 
 ## Your task
 
-現在の変更を確認し、コミットしてください。
-ファイルがaddされていない場合、現在の作業に関連する変更をaddしてからコミットしてください。
+Based on the above changes, create a single git commit.
+You have the capability to call multiple tools in a single response. Stage and create the commit using a single message. Do not use any other tools or do anything else. Do not send any other text or messages besides these tool calls.
