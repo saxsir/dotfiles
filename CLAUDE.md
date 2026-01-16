@@ -47,7 +47,7 @@ source ~/.zshrc
    - Terminal multiplexer: tmux with vim-like keybindings
 
 3. **Editor Configurations**
-   - Vim: Basic configuration with vim-plug support
+   - NeoVim: Basic configuration with mini.deps support
    - IdeaVim: Inherits vimrc with additional IntelliJ-specific settings
 
 ### Important Patterns
@@ -57,15 +57,13 @@ source ~/.zshrc
 
 ## Critical Notes
 
-1. **User-specific paths**: Some configurations contain hardcoded paths (e.g., `/Users/ca00622`). These should be reviewed and updated as needed.
-
-2. **Git configuration**: The `gitconfig` contains personal user information that MUST be changed before use:
+1. **Git configuration**: The `gitconfig` contains personal user information that MUST be changed before use:
    ```
    [user]
        name = your username on GitHub
        email = your email on GitHub
    ```
 
-3. **SSH dependencies**: The Makefile clones repositories using SSH URLs (`git@github.com:`), requiring SSH keys to be set up.
+2. **SSH dependencies**: The Makefile clones repositories using SSH URLs (`git@github.com:`), requiring SSH keys to be set up.
 
-4. **macOS focus**: While Linux is supported, most optimizations and tool integrations are macOS-centric.
+3. **macOS focus**: While Linux is supported, most optimizations and tool integrations are macOS-centric.
