@@ -6,7 +6,7 @@ return {
   source = "coder/claudecode.nvim",
   config = function()
     require("claudecode").setup({
-      terminal_cmd = vim.fn.expand("~/.claude/local/claude"),
+      terminal_cmd = vim.env.CLAUDE_PATH or vim.fn.expand("~/.claude/local/claude"),
       terminal = {
         split_width_percentage = 0.4,
       },

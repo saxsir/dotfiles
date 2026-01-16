@@ -25,7 +25,8 @@ alias -g G='| grep'
 alias -g L='| lv'
 alias -g V='| vim -'
 alias gce='git commit --allow-empty'
-alias claude="$HOME/.claude/local/claude"
+export CLAUDE_PATH="$HOME/.claude/local/claude"
+alias claude="$CLAUDE_PATH"
 
 function avt {
   profile=$1; shift
@@ -76,18 +77,16 @@ function select_worktree() {
 zle -N select_worktree
 bindkey '^j' select_worktree
 
-alias claude="~/.claude/local/claude"
-
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
 
 # Added by Antigravity
-export PATH="/Users/ca00622/.antigravity/antigravity/bin:$PATH"
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 # mise
 eval "$(mise activate zsh)"
 
 # pnpm
-export PNPM_HOME="/Users/ca00622/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
