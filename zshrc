@@ -76,8 +76,6 @@ function select_worktree() {
 zle -N select_worktree
 bindkey '^j' select_worktree
 
-alias claude="~/.claude/local/claude"
-
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
 
 # Added by Antigravity
