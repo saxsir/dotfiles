@@ -23,7 +23,7 @@ oh-my-zsh/custom/plugins/zsh-autosuggestions: oh-my-zsh
 oh-my-zsh:
 	git clone git@github.com:ohmyzsh/ohmyzsh.git $(PWD)/$@
 
-symlink: $(HOME)/.vim $(HOME)/.oh-my-zsh $(HOME)/.zshrc.local $(HOME)/.config/nvim
+symlink: $(HOME)/.vim $(HOME)/.oh-my-zsh $(HOME)/.zshrc.local $(HOME)/.config/nvim $(HOME)/.claude/commands $(HOME)/.claude/agents $(HOME)/.claude/rules $(HOME)/.claude/skills
 	$(foreach src, $(srcs), \
 	  ln -fs $(PWD)/$(src) $(HOME)/.$(src); \
 	  )
@@ -40,3 +40,15 @@ $(HOME)/.zshrc.local:
 $(HOME)/.config/nvim:
 	mkdir -p $(HOME)/.config
 	ln -Fs $(PWD)/nvim/ $@
+
+$(HOME)/.claude/commands:
+	ln -Fs $(PWD)/claude/commands/ $@
+
+$(HOME)/.claude/agents:
+	ln -Fs $(PWD)/claude/agents/ $@
+
+$(HOME)/.claude/rules:
+	ln -Fs $(PWD)/claude/rules/ $@
+
+$(HOME)/.claude/skills:
+	ln -Fs $(PWD)/claude/skills/ $@
