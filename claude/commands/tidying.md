@@ -1,0 +1,1 @@
+Kent Beck の Tidyings を行ってください
