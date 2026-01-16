@@ -1,4 +1,3 @@
-
 ---
 allowed-tools: Bash(git checkout --branch:*), Bash(git add:*), Bash(git status:*), Bash(git push:*), Bash(git commit:*), Bash(gh pr create:*), Bash(git diff:*), Bash(git log:*)
 description: Commit, push, and open a Draft PR
@@ -16,9 +15,9 @@ description: Commit, push, and open a Draft PR
 Based on the above changes:
 
 1. Create a new branch if on main (or master)
-2. Create a single commit with an appropriate message
+2. Create a single commit with an appropriate message (write in Japanese)
 3. Push the branch to origin
-4. Generate PR title and description:
+4. Generate PR title and description (write in Japanese):
    - First check if the repository has a pull request template (`.github/PULL_REQUEST_TEMPLATE.md` or similar)
    - If a template exists, follow that template structure
    - If no template exists, use this default format:
