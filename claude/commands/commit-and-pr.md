@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(git checkout --branch:*), Bash(git add:*), Bash(git status:*), Bash(git push:*), Bash(git commit:*), Bash(gh pr create:*), Bash(git diff:*), Bash(git log:*), Bash(git rev-parse:*), Bash(git branch:*)
+allowed-tools: Bash(git checkout --branch:*), Bash(git add:*), Bash(git status:*), Bash(git push:*), Bash(git commit:*), Bash(gh pr create:*), Bash(gh pr view:*), Bash(git diff:*), Bash(git log:*), Bash(git rev-parse:*), Bash(git branch:*)
 description: Commit, push, and open a Draft PR
 ---
 
@@ -39,7 +39,10 @@ Based on the above changes:
      ## 💡 Discussion Points / Technical Concerns
      ```
 6. **IMPORTANT**: Present the generated PR title and description to the user for confirmation and allow them to make edits before proceeding
-7. After user approval, create a draft pull request using `gh pr create --draft --web` (this will open the PR in browser after creation)
+7. After user approval, create a draft pull request and open it in browser:
+   - First: `gh pr create --draft` (create the draft PR)
+   - Then: `gh pr view --web` (open in browser)
+   - Note: `--draft` and `--web` cannot be used together in `gh pr create`
 
 ## Important Notes
 
