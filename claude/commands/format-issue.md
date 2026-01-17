@@ -6,7 +6,7 @@ description: Format GitHub Issue Description Command
 ## Context
 
 - Issue details: !`gh issue view $ARGUMENTS --json number,title,body,author,state,labels,comments,url`
-- Closed by (if any): !`gh issue view $ARGUMENTS --json closedBy`
+- Closed by (if any): !`gh issue view $ARGUMENTS --json closedByPullRequestsReferences`
 
 ## Your task
 
