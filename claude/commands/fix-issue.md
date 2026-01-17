@@ -7,7 +7,6 @@ description: Fix GitHub Issue Command
 
 - Issue details: !`gh issue view $ARGUMENTS --json number,title,body,author,state,labels,comments`
 - Git status: !`git status --short --branch`
-- Recent commits: !`git log --oneline -10`
 
 ## Your task
 
