@@ -39,7 +39,7 @@ Based on the above changes:
      ## 💡 Discussion Points / Technical Concerns
      ```
 6. **IMPORTANT**: Present the generated PR title and description to the user for confirmation and allow them to make edits before proceeding
-7. After user approval, create a draft pull request using `gh pr create --draft`
+7. After user approval, create a draft pull request using `gh pr create --draft --web` (this will open the PR in browser after creation)
 
 ## Important Notes
 
