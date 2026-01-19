@@ -1,7 +1,11 @@
 ---
-allowed-tools: Bash(git checkout --branch:*), Bash(git add:*), Bash(git status:*), Bash(git push:*), Bash(git commit:*), Bash(gh pr create:*), Bash(gh pr view:*), Bash(git diff:*), Bash(git log:*), Bash(git rev-parse:*), Bash(git branch:*)
-description: Commit, push, and open a Draft PR
+allowed-tools: Bash(git checkout --branch:*), Bash(git add:*), Bash(git status:*), Bash(git push:*), Bash(git commit:*), Bash(gh pr create:*), Bash(gh pr view:*), Bash(git diff:*), Bash(git log:*), Bash(git rev-parse:*), Bash(git branch:*), Task(*)
+description: Commit, push, and open a Draft PR with code review
 ---
+
+## Arguments
+
+- `--skip-review`: Skip the code review step before creating PR (optional)
 
 ## Context
 
@@ -39,7 +43,18 @@ Based on the above changes:
      ## 💡 Discussion Points / Technical Concerns
      ```
 6. **IMPORTANT**: Present the generated PR title and description to the user for confirmation and allow them to make edits before proceeding
-7. After user approval, create a draft pull request and open it in browser:
+7. **Code Review** (unless `--skip-review` is specified):
+   - Run comprehensive PR review using the `/review-pr` skill (pr-review-toolkit)
+   - The review will check:
+     - Code quality (`code-reviewer`)
+     - Test coverage (`pr-test-analyzer`)
+     - Silent failures (`silent-failure-hunter`)
+     - Comment accuracy (`comment-analyzer` if comments were added/modified)
+     - Type design (`type-design-analyzer` if types were added/modified)
+   - If critical issues are found, stop and report them to the user
+   - If warnings are found, ask the user whether to proceed or fix them first
+   - If no issues are found, proceed to PR creation
+8. After user approval and review completion, create a draft pull request and open it in browser:
    - First: `gh pr create --draft` (create the draft PR)
    - Then: `gh pr view --web` (open in browser)
    - Note: `--draft` and `--web` cannot be used together in `gh pr create`
