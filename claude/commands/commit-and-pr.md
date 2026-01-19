@@ -1,7 +1,11 @@
 ---
-allowed-tools: Bash(git checkout --branch:*), Bash(git add:*), Bash(git status:*), Bash(git push:*), Bash(git commit:*), Bash(gh pr create:*), Bash(gh pr view:*), Bash(git diff:*), Bash(git log:*), Bash(git rev-parse:*), Bash(git branch:*)
+allowed-tools: Bash(git checkout --branch:*), Bash(git add:*), Bash(git status:*), Bash(git push:*), Bash(git commit:*), Bash(gh pr create:*), Bash(gh pr view:*), Bash(git diff:*), Bash(git log:*), Bash(git rev-parse:*), Bash(git branch:*), Task(*)
 description: Creates a commit, pushes to remote, and opens a draft pull request with Japanese title and description. Use when the user wants to commit changes and create a PR, or mentions creating a pull request.
 ---
+
+## Arguments
+
+- `--skip-review`: コードレビューステップをスキップ（オプション）
 
 ## Context
 
@@ -28,7 +32,8 @@ description: Creates a commit, pushes to remote, and opens a draft pull request 
 - [ ] ステップ4: ブランチをリモートにpush
 - [ ] ステップ5: PRのタイトルと説明を生成
 - [ ] ステップ6: PR内容についてユーザーの承認を得る
-- [ ] ステップ7: Draft Pull Requestを作成
+- [ ] ステップ7: コードレビューを実行（--skip-reviewが指定されていない場合）
+- [ ] ステップ8: Draft Pull Requestを作成
 ```
 
 ### ステップ1: ベースブランチを特定して変更を確認
@@ -142,7 +147,43 @@ Closes #123
 
 **ステップ7に進む前にユーザーの承認を得る必要があります。**
 
-### ステップ7: Draft Pull Requestを作成
+### ステップ7: コードレビューを実行（--skip-reviewが指定されていない場合）
+
+**デフォルトの動作:**
+- `--skip-review` オプションが指定されていない限り、PR作成前にコードレビューを実行
+- pr-review-toolkit を使用して包括的なレビューを実施
+
+**レビュー内容:**
+- **code-reviewer**: コード品質の一般的なチェック
+- **pr-test-analyzer**: テストカバレッジの確認
+- **silent-failure-hunter**: エラーハンドリングの検証（エラーハンドリングを変更した場合）
+- **comment-analyzer**: コメント精度の確認（コメント/ドキュメントを追加・修正した場合）
+- **type-design-analyzer**: 型設計のレビュー（型を追加・修正した場合）
+
+**レビュー実行方法:**
+```bash
+# /review-pr スキル（pr-review-toolkit）を使用
+Task tool を使って適切なエージェントを起動
+```
+
+**レビュー結果の処理:**
+- **Critical issues が見つかった場合**:
+  - 停止してユーザーに報告
+  - 修正を促す
+  - PR作成は中止
+
+- **Warnings が見つかった場合**:
+  - ユーザーに結果を提示
+  - 続行するか、修正してから進むか確認
+
+- **問題が見つからなかった場合**:
+  - ステップ8に進む
+
+**レビューをスキップする場合:**
+- `--skip-review` オプションが指定されている場合は、このステップを飛ばしてステップ8へ
+- 緊急時やhotfixの場合に使用
+
+### ステップ8: Draft Pull Requestを作成
 
 **ユーザーの承認後:**
 ```bash
