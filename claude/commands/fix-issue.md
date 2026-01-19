@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(gh issue view:*), Bash(gh issue comment:*), Bash(gh api:*), Bash(git status:*), Bash(git log:*), Bash(git checkout:*), Bash(git add:*), Bash(git commit:*)
+allowed-tools: Bash(gh issue view:*), Bash(gh issue comment:*), Bash(gh api:*), Bash(git status:*), Bash(git log:*), Bash(git checkout:*), Bash(git add:*), Bash(git commit:*), Task(*)
 description: Analyzes and fixes a GitHub Issue by creating a branch, implementing changes, running tests, and committing with appropriate message. Use when the user wants to resolve a specific GitHub issue or mentions fixing an issue number.
 ---
 
@@ -25,6 +25,7 @@ description: Analyzes and fixes a GitHub Issue by creating a branch, implementin
 - [ ] ステップ5: ブランチ作成
 - [ ] ステップ6: 実装（進捗をIssueコメントで更新）
 - [ ] ステップ7: テストと検証
+- [ ] ステップ7.5: 軽量コードレビュー（コミット前チェック）
 - [ ] ステップ8: コミット
 - [ ] ステップ9: 検証してPRの準備
 ```
@@ -104,6 +105,7 @@ gh issue comment $ARGUMENTS --body "## 進捗
 - [ ] [具体的な実装タスク2]
 - [ ] テスト追加
 - [ ] テスト実行・検証
+- [ ] 軽量コードレビュー
 - [ ] コミット
 "
 ```
@@ -145,6 +147,7 @@ gh api repos/{owner}/{repo}/issues/comments/{comment_id} \
 - [ ] [具体的な実装タスク2]
 - [ ] テスト追加
 - [ ] テスト実行・検証
+- [ ] 軽量コードレビュー
 - [ ] コミット
 "
 ```
@@ -179,6 +182,7 @@ gh api repos/{owner}/{repo}/issues/comments/{comment_id} \
 - [ ] [具体的な実装タスク2]
 - [ ] テスト追加
 - [ ] テスト実行・検証
+- [ ] 軽量コードレビュー
 - [ ] コミット
 "
 ```
@@ -219,9 +223,66 @@ gh api repos/{owner}/{repo}/issues/comments/{comment_id} \
 - [x] [具体的な実装タスク2]
 - [x] テスト追加
 - [x] テスト実行・検証
+- [ ] 軽量コードレビュー
 - [ ] コミット
 "
 ```
+
+### ステップ7.5: 軽量コードレビュー（コミット前チェック）
+
+**レビューの目的:**
+コミット前に基本的なコード品質とエラーハンドリングをチェックし、明らかな問題を早期発見します。包括的なレビューは `/commit-and-pr` で実施するため、ここでは軽量なチェックに留めます。
+
+**pr-review-toolkitの軽量エージェントを使用:**
+
+1. **code-reviewer**: 基本的なコード品質チェック
+   - コーディング規約の遵守
+   - 明らかなバグやアンチパターン
+   - 未使用コード・変数の検出
+   - 後方互換の残骸チェック
+
+2. **silent-failure-hunter**: エラーハンドリングの検証
+   - サイレント失敗の検出
+   - 不適切なエラーハンドリング
+   - 例外の握りつぶし
+
+**レビュー実行:**
+```bash
+# Task toolを使って軽量レビューを実行
+# 変更されたファイルに対してcode-reviewerとsilent-failure-hunterを起動
+```
+
+**レビュー結果の処理:**
+- **Critical issues が見つかった場合**:
+  - ステップ6（実装）に戻って修正
+  - Todoコメントを更新して進捗を反映
+
+- **Minor issues が見つかった場合**:
+  - その場で修正
+  - 必要に応じてテスト（ステップ7）を再実行
+
+- **問題が見つからなかった場合**:
+  - ステップ8（コミット）に進む
+
+**Todoコメントを更新:**
+```bash
+gh api repos/{owner}/{repo}/issues/comments/{comment_id} \
+  -X PATCH -f body="## 進捗
+
+- [x] ブランチ作成
+- [x] [具体的な実装タスク1]
+- [x] [具体的な実装タスク2]
+- [x] テスト追加
+- [x] テスト実行・検証
+- [x] 軽量コードレビュー
+- [ ] コミット
+"
+```
+
+**注意事項:**
+- この軽量レビューは、commit-and-prの包括的レビューの代替ではありません
+- テストカバレッジ、型設計、コメント精度などの詳細な分析は commit-and-pr で実施されます
+- ここでの目的は、コミット前に基本的な問題を早期発見することです
 
 ### ステップ8: コミット
 
@@ -270,6 +331,7 @@ gh api repos/{owner}/{repo}/issues/comments/{comment_id} \
 - [x] [具体的な実装タスク2]
 - [x] テスト追加
 - [x] テスト実行・検証
+- [x] 軽量コードレビュー
 - [x] コミット
 
 ✅ すべての実装が完了しました
