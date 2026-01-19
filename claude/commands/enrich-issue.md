@@ -1,6 +1,6 @@
 ---
 allowed-tools: Bash(gh issue view:*), Bash(gh issue edit:*)
-description: 不足情報を対話的に埋めてIssue内容を充実化するコマンド
+description: Enriches GitHub Issue content by interactively collecting missing information about background, problems, goals, constraints, and references. Use when an issue lacks detail or the user wants to improve issue quality through dialogue.
 ---
 
 ## Context
@@ -8,13 +8,23 @@ description: 不足情報を対話的に埋めてIssue内容を充実化する�
 - Issue詳細: !`gh issue view $ARGUMENTS --json number,title,body,author,state,labels,comments,milestone,assignees,url`
 - Issueコメント履歴: !`gh issue view $ARGUMENTS --comments`
 
-## Your task
+## あなたのタスク
 
-GitHub Issue #$ARGUMENTS の内容を対話的に充実させてください。
+ユーザーとの対話を通じて不足している情報を対話的に収集し、GitHub Issue #$ARGUMENTS の内容を充実させてください。
 
-### 充実化プロセス
+## 充実化ワークフロー
 
-#### フェーズ1: 現状分析
+進捗チェックリストをコピーして追跡してください：
+
+```
+進捗:
+- [ ] フェーズ1: 現状を分析
+- [ ] フェーズ2: 対話を通じて不足情報を収集
+- [ ] フェーズ3: 充実化されたコンテンツを統合して提示
+- [ ] フェーズ4: 次のステップを提案
+```
+
+### フェーズ1: 現状を分析
 
 1. **Issue内容の評価**
    - タイトルの明確性を確認
@@ -37,7 +47,7 @@ GitHub Issue #$ARGUMENTS の内容を対話的に充実させてください。
    - ユーザーに現在の充実度を表示
    - 不足している情報の優先度を説明
 
-#### フェーズ2: 対話的な情報収集
+### フェーズ2: 対話を通じて不足情報を収集
 
 不足している情報について、優先度順にユーザーに質問します。
 
@@ -72,7 +82,7 @@ GitHub Issue #$ARGUMENTS の内容を対話的に充実させてください。
 - 既存のIssue本文やコメントから推測できる内容は「〜という理解で合っていますか？」と確認形式で提示
 - ユーザーが「わからない」「あとで書く」と回答した場合は、その旨を記録して次の質問へ進む
 
-#### フェーズ3: 情報の統合と確認
+### フェーズ3: 充実化されたコンテンツを統合して提示
 
 1. **情報の統合**
    - 元のIssue本文の内容を尊重（削除しない）
@@ -89,7 +99,7 @@ GitHub Issue #$ARGUMENTS の内容を対話的に充実させてください。
    - 変更内容をdiff形式またはセクション別に明示
    - ユーザーの承認を得てから `gh issue edit $ARGUMENTS --body "..."` で更新
 
-#### フェーズ4: 次のステップの提案
+### フェーズ4: 次のステップを提案
 
 Issue内容を充実化した後、次のアクションを提案します:
 
