@@ -53,12 +53,17 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 
 2. **Development Tools Integration**
    - Git: Extensive aliases in `gitconfig`, git-secrets for AWS credential protection
-   - Package managers: Homebrew (macOS), various language version managers (rbenv, pyenv, nodebrew)
+   - Package managers: Homebrew (macOS), mise (version manager for multiple languages)
    - Terminal multiplexer: tmux with vim-like keybindings
 
 3. **Editor Configurations**
    - NeoVim: Basic configuration with mini.deps support
    - IdeaVim: Inherits vimrc with additional IntelliJ-specific settings
+
+4. **Claude Code Configuration**
+   - Custom commands: `claude/commands/` - commit, commit-and-pr, fix-issue, format-issue, enrich-issue, tidying
+   - Custom agents: `claude/agents/` - tidy-first-refactorer
+   - Symlinked to `~/.claude/commands/`, `~/.claude/agents/` etc.
 
 ### Important Patterns
 - **Lazy loading**: Heavy tools are loaded on-demand to improve shell startup time
