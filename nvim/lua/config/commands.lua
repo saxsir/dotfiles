@@ -54,3 +54,12 @@ vim.api.nvim_create_user_command("JunkfileOpen", function()
     vim.cmd("edit " .. filepath)
   end
 end, { desc = "Open junkfile with timestamp" })
+
+-- GHBrowse command: Open current line on GitHub
+vim.api.nvim_create_user_command("GHBrowse", function()
+  local file = vim.fn.expand("%:p")
+  local line = vim.fn.line(".")
+  local git_root = vim.fn.system("git rev-parse --show-toplevel"):gsub("\n", "")
+  local relative_path = file:sub(#git_root + 2)
+  vim.fn.system(string.format("gh browse %s:%d", relative_path, line))
+end, { desc = "Open current line on GitHub" })
