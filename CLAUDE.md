@@ -201,3 +201,7 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 - **oh-my-zsh submodules**: When cloning fresh, run `git submodule update --init --recursive`
 - **Homebrew on Apple Silicon**: Some formulas may require Rosetta 2 or ARM-specific installation
 - **tmux key conflicts**: Custom vim-like bindings may conflict with some terminal applications
+
+## Session Ending Routine
+
+セッションが終わりそうな場合（ユーザーが「終わり」「ありがとう」「完了」「おしまい」などと言った場合）、`/claude-md-management:revise-claude-md` の実行を提案してください。このスキルはセッション中の学びをCLAUDE.mdに反映するためのもので、変更前にユーザーの承認を求めます。
