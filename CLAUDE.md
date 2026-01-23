@@ -60,6 +60,76 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
    - NeoVim: Basic configuration with mini.deps support
    - IdeaVim: Inherits vimrc with additional IntelliJ-specific settings
 
+### NeoVim Keymap Reference
+
+#### 基本操作 (`config/keymaps.lua`)
+| キー | 説明 |
+|------|------|
+| `<C-c><C-e>e` | vimrc編集 |
+| `<C-c><C-e>s` | vimrc再読込 |
+| `jj` | ESC (挿入モード) |
+| `;` | `:` |
+| `<C-h/j/k/l>` | ウィンドウ移動 |
+| `%%` | カレントディレクトリ展開 (コマンドモード) |
+| `<Esc>` | 検索ハイライト解除 |
+| `<` / `>` | インデント調整 (選択維持) |
+
+#### ファイル操作 (`plugins/init.lua`, `plugins/picker.lua`)
+| キー | 説明 |
+|------|------|
+| `-` | mini.files を開く |
+| `<Leader>ff` | ファイル検索 |
+| `<Leader>fg` | grep検索 |
+| `<Leader>fb` | バッファ一覧 |
+| `<Leader>fh` | ヘルプ検索 |
+| `<Leader>fr` | 最近開いたファイル |
+
+#### Git操作 (`plugins/git.lua`)
+| キー | 説明 |
+|------|------|
+| `<Leader>gs` | Git status |
+| `<Leader>gc` | Git commit |
+| `<Leader>gp` | Git push |
+| `<Leader>gl` | Git log |
+| `<Leader>gd` | Git diff |
+| `<Leader>gb` | Git blame |
+| `<Leader>gB` | カーソル行のblame (virtual text) |
+
+**Blameバッファ内:**
+| キー | 説明 |
+|------|------|
+| `<CR>` | コミット詳細を表示 |
+| `gP` | 該当コミットのPRをブラウザで開く |
+
+#### LSP (`plugins/lsp.lua`)
+| キー | 説明 |
+|------|------|
+| `K` | ホバー (ドキュメント表示) |
+| `gd` | 定義へジャンプ |
+| `gr` | 参照一覧 |
+| `gi` | 実装へジャンプ |
+| `<Leader>rn` | リネーム |
+| `<Leader>ca` | コードアクション |
+| `<Leader>f` | フォーマット |
+| `[d` / `]d` | 前/次の診断へジャンプ |
+| `<Leader>ss` | ドキュメントシンボル |
+| `<Leader>ws` | ワークスペースシンボル |
+
+#### Claude Code (`plugins/claudecode.lua`)
+| キー | 説明 |
+|------|------|
+| `<Leader>l` | Claude Code トグル |
+| `<Leader>la` | diff承認 |
+| `<Leader>ld` | diff拒否 |
+| `<Esc><Esc>` | Claude Code トグル (ターミナルモード) |
+
+#### カスタムコマンド (`config/commands.lua`)
+| コマンド | 説明 |
+|----------|------|
+| `:DailyLog` | 今日の日報ファイルを開く |
+| `:JunkfileOpen` | タイムスタンプ付きメモファイル作成 |
+| `:GHBrowse` | 現在行をGitHubで開く |
+
 4. **Claude Code Configuration**
    - Custom commands: `claude/commands/` - commit, commit-and-pr, fix-issue, format-issue, enrich-issue, tidying
    - Custom agents: `claude/agents/` - tidy-first-refactorer
