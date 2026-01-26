@@ -6,24 +6,16 @@ srcs := \
 
 all: deps symlink
 
-deps: vim/autoload/plug.vim oh-my-zsh/custom/plugins/zsh-completions oh-my-zsh/custom/plugins/zsh-autosuggestions
+deps: vim/autoload/plug.vim
 	mkdir -p $(HOME)/.vimtmp
 	mkdir -p $(HOME)/.vimback
 	mkdir -p $(HOME)/.vimundo
+	mkdir -p $(HOME)/.config
 
 vim/autoload/plug.vim:
 	curl -fLo $@ --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-oh-my-zsh/custom/plugins/zsh-completions: oh-my-zsh
-	git clone git@github.com:zsh-users/zsh-completions.git $@
-
-oh-my-zsh/custom/plugins/zsh-autosuggestions: oh-my-zsh
-	git clone git@github.com:zsh-users/zsh-autosuggestions $@
-
-oh-my-zsh:
-	git clone git@github.com:ohmyzsh/ohmyzsh.git $(PWD)/$@
-
-symlink: $(HOME)/.vim $(HOME)/.oh-my-zsh $(HOME)/.zshrc.local $(HOME)/.config/nvim $(HOME)/.claude/commands $(HOME)/.claude/agents $(HOME)/.claude/rules $(HOME)/.claude/skills $(HOME)/.claude/settings.json
+symlink: $(HOME)/.vim $(HOME)/.zshrc.local $(HOME)/.config/nvim $(HOME)/.config/starship.toml $(HOME)/.claude/commands $(HOME)/.claude/agents $(HOME)/.claude/rules $(HOME)/.claude/skills $(HOME)/.claude/settings.json
 	$(foreach src, $(srcs), \
 	  ln -fs $(PWD)/$(src) $(HOME)/.$(src); \
 	  )
@@ -31,15 +23,16 @@ symlink: $(HOME)/.vim $(HOME)/.oh-my-zsh $(HOME)/.zshrc.local $(HOME)/.config/nv
 $(HOME)/.vim:
 	ln -Fs $(PWD)/vim/ $@
 
-$(HOME)/.oh-my-zsh:
-	ln -Fs $(PWD)/oh-my-zsh/ $@
-
 $(HOME)/.zshrc.local:
 	cp zshrc.local.sample $@
 
 $(HOME)/.config/nvim:
 	mkdir -p $(HOME)/.config
 	ln -Fs $(PWD)/nvim/ $@
+
+$(HOME)/.config/starship.toml:
+	mkdir -p $(HOME)/.config
+	ln -fs $(PWD)/starship.toml $@
 
 $(HOME)/.claude/commands:
 	ln -Fs $(PWD)/claude/commands/ $@
