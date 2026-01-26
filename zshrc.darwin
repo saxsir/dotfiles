@@ -77,6 +77,16 @@ nvm() {
 # uv
 export PATH="$PATH:$HOME/.local/bin"
 
+# mise
+eval "$(mise activate zsh)"
+
+# pnpm
+export PNPM_HOME="$HOME/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
 
 export EDITOR="nvim"
 export VISUAL="$EDITOR"

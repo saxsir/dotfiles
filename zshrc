@@ -82,20 +82,6 @@ bindkey '^j' select_worktree
 # Added by Antigravity
 export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
-# mise
-eval "$(mise activate zsh)"
-
-# pnpm
-export PNPM_HOME="$HOME/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-
-alias npm='pnpm'
-alias npx='pnpm dlx'
-# pnpm end
-
 # OS依存の設定
 case ${OSTYPE} in
   darwin*)

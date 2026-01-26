@@ -28,6 +28,11 @@
       "Bash(git commit:*)"
     ],
     "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)",
+      "Read(./config/credentials.json)",
+      "Read(./build)",
       "Bash(sudo:*)",
       "Bash(rm -rf:*)",
       "Bash(chmod 777 /*)",
@@ -67,6 +72,8 @@
     "command": "bash ~/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
+    "lua-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
     "pr-review-toolkit@claude-plugins-official": true,
@@ -75,6 +82,6 @@
   },
   "language": "Japanese",
   "feedbackSurveyState": {
-    "lastShownTime": 1754051696184
+    "lastShownTime": 1754040541141
   }
 }
