@@ -1,14 +1,2 @@
-format = "$directory$git_branch$git_status$character"
-
-[character]
-success_symbol = "[❯](green)"
-error_symbol = "[❯](red)"
-
-[directory]
-truncation_length = 3
-
-[git_branch]
-format = "[$branch]($style) "
-
-[git_status]
-format = '([$all_status$ahead_behind]($style) )'
+# Starship default configuration
+# 空のファイルでデフォルト設定を使用
