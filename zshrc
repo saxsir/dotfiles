@@ -6,17 +6,27 @@
 # export OPENAI_API_KEY=$(jq -r .access_token $HOME/.fatima/auth0_token.json)
 # $HOME/.zsh/update_cursor_api_key.sh
 
-# oh-my-zsh
-export ZSH=$HOME/.oh-my-zsh
-plugins+=(
-    git
-)
-ZSH_THEME="jbergantine"
+# === zinit ===
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+if [[ ! -d "$ZINIT_HOME" ]]; then
+  mkdir -p "$(dirname "$ZINIT_HOME")"
+  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
+source "${ZINIT_HOME}/zinit.zsh"
+
+# プラグイン（turboモードで遅延読み込み）
+zinit wait lucid for \
+  OMZL::git.zsh \
+  OMZL::directories.zsh \
+  OMZP::git \
+  atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
+  zsh-users/zsh-completions
+
+# autosuggestのスタイル設定
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=green,bold"
-DISABLE_AUTO_UPDATE="true"
-DISABLE_MAGIC_FUNCTIONS="true"
-DISABLE_AUTO_TITLE="true"
-source $ZSH/oh-my-zsh.sh
+
+# === Starship ===
+eval "$(starship init zsh)"
 
 # common aliases
 alias vi='vi -u NONE'
@@ -117,5 +127,5 @@ if [ ! -f ~/.zshrc.zwc -o ~/.zshrc -nt ~/.zshrc.zwc ]; then
   zcompile ~/.zshrc
 fi
 if [ ! -f ~/.zcompdump.zwc -o ~/.zcompdump -nt ~/.zcompdump.zwc ]; then
-  zrecompile ~/.zshrc ~/.zcompdump
+  zcompile ~/.zcompdump
 fi
