@@ -115,9 +115,10 @@
     "pr-review-toolkit@claude-plugins-official": true,
     "claude-md-management@claude-plugins-official": true,
     "claude-code-setup@claude-plugins-official": true,
-    "customaize-agent@context-engineering-kit": false,
     "superpowers@claude-plugins-official": true,
-    "serena@claude-plugins-official": true
+    "serena@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "php-lsp@claude-plugins-official": true
   },
   "language": "Japanese",
   "feedbackSurveyState": {

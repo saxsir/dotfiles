@@ -173,6 +173,7 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 3. Test changes using commands in "Testing and Validation" section
 4. Commit with descriptive message
 5. Create pull request for review (if working in team)
+6. **IMPORTANT**: After creating a PR (including draft), always open it in browser with `gh pr view --web`
 
 ### Deployment
 - IMPORTANT: After merging changes, run `make symlink` to update symlinks
