@@ -18,6 +18,7 @@ source "${ZINIT_HOME}/zinit.zsh"
 zinit wait lucid for \
   OMZL::git.zsh \
   OMZL::directories.zsh \
+  OMZL::key-bindings.zsh \
   OMZP::git \
   atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
   zsh-users/zsh-completions

@@ -1,2 +1,4 @@
-# Starship default configuration
-# 空のファイルでデフォルト設定を使用
+# Starship configuration
+
+[username]
+disabled = true
