@@ -18,7 +18,7 @@ source "${ZINIT_HOME}/zinit.zsh"
 zinit wait lucid for \
   OMZL::git.zsh \
   OMZL::directories.zsh \
-  OMZL::key-bindings.zsh \
+  atload'bindkey "^r" peco-select-history; bindkey "^p" peco-src; bindkey "^j" select_worktree' OMZL::key-bindings.zsh \
   OMZP::git \
   atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
   zsh-users/zsh-completions
