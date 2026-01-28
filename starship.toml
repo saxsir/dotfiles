@@ -1,4 +1,4 @@
 # Starship configuration
-
-[username]
+[gcloud]
+# GCPアカウントを表示するとメールアドレスが出るので非表示
 disabled = true
