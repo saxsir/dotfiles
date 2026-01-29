@@ -163,9 +163,9 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 ## Repository Workflow
 
 ### Branch Strategy
-- Branch naming: `feature/`, `fix/`, `chore/` prefixes
+- Branch naming: `feat/`, `fix/`, `chore/` prefixes
 - IMPORTANT: Create feature branches from `master` branch
-- Example: `feature/add-docker-aliases`, `fix/zsh-startup-time`
+- Example: `feat/add-docker-aliases`, `fix/zsh-startup-time`
 
 ### Making Changes
 1. Create a feature branch
