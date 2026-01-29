@@ -11,7 +11,7 @@ return {
   config = function()
     require("mason").setup()
     require("mason-lspconfig").setup({
-      ensure_installed = { "lua_ls", "gopls", "ts_ls" },
+      ensure_installed = { "lua_ls", "gopls", "ts_ls", "pyright", "intelephense" },
       automatic_installation = true,
       handlers = {
         -- Default handler for all servers
