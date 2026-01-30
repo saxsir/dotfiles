@@ -73,6 +73,7 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 | `%%` | カレントディレクトリ展開 (コマンドモード) |
 | `<Esc>` | 検索ハイライト解除 |
 | `<` / `>` | インデント調整 (選択維持) |
+| `<Leader>cp` | ファイルパスをコピー (Visualモード: 行番号付き) |
 
 #### ファイル操作 (`plugins/init.lua`, `plugins/picker.lua`)
 | キー | 説明 |
@@ -115,25 +116,12 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 | `<Leader>ss` | ドキュメントシンボル |
 | `<Leader>ws` | ワークスペースシンボル |
 
-#### Claude Code (`plugins/claudecode.lua`)
-| キー | 説明 |
-|------|------|
-| `<Leader>l` | Claude Code トグル |
-| `<Leader>la` | diff承認 |
-| `<Leader>ld` | diff拒否 |
-| `<Esc><Esc>` | Claude Code トグル (ターミナルモード) |
-
 #### カスタムコマンド (`config/commands.lua`)
 | コマンド | 説明 |
 |----------|------|
 | `:DailyLog` | 今日の日報ファイルを開く |
 | `:JunkfileOpen` | タイムスタンプ付きメモファイル作成 |
 | `:GHBrowse` | 現在行をGitHubで開く |
-
-4. **Claude Code Configuration**
-   - Custom commands: `claude/commands/` - commit, commit-and-pr, fix-issue, format-issue, enrich-issue, tidying
-   - Custom agents: `claude/agents/` - tidy-first-refactorer
-   - Symlinked to `~/.claude/commands/`, `~/.claude/agents/` etc.
 
 ### Important Patterns
 - **Lazy loading**: Heavy tools are loaded on-demand to improve shell startup time
