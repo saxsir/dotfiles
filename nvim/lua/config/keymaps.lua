@@ -58,6 +58,8 @@ keymap("n", "<Leader>cp", function()
 end, { desc = "Copy file path" })
 
 keymap("v", "<Leader>cp", function()
+  -- Exit visual mode first so that '< and '> marks are updated
+  vim.cmd("normal! \\027")
   local path = vim.fn.expand("%")
   local line_start = vim.fn.line("'<")
   local line_end = vim.fn.line("'>")
