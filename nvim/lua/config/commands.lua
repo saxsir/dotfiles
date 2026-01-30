@@ -30,6 +30,8 @@ vim.api.nvim_create_user_command("DailyLog", function()
       "# yt",
       "",
       "# yr",
+      "",
+      "# memo",
     }
     vim.api.nvim_buf_set_lines(0, 0, -1, false, template)
   end

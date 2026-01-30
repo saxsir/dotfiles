@@ -47,5 +47,21 @@ keymap("t", "<C-k>", "<C-\\><C-n><C-w>k", { desc = "Exit terminal and move up" }
 keymap("t", "<C-l>", "<C-\\><C-n><C-w>l", { desc = "Exit terminal and move right" })
 
 -- Exit terminal mode and return to previous window with Esc
--- Useful for quickly toggling between editor and terminal (e.g., Claude Code)
+-- Useful for quickly toggling between editor and terminal
 keymap("t", "<Esc>", "<C-\\><C-n><C-w>p", { desc = "Exit terminal and return to previous window" })
+
+-- Copy file path
+keymap("n", "<Leader>cp", function()
+  local path = vim.fn.expand("%")
+  vim.fn.setreg("+", path)
+  vim.notify("Copied: " .. path)
+end, { desc = "Copy file path" })
+
+keymap("v", "<Leader>cp", function()
+  local path = vim.fn.expand("%")
+  local line_start = vim.fn.line("'<")
+  local line_end = vim.fn.line("'>")
+  local result = path .. ":" .. line_start .. "-" .. line_end
+  vim.fn.setreg("+", result)
+  vim.notify("Copied: " .. result)
+end, { desc = "Copy file path with line numbers" })
