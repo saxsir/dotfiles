@@ -51,15 +51,16 @@ keymap("t", "<C-l>", "<C-\\><C-n><C-w>l", { desc = "Exit terminal and move right
 keymap("t", "<Esc>", "<C-\\><C-n><C-w>p", { desc = "Exit terminal and return to previous window" })
 
 -- Copy file path
-keymap("n", "<Leader>yy", function()
+keymap("n", "<Leader>cp", function()
   local path = vim.fn.expand("%")
   vim.fn.setreg("+", path)
   vim.notify("Copied: " .. path)
 end, { desc = "Copy file path" })
 
-keymap("v", "<Leader>yy", function()
-  -- Exit visual mode first so that '< and '> marks are updated
-  vim.cmd("normal! \\027")
+keymap("v", "<Leader>cp", function()
+  -- Exit visual mode so '< and '> marks are set, and stay in normal mode after
+  local esc = vim.api.nvim_replace_termcodes("<Esc>", true, false, true)
+  vim.api.nvim_feedkeys(esc, "x", false)
   local path = vim.fn.expand("%")
   local line_start = vim.fn.line("'<")
   local line_end = vim.fn.line("'>")

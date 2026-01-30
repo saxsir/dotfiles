@@ -73,7 +73,7 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 | `%%` | カレントディレクトリ展開 (コマンドモード) |
 | `<Esc>` | 検索ハイライト解除 |
 | `<` / `>` | インデント調整 (選択維持) |
-| `<Leader>yy` | ファイルパスをコピー (Visualモード: 行番号付き) |
+| `<Leader>cp` | ファイルパスをコピー (Visualモード: 行番号付き) |
 
 #### ファイル操作 (`plugins/init.lua`, `plugins/picker.lua`)
 | キー | 説明 |
