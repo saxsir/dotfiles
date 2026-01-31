@@ -118,8 +118,7 @@
     "superpowers@claude-plugins-official": true,
     "serena@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
-    "php-lsp@claude-plugins-official": true,
-    "ralph-loop@claude-plugins-official": true
+    "php-lsp@claude-plugins-official": true
   },
   "language": "Japanese",
   "feedbackSurveyState": {
