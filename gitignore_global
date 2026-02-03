@@ -47,3 +47,4 @@ Session.vim
 *.backup
 
 .claude/settings.local.json
+.claude.local.md
