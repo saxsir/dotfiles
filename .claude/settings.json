@@ -1,5 +1,3 @@
 {
-  "enabledPlugins": {
-    "customaize-agent@context-engineering-kit": true
-  }
+  "enabledPlugins": {}
 }
