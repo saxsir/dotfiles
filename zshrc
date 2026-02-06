@@ -1,10 +1,18 @@
 # 起動時間のプロファイリングしたい時はコメントアウトを外す
 # zmodload zsh/zprof
 
-# $HOME/.zsh/fatima.sh
-# export OPENAI_API_BASE=https://fatima.adingo.jp/openai/v1
-# export OPENAI_API_KEY=$(jq -r .access_token $HOME/.fatima/auth0_token.json)
-# $HOME/.zsh/update_cursor_api_key.sh
+# homebrew
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# coreutils
+# refs http://qiita.com/catatsuy/items/00ebf78f56960b6d43c2#2-4
+if [ -d /opt/homebrew/opt/coreutils/libexec/gnubin ]; then
+  export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+  export MANPATH=/opt/homebrew/opt/coreutils/libexec/gnuman:$MANPATH
+else
+  export LSCOLORS=gxfxcxdxbxegedabagacad
+  alias ls='ls -G'
+fi
 
 # === zinit ===
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
@@ -35,10 +43,15 @@ alias vim='nvim'
 alias -g G='| grep'
 alias -g L='| lv'
 alias -g V='| vim -'
+alias -g C='| pbcopy'
+alias matrix="cmatrix -s -u 6"
 alias gce='git commit --allow-empty'
 export CLAUDE_PATH="$HOME/.local/bin/claude"
 alias claude="$CLAUDE_PATH"
+export EDITOR="nvim"
+export VISUAL="$EDITOR"
 
+# Wrap aws-vault exec
 function avt {
   profile=$1; shift
   aws-vault exec $profile -- aws "$@";
@@ -71,6 +84,7 @@ function peco-src () {
 zle -N peco-src
 bindkey '^p' peco-src
 
+# peco x git worktree
 function select_worktree() {
   local worktrees
   worktrees=$(git worktree list --porcelain | awk '/worktree / {print $2}')
@@ -81,9 +95,10 @@ function select_worktree() {
   local selected
   selected=$(echo "$worktrees" | fzf)
   if [[ -n "$selected" ]]; then
-    echo "$selected"
-    cd "$selected"
+    BUFFER="cd ${selected_dir}"
+    zle accept-line
   fi
+  zle clear-screen
 }
 zle -N select_worktree
 bindkey '^j' select_worktree
@@ -93,22 +108,41 @@ bindkey '^j' select_worktree
 # Added by Antigravity
 export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
-# OS依存の設定
-case ${OSTYPE} in
-  darwin*)
-    source ~/.zshrc.darwin
-    ;;
-  linux*)
-    source ~/.zshrc.linux
-    ;;
+# direnv
+if which direnv > /dev/null; then eval "$(direnv hook zsh)"; fi
+
+# go
+if [ -d "/usr/local/go/" ]; then
+  export PATH=/usr/local/go/bin:$PATH
+  export GOPATH=$HOME
+  export GOROOT=$(go env GOROOT)
+  export PATH=$GOPATH/bin:$PATH
+fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then source "$HOME/google-cloud-sdk/path.zsh.inc"; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then source "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
+
+# uv
+export PATH="$PATH:$HOME/.local/bin"
+
+# mise
+eval "$(mise activate zsh)"
+
+# pnpm
+export PNPM_HOME="$HOME/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
+# pnpm end
 
-# ローカル固有で設定したい何かがあれば
-# e.g. commitしたくないトークンとか
-source ~/.zshrc.local
-
-# 重複してるパスを除去
-typeset -U path
+# git-wt
+if command -v git-wt &> /dev/null; then
+  eval "$(git wt --init zsh)"
+fi
 
 # 補完の初期化を遅延させる
 autoload -Uz compinit
@@ -117,6 +151,9 @@ if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
 else
   compinit -C
 fi
+
+# 重複してるパスを除去
+typeset -U path
 
 # 起動時間のプロファイリング
 if type zprof > /dev/null 2>&1; then

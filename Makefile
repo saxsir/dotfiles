@@ -6,14 +6,11 @@ srcs := \
 
 all: deps symlink
 
-deps: vim/autoload/plug.vim
+deps:
 	mkdir -p $(HOME)/.vimtmp
 	mkdir -p $(HOME)/.vimback
 	mkdir -p $(HOME)/.vimundo
 	mkdir -p $(HOME)/.config
-
-vim/autoload/plug.vim:
-	curl -fLo $@ --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 symlink: $(HOME)/.vim $(HOME)/.zshrc.local $(HOME)/.config/nvim $(HOME)/.config/ghostty $(HOME)/.config/starship.toml $(HOME)/.claude/commands $(HOME)/.claude/agents $(HOME)/.claude/rules $(HOME)/.claude/skills $(HOME)/.claude/settings.json
 	$(foreach src, $(srcs), \
