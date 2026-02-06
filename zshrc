@@ -135,7 +135,7 @@ function select_worktree() {
   local selected
   selected=$(echo "$worktrees" | fzf)
   if [[ -n "$selected" ]]; then
-    BUFFER="cd ${selected_dir}"
+    BUFFER="cd ${selected}"
     zle accept-line
   fi
   zle clear-screen
