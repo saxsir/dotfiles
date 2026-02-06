@@ -16,11 +16,12 @@ return {
       },
     })
 
-    -- NES: Tab で提案にジャンプ/適用、未表示時は通常の Tab
+    -- NES (Next Edit Suggestions): Tab で提案にジャンプ/適用、未表示時は通常の Tab
     vim.keymap.set({ "i", "n" }, "<Tab>", function()
-      if not require("sidekick").nes_jump_or_apply() then
-        return "<Tab>"
+      if require("sidekick").nes_jump_or_apply() then
+        return ""
       end
+      return "<Tab>"
     end, { expr = true, desc = "NES jump/apply or Tab" })
 
     -- CLI トグル
