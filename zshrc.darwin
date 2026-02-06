@@ -88,5 +88,10 @@ case ":$PATH:" in
 esac
 # pnpm end
 
+# git-wt
+if command -v git-wt &> /dev/null; then
+  eval "$(git wt --init zsh)"
+fi
+
 export EDITOR="nvim"
 export VISUAL="$EDITOR"
