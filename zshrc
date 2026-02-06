@@ -170,9 +170,6 @@ if command -v git-wt &> /dev/null; then
   eval "$(git wt --init zsh)"
 fi
 
-# Kiro
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
-
 # ============================================================
 # 補完
 # ============================================================
