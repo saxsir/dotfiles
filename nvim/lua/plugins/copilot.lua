@@ -5,7 +5,7 @@
 return {
   source = "github/copilot.vim",
   config = function()
-    -- <Tab> は mini.snippets と競合するため無効化
+    -- <Tab> は sidekick.nvim の NES や他プラグインと競合するため無効化し、<C-y> に移行
     vim.g.copilot_no_tab_map = true
 
     -- <C-y> で Copilot の提案を受け入れる
