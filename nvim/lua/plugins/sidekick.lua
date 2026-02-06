@@ -5,16 +5,7 @@
 return {
   source = "folke/sidekick.nvim",
   config = function()
-    require("sidekick").setup({
-      nes = {
-        enabled = true,
-      },
-      cli = {
-        win = {
-          layout = "right",
-        },
-      },
-    })
+    require("sidekick").setup({})
 
     -- NES (Next Edit Suggestions): Tab で提案にジャンプ/適用、未表示時は通常の Tab
     vim.keymap.set({ "i", "n" }, "<Tab>", function()
