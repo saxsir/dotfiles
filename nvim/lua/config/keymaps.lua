@@ -17,9 +17,6 @@ keymap("n", "#", "#zz", opts)
 keymap("n", "g*", "g*zz", opts)
 keymap("n", "g#", "g#zz", opts)
 
--- Escape with jj
-keymap("i", "jj", "<ESC>", opts)
-
 -- ; to :
 keymap("n", ";", ":", { noremap = true })
 
