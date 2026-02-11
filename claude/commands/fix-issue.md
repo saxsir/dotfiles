@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(gh issue view:*), Bash(gh issue comment:*), Bash(gh api:*), Bash(git status:*), Bash(git log:*), Bash(git checkout:*), Bash(git add:*), Bash(git commit:*), Task(*)
+allowed-tools: Bash(gh api:*), Bash(gh issue comment:*), Bash(gh issue view:*), Bash(git add:*), Bash(git branch:*), Bash(git checkout:*), Bash(git commit:*), Bash(git log:*), Bash(git status:*), Bash(git worktree:*), Bash(git wt:*), Task(*)
 description: Analyzes and fixes a GitHub Issue by creating a branch, implementing changes, running tests, and committing with appropriate message. Use when the user wants to resolve a specific GitHub issue or mentions fixing an issue number.
 ---
 

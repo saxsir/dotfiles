@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(git checkout --branch:*), Bash(git add:*), Bash(git status:*), Bash(git push:*), Bash(git commit:*), Bash(gh pr create:*), Bash(gh pr view:*), Bash(git diff:*), Bash(git log:*), Bash(git rev-parse:*), Bash(git branch:*), Task(*)
+allowed-tools: Bash(git add:*), Bash(git branch:*), Bash(git commit:*), Bash(git diff:*), Bash(git log:*), Bash(git push:*), Bash(git rev-parse:*), Bash(git status:*), Bash(git worktree:*), Bash(git wt:*), Bash(gh pr create:*), Bash(gh pr view:*), Task(*)
 description: Creates a commit, pushes to remote, and opens a draft pull request with Japanese title and description. Use when the user wants to commit changes and create a PR, or mentions creating a pull request.
 ---
 
