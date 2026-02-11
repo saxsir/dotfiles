@@ -47,16 +47,18 @@ description: Creates a commit, pushes to remote, and opens a draft pull request 
 - `git log --oneline <base-branch>..HEAD` を実行してこのブランチのすべてのコミットを確認
 - PRに含まれるすべての変更の完全な文脈を理解
 
-### ステップ2: フィーチャーブランチを作成（必要な場合）
+### ステップ2: Worktree & フィーチャーブランチを作成（必要な場合）
 
 **現在main/masterにいる場合:**
 - わかりやすいブランチ名を作成:
   - `feat/<feature-name>` 新機能の場合
   - `fix/<issue-number>-<description>` バグ修正の場合
   - `refactor/<component-name>` リファクタリングの場合
-- `git checkout -b <branch-name>` を使用
+- `git wt <branch-name>` を使用してworktreeとブランチを作成
+- **IMPORTANT**: `git checkout -b` は使用しないこと。必ず `git wt` を使用する
+- 検証: `git worktree list` でworktree作成を確認
 
-**すでにフィーチャーブランチにいる場合:**
+**すでにフィーチャーブランチのworktreeにいる場合:**
 - 現在のブランチで続行
 
 ### ステップ3: 日本語メッセージでコミットを作成

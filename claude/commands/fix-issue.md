@@ -115,7 +115,7 @@ gh issue comment $ARGUMENTS --body "## 進捗
 gh api repos/{owner}/{repo}/issues/$ARGUMENTS/comments --jq '.[-1].id'
 ```
 
-### ステップ5: ブランチ作成
+### ステップ5: Worktree & ブランチ作成
 
 **ブランチ命名規則:**
 
@@ -128,13 +128,17 @@ gh api repos/{owner}/{repo}/issues/$ARGUMENTS/comments --jq '.[-1].id'
 - **リファクタリング**: `refactor/<issue-number>-<short-description>`
   - 例: `refactor/789-auth-module`
 
-**ブランチを作成:**
+**Worktreeを作成（git-wtを使用）:**
 ```bash
-git checkout -b <branch-name>
+git wt <branch-name>
 ```
 
+**IMPORTANT**: `git checkout -b` は使用しないこと。必ず `git wt` を使用する。
+
 **検証:**
+- `git worktree list` で新しいworktreeが作成されたことを確認
 - `git branch --show-current` で新しいブランチにいることを確認
+- `pwd` でworktreeディレクトリに移動していることを確認
 - `git status` でクリーンな作業ディレクトリを確保
 
 **Todoコメントを更新:**

@@ -156,12 +156,17 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 - Example: `feat/add-docker-aliases`, `fix/zsh-startup-time`
 
 ### Making Changes
-1. Create a feature branch
-2. Make changes to configuration files
+1. Create a worktree with feature branch using `git wt <branch-name>` (e.g., `git wt feat/add-aliases`)
+   - This creates an isolated workspace in a separate directory
+   - Verify with `git worktree list` to confirm creation
+   - **IMPORTANT**: Never use `git checkout -b` for implementation work
+2. Make changes to configuration files in the worktree
 3. Test changes using commands in "Testing and Validation" section
 4. Commit with descriptive message
-5. Create pull request for review (if working in team)
-6. **IMPORTANT**: After creating a PR (including draft), always open it in browser with `gh pr view --web`
+5. Push changes: `git push -u origin <branch-name>`
+6. Create pull request for review (if working in team)
+7. **IMPORTANT**: After creating a PR (including draft), always open it in browser with `gh pr view --web`
+8. After PR is merged and branch is no longer needed, clean up with `git wt -d <branch-name>`
 
 ### Deployment
 - IMPORTANT: After merging changes, run `make symlink` to update symlinks
