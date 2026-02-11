@@ -1,7 +1,9 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "cleanupPeriodDays": 1095,
-  "env": {},
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
   "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
@@ -35,7 +37,9 @@
       "Bash(touch:*)",
       "Bash(tree:*)",
       "WebFetch(domain:github.com)",
-      "Write(*)"
+      "Write(*)",
+      "mcp__plugin_serena_serena__*",
+      "mcp__plugin_context7_context7__*"
     ],
     "deny": [
       "Bash(chmod 777 /*)",
@@ -123,5 +127,7 @@
   "language": "Japanese",
   "feedbackSurveyState": {
     "lastShownTime": 1754040541141
-  }
+  },
+  "model": "opusplan"
+
 }
