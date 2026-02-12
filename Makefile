@@ -12,7 +12,7 @@ deps:
 	mkdir -p $(HOME)/.vimundo
 	mkdir -p $(HOME)/.config
 
-symlink: $(HOME)/.vim $(HOME)/.zshrc.local $(HOME)/.config/nvim $(HOME)/.config/ghostty $(HOME)/.config/starship.toml $(HOME)/.claude/commands $(HOME)/.claude/agents $(HOME)/.claude/rules $(HOME)/.claude/skills $(HOME)/.claude/settings.json
+symlink: $(HOME)/.vim $(HOME)/.zshrc.local $(HOME)/.config/nvim $(HOME)/.config/ghostty $(HOME)/.config/starship.toml $(HOME)/.claude/commands $(HOME)/.claude/agents $(HOME)/.claude/rules $(HOME)/.claude/skills $(HOME)/.claude/settings.json $(HOME)/.claude/statusline-command.sh
 	$(foreach src, $(srcs), \
 	  ln -fs $(PWD)/$(src) $(HOME)/.$(src); \
 	  )
@@ -49,3 +49,6 @@ $(HOME)/.claude/skills:
 
 $(HOME)/.claude/settings.json:
 	ln -fs $(PWD)/claude/settings.json $@
+
+$(HOME)/.claude/statusline-command.sh:
+	ln -fs $(PWD)/claude/statusline-command.sh $@
