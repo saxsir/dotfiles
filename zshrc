@@ -154,12 +154,15 @@ bindkey '^j' select_worktree
 # ============================================================
 # tmux連携
 # ============================================================
-autoload -Uz add-zsh-hook
 if [[ -n "$TMUX" ]]; then
+  autoload -Uz add-zsh-hook
   _tmux_update_window_name() {
     local name
-    name=$(basename "$(git rev-parse --show-toplevel 2>/dev/null)" 2>/dev/null)
-    if [[ -z "$name" ]]; then
+    local toplevel
+    toplevel=$(git rev-parse --show-toplevel 2>/dev/null)
+    if [[ -n "$toplevel" ]]; then
+      name=$(basename "$toplevel")
+    else
       name=$(basename "$PWD")
     fi
     tmux rename-window "$name"
