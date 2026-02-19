@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(gh api:*), Bash(gh issue comment:*), Bash(gh issue view:*), Bash(git add:*), Bash(git branch:*), Bash(git checkout:*), Bash(git commit:*), Bash(git log:*), Bash(git status:*), Bash(git worktree:*), Bash(git wt:*), Task(*)
+allowed-tools: Bash(gh api:*), Bash(gh issue comment:*), Bash(gh issue view:*), Bash(git add:*), Bash(git branch:*), Bash(git checkout:*), Bash(git commit:*), Bash(git log:*), Bash(git pull:*), Bash(git status:*), Bash(git switch:*), Task(*)
 description: Analyzes and fixes a GitHub Issue by creating a branch, implementing changes, running tests, and committing with appropriate message. Use when the user wants to resolve a specific GitHub issue or mentions fixing an issue number.
 ---
 
@@ -115,7 +115,7 @@ gh issue comment $ARGUMENTS --body "## 進捗
 gh api repos/{owner}/{repo}/issues/$ARGUMENTS/comments --jq '.[-1].id'
 ```
 
-### ステップ5: Worktree & ブランチ作成
+### ステップ5: ブランチ作成
 
 **ブランチ命名規則:**
 
@@ -128,17 +128,13 @@ gh api repos/{owner}/{repo}/issues/$ARGUMENTS/comments --jq '.[-1].id'
 - **リファクタリング**: `refactor/<issue-number>-<short-description>`
   - 例: `refactor/789-auth-module`
 
-**Worktreeを作成（git-wtを使用）:**
+**masterを最新化してブランチを作成:**
 ```bash
-git wt <branch-name>
+git switch master && git pull origin master && git checkout -b <branch-name>
 ```
 
-**IMPORTANT**: `git checkout -b` は使用しないこと。必ず `git wt` を使用する。
-
 **検証:**
-- `git worktree list` で新しいworktreeが作成されたことを確認
 - `git branch --show-current` で新しいブランチにいることを確認
-- `pwd` でworktreeディレクトリに移動していることを確認
 - `git status` でクリーンな作業ディレクトリを確保
 
 **Todoコメントを更新:**

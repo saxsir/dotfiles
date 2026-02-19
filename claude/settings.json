@@ -29,8 +29,7 @@
       "Bash(git pull:*)",
       "Bash(git show:*)",
       "Bash(git status:*)",
-      "Bash(git wt:*)",
-      "Bash(git worktree:*)",
+      "Bash(git switch:*)",
       "Bash(grep:*)",
       "Bash(ls:*)",
       "Bash(mkdir:*)",
@@ -131,5 +130,4 @@
     "lastShownTime": 1754040541141
   },
   "model": "opusplan"
-
 }

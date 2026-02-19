@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(git add:*), Bash(git branch:*), Bash(git commit:*), Bash(git diff:*), Bash(git log:*), Bash(git push:*), Bash(git rev-parse:*), Bash(git status:*), Bash(git worktree:*), Bash(git wt:*), Bash(gh pr create:*), Bash(gh pr view:*), Task(*)
+allowed-tools: Bash(git add:*), Bash(git branch:*), Bash(git checkout:*), Bash(git commit:*), Bash(git diff:*), Bash(git log:*), Bash(git push:*), Bash(git rev-parse:*), Bash(git status:*), Bash(git switch:*), Bash(gh pr create:*), Bash(gh pr view:*), Task(*)
 description: Creates a commit, pushes to remote, and opens a draft pull request with Japanese title and description. Use when the user wants to commit changes and create a PR, or mentions creating a pull request.
 ---
 
@@ -47,18 +47,17 @@ description: Creates a commit, pushes to remote, and opens a draft pull request 
 - `git log --oneline <base-branch>..HEAD` を実行してこのブランチのすべてのコミットを確認
 - PRに含まれるすべての変更の完全な文脈を理解
 
-### ステップ2: Worktree & フィーチャーブランチを作成（必要な場合）
+### ステップ2: フィーチャーブランチを作成（必要な場合）
 
 **現在main/masterにいる場合:**
 - わかりやすいブランチ名を作成:
   - `feat/<feature-name>` 新機能の場合
   - `fix/<issue-number>-<description>` バグ修正の場合
   - `refactor/<component-name>` リファクタリングの場合
-- `git wt <branch-name>` を使用してworktreeとブランチを作成
-- **IMPORTANT**: `git checkout -b` は使用しないこと。必ず `git wt` を使用する
-- 検証: `git worktree list` でworktree作成を確認
+- masterを最新化してブランチを作成: `git switch master && git pull origin master && git checkout -b <branch-name>`
+- 検証: `git branch --show-current` でブランチ作成を確認
 
-**すでにフィーチャーブランチのworktreeにいる場合:**
+**すでにフィーチャーブランチにいる場合:**
 - 現在のブランチで続行
 
 ### ステップ3: 日本語メッセージでコミットを作成
