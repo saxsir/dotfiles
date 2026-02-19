@@ -187,6 +187,9 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 3. **macOS focus**: While Linux is supported, most optimizations and tool integrations are macOS-centric.
    Platform-specific code is isolated in `zshrc.darwin` and `zshrc.linux`.
 
+4. **GNU coreutils**: macOS環境にHomebrew経由でGNU coreutilsをインストール済み。
+   `date`コマンド等はGNU版を使用しているため、シェルスクリプトやコマンド提案時はGNU構文（例: `date -d`, `date +%s`）を使用すること。
+
 ## Known Issues and Warnings
 
 - **Slow startup**: If shell startup is slow, check lazy-loading configuration in `zshrc`
