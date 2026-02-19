@@ -152,6 +152,26 @@ bindkey '^p' peco-src
 bindkey '^j' select_worktree
 
 # ============================================================
+# tmux連携
+# ============================================================
+if [[ -n "$TMUX" ]]; then
+  autoload -Uz add-zsh-hook
+  _tmux_update_window_name() {
+    local name
+    local toplevel
+    toplevel=$(git rev-parse --show-toplevel 2>/dev/null)
+    if [[ -n "$toplevel" ]]; then
+      name=$(basename "$toplevel")
+    else
+      name=$(basename "$PWD")
+    fi
+    tmux rename-window "$name"
+  }
+  add-zsh-hook chpwd _tmux_update_window_name
+  _tmux_update_window_name
+fi
+
+# ============================================================
 # ツール初期化
 # ============================================================
 
