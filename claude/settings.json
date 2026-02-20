@@ -87,12 +87,27 @@
     "defaultMode": "plan"
   },
   "hooks": {
+    "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf '\\a' > \"$(tmux display-message -p '#{pane_tty}')\" 2>/dev/null"
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [
           {
             "type": "command",
             "command": "osascript -e 'display notification \"作業完了\" with title \"Claude Code\" sound name \"Ping\"'"
+          },
+          {
+            "type": "command",
+            "command": "printf '\\a' > \"$(tmux display-message -p '#{pane_tty}')\" 2>/dev/null"
           }
         ]
       }
@@ -123,11 +138,11 @@
     "superpowers@claude-plugins-official": true,
     "serena@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
-    "php-lsp@claude-plugins-official": true
+    "php-lsp@claude-plugins-official": true,
+    "swift-lsp@claude-plugins-official": true
   },
   "language": "Japanese",
   "feedbackSurveyState": {
     "lastShownTime": 1754040541141
-  },
-  "model": "opusplan"
+  }
 }
