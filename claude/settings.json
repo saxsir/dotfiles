@@ -138,8 +138,9 @@
     "superpowers@claude-plugins-official": true,
     "serena@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
-    "php-lsp@claude-plugins-official": true,
-    "swift-lsp@claude-plugins-official": true
+    "php-lsp@claude-plugins-official": false,
+    "swift-lsp@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true
   },
   "language": "Japanese",
   "feedbackSurveyState": {
