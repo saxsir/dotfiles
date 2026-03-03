@@ -93,7 +93,16 @@
         "hooks": [
           {
             "type": "command",
-            "command": "printf '\\a' > \"$(tmux display-message -p '#{pane_tty}')\" 2>/dev/null"
+            "command": "if [ -n \"$TMUX\" ]; then tmux setw window-status-style 'fg=black,bg=yellow,bold'; fi"
+          }
+        ]
+      },
+      {
+        "matcher": "idle_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -n \"$TMUX\" ]; then tmux setw window-status-style 'fg=black,bg=yellow,bold'; fi"
           }
         ]
       }
@@ -107,7 +116,17 @@
           },
           {
             "type": "command",
-            "command": "printf '\\a' > \"$(tmux display-message -p '#{pane_tty}')\" 2>/dev/null"
+            "command": "if [ -n \"$TMUX\" ]; then tmux setw window-status-style 'fg=black,bg=yellow,bold'; fi"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -n \"$TMUX\" ]; then tmux setw -u window-status-style; fi"
           }
         ]
       }
@@ -118,6 +137,10 @@
           {
             "type": "command",
             "command": "osascript -e 'display notification \"セッション終了\" with title \"Claude Code\" sound name \"Hero\"'"
+          },
+          {
+            "type": "command",
+            "command": "if [ -n \"$TMUX\" ]; then tmux setw -u window-status-style; fi"
           }
         ]
       }
@@ -145,5 +168,13 @@
   "language": "Japanese",
   "feedbackSurveyState": {
     "lastShownTime": 1754040541141
+  },
+  "extraKnownMarketplaces": {
+    "carta-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "voyagegroup/agent-skills"
+      }
+    }
   }
 }
