@@ -93,7 +93,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "if [ -n \"$TMUX\" ]; then tmux setw window-status-style 'fg=black,bg=yellow,bold'; fi"
+            "command": "if [ -n \"$TMUX\" ] && [ -n \"$TMUX_PANE\" ]; then W=$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_id}'); tmux setw -t \"$W\" window-status-style 'fg=black,bg=yellow,bold'; fi"
           }
         ]
       },
@@ -102,7 +102,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "if [ -n \"$TMUX\" ]; then tmux setw window-status-style 'fg=black,bg=yellow,bold'; fi"
+            "command": "if [ -n \"$TMUX\" ] && [ -n \"$TMUX_PANE\" ]; then W=$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_id}'); tmux setw -t \"$W\" window-status-style 'fg=black,bg=yellow,bold'; fi"
           }
         ]
       }
@@ -116,7 +116,7 @@
           },
           {
             "type": "command",
-            "command": "if [ -n \"$TMUX\" ]; then tmux setw window-status-style 'fg=black,bg=yellow,bold'; fi"
+            "command": "if [ -n \"$TMUX\" ] && [ -n \"$TMUX_PANE\" ]; then W=$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_id}'); tmux setw -t \"$W\" window-status-style 'fg=black,bg=yellow,bold'; fi"
           }
         ]
       }
@@ -126,7 +126,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "if [ -n \"$TMUX\" ]; then tmux setw -u window-status-style; fi"
+            "command": "if [ -n \"$TMUX\" ] && [ -n \"$TMUX_PANE\" ]; then W=$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_id}'); tmux setw -t \"$W\" -u window-status-style; fi"
           }
         ]
       }
@@ -140,7 +140,7 @@
           },
           {
             "type": "command",
-            "command": "if [ -n \"$TMUX\" ]; then tmux setw -u window-status-style; fi"
+            "command": "if [ -n \"$TMUX\" ] && [ -n \"$TMUX_PANE\" ]; then W=$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_id}'); tmux setw -t \"$W\" -u window-status-style; fi"
           }
         ]
       }
