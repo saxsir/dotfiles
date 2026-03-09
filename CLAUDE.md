@@ -60,6 +60,10 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
    - NeoVim: Basic configuration with mini.deps support
    - IdeaVim: Inherits vimrc with additional IntelliJ-specific settings
 
+4. **Lima VM (Development Containers)**
+   - Claude Code実行用VM: `lima/claude-dev.yaml` - Ubuntu 24.04 ARM64, Apple Virtualization.framework
+   - ホストの`~/src`を読み書き可能でマウント、ホームは読み取り専用
+
 ### NeoVim Keymap Reference
 
 #### 基本操作 (`config/keymaps.lua`)

@@ -1,0 +1,13 @@
+vmType: vz                  # Apple Virtualization.framework（高速）
+mountType: virtiofs         # 高速ファイル共有
+images:
+  - location: "https://cloud-images.ubuntu.com/releases/24.04/release/ubuntu-24.04-server-cloudimg-arm64.img"
+    arch: aarch64
+mounts:
+  - location: "~/src"
+    writable: true
+  - location: "~"           # デフォルトのHOMEマウントを上書き除外
+    writable: false
+    mountPoint: /host-home-readonly  # 読み取り専用かつ別パスに
+memory: 4GiB
+cpus: 4
