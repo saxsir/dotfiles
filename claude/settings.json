@@ -121,7 +121,7 @@
         ]
       }
     ],
-    "PreToolUse": [
+    "UserPromptSubmit": [
       {
         "hooks": [
           {
