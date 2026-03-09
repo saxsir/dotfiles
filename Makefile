@@ -11,6 +11,9 @@ deps:
 	mkdir -p $(HOME)/.vimback
 	mkdir -p $(HOME)/.vimundo
 	mkdir -p $(HOME)/.config
+	@if command -v brew >/dev/null 2>&1; then \
+		brew install --cask font-plemol-jp-nf 2>/dev/null || true; \
+	fi
 
 symlink: $(HOME)/.vim $(HOME)/.zshrc.local $(HOME)/.config/nvim $(HOME)/.config/ghostty $(HOME)/.config/starship.toml $(HOME)/.claude/commands $(HOME)/.claude/agents $(HOME)/.claude/rules $(HOME)/.claude/skills $(HOME)/.claude/settings.json $(HOME)/.claude/statusline-command.sh
 	$(foreach src, $(srcs), \
