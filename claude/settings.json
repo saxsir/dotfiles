@@ -165,16 +165,23 @@
     "swift-lsp@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true
   },
-  "language": "Japanese",
-  "feedbackSurveyState": {
-    "lastShownTime": 1754040541141
-  },
   "extraKnownMarketplaces": {
     "carta-agent-skills": {
       "source": {
         "source": "github",
         "repo": "voyagegroup/agent-skills"
       }
+    },
+    "hashicorp": {
+      "source": {
+        "source": "github",
+        "repo": "hashicorp/agent-skills"
+      }
     }
-  }
+  },
+  "language": "Japanese",
+  "feedbackSurveyState": {
+    "lastShownTime": 1754040541141
+  },
+  "effortLevel": "high"
 }
