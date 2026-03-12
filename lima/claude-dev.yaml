@@ -6,8 +6,74 @@ images:
 mounts:
   - location: "~/src"
     writable: true
-  - location: "~"           # デフォルトのHOMEマウントを上書き除外
+  - location: "~/.claude/plugins"
+    writable: true
+  - location: "~"
     writable: false
-    mountPoint: /host-home-readonly  # 読み取り専用かつ別パスに
+    mountPoint: /host-home-readonly
 memory: 4GiB
 cpus: 4
+provision:
+  - mode: system
+    script: |
+      #!/bin/bash
+      set -eu
+
+      # --- gh CLI ---
+      (type -p wget >/dev/null || (apt update && apt install wget -y)) \
+        && mkdir -p -m 755 /etc/apt/keyrings \
+        && out=$(mktemp) && wget -nv -O"$out" https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+        && cat "$out" | tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+        && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+        && mkdir -p -m 755 /etc/apt/sources.list.d \
+        && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+        && apt update \
+        && apt install gh -y
+
+      echo "[provision:system] gh installed"
+
+  - mode: user
+    script: |
+      #!/bin/bash
+      set -eu
+
+      # --- Claude Code CLI ---
+      curl -fsSL https://claude.ai/install.sh | bash
+      echo "[provision] Claude Code CLI installed"
+
+      HOST_CLAUDE="/host-home-readonly/.claude"
+      VM_CLAUDE="${HOME}/.claude"
+
+      mkdir -p "${VM_CLAUDE}/scripts"
+
+      # --- 1. plugins（専用RWマウント経由） ---
+      ln -sfn /Users/saxsir/.claude/plugins "${VM_CLAUDE}/plugins"
+
+      # --- 2. dotfilesリポジトリ経由のシンボリックリンク（~/src RWマウントで解決） ---
+      for item in settings.json agents commands rules skills statusline-command.sh; do
+        link_target=$(readlink "${HOST_CLAUDE}/${item}" 2>/dev/null || true)
+        if [ -n "${link_target}" ]; then
+          ln -sfn "${link_target}" "${VM_CLAUDE}/${item}"
+        fi
+      done
+
+      # --- 3. scripts配下のシンボリックリンク ---
+      for item in "${HOST_CLAUDE}/scripts/"*; do
+        name=$(basename "${item}")
+        link_target=$(readlink "${item}" 2>/dev/null || true)
+        if [ -n "${link_target}" ]; then
+          ln -sfn "${link_target}" "${VM_CLAUDE}/scripts/${name}"
+        fi
+      done
+
+      # --- 4. CLAUDE.md（実ファイル、ROコピー） ---
+      if [ -f "${HOST_CLAUDE}/CLAUDE.md" ]; then
+        cp "${HOST_CLAUDE}/CLAUDE.md" "${VM_CLAUDE}/CLAUDE.md"
+      fi
+
+      # --- 5. settings.local.json（初回のみコピー、以降VM独自） ---
+      if [ ! -f "${VM_CLAUDE}/settings.local.json" ] && [ -f "${HOST_CLAUDE}/settings.local.json" ]; then
+        cp "${HOST_CLAUDE}/settings.local.json" "${VM_CLAUDE}/settings.local.json"
+      fi
+
+      echo "[provision] Claude Code setup complete"
