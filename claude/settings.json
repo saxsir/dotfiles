@@ -163,7 +163,8 @@
     "context7@claude-plugins-official": true,
     "php-lsp@claude-plugins-official": false,
     "swift-lsp@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true
+    "skill-creator@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "carta-agent-skills": {
@@ -180,8 +181,9 @@
     }
   },
   "language": "Japanese",
+  "effortLevel": "high",
+  "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754040541141
-  },
-  "effortLevel": "high"
+  }
 }
