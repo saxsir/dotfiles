@@ -32,6 +32,15 @@ provision:
 
       echo "[provision:system] gh installed"
 
+      # --- Node.js (LTS) - context7プラグイン等のnpx依存プラグイン用 ---
+      curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+      apt install -y nodejs
+      echo "[provision:system] Node.js $(node --version) installed"
+
+      # --- uv (Python) - serenaプラグイン等のuvx依存プラグイン用 ---
+      curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR=/usr/local/bin sh
+      echo "[provision:system] uv installed"
+
   - mode: user
     script: |
       #!/bin/bash
@@ -47,7 +56,12 @@ provision:
       mkdir -p "${VM_CLAUDE}/scripts"
 
       # --- 1. plugins（専用RWマウント経由） ---
-      ln -sfn /Users/saxsir/.claude/plugins "${VM_CLAUDE}/plugins"
+      PLUGINS_MOUNT=$(find /Users -maxdepth 3 -type d -name "plugins" -path "*/.claude/plugins" 2>/dev/null | head -1)
+      if [ -n "${PLUGINS_MOUNT}" ]; then
+        ln -sfn "${PLUGINS_MOUNT}" "${VM_CLAUDE}/plugins"
+      else
+        echo "[provision:warning] Could not find plugins mount under /Users" >&2
+      fi
 
       # --- 2. dotfilesリポジトリ経由のシンボリックリンク（~/src RWマウントで解決） ---
       for item in settings.json agents commands rules skills statusline-command.sh; do
