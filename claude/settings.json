@@ -87,64 +87,9 @@
     "defaultMode": "plan"
   },
   "hooks": {
-    "Notification": [
-      {
-        "matcher": "permission_prompt",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "if [ -n \"$TMUX\" ] && [ -n \"$TMUX_PANE\" ]; then W=$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_id}'); tmux setw -t \"$W\" window-status-style 'fg=black,bg=yellow,bold'; fi"
-          }
-        ]
-      },
-      {
-        "matcher": "idle_prompt",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "if [ -n \"$TMUX\" ] && [ -n \"$TMUX_PANE\" ]; then W=$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_id}'); tmux setw -t \"$W\" window-status-style 'fg=black,bg=yellow,bold'; fi"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "osascript -e 'display notification \"作業完了\" with title \"Claude Code\" sound name \"Ping\"'"
-          },
-          {
-            "type": "command",
-            "command": "if [ -n \"$TMUX\" ] && [ -n \"$TMUX_PANE\" ]; then W=$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_id}'); tmux setw -t \"$W\" window-status-style 'fg=black,bg=yellow,bold'; fi"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "if [ -n \"$TMUX\" ] && [ -n \"$TMUX_PANE\" ]; then W=$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_id}'); tmux setw -t \"$W\" -u window-status-style; fi"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "osascript -e 'display notification \"セッション終了\" with title \"Claude Code\" sound name \"Hero\"'"
-          },
-          {
-            "type": "command",
-            "command": "if [ -n \"$TMUX\" ] && [ -n \"$TMUX_PANE\" ]; then W=$(tmux display-message -t \"$TMUX_PANE\" -p '#{window_id}'); tmux setw -t \"$W\" -u window-status-style; fi"
-          }
-        ]
-      }
-    ]
+    "Notification": [],
+    "Stop": [],
+    "SessionEnd": []
   },
   "statusLine": {
     "type": "command",
@@ -164,7 +109,8 @@
     "php-lsp@claude-plugins-official": false,
     "swift-lsp@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
-    "feature-dev@claude-plugins-official": true
+    "feature-dev@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "carta-agent-skills": {

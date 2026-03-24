@@ -1,4 +1,16 @@
 # Ghostty Configuration
 # https://ghostty.org/docs/config
 
-font-family = PlemolJP Console NF
+# Font
+font-family = "Monaspace Neon"
+font-size = 13
+
+# Scrollback
+scrollback-limit = 50000
+
+# Splits
+unfocused-split-opacity = 0.85
+split-divider-color = #3e4451
+
+# Working directory
+working-directory = ~/
