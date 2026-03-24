@@ -123,3 +123,8 @@ printf '  '
 if [ -n "${ctx_color}" ]; then
   printf '%b[%s]%b %b%d%%%b' "${ctx_color}" "${bar}" "${RESET}" "${ctx_color}" "${remaining_pct}" "${RESET}"
 fi
+
+# Model name
+if [ -n "${model_name}" ] && [ "${model_name}" != "unknown" ]; then
+  printf ' %b%s%b' "${DIM}" "${model_name}" "${RESET}"
+fi
