@@ -90,7 +90,7 @@ alias -g C='| pbcopy'
 alias matrix="cmatrix -s -u 6"
 alias gce='git commit --allow-empty'
 alias claude="$CLAUDE_PATH"
-alias claude-safe="limactl shell claude-dev -- bash -c 'claude --dangerously-skip-permissions'"
+alias claude-vm="limactl shell claude-dev -- bash -c 'claude --dangerously-skip-permissions'"
 
 # ============================================================
 # 関数
