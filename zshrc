@@ -219,3 +219,10 @@ fi
 if [ ! -f ~/.zcompdump.zwc -o ~/.zcompdump -nt ~/.zcompdump.zwc ]; then
   zcompile ~/.zcompdump
 fi
+
+# bun completions
+[ -s "/Users/ca00622/.bun/_bun" ] && source "/Users/ca00622/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
