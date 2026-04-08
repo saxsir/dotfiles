@@ -45,7 +45,7 @@ PRがOPEN状態であることを確認する。MERGED/CLOSEDの場合はユー�
 ### Step 2: diffの取得と行番号マッピング
 
 ```bash
-gh pr diff <PR番号> [--repo <owner/repo>] > /tmp/pr<PR番号>.diff
+gh pr diff <PR番号> [--repo <owner/repo>] > $TMPDIR/pr<PR番号>.diff
 ```
 
 指摘対象の行番号を特定する。これが最も重要かつ間違えやすいステップ。行番号が1つでも間違うと API が 422 エラーを返すか、意図しない行にコメントが付く。
@@ -62,10 +62,10 @@ GitHub Review APIの `line` パラメータは **変更後ファイルの行番�
 
 ```bash
 # 手順: まずgrepで指摘対象を含む行のdiff内行番号を特定
-grep -n "対象テキスト" /tmp/pr<PR番号>.diff
+grep -n "対象テキスト" $TMPDIR/pr<PR番号>.diff
 
 # ヘッダー行数を確認（通常6行だが、ファイルごとに異なる可能性あり）
-grep -n "^@@" /tmp/pr<PR番号>.diff | head -5
+grep -n "^@@" $TMPDIR/pr<PR番号>.diff | head -5
 ```
 
 **既存ファイル（MODIFIED）の場合:**
@@ -78,18 +78,24 @@ grep -n "^@@" /tmp/pr<PR番号>.diff | head -5
 
 **算出した行番号は必ず検証する。**「たぶん合っている」は許容しない。
 
+**新規ファイル（ADDED）の場合:**
 ```bash
-# 新規ファイルの場合: diffからファイル内容を抽出し、特定行を表示
-awk 'NR>=<ヘッダー行数+1>{sub(/^\+/,""); print}' /tmp/pr<PR番号>.diff | sed -n '<行番号>p'
+# diffからファイル内容を抽出し、特定行を表示（全行が + で始まる前提）
+awk 'NR>=<ヘッダー行数+1>{sub(/^\+/,""); print}' $TMPDIR/pr<PR番号>.diff | sed -n '<行番号>p'
+```
+
+**既存ファイル（MODIFIED）の場合:**
+```bash
+# + 行と空白行（コンテキスト行）のみカウントし、- 行はスキップ
+awk '/^@@/{match($0,/\+([0-9]+)/,a); cur=a[1]-1; next} /^[+ ]/{cur++; if(cur==<行番号>){sub(/^[+ ]/,""); print; exit}} /^-/{next}' $TMPDIR/pr<PR番号>.diff
 ```
 
 表示された内容が指摘対象の行と**完全に一致する**ことを確認する。一致しなければ行番号を再計算する。
 
-**全てのコメントの行番号を一括で検証するのが効率的:**
+**全てのコメントの行番号を一括で検証するのが効率的（新規ファイルの場合）:**
 ```bash
-# 全指摘行を一度に確認
 for line in 123 191 240 241 243 377; do
-  echo "L${line}: $(awk 'NR>=7{sub(/^\+/,""); print}' /tmp/pr<PR番号>.diff | sed -n "${line}p")"
+  echo "L${line}: $(awk 'NR>=7{sub(/^\+/,""); print}' $TMPDIR/pr<PR番号>.diff | sed -n "${line}p")"
 done
 ```
 
@@ -148,7 +154,7 @@ done
 全コメントを1つのレビューとしてまとめてAPIで投稿する。コメントを1つずつ投稿してはいけない（通知が大量に飛ぶため）。
 
 ```bash
-cat > /tmp/pr_review.json << 'ENDJSON'
+cat > $TMPDIR/pr_review.json << 'ENDJSON'
 {
   "event": "COMMENT",
   "body": "レビュー全体のサマリー",
@@ -167,9 +173,9 @@ cat > /tmp/pr_review.json << 'ENDJSON'
 }
 ENDJSON
 
-gh api repos/<owner>/<repo>/pulls/<PR番号>/reviews \
+gh api repos/{owner}/{repo}/pulls/<PR番号>/reviews \
   --method POST \
-  --input /tmp/pr_review.json
+  --input $TMPDIR/pr_review.json
 ```
 
 #### event の使い分け
