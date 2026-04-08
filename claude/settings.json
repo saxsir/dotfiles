@@ -11,6 +11,13 @@
   "sandbox": {
     "enabled": true,
     "autoAllowBashIfSandboxed": true,
+    "enableWeakerNetworkIsolation": true,
+    "network": {
+      "allowedDomains": [
+        "api.github.com",
+        "github.com"
+      ]
+    },
     "filesystem": {
       "denyRead": [
         "~/.ssh",
@@ -24,35 +31,31 @@
   },
   "permissions": {
     "allow": [
-      "Bash(cat:*)",
-      "Bash(cp:*)",
-      "Bash(diff:*)",
-      "Bash(echo:*)",
-      "Bash(find:*)",
-      "Bash(gh issue list:*)",
-      "Bash(gh issue view:*)",
-      "Bash(gh pr checkout:*)",
-      "Bash(gh pr checks:*)",
-      "Bash(gh pr diff:*)",
-      "Bash(gh pr list:*)",
-      "Bash(gh pr view:*)",
-      "Bash(gh search:*)",
-      "Bash(git add -p:*)",
-      "Bash(git branch:*)",
-      "Bash(git checkout:*)",
-      "Bash(git diff:*)",
-      "Bash(git log:*)",
-      "Bash(git pull:*)",
-      "Bash(git show:*)",
-      "Bash(git status:*)",
-      "Bash(git switch:*)",
-      "Bash(grep:*)",
-      "Bash(ls:*)",
-      "Bash(mkdir:*)",
-      "Bash(rg:*)",
-      "Bash(touch:*)",
-      "Bash(tree:*)",
-      "Write(*)"
+      "Bash(git status *)",
+      "Bash(git log *)",
+      "Bash(git diff *)",
+      "Bash(git branch *)",
+       "mcp__claude_ai_Slack__slack_list_channels",
+       "mcp__claude_ai_Slack__slack_get_channel_history",
+       "mcp__claude_ai_Slack__slack_get_thread_replies",
+       "mcp__claude_ai_Slack__slack_get_users",
+       "mcp__claude_ai_Slack__slack_search_messages",
+       "mcp__claude_ai_Google_Calendar__gcal_list_events",
+       "mcp__claude_ai_Google_Calendar__gcal_list_calendars",
+       "mcp__claude_ai_Google_Calendar__gcal_get_event"
+    ],
+    "ask": [
+      "Bash(rm:*)",
+      "Bash(wget:*)",
+      "Bash(curl:*)",
+      "Bash(git add:*)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(npm install *)",
+      "Bash(pip install *)",
+      "Bash(brew install *)",
+      "mcp__claude_ai_Slack__slack_send_message",
+      "mcp__claude_ai_Slack__slack_schedule_message"
     ],
     "deny": [
       "Bash(chmod 777 /*)",
@@ -125,20 +128,7 @@
       "Write(**/*credentials*)",
       "Write(**/*secrets*)",
       "Write(**/*.secret)",
-      "Write(**/*.secret.*)",
-      "mcp__claude_ai_Slack__slack_send_message",
-      "mcp__claude_ai_Slack__slack_schedule_message"
-    ],
-    "ask": [
-      "Bash(rm:*)",
-      "Bash(wget:*)",
-      "Bash(curl:*)",
-      "Bash(git add:*)",
-      "Bash(git commit *)",
-      "Bash(git push *)",
-      "Bash(npm install *)",
-      "Bash(pip install *)",
-      "Bash(brew install *)"
+      "Write(**/*.secret.*)"
     ],
     "defaultMode": "plan"
   },
@@ -175,7 +165,6 @@
     "php-lsp@claude-plugins-official": false,
     "pr-review-toolkit@claude-plugins-official": true,
     "pyright-lsp@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": false,
     "superpowers@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": false
   },
