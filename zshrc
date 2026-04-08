@@ -197,8 +197,10 @@ fi
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-# added by Snowflake SnowflakeCLI installer v1.0
-export PATH="$HOME/Applications/SnowflakeCLI.app/Contents/MacOS/:$PATH"
+# Snowflake CLI
+if [ -d "$HOME/Applications/SnowflakeCLI.app/Contents/MacOS" ]; then
+  export PATH="$HOME/Applications/SnowflakeCLI.app/Contents/MacOS:$PATH"
+fi
 
 # ============================================================
 # 補完
