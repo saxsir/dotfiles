@@ -89,7 +89,6 @@ alias -g V='| vim -'
 alias -g C='| pbcopy'
 alias matrix="cmatrix -s -u 6"
 alias gce='git commit --allow-empty'
-alias claude="$CLAUDE_PATH"
 alias claude-vm="limactl shell claude-dev -- bash -c 'claude --dangerously-skip-permissions'"
 
 # ============================================================
@@ -191,6 +190,16 @@ if command -v git-wt &> /dev/null; then
   eval "$(git wt --init zsh)"
 fi
 
+# bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# added by Snowflake SnowflakeCLI installer v1.0
+export PATH="$HOME/Applications/SnowflakeCLI.app/Contents/MacOS/:$PATH"
+
 # ============================================================
 # 補完
 # ============================================================
@@ -219,10 +228,3 @@ fi
 if [ ! -f ~/.zcompdump.zwc -o ~/.zcompdump -nt ~/.zcompdump.zwc ]; then
   zcompile ~/.zcompdump
 fi
-
-# bun completions
-[ -s "/Users/ca00622/.bun/_bun" ] && source "/Users/ca00622/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
