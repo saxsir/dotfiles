@@ -5,7 +5,22 @@
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "CLAUDE_CODE_DISABLE_GIT_INSTRUCTIONS": "1",
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+    "CLAUDE_CODE_NEW_INIT": "1",
     "ENABLE_LSP_TOOL": "1"
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "filesystem": {
+      "denyRead": [
+        "~/.ssh",
+        "~/.gnupg",
+        "~/.aws",
+        "~/.config/gcloud",
+        "~/.bash_history",
+        "~/.zsh_history"
+      ]
+    }
   },
   "permissions": {
     "allow": [
@@ -22,10 +37,9 @@
       "Bash(gh pr list:*)",
       "Bash(gh pr view:*)",
       "Bash(gh search:*)",
-      "Bash(git add:*)",
+      "Bash(git add -p:*)",
       "Bash(git branch:*)",
       "Bash(git checkout:*)",
-      "Bash(git commit:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
       "Bash(git pull:*)",
@@ -42,49 +56,109 @@
     ],
     "deny": [
       "Bash(chmod 777 /*)",
+      "Bash(chmod -R *)",
       "Bash(chown root:*)",
-      "Bash(curl:*)",
+      "Bash(chown -R *)",
       "Bash(docker system prune:*)",
+      "Bash(docker push *)",
+      "Bash(git add .)",
+      "Bash(git add -A)",
+      "Bash(git checkout .)",
+      "Bash(git clean -f *)",
       "Bash(git commit --amend:*)",
       "Bash(git push -f:*)",
+      "Bash(git push -f *)",
+      "Bash(git push --force *)",
       "Bash(git rebase:*)",
       "Bash(git reset:*)",
+      "Bash(git reset --hard *)",
+      "Bash(gcloud * --quiet)",
+      "Bash(helm install *)",
+      "Bash(helm upgrade *)",
+      "Bash(kill -9 *)",
+      "Bash(killall *)",
+      "Bash(kubectl apply *)",
+      "Bash(kubectl delete *)",
+      "Bash(npm publish *)",
+      "Bash(osascript *)",
+      "Bash(open *)",
+      "Bash(pnpm publish *)",
+      "Bash(pkill *)",
       "Bash(rm -rf /)",
       "Bash(rm -rf /*)",
       "Bash(rm -rf ~)",
       "Bash(rm -rf ~/*)",
       "Bash(rm -rf:*)",
+      "Bash(rsync *)",
+      "Bash(scp *)",
+      "Bash(ssh *)",
+      "Bash(su *)",
       "Bash(sudo:*)",
+      "Bash(terraform apply *)",
+      "Bash(terraform destroy *)",
+      "Bash(curl *|*sh)",
+      "Bash(wget *|*sh)",
+      "Bash(yarn publish *)",
+      "Bash(*deploy*)",
+      "Bash(aws * --no-cli-pager)",
+      "Bash(defaults write *)",
       "Read(**/*credentials*)",
       "Read(**/*key*)",
-      "Read(**/*secret*)",
+      "Read(**/*secrets*)",
+      "Read(**/*.secret)",
+      "Read(**/*.secret.*)",
       "Read(**/.env)",
-      "Read(**/.env.development)",
-      "Read(**/.env.local)",
-      "Read(**/.env.production)",
+      "Read(**/.env.*)",
       "Read(.env)",
       "Read(.env.development)",
       "Read(.env.local)",
       "Read(.env.production)",
       "Read(id_rsa)",
       "Write(**/.env)",
-      "Write(**/.env.development)",
-      "Write(**/.env.local)",
-      "Write(**/.env.production)",
+      "Write(**/.env.*)",
       "Write(.env)",
       "Write(.env.development)",
       "Write(.env.local)",
-      "Write(.env.production)"
+      "Write(.env.production)",
+      "Write(**/*.pem)",
+      "Write(**/*.key)",
+      "Write(**/*credentials*)",
+      "Write(**/*secrets*)",
+      "Write(**/*.secret)",
+      "Write(**/*.secret.*)",
+      "mcp__claude_ai_Slack__slack_send_message",
+      "mcp__claude_ai_Slack__slack_schedule_message"
     ],
     "ask": [
       "Bash(rm:*)",
       "Bash(wget:*)",
       "Bash(curl:*)",
-      "Bash(git add -A:*)"
+      "Bash(git add:*)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(npm install *)",
+      "Bash(pip install *)",
+      "Bash(brew install *)"
     ],
     "defaultMode": "plan"
   },
+  "model": "opusplan",
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/block-push-to-main.sh"
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/block-sensitive-reads.sh"
+          }
+        ]
+      }
+    ],
     "Notification": [],
     "Stop": [],
     "SessionEnd": []
@@ -101,9 +175,7 @@
     "php-lsp@claude-plugins-official": false,
     "pr-review-toolkit@claude-plugins-official": true,
     "pyright-lsp@claude-plugins-official": true,
-    "ralph-loop@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true,
-    "slack@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": false,
     "superpowers@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": false
   },

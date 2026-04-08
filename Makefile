@@ -15,7 +15,7 @@ deps:
 		brew install --cask font-plemol-jp-nf 2>/dev/null || true; \
 	fi
 
-symlink: $(HOME)/.vim $(HOME)/.zshrc.local $(HOME)/.config/nvim $(HOME)/.config/ghostty $(HOME)/.config/starship.toml $(HOME)/.claude/commands $(HOME)/.claude/agents $(HOME)/.claude/rules $(HOME)/.claude/skills $(HOME)/.claude/settings.json $(HOME)/.claude/statusline.sh
+symlink: $(HOME)/.vim $(HOME)/.zshrc.local $(HOME)/.config/nvim $(HOME)/.config/ghostty $(HOME)/.config/starship.toml $(HOME)/.claude/commands $(HOME)/.claude/agents $(HOME)/.claude/rules $(HOME)/.claude/skills $(HOME)/.claude/settings.json $(HOME)/.claude/statusline.sh $(HOME)/.claude/hooks
 	$(foreach src, $(srcs), \
 	  ln -fs $(PWD)/$(src) $(HOME)/.$(src); \
 	  )
@@ -55,3 +55,6 @@ $(HOME)/.claude/settings.json:
 
 $(HOME)/.claude/statusline.sh:
 	ln -fs $(PWD)/claude/statusline.sh $@
+
+$(HOME)/.claude/hooks:
+	ln -Fs $(PWD)/claude/hooks/ $@
