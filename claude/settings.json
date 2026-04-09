@@ -12,6 +12,7 @@
     "enabled": true,
     "autoAllowBashIfSandboxed": true,
     "enableWeakerNetworkIsolation": true,
+    "excludedCommands": ["git"],
     "network": {
       "allowedDomains": [
         "api.github.com",
@@ -26,7 +27,8 @@
         "~/.config/gcloud",
         "~/.bash_history",
         "~/.zsh_history"
-      ]
+      ],
+      "allowRead": []
     }
   },
   "permissions": {
