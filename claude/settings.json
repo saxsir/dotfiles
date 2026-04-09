@@ -26,6 +26,9 @@
         "~/.config/gcloud",
         "~/.bash_history",
         "~/.zsh_history"
+      ],
+      "allowRead": [
+        "~/.ssh/known_hosts"
       ]
     }
   },
