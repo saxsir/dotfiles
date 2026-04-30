@@ -1,62 +1,19 @@
-# Git Branch Workflow
+# Git ブランチワークフロー
 
-This rule enforces using standard git branch workflow for all implementation tasks across all projects.
+実装タスクは master or main から切ったフィーチャーブランチで作業する。
 
-## MANDATORY WORKFLOW
+## 手順
 
-When starting ANY implementation task that requires creating a feature branch, you **MUST** follow these steps:
+`git com` は 「デフォルトブランチ (master/main) に switch する」エイリアス。`~/.gitconfig` で定義されている。
 
-### Required Commands
-
-**Before creating a branch, update master/main:**
 ```bash
-git switch master && git pull origin master
-```
-
-**Creating a feature branch:**
-```bash
+# 開始: デフォルトブランチを最新化してブランチを切る
+git com && git pull
 git checkout -b <branch-name>
 ```
 
-**After work is complete:**
-```bash
-git switch master && git pull origin master && git branch -d <branch-name>
-```
+## ~/.gitconfig
 
-### Branch Naming Rules
+ユーザーのカスタム Git エイリアス (`git f`, `git wb`, `git com`, `git delete-merged-branches` 等) を読み込む。
 
-- **New features**: `feat/<feature-name>` (e.g., `feat/add-docker-aliases`)
-- **Bug fixes**: `fix/<description>` (e.g., `fix/zsh-startup-time`)
-- **Refactoring**: `refactor/<component>` (e.g., `refactor/auth-module`)
-- **Chores**: `chore/<description>` (e.g., `chore/update-dependencies`)
-
-### When to Apply This Rule
-
-**✅ MUST create a branch:**
-- Implementing new features
-- Fixing bugs
-- Refactoring code
-- Any task that requires a feature branch
-
-**⚠️ Exceptions (branch not required):**
-- Minor edits to CLAUDE.md or other documentation
-- Quick typo fixes in existing branch
-- Changes that don't require code review
-
-### Integration with Existing Skills
-
-**For `/fix-issue` command:**
-- Step 5 (Branch creation): use `git switch master && git pull origin master && git checkout -b <branch-name>`
-
-**For `/commit-and-pr` command:**
-- Step 2 (Feature branch creation): use `git switch master && git pull origin master && git checkout -b <branch-name>`
-
-## Why This Rule Exists
-
-1. **Simplicity**: Standard git workflow familiar to all developers
-2. **Safety**: Always work from the latest master/main
-3. **Consistency**: Standardizes workflow across all projects and sessions
-
----
-
-**This rule is automatically loaded for ALL Claude Code sessions via symlink at `~/.claude/rules/`.**
+@~/.gitconfig
