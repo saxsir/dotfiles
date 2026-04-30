@@ -15,7 +15,7 @@ deps:
 		brew install --cask font-plemol-jp-nf 2>/dev/null || true; \
 	fi
 
-symlink: $(HOME)/.vim $(HOME)/.zshrc.local $(HOME)/.config/nvim $(HOME)/.config/ghostty $(HOME)/.config/starship.toml $(HOME)/.claude/commands $(HOME)/.claude/agents $(HOME)/.claude/rules $(HOME)/.claude/skills $(HOME)/.claude/settings.json $(HOME)/.claude/statusline.sh $(HOME)/.claude/hooks
+symlink: $(HOME)/.vim $(HOME)/.zshrc.local $(HOME)/.config/nvim $(HOME)/.config/ghostty $(HOME)/.config/starship.toml $(HOME)/.claude/commands $(HOME)/.claude/agents $(HOME)/.claude/rules $(HOME)/.claude/skills $(HOME)/.claude/settings.json $(HOME)/.claude/statusline.sh $(HOME)/.claude/hooks $(HOME)/.claude/CLAUDE.md $(HOME)/.claude/CLAUDE.local.md
 	$(foreach src, $(srcs), \
 	  ln -fs $(PWD)/$(src) $(HOME)/.$(src); \
 	  )
@@ -58,3 +58,9 @@ $(HOME)/.claude/statusline.sh:
 
 $(HOME)/.claude/hooks:
 	ln -Fs $(PWD)/claude/hooks/ $@
+
+$(HOME)/.claude/CLAUDE.md:
+	ln -fs $(PWD)/claude/CLAUDE.md $@
+
+$(HOME)/.claude/CLAUDE.local.md:
+	cp $(PWD)/claude/CLAUDE.local.md.sample $@
