@@ -12,7 +12,9 @@
 - @rules/commit-discipline.md — コミット規律
 - @rules/code-quality.md — コード品質基準
 - @rules/git-branch-workflow.md — Git ブランチワークフロー
+- @rules/github-workflow.md — GitHub ワークフロー (Issue / PR / レビュー)
 
 # Tool Preferences
 
 - JSON の処理には Python ではなく `jq` を使う
+- AWS の認証情報を要するコマンド (`aws`, `terraform`, `cdk`, `boto3` 等) は `aws-vault exec <profile> -- <command>` で実行する (平文 credential の利用を避ける)
