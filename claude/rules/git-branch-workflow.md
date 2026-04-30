@@ -11,9 +11,3 @@
 git com && git pull
 git checkout -b <branch-name>
 ```
-
-## ~/.gitconfig
-
-ユーザーのカスタム Git エイリアス (`git f`, `git wb`, `git com`, `git delete-merged-branches` 等) を読み込む。
-
-@~/.gitconfig
