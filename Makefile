@@ -13,8 +13,21 @@ deps:
 	fi
 
 # pre-commit hook を .git/hooks にインストール (secretlint 等を有効化)
+# core.hooksPath が孤児パス (実体なし) を指している場合は自動で unset する。
+# 実体があるパスを指している場合はユーザに通知して abort (意図的な設定の上書きを避ける)。
 hooks:
 	@command -v pre-commit >/dev/null 2>&1 || { echo "pre-commit が見つからない: make deps を先に実行"; exit 1; }
+	@hp=$$(git config --get core.hooksPath 2>/dev/null); \
+	if [ -n "$$hp" ]; then \
+	  if [ ! -d "$$hp" ]; then \
+	    echo "[hooks] 孤児な core.hooksPath ($$hp) を unset します"; \
+	    git config --unset core.hooksPath; \
+	  else \
+	    echo "[hooks] core.hooksPath=$$hp が設定済みです。pre-commit と共存するか手動で対応してください:"; \
+	    echo "  git config --unset core.hooksPath  # pre-commit を使う"; \
+	    exit 1; \
+	  fi; \
+	fi
 	pre-commit install
 
 # 初回のみ: chezmoi の設定ファイル ~/.config/chezmoi/chezmoi.toml を生成
