@@ -6,18 +6,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a personal dotfiles repository that manages development environment configurations, primarily for macOS (Darwin) and Linux systems. The repository uses a Makefile-based setup system to create symlinks from configuration files to the user's home directory.
+This is a personal dotfiles repository that manages development environment configurations, primarily for macOS (Darwin) and Linux systems. The repository is managed by [chezmoi](https://www.chezmoi.io/); the Makefile is a thin wrapper that installs deps (Homebrew formulas) and runs `chezmoi apply`.
 
 ## Essential Commands
 
 ### Setup and Installation
 ```bash
-# Complete setup (install dependencies and create symlinks)
+# Complete setup (install deps + chezmoi apply)
 make
 
 # Individual targets
-make deps      # Install dependencies (oh-my-zsh plugins, vim-plug)
-make symlink   # Create symlinks to home directory
+make deps      # brew で chezmoi/starship/font 等を準備
+make apply     # chezmoi apply で ~/ にファイル配置 (初回は init で name/email プロンプト)
+make diff      # 適用前に差分確認
 ```
 
 ### Testing and Validation
@@ -29,8 +30,8 @@ zsh -n ~/.zshrc
 # Reload and verify zsh configuration
 zsh -c 'source ~/.zshrc && echo "OK"'
 
-# Dry-run symlink creation to verify targets
-make -n symlink
+# Dry-run chezmoi apply
+chezmoi diff
 
 # Test zsh startup performance (built-in profiling)
 # Set ENABLE_STARTUP_PROFILING=1 before starting new shell
@@ -40,15 +41,15 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 ## Architecture and Structure
 
 ### Configuration Management Pattern
-- **Symlink-based**: All configuration files are symlinked from this repository to `~/.filename`
-- **Platform-specific loading**: Main `zshrc` detects OS and sources appropriate platform files
-- **Local overrides**: `zshrc.local` (created from `zshrc.local.sample`) for machine-specific settings
+- **chezmoi-based**: リポジトリルートが chezmoi の source root。`chezmoi apply` でホームディレクトリに実ファイルとして配置される
+- **Local overrides**: `zshrc.local` は `create_dot_zshrc.local` 由来。既存ファイルは上書きされない (machine-specific 設定保護)
+- **gitconfig template**: `dot_gitconfig.tmpl` に `{{ .name }}` / `{{ .email }}` を埋めており、初回 `chezmoi init` で対話的に入力 → `~/.config/chezmoi/chezmoi.toml` に保存
+- **chezmoi 管理外**: `Makefile`, `README.md`, `LICENSE`, `lima/`, `misc/` 等のリポメタは `.chezmoiignore` で適用対象から除外
 
 ### Key Components
 
 1. **Shell Environment (Zsh)**
-   - Main config: `zshrc` - Core configuration with oh-my-zsh, peco/ghq integration
-   - Platform configs: `zshrc.darwin` (macOS), `zshrc.linux` (Linux)
+   - Main config: `dot_zshrc` - Core configuration with zinit (プラグインマネージャ), peco/ghq integration
    - Performance optimizations: Lazy loading for heavy tools (nvm, pyenv), zcompile usage
 
 2. **Development Tools Integration**
@@ -130,7 +131,7 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 ### Important Patterns
 - **Lazy loading**: Heavy tools are loaded on-demand to improve shell startup time
 - **ghq + peco**: Repository management and navigation system (repos in `~/src`)
-- **oh-my-zsh plugins**: Managed as git submodules in `oh-my-zsh/custom/plugins/`
+- **zinit**: zsh プラグインマネージャ。`dot_zshrc` 内で自己 clone する
 
 ## Code Style Guidelines
 
@@ -144,8 +145,8 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 ### Configuration Files
 - Keep modifications organized by concern (aliases, functions, environment setup)
 - Document non-obvious configurations with inline comments
-- IMPORTANT: Platform-specific code must go in `zshrc.darwin` or `zshrc.linux`, not main `zshrc`
-- Machine-specific settings belong in `zshrc.local` (not tracked in git)
+- IMPORTANT: Platform-specific code は `dot_zshrc.tmpl` 化して `{{ if eq .chezmoi.os "darwin" }}` 等で分岐する
+- Machine-specific settings belong in `~/.zshrc.local` (chezmoi の `create_` prefix で初回のみ作成、上書きされない)
 
 ### Git Practices
 - YOU MUST test changes in a new shell session before committing
@@ -171,33 +172,24 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 9. After PR is merged and branch is no longer needed, clean up: `git switch master && git pull origin master && git branch -d <branch-name>`
 
 ### Deployment
-- IMPORTANT: After merging changes, run `make symlink` to update symlinks
+- IMPORTANT: After merging changes, run `make apply` (= `chezmoi apply`) to update files in `~/`
 - Reload shell with `source ~/.zshrc` or start a new shell session
 - Verify no errors occur during shell initialization
 
 ## Critical Notes
 
-1. **Git configuration**: YOU MUST update personal information in `gitconfig` before use:
-   ```
-   [user]
-       name = your username on GitHub
-       email = your email on GitHub
-   ```
-   IMPORTANT: Never commit with placeholder user information.
+1. **Git user info**: 初回 `chezmoi init` で対話的に入力 → `~/.config/chezmoi/chezmoi.toml` に保存。
+   `dot_gitconfig.tmpl` がそれを参照して展開する。リポジトリには個人情報は含まれない。
 
-2. **SSH dependencies**: The Makefile clones repositories using SSH URLs (`git@github.com:`).
-   YOU MUST have SSH keys set up before running `make deps`.
+2. **macOS focus**: While Linux is supported, most optimizations and tool integrations are macOS-centric.
+   OS 分岐が必要になったら chezmoi template (`{{ if eq .chezmoi.os "darwin" }}`) で書く。
 
-3. **macOS focus**: While Linux is supported, most optimizations and tool integrations are macOS-centric.
-   Platform-specific code is isolated in `zshrc.darwin` and `zshrc.linux`.
-
-4. **GNU coreutils**: macOS環境にHomebrew経由でGNU coreutilsをインストール済み。
+3. **GNU coreutils**: macOS環境にHomebrew経由でGNU coreutilsをインストール済み。
    `date`コマンド等はGNU版を使用しているため、シェルスクリプトやコマンド提案時はGNU構文（例: `date -d`, `date +%s`）を使用すること。
 
 ## Known Issues and Warnings
 
-- **Slow startup**: If shell startup is slow, check lazy-loading configuration in `zshrc`
-- **oh-my-zsh submodules**: When cloning fresh, run `git submodule update --init --recursive`
+- **Slow startup**: If shell startup is slow, check lazy-loading configuration in `dot_zshrc`
 - **Homebrew on Apple Silicon**: Some formulas may require Rosetta 2 or ARM-specific installation
 - **tmux key conflicts**: Custom vim-like bindings may conflict with some terminal applications
 

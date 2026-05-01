@@ -1,63 +1,56 @@
 PWD := $(shell pwd)
-srcs := \
-  gitconfig gitignore_global gitmessage.txt \
-  vimrc tmux.conf \
-  zshrc zshrc.darwin zshrc.linux ideavimrc mackup.cfg
 
-all: deps symlink
+.PHONY: all deps init apply diff edit re-add merge help
+
+# デフォルト: 依存ツールを揃えて apply
+all: deps apply
 
 deps:
-	mkdir -p $(HOME)/.vimtmp
-	mkdir -p $(HOME)/.vimback
-	mkdir -p $(HOME)/.vimundo
-	mkdir -p $(HOME)/.config
-	@if command -v brew >/dev/null 2>&1; then \
-		brew install --cask font-plemol-jp-nf 2>/dev/null || true; \
+	@command -v brew >/dev/null 2>&1 || { echo "Homebrew が必要です: https://brew.sh"; exit 1; }
+	@command -v chezmoi >/dev/null 2>&1 || brew install chezmoi
+	@command -v starship >/dev/null 2>&1 || brew install starship
+	@brew install --cask font-plemol-jp-nf 2>/dev/null || true
+
+# 初回のみ: chezmoi の設定ファイル ~/.config/chezmoi/chezmoi.toml を生成
+init:
+	chezmoi init --source "$(PWD)"
+
+# ソース → ~/ に反映 (chezmoi 標準の方向)
+apply:
+	@if [ ! -f "$(HOME)/.config/chezmoi/chezmoi.toml" ]; then \
+	  $(MAKE) init; \
 	fi
+	chezmoi apply --source "$(PWD)"
 
-symlink: $(HOME)/.vim $(HOME)/.zshrc.local $(HOME)/.config/nvim $(HOME)/.config/ghostty $(HOME)/.config/starship.toml $(HOME)/.claude/commands $(HOME)/.claude/agents $(HOME)/.claude/rules $(HOME)/.claude/skills $(HOME)/.claude/settings.json $(HOME)/.claude/statusline.sh $(HOME)/.claude/hooks $(HOME)/.claude/CLAUDE.md
-	$(foreach src, $(srcs), \
-	  ln -fs $(PWD)/$(src) $(HOME)/.$(src); \
-	  )
+# apply 前の差分確認
+diff:
+	chezmoi diff --source "$(PWD)"
 
-$(HOME)/.vim:
-	ln -Fs $(PWD)/vim/ $@
+# ソース側を $EDITOR で編集 (FILE=~/.zshrc など)。--apply で同時に ~/ にも反映
+# 例: make edit FILE=~/.zshrc
+edit:
+	@test -n "$(FILE)" || { echo "Usage: make edit FILE=~/.zshrc"; exit 1; }
+	chezmoi edit --apply --source "$(PWD)" "$(FILE)"
 
-$(HOME)/.zshrc.local:
-	cp zshrc.local.sample $@
+# ~/ で直接編集した内容を ソース側に取り込む (target → source)
+# FILE 未指定なら全 managed file を一括取り込み
+# 例: make re-add FILE=~/.zshrc / make re-add
+re-add:
+	chezmoi re-add --source "$(PWD)" $(FILE)
 
-$(HOME)/.config/nvim:
-	mkdir -p $(HOME)/.config
-	ln -Fs $(PWD)/nvim/ $@
+# ソースと target が両方変わって衝突したときの 3-way merge
+# 例: make merge FILE=~/.zshrc
+merge:
+	@test -n "$(FILE)" || { echo "Usage: make merge FILE=~/.zshrc"; exit 1; }
+	chezmoi merge --source "$(PWD)" "$(FILE)"
 
-$(HOME)/.config/ghostty:
-	mkdir -p $(HOME)/.config
-	ln -Fs $(PWD)/ghostty/ $@
-
-$(HOME)/.config/starship.toml:
-	mkdir -p $(HOME)/.config
-	ln -fs $(PWD)/starship.toml $@
-
-$(HOME)/.claude/commands:
-	ln -Fs $(PWD)/claude/commands/ $@
-
-$(HOME)/.claude/agents:
-	ln -Fs $(PWD)/claude/agents/ $@
-
-$(HOME)/.claude/rules:
-	ln -Fs $(PWD)/claude/rules/ $@
-
-$(HOME)/.claude/skills:
-	ln -Fs $(PWD)/claude/skills/ $@
-
-$(HOME)/.claude/settings.json:
-	ln -fs $(PWD)/claude/settings.json $@
-
-$(HOME)/.claude/statusline.sh:
-	ln -fs $(PWD)/claude/statusline.sh $@
-
-$(HOME)/.claude/hooks:
-	ln -Fs $(PWD)/claude/hooks/ $@
-
-$(HOME)/.claude/CLAUDE.md:
-	ln -fs $(PWD)/claude/CLAUDE.md $@
+help:
+	@echo "Targets:"
+	@echo "  all      - deps + apply (デフォルト)"
+	@echo "  deps     - brew で chezmoi/starship/font をインストール"
+	@echo "  init     - 初回のみ chezmoi 設定ファイルを生成"
+	@echo "  apply    - source → ~/ に反映 (標準の方向)"
+	@echo "  diff     - apply 前の差分確認"
+	@echo "  edit     - source 側を編集して --apply (FILE=...)"
+	@echo "  re-add   - ~/ の編集内容を source に取り込み (FILE=... 任意)"
+	@echo "  merge    - 衝突時の 3-way merge (FILE=...)"

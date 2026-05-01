@@ -1,9 +1,11 @@
-vim/autoload/plug.vim
-vim/plugged/
-vim/view/
-oh-my-zsh/
-
-vim/ftplugin/markdown/hateblo.vim
+dot_vim/autoload/plug.vim
+dot_vim/plugged/
+dot_vim/view/
+dot_vim/.netrwhist
+dot_vim/ftplugin/markdown/hateblo.vim
+dot_config/ghostty/config.bak
+dot_claude/CLAUDE.local.md
 .serena/cache
-ghostty/config.bak
-claude/CLAUDE.local.md
+
+# 旧 oh-my-zsh/ ディレクトリ (zinit へ移行済。ローカル削除待ち)
+oh-my-zsh/
