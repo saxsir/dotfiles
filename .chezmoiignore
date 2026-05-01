@@ -2,8 +2,15 @@
 README.md
 LICENSE
 Makefile
+Brewfile
+Brewfile.lock.json
 .gitignore
 .git
+.pre-commit-config.yaml
+.secretlintrc.json
+package.json
+package-lock.json
+node_modules
 lima
 misc
 
