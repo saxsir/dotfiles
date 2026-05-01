@@ -1,20 +1,31 @@
-# リポジトリメタ (chezmoi 適用対象外)
+# chezmoi 適用対象外のメタファイル / ランタイム生成物を列挙する
+# (chezmoi はソースルート全体を走査しテンプレ展開するため、リポ運用ファイルや
+#  ランタイム状態を明示的に除外しないと apply/diff 時に不要な副作用が出る)
+
+# === ドキュメント (リポジトリ説明用) ===
 README.md
 LICENSE
+
+# === ビルド / タスク定義 (Make や CI 側で使うもの) ===
 Makefile
 Brewfile
 Brewfile.lock.json
-.gitignore
+
+# === git / lint / secretlint まわりの運用ファイル ===
 .git
+.gitignore
 .pre-commit-config.yaml
 .secretlintrc.json
 package.json
 package-lock.json
 node_modules
+
+# === 周辺ディレクトリ (検証 VM 設定、その他資材) ===
 lima
 misc
 
-# Claude Code が動的に生成する管理対象外
+# === Claude Code がランタイムで生成するキャッシュ / 状態 ===
+# 永続的なユーザー設定 (settings.json, CLAUDE.md 等) は管理対象に残す
 .claude/sessions
 .claude/debug
 .claude/file-history
@@ -34,11 +45,15 @@ misc
 .claude/statsig
 .claude/chrome
 .claude/ide
+
+# === Claude Code のマシン / ローカル固有の上書き (機密含むので非管理) ===
 .claude/CLAUDE.local.md
-.claude/*.bak
-.claude/*.jsonl
-.claude/*-cache.json
+.claude/settings.local.json
 .claude/policy-limits.json
 .claude/remote-settings.json
 .claude/mcp-needs-auth-cache.json
-.claude/settings.local.json
+
+# === 一時 / バックアップ系のパターン ===
+.claude/*.bak
+.claude/*.jsonl
+.claude/*-cache.json
