@@ -11,5 +11,9 @@ brew "pre-commit"
 # secretlint を npx 経由で動かすための Node
 brew "node"
 
+# プロジェクト単位の環境変数 / シェル切り替え
+# devbox は Homebrew core に無いため `curl -fsSL https://get.jetify.com/devbox | bash` で別途導入
+brew "direnv"
+
 # Nerd Font (ターミナル)
 cask "font-plemol-jp-nf"

@@ -24,8 +24,11 @@ Session.vim
 # refs https://github.com/github/gitignore/blob/master/Global/IPythonNotebook.gitignore
 .ipynb_checkpoints/
 
-# direnv
+# direnv / devbox (プロジェクトに .envrc を commit する場合は !.envrc で個別 unignore する)
 .envrc
+.envrc.local
+.direnv/
+.devbox/
 
 # local_dump
 # 本番環境のDB dumpとかをよく置く
