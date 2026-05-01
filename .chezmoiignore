@@ -1,0 +1,43 @@
+# リポジトリメタ (chezmoi 適用対象外)
+README.md
+LICENSE
+Makefile
+.gitignore
+.git
+lima
+misc
+
+# vim-plug 由来 (run_once_before_install-deps.sh で install)
+.vim/autoload/plug.vim
+.vim/plugged
+.vim/.netrwhist
+.vim/view
+
+# Claude Code が動的に生成する管理対象外
+.claude/sessions
+.claude/debug
+.claude/file-history
+.claude/projects
+.claude/todos
+.claude/cache
+.claude/shell-snapshots
+.claude/session-env
+.claude/telemetry
+.claude/tasks
+.claude/teams
+.claude/plans
+.claude/paste-cache
+.claude/backups
+.claude/usage-data
+.claude/plugins
+.claude/statsig
+.claude/chrome
+.claude/ide
+.claude/CLAUDE.local.md
+.claude/*.bak
+.claude/*.jsonl
+.claude/*-cache.json
+.claude/policy-limits.json
+.claude/remote-settings.json
+.claude/mcp-needs-auth-cache.json
+.claude/settings.local.json
