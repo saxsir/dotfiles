@@ -37,14 +37,14 @@
       "Bash(git log *)",
       "Bash(git diff *)",
       "Bash(git branch *)",
-       "mcp__claude_ai_Slack__slack_list_channels",
-       "mcp__claude_ai_Slack__slack_get_channel_history",
-       "mcp__claude_ai_Slack__slack_get_thread_replies",
-       "mcp__claude_ai_Slack__slack_get_users",
-       "mcp__claude_ai_Slack__slack_search_messages",
-       "mcp__claude_ai_Google_Calendar__gcal_list_events",
-       "mcp__claude_ai_Google_Calendar__gcal_list_calendars",
-       "mcp__claude_ai_Google_Calendar__gcal_get_event"
+      "mcp__claude_ai_Slack__slack_list_channels",
+      "mcp__claude_ai_Slack__slack_get_channel_history",
+      "mcp__claude_ai_Slack__slack_get_thread_replies",
+      "mcp__claude_ai_Slack__slack_get_users",
+      "mcp__claude_ai_Slack__slack_search_messages",
+      "mcp__claude_ai_Google_Calendar__gcal_list_events",
+      "mcp__claude_ai_Google_Calendar__gcal_list_calendars",
+      "mcp__claude_ai_Google_Calendar__gcal_get_event"
     ],
     "ask": [
       "Bash(rm:*)",
@@ -134,7 +134,6 @@
     ],
     "defaultMode": "plan"
   },
-  "model": "opusplan",
   "hooks": {
     "PreToolUse": [
       {
@@ -152,7 +151,17 @@
       }
     ],
     "Notification": [],
-    "Stop": [],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ~/.claude/hooks/suggest-claude-md-improver.sh",
+            "statusMessage": "CLAUDE.md更新チェック中..."
+          }
+        ]
+      }
+    ],
     "SessionEnd": []
   },
   "statusLine": {
