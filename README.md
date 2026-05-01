@@ -16,15 +16,26 @@ $ make
 
 - リポジトリルート — chezmoi の source root (`dot_*` / `*.tmpl` 等が並ぶ)
 - `Makefile` — `chezmoi apply` のエントリポイントと依存ツール (brew 等) のインストール
-- `.chezmoiignore` — `Makefile` / `README.md` / `lima/` / `misc/` 等を chezmoi 適用対象から除外
+- `Brewfile` — 依存パッケージ (chezmoi/starship/pre-commit/node + フォント) を `brew bundle` で管理
+- `.pre-commit-config.yaml` / `.secretlintrc.json` / `package.json` — secretlint によるコミット時シークレット検出
+- `.chezmoiignore` — リポメタ (`Makefile` / `README.md` / `Brewfile` / `lima` / `misc` 等) を chezmoi 適用対象から除外
 - `lima/`, `misc/` — chezmoi 管理外 (リポメタ)
 
 ## 主なコマンド
 
 ```
-make             # = make deps apply
-make deps        # brew で chezmoi/starship/font 等を揃える
+make             # = make deps apply hooks
+make deps        # brew bundle + npm install (Brewfile + package.json)
 make apply       # chezmoi apply (~/ にファイル配置)
 make diff        # 適用前に差分確認
-chezmoi edit ~/.zshrc   # ソース側を編集 (apply は別途)
+make hooks       # pre-commit hook を install
+make help        # 全 target 一覧
+```
+
+## シークレット検出
+
+`pre-commit install` 後は `git commit` 時に `secretlint` が自動的に走り、AWS キーや GitHub トークン等が混入していると commit が失敗します。手動チェック:
+
+```
+npx secretlint "**/*"
 ```

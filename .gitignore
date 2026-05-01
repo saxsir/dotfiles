@@ -7,5 +7,8 @@ dot_config/ghostty/config.bak
 dot_claude/CLAUDE.local.md
 .serena/cache
 
+# Node (secretlint 用)
+node_modules/
+
 # 旧 oh-my-zsh/ ディレクトリ (zinit へ移行済。ローカル削除待ち)
 oh-my-zsh/
