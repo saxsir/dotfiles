@@ -14,6 +14,11 @@
 - @rules/git-branch-workflow.md — Git ブランチワークフロー
 - @rules/github-workflow.md — GitHub ワークフロー (Issue / PR / レビュー)
 
+# Env
+
+- GitHub: saxsir
+- リポジトリ: ghq 管理（`~/src/github.com/owner/repo`）
+
 # Tool Preferences
 
 - JSON の処理には Python ではなく `jq` を使う
