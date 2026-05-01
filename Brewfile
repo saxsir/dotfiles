@@ -15,5 +15,8 @@ brew "node"
 # devbox は Homebrew core に無いため `curl -fsSL https://get.jetify.com/devbox | bash` で別途導入
 brew "direnv"
 
+# 言語ランタイム / CLI バージョン管理 (~/.config/mise/config.toml)
+brew "mise"
+
 # Nerd Font (ターミナル)
 cask "font-plemol-jp-nf"
