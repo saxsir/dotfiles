@@ -1,6 +1,6 @@
 PWD := $(shell pwd)
 
-.PHONY: all deps init apply diff edit re-add merge hooks mise help
+.PHONY: all deps init apply diff edit re-add merge hooks mise macos help
 
 # デフォルト: 依存ツールを揃えて apply、mise install、pre-commit hook を install
 all: deps apply mise hooks
@@ -68,6 +68,13 @@ mise:
 	@command -v mise >/dev/null 2>&1 || { echo "mise が見つからない: make deps を先に実行"; exit 1; }
 	mise install
 
+# macOS defaults を ~/.macos に従って一括適用する (デフォルト all には含めない: 副作用大)
+# 適用前に内容を確認するなら `cat ~/.macos`
+macos:
+	@[ "$$(uname)" = "Darwin" ] || { echo "macOS 専用です"; exit 1; }
+	@[ -x "$(HOME)/.macos" ] || { echo "~/.macos が無い: make apply を先に実行"; exit 1; }
+	"$(HOME)/.macos"
+
 help:
 	@echo "Targets:"
 	@echo "  all      - deps + apply + mise + hooks (デフォルト)"
@@ -79,4 +86,5 @@ help:
 	@echo "  re-add   - ~/ の編集内容を source に取り込み (FILE=... 任意)"
 	@echo "  merge    - 衝突時の 3-way merge (FILE=...)"
 	@echo "  mise     - ~/.config/mise/config.toml に従って mise install"
+	@echo "  macos    - ~/.macos の defaults を一括適用 (副作用大のため all には含めない)"
 	@echo "  hooks    - pre-commit hook を install (secretlint)"

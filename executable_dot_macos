@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# ~/.macos: macOS defaults を最小セットで揃える
+#
+# 適用は `make macos` から (デフォルト all には含めない: 副作用が大きいため)
+# 個別変更を増やしたい場合は Why コメント付きで追記する
+
+set -eu
+
+echo "[macos] applying defaults..."
+
+# ============================================================
+# Dock
+# ============================================================
+# Dock を自動的に隠す (画面領域を確保)
+defaults write com.apple.dock autohide -bool true
+
+# ============================================================
+# Finder
+# ============================================================
+# 全ての拡張子を表示 (.txt 等を隠さない)
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+# 拡張子変更時の警告ダイアログを抑止
+defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+
+# ============================================================
+# Screenshot
+# ============================================================
+# スクリーンショット保存先を ~/Pictures/Screenshots に集約
+mkdir -p "${HOME}/Pictures/Screenshots"
+defaults write com.apple.screencapture location -string "${HOME}/Pictures/Screenshots"
+
+# ============================================================
+# キーボード
+# ============================================================
+# キーリピート速度を最速に (2 = ~30ms)
+defaults write NSGlobalDomain KeyRepeat -int 2
+# キーリピート開始までの遅延 (15 = ~225ms)
+defaults write NSGlobalDomain InitialKeyRepeat -int 15
+
+# ============================================================
+# Safari (開発者向け)
+# ============================================================
+# 開発メニューと内部デバッグメニューを表示
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
+defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
+defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
+
+# ============================================================
+# 反映 (該当プロセスを再起動)
+# ============================================================
+for app in "Dock" "Finder" "SystemUIServer"; do
+  killall "${app}" >/dev/null 2>&1 || true
+done
+
+echo "[macos] done. Safari は手動再起動が必要な場合あり。"
