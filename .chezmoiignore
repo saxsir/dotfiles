@@ -14,12 +14,6 @@ node_modules
 lima
 misc
 
-# vim-plug 由来 (run_once_before_install-deps.sh で install)
-.vim/autoload/plug.vim
-.vim/plugged
-.vim/.netrwhist
-.vim/view
-
 # Claude Code が動的に生成する管理対象外
 .claude/sessions
 .claude/debug
