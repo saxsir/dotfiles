@@ -13,6 +13,7 @@ package-lock.json
 node_modules
 lima
 misc
+tmp
 
 # vim-plug 由来 (run_once_before_install-deps.sh で install)
 .vim/autoload/plug.vim

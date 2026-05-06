@@ -7,6 +7,12 @@ dot_config/ghostty/config.bak
 dot_claude/CLAUDE.local.md
 .serena/cache
 
+# Brewfile lock (個人マシン中心。複数マシン間の厳密一致は不要のため非管理)
+Brewfile.lock.json
+
+# 個人メモ / 整理用 umbrella ドキュメント (リポには含めない)
+UMBRELLA.md
+
 # Node (secretlint 用)
 node_modules/
 
