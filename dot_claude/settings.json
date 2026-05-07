@@ -156,8 +156,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash ~/.claude/hooks/suggest-claude-md-improver.sh",
-            "statusMessage": "CLAUDE.md更新チェック中..."
+            "command": "bash ~/.claude/hooks/suggest-retrospective.sh",
+            "statusMessage": "Retrospective チェック中..."
           }
         ]
       }
