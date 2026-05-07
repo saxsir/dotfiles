@@ -1,8 +1,19 @@
 {{- $name := promptStringOnce . "name" "Git user.name" -}}
 {{- $email := promptStringOnce . "email" "Git user.email" -}}
+{{- /* age 公開鍵 (recipient)。空なら encryption ブロックを出力せず暗号化機能は無効。 */ -}}
+{{- $ageRecipient := promptStringOnce . "ageRecipient" "Age recipient (公開鍵 age1...)。暗号化を使わないなら空のまま" "" -}}
 
 sourceDir = {{ .chezmoi.sourceDir | quote }}
+
+{{- if $ageRecipient }}
+encryption = "age"
+
+[age]
+    identity = {{ joinPath .chezmoi.homeDir ".config/chezmoi/key.txt" | quote }}
+    recipient = {{ $ageRecipient | quote }}
+{{- end }}
 
 [data]
     name  = {{ $name | quote }}
     email = {{ $email | quote }}
+    ageRecipient = {{ $ageRecipient | quote }}
