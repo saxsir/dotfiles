@@ -56,8 +56,46 @@ description: セッション終了時または「学びを残して」と指示�
      - 「部分重複」（学びの一部だけが既存カバー、残りが新規）もこの分類に含める。重複した部分は「重複検出」節に、新規部分は「採用候補」節（`[skill 追記]` または `[rule]`）に分けて書く。
    - **既存と重複（提案不要）**: 既存が同じ知見を完全カバー → 提案ゼロ。ただし提示フォーマットには「重複検出」行を残す（監査可能性のため）。重複検出行には根拠として既存 skill 名 + 該当節名（または行番号）を添える。
    - **判断保留**: 重複かどうか agent が判定できない → ユーザーに照合結果を見せて判断を仰ぐ
-5. **書き出し**: 選んだ形式のテンプレート（後述）に沿って artifact を生成する。
-6. **確認**: ユーザーに diff を見せて採用可否を取る。棄却された場合は skill ではなくセッション内のメモに留める。
+5. **合議（`[rule]` 候補のみ）**: 採用候補に `[rule]`（CLAUDE.md / rules / project CLAUDE.md への書き込み）が 1 件以上含まれる場合、提案を確定する前に `claude-md-management:claude-md-improver` skill を呼び出してセカンドオピニオンを取る。詳細は後述の「合議: claude-md-improver との連携」を参照。
+6. **書き出し**: 選んだ形式のテンプレート（後述）に沿って artifact を生成する。
+7. **確認**: ユーザーに diff を見せて採用可否を取る。棄却された場合は skill ではなくセッション内のメモに留める。
+
+## 合議: claude-md-improver との連携
+
+`[rule]` 候補は CLAUDE.md / rules/*.md への書き込みになるため、CLAUDE.md 専門の `claude-md-management:claude-md-improver` を**第二意見として必ず呼ぶ**。本 skill が起案者、claude-md-improver が査読者という分担。
+
+### 呼び出し方
+
+`Skill` tool で `claude-md-management:claude-md-improver` を起動し、対象 CLAUDE.md / rules ファイルと「追記候補の文面 + 配置先案」を渡す。具体的に問う点は次の 3 つ:
+
+1. **配置先の妥当性**: 提案された CLAUDE.md / rules/X.md は、このルールを置くのに適切か。別の rules/*.md や別セクションの方が良くないか。
+2. **重複・近接**: 既存ルール群の中に意味的に被る / 逆方向に矛盾する記述はないか。
+3. **粒度・文体**: 既存ファイルの粒度・命令形・「理由:」表記の慣習に揃っているか。短すぎ / 長すぎないか。
+
+### 結果の合議
+
+両者の意見を **「採用候補」項目の直下にぶら下げる**形でユーザーに提示する:
+
+```
+- [rule] dot_claude/rules/tool-preferences.md: pnpm は v10 以上を使う（理由: ...）
+  - retrospective-codify: 配置先は Tool Preferences が妥当
+  - claude-md-improver: dot_claude/CLAUDE.md の Tool Preferences 節（既存）に 1 行追記する方が分散しない
+  - 合議結果: 配置先は dot_claude/CLAUDE.md（claude-md-improver 案を採用）
+```
+
+判断ルール:
+
+- **両者一致** → そのまま提案として採用、合議結果行は省略可
+- **意見が割れる** → 両論を提示し、retrospective-codify 側が短い理由つきでどちらを採るか合議結果に書く。最終決定はユーザー
+- **claude-md-improver が「不適切（CLAUDE.md には書くべきでない）」と判定** → 候補から除外し、不採用節に「claude-md-improver による却下: <理由>」として記録
+- **claude-md-improver が代替案（別ファイル / 別文面）を出す** → 元案と代替案を両方並べ、ユーザーに選んでもらう
+
+### 合議をスキップしてよい場合
+
+- `[lint]`, `[skill 新規]`, `[skill 追記]` 候補のみで `[rule]` がゼロのとき（claude-md-improver の管轄外）
+- 既存ルールへの 1 文追記で、文面が claude-md-improver の過去の指摘と完全一致しているとき（明示的な根拠が手元にあるときのみ）
+
+スキップしたときは提示フォーマットに `合議: スキップ（理由: <短い 1 行>）` を残し、監査可能性を確保する。
 
 ## 分類判定
 
@@ -217,12 +255,17 @@ message: Set/Map のサイズは .size プロパティを使う。
 - [skill 追記] <既存 skill 名>: <1 行>（学び N 由来）
 - [skill 新規] <skill 名>: <1 行>（学び N 由来）
 - [rule] <CLAUDE.md or rules/X.md or project CLAUDE.md>: <1 行>（学び N 由来）
+  - retrospective-codify: <配置先・文面の理由 1 行>
+  - claude-md-improver: <査読意見 1 行>
+  - 合議結果: <一致 / どちらを採用 / 両論併記してユーザー判断 のいずれか>
 
 重複検出（提案不要）:
 - <学び N>: 既存 <skill/rule 名> の <該当節名 or 行番号> が完全カバー → 追加なし
 
 不採用:
-- <学び N>: <不採用理由 1 行>（例: プロジェクト固有 / cross-file で lint 表現困難 / 他の学びに吸収）
+- <学び N>: <不採用理由 1 行>（例: プロジェクト固有 / cross-file で lint 表現困難 / 他の学びに吸収 / claude-md-improver 却下）
+
+合議: <`[rule]` 候補がある場合のみ。スキップしたなら理由 1 行>
 
 採用するものを番号または項目名で指示してください。提案ゼロも妥当な結論です。
 ```
@@ -234,6 +277,7 @@ message: Set/Map のサイズは .size プロパティを使う。
 - 各提案行末に「学び N 由来」を必ず書く（複数学びを跨ぐ場合は「学び 1, 3 由来」のように列挙して良い）
 - 「採用候補」が空で「重複検出」のみ残るときは、末尾文を `採用するものを指示してください` ではなく `採用候補なし。記録目的でレビューしてください。` に置き換える
 - ユーザーが採用を指示した項目のみ書き出す。黙って書き出さない
+- `[rule]` 候補のサブ箇条書き（retrospective-codify / claude-md-improver / 合議結果）は両者一致のときのみ省略可。割れたときは必ず両論を残す
 
 ### 提示例: 全学びが既存カバー（重複検出のみ）
 
@@ -277,5 +321,5 @@ message: Set/Map のサイズは .size プロパティを使う。
 ## 関連 skill
 
 - `superpowers:writing-skills` — 新規 skill を書くときのテンプレと TDD フロー
-- `claude-md-management:claude-md-improver` — CLAUDE.md 専用の改善 skill。`[rule]` 提案を CLAUDE.md に書き出す際に内部呼び出ししても良い
+- `claude-md-management:claude-md-improver` — CLAUDE.md 専門の査読・改善 skill。**`[rule]` 候補は本 skill から合議呼び出し必須**（上記「合議: claude-md-improver との連携」参照）
 - `update-config` — `settings.json` / permissions の変更が必要な場合
