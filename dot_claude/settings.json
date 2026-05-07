@@ -173,17 +173,7 @@
       }
     ],
     "Notification": [],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/hooks/suggest-retrospective.sh",
-            "statusMessage": "Retrospective チェック中..."
-          }
-        ]
-      }
-    ],
+    "Stop": [],
     "SessionEnd": []
   },
   "statusLine": {
