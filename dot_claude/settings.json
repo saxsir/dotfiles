@@ -8,34 +8,6 @@
     "CLAUDE_CODE_NEW_INIT": "1",
     "ENABLE_LSP_TOOL": "1"
   },
-  "sandbox": {
-    "enabled": true,
-    "autoAllowBashIfSandboxed": true,
-    "enableWeakerNetworkIsolation": true,
-    "excludedCommands": ["git"],
-    "network": {
-      "allowedDomains": [
-        "api.github.com",
-        "github.com"
-      ]
-    },
-    "filesystem": {
-      "denyRead": [
-        "~/.ssh",
-        "~/.gnupg",
-        "~/.aws",
-        "~/.config/gcloud",
-        "~/.bash_history",
-        "~/.zsh_history"
-      ],
-      "allowRead": [
-        "~/.ssh/known_hosts"
-      ],
-      "allowWrite": [
-        "~/.cache/pre-commit"
-      ]
-    }
-  },
   "permissions": {
     "allow": [
       "Bash(git status *)",
@@ -50,19 +22,6 @@
       "mcp__claude_ai_Google_Calendar__gcal_list_events",
       "mcp__claude_ai_Google_Calendar__gcal_list_calendars",
       "mcp__claude_ai_Google_Calendar__gcal_get_event"
-    ],
-    "ask": [
-      "Bash(rm:*)",
-      "Bash(wget:*)",
-      "Bash(curl:*)",
-      "Bash(git add:*)",
-      "Bash(git commit *)",
-      "Bash(git push *)",
-      "Bash(npm install *)",
-      "Bash(pip install *)",
-      "Bash(brew install *)",
-      "mcp__claude_ai_Slack__slack_send_message",
-      "mcp__claude_ai_Slack__slack_schedule_message"
     ],
     "deny": [
       "Bash(chmod 777 /*)",
@@ -154,6 +113,19 @@
       "Write(**/*.secret)",
       "Write(**/*.secret.*)"
     ],
+    "ask": [
+      "Bash(rm:*)",
+      "Bash(wget:*)",
+      "Bash(curl:*)",
+      "Bash(git add:*)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(npm install *)",
+      "Bash(pip install *)",
+      "Bash(brew install *)",
+      "mcp__claude_ai_Slack__slack_send_message",
+      "mcp__claude_ai_Slack__slack_schedule_message"
+    ],
     "defaultMode": "plan"
   },
   "hooks": {
@@ -206,9 +178,42 @@
     }
   },
   "language": "Japanese",
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "network": {
+      "allowedDomains": [
+        "api.github.com",
+        "github.com"
+      ]
+    },
+    "filesystem": {
+      "allowWrite": [
+        "~/.cache/pre-commit"
+      ],
+      "denyRead": [
+        "~/.ssh",
+        "~/.gnupg",
+        "~/.aws",
+        "~/.config/gcloud",
+        "~/.bash_history",
+        "~/.zsh_history"
+      ],
+      "allowRead": [
+        "~/.ssh/known_hosts"
+      ]
+    },
+    "enableWeakerNetworkIsolation": true,
+    "excludedCommands": [
+      "git"
+    ]
+  },
   "effortLevel": "high",
+  "theme": "dark",
+  "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754040541141
-  }
+  },
+  "model": "opusplan"
 }
