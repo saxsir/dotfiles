@@ -28,7 +28,10 @@
         "~/.bash_history",
         "~/.zsh_history"
       ],
-      "allowRead": []
+      "allowRead": [],
+      "allowWrite": [
+        "~/.cache/pre-commit"
+      ]
     }
   },
   "permissions": {
