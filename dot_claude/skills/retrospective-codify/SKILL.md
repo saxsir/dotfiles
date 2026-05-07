@@ -1,6 +1,7 @@
 ---
 name: retrospective-codify
 description: セッション終了時または「学びを残して」と指示されたときに、今回のタスクから「最初に知っていれば遠回りしなかった」知見を抽出し、ast-grep ルール / skill / CLAUDE.md(rules) ルールのいずれかに固定する。プロンプトに頼らず再現可能な形に落とすことを優先する。
+model: sonnet
 ---
 
 # Retrospective Codify
