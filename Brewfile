@@ -18,5 +18,8 @@ brew "direnv"
 # 言語ランタイム / CLI バージョン管理 (~/.config/mise/config.toml)
 brew "mise"
 
+# age (chezmoi の secret 暗号化に使う。age-keygen も同梱)
+brew "age"
+
 # Nerd Font (ターミナル)
 cask "font-plemol-jp-nf"

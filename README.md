@@ -39,3 +39,47 @@ make help        # 全 target 一覧
 ```
 npx secretlint "**/*"
 ```
+
+## シークレット暗号化 (任意)
+
+機密ファイル (AWS credentials / GitHub token 等) を `encrypted_*` プレフィックス付きで chezmoi 管理に取り込みたい場合は age を使う。秘密鍵は **dotfiles リポには絶対 commit しない** こと。
+
+### 初回セットアップ
+
+```bash
+# 1. age と age-keygen を入れる (Brewfile 同梱)
+make deps
+
+# 2. age 鍵ペアを生成
+mkdir -p ~/.config/chezmoi
+age-keygen -o ~/.config/chezmoi/key.txt
+chmod 600 ~/.config/chezmoi/key.txt
+
+# 3. 公開鍵 (recipient) を表示してコピー
+age-keygen -y ~/.config/chezmoi/key.txt
+# 例: age1abcdefg...
+
+# 4. chezmoi に recipient を登録 (再 init で `Age recipient` プロンプトに貼り付け)
+chezmoi init --source "$(pwd)"
+
+# 5. 秘密鍵を別途バックアップ (USB / 別マシン等)
+cp ~/.config/chezmoi/key.txt /Volumes/USB/age-key-backup.txt
+```
+
+### 暗号化済みファイルを追加
+
+```bash
+# 既存ファイルを暗号化して chezmoi 管理に取り込む
+chezmoi add --encrypt ~/.aws/credentials
+# → source dir に encrypted_private_dot_aws/credentials.age が生成される
+
+# 編集 (一時復号 → 編集 → 再暗号化を chezmoi がよしなにやる)
+chezmoi edit ~/.aws/credentials
+```
+
+### 復元 (新マシン)
+
+1. `make deps` で age を入れる
+2. バックアップから秘密鍵を復元 (`cp /Volumes/USB/age-key-backup.txt ~/.config/chezmoi/key.txt && chmod 600 ~/.config/chezmoi/key.txt`)
+3. `chezmoi init` で recipient プロンプトに公開鍵を貼り付け (バックアップに併記しておくとラク)
+4. `make apply` で復号 + 配置
