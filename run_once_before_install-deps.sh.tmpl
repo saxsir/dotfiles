@@ -1,8 +1,0 @@
-#!/bin/sh
-set -eu
-
-{{- if eq .chezmoi.os "darwin" }}
-if command -v brew >/dev/null 2>&1; then
-  brew install --cask font-plemol-jp-nf 2>/dev/null || true
-fi
-{{- end }}
