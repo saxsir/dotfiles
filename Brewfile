@@ -21,11 +21,10 @@ brew "mise"
 # age (chezmoi の secret 暗号化に使う。age-keygen も同梱)
 brew "age"
 
-# zshrc が依存する CLI (peco-select-history / peco-src / select_worktree, tmux 連携, alias matrix/L)
+# zshrc が依存する CLI (peco-select-history / peco-src / select_worktree, alias matrix/L)
 brew "peco"
 brew "ghq"
 brew "fzf"
-brew "tmux"
 brew "cmatrix"
 brew "lv"
 
@@ -40,7 +39,7 @@ brew "gh"
 brew "jq"
 brew "git-secrets"
 brew "lima"
-cask "aws-vault-binary"
+brew "aws-vault"
 
-# Nerd Font (ターミナル)
-cask "font-plemol-jp-nf"
+# ターミナルフォント (~/.config/ghostty/config で Monaspace Neon を指定)
+cask "font-monaspace"
