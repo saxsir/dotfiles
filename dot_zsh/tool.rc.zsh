@@ -1,0 +1,127 @@
+# 外部ツール統合 (プラグインマネージャ / プロンプト / 補完 / フック)
+
+# ============================================================
+# zinit (プラグインマネージャ)
+# ============================================================
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+if [[ ! -d "$ZINIT_HOME" ]]; then
+  mkdir -p "$(dirname "$ZINIT_HOME")"
+  git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
+source "${ZINIT_HOME}/zinit.zsh"
+
+# プラグイン (turbo モードで遅延読み込み)
+zinit wait lucid for \
+  OMZL::git.zsh \
+  OMZL::directories.zsh \
+  atload'bindkey "^r" peco-select-history; bindkey "^p" peco-src; bindkey "^j" select_worktree' OMZL::key-bindings.zsh \
+  OMZP::git \
+  atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
+  zsh-users/zsh-completions
+
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=green,bold"
+
+# ============================================================
+# starship (プロンプト)
+# ============================================================
+eval "$(starship init zsh)"
+
+# ============================================================
+# 関数 (peco / ghq / fzf / aws-vault)
+# ============================================================
+
+# aws-vault exec の薄ラッパ
+function avt {
+  profile=$1; shift
+  aws-vault exec $profile -- aws "$@";
+}
+
+# peco x history
+function peco-select-history() {
+  local tac
+  if which tac > /dev/null; then
+    tac="tac"
+  else
+    tac="tail -r"
+  fi
+  BUFFER=$(fc -l -n 1 | eval $tac | peco --query "$LBUFFER")
+  CURSOR=$#BUFFER
+  zle clear-screen
+}
+
+# peco x ghq (リポジトリ移動)
+function peco-src () {
+  local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
+  if [ -n "$selected_dir" ]; then
+    BUFFER="cd ${selected_dir}"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+
+# fzf x git worktree
+function select_worktree() {
+  local worktrees
+  worktrees=$(git worktree list --porcelain | awk '/worktree / {print $2}')
+  if [[ -z "$worktrees" ]]; then
+    echo "No worktrees found."
+    return 1
+  fi
+  local selected
+  selected=$(echo "$worktrees" | fzf)
+  if [[ -n "$selected" ]]; then
+    BUFFER="cd ${selected}"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+
+# キーバインド (peco/fzf 関数を ZLE に登録)
+zle -N peco-select-history
+zle -N peco-src
+zle -N select_worktree
+bindkey '^r' peco-select-history
+bindkey '^p' peco-src
+bindkey '^j' select_worktree
+
+# ============================================================
+# tmux 連携: cd 時に window 名を repo 名 / dir 名に同期
+# ============================================================
+if [[ -n "$TMUX" ]]; then
+  autoload -Uz add-zsh-hook
+  _tmux_update_window_name() {
+    local name
+    local toplevel
+    toplevel=$(git rev-parse --show-toplevel 2>/dev/null)
+    if [[ -n "$toplevel" ]]; then
+      name=$(basename "$toplevel")
+    else
+      name=$(basename "$PWD")
+    fi
+    tmux rename-window "$name"
+  }
+  add-zsh-hook chpwd _tmux_update_window_name
+  _tmux_update_window_name
+fi
+
+# ============================================================
+# その他ツール初期化
+# ============================================================
+
+# direnv
+if which direnv > /dev/null; then eval "$(direnv hook zsh)"; fi
+
+# Google Cloud SDK
+if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then source "$HOME/google-cloud-sdk/path.zsh.inc"; fi
+if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then source "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
+
+# mise
+eval "$(mise activate zsh)"
+
+# git-wt
+if command -v git-wt &> /dev/null; then
+  eval "$(git wt --init zsh)"
+fi
+
+# bun completion
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
