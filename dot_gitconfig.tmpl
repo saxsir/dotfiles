@@ -11,6 +11,17 @@
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
 
+# サンドボックス有効環境では SSH agent socket が deny されるため HTTPS push に切り替えることがある。
+# その時 system 側の osxkeychain helper が走ると毎回 dialog が出るので、github.com に限り
+# helper の multi-value を空 `helper =` でリセットしてから gh の credential helper を使う。
+# 他ホスト (gitlab.com 等) は引き続き osxkeychain を使う。
+[credential "https://github.com"]
+	helper =
+	helper = !gh auth git-credential
+
+[credential "https://gitlab.com"]
+	helper = osxkeychain
+
 [ghq]
     root = ~/src
 
