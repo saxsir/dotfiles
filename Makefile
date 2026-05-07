@@ -1,9 +1,9 @@
 PWD := $(shell pwd)
 
-.PHONY: all deps init apply diff edit re-add merge hooks help
+.PHONY: all deps init apply diff edit re-add merge hooks mise help
 
-# デフォルト: 依存ツールを揃えて apply、pre-commit hook を install
-all: deps apply hooks
+# デフォルト: 依存ツールを揃えて apply、mise install、pre-commit hook を install
+all: deps apply mise hooks
 
 deps:
 	@command -v brew >/dev/null 2>&1 || { echo "Homebrew が必要です: https://brew.sh"; exit 1; }
@@ -63,9 +63,14 @@ merge:
 	@test -n "$(FILE)" || { echo "Usage: make merge FILE=~/.zshrc"; exit 1; }
 	chezmoi merge --source "$(PWD)" "$(FILE)"
 
+# mise でランタイムを ~/.config/mise/config.toml の宣言通りに揃える (apply 後に実行する想定)
+mise:
+	@command -v mise >/dev/null 2>&1 || { echo "mise が見つからない: make deps を先に実行"; exit 1; }
+	mise install
+
 help:
 	@echo "Targets:"
-	@echo "  all      - deps + apply + hooks (デフォルト)"
+	@echo "  all      - deps + apply + mise + hooks (デフォルト)"
 	@echo "  deps     - brew bundle + npm install"
 	@echo "  init     - 初回のみ chezmoi 設定ファイルを生成"
 	@echo "  apply    - source → ~/ に反映 (標準の方向)"
@@ -73,4 +78,5 @@ help:
 	@echo "  edit     - source 側を編集して --apply (FILE=...)"
 	@echo "  re-add   - ~/ の編集内容を source に取り込み (FILE=... 任意)"
 	@echo "  merge    - 衝突時の 3-way merge (FILE=...)"
+	@echo "  mise     - ~/.config/mise/config.toml に従って mise install"
 	@echo "  hooks    - pre-commit hook を install (secretlint)"
