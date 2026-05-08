@@ -42,5 +42,5 @@ description: グローバル CLAUDE.md / rules / ローカル MCP のサイズ�
 
 有効化されているローカル MCP サーバーの一覧のみ（箇条書き）。
 
-末尾に 1 行注記:
-> claude.ai web 連携 MCP（Slack/Drive 等）はローカル設定から見えないため列挙していません。要不要は claude.ai で確認してください。
+末尾に以下を注記:
+> claude.ai web 連携 MCP（Slack/Drive 等）は `~/.claude.json` に記載がないが、セッション開始時にクラウド側から取得されて deferred tools としてコンテキストに含まれている。スキーマ未展開なので軽量だが、ツール数が多いとその分コンテキストを消費する。要不要は claude.ai の Settings → Integrations で確認・無効化できる。
