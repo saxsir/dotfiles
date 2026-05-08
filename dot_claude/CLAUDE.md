@@ -24,3 +24,7 @@
 
 - JSON の処理には Python ではなく `jq` を使う
 - AWS の認証情報を要するコマンド (`aws`, `terraform`, `cdk`, `boto3` 等) は `aws-vault exec <profile> -- <command>` で実行する (平文 credential の利用を避ける)
+
+# Maintenance
+
+- `/audit-context` でグローバル設定（CLAUDE.md / rules / ローカル MCP）のサイズ棚卸しができる。たまに思い出して実行する。
