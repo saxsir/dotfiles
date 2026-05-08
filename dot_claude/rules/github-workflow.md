@@ -2,6 +2,43 @@
 
 GitHub Issue / PR を扱う際のルール。ローカル git 操作は Git ブランチワークフローを参照。
 
+## Umbrella Issue
+
+複数の関連タスクをまとめる issue。粒度未確定の段階ではチェックリストで管理し、着手時に子 issue として切り出して GitHub の sub-issue で紐付ける。
+
+### 作成
+
+- タイトル prefix `[Umbrella]` を付ける（例: `[Umbrella] zsh 起動高速化`）
+- 本文はチェックリスト。issue 化が決まっていない項目は plain text で書く
+
+```markdown
+## やること
+- [ ] zprof で計測
+- [ ] nvm の lazy load 化
+- [ ] pyenv の lazy load 化
+```
+
+### 子 issue を切り出す（着手時）
+
+```bash
+# 1. 子 issue を作成
+gh issue create --title "nvm の lazy load 化" --body "Relates to #<umbrella>"
+
+# 2. 子 issue の内部 ID (database id) を取得 ※ issue 番号ではない
+child_id=$(gh api repos/:owner/:repo/issues/<child-number> --jq .id)
+
+# 3. umbrella に sub-issue として link
+gh api -X POST repos/:owner/:repo/issues/<umbrella-number>/sub_issues \
+  -F sub_issue_id="${child_id}"
+
+# 4. umbrella のチェックリスト該当行を issue 参照に置き換え
+#    `- [ ] nvm の lazy load 化` → `- [ ] #<child-number>`
+gh issue edit <umbrella-number> --body "..."
+```
+
+- sub-issue として link すると GitHub UI で親子関係が表示され、子の close で親のチェックリストが自動更新される
+- `:owner/:repo` は `gh` の current repo context が解決する（`-R owner/repo` で明示指定も可）
+
 ## Issue から作業を始める
 
 1. `gh issue view <number>` で Issue を読む

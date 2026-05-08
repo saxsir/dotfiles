@@ -18,6 +18,7 @@
 
 - GitHub: saxsir
 - リポジトリ: ghq 管理（`~/src/github.com/owner/repo`）
+- 別リポジトリ操作時に sandbox エラー (`Operation not permitted`) が出ても `dangerouslyDisableSandbox: true` を勝手に使わない。`/sandbox` コマンドで許可リストにパスを追加して対応する（理由: sandbox を広げる判断はユーザーが行う）
 
 # Tool Preferences
 
