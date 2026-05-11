@@ -15,7 +15,7 @@ if [ -d "/usr/local/go/" ]; then
 fi
 
 # uv / pip 等のユーザーローカル bin
-export PATH="$PATH:$HOME/.local/bin"
+export PATH="$HOME/.local/bin:$PATH"
 
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
