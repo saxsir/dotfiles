@@ -32,6 +32,17 @@ make hooks       # pre-commit hook を install
 make help        # 全 target 一覧
 ```
 
+## apm (Agent Package Manager)
+
+`make apm`（または `make` 全体）で公式インストーラーを冪等に呼んで導入される。
+
+```
+make apm   # 未 install なら curl -sSL https://aka.ms/apm-unix | sh を実行、既存なら skip
+```
+
+ユーザー global 設定 `~/.apm/config.json` は `private_dot_apm/config.json` として chezmoi 管理。
+設定を編集した場合は `make re-add FILE=~/.apm/config.json` でソース側に取り込む。
+
 ## シークレット検出
 
 `pre-commit install` 後は `git commit` 時に `secretlint` が自動的に走り、AWS キーや GitHub トークン等が混入していると commit が失敗します。手動チェック:

@@ -1,9 +1,9 @@
 PWD := $(shell pwd)
 
-.PHONY: all deps init apply diff edit re-add merge hooks mise macos help
+.PHONY: all deps init apply diff edit re-add merge hooks mise macos apm help
 
 # デフォルト: 依存ツールを揃えて apply、mise install、pre-commit hook を install
-all: deps apply mise hooks
+all: deps apply mise hooks apm
 
 deps:
 	@command -v brew >/dev/null 2>&1 || { echo "Homebrew が必要です: https://brew.sh"; exit 1; }
@@ -68,6 +68,17 @@ mise:
 	@command -v mise >/dev/null 2>&1 || { echo "mise が見つからない: make deps を先に実行"; exit 1; }
 	mise install
 
+# apm (Agent Package Manager) を install する (冪等)
+# Homebrew formula がないため公式 curl installer を使う
+apm:
+	@if command -v apm >/dev/null 2>&1; then \
+	  echo "[apm] already installed: $$(apm --version 2>&1 | head -1)"; \
+	else \
+	  echo "[apm] installing via curl installer..."; \
+	  curl -sSL https://aka.ms/apm-unix | sh; \
+	  echo "[apm] installed: $$(apm --version 2>&1 | head -1)"; \
+	fi
+
 # macOS defaults を ~/.macos に従って一括適用する (デフォルト all には含めない: 副作用大)
 # 適用前に内容を確認するなら `cat ~/.macos`
 macos:
@@ -77,7 +88,7 @@ macos:
 
 help:
 	@echo "Targets:"
-	@echo "  all      - deps + apply + mise + hooks (デフォルト)"
+	@echo "  all      - deps + apply + mise + hooks + apm (デフォルト)"
 	@echo "  deps     - brew bundle + npm install"
 	@echo "  init     - 初回のみ chezmoi 設定ファイルを生成"
 	@echo "  apply    - source → ~/ に反映 (標準の方向)"
@@ -88,3 +99,4 @@ help:
 	@echo "  mise     - ~/.config/mise/config.toml に従って mise install"
 	@echo "  macos    - ~/.macos の defaults を一括適用 (副作用大のため all には含めない)"
 	@echo "  hooks    - pre-commit hook を install (secretlint)"
+	@echo "  apm      - apm CLI を install (curl installer 経由、冪等)"
