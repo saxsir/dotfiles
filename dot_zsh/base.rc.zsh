@@ -16,6 +16,7 @@ alias -g V='| vim -'
 alias -g C='| pbcopy'
 alias matrix="cmatrix -s -u 6"
 alias gce='git commit --allow-empty'
+alias claude="$HOME/.local/bin/claude"
 alias claude-vm="limactl shell claude-dev -- bash -c 'claude --dangerously-skip-permissions'"
 
 # ============================================================
