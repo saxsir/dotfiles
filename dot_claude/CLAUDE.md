@@ -23,6 +23,7 @@
 # Tool Preferences
 
 - JSON の処理には Python ではなく `jq` を使う
+- `gh api graphql` はエラー時も exit 0 を返す。必ずレスポンスの `.errors[]` を確認すること（理由: チェックしないと jq が invalid JSON を受け取って連鎖クラッシュする）
 - AWS の認証情報を要するコマンド (`aws`, `terraform`, `cdk`, `boto3` 等) は `aws-vault exec <profile> -- <command>` で実行する (平文 credential の利用を避ける)
 
 # Maintenance
