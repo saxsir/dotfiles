@@ -13,3 +13,7 @@ node_modules/
 
 # 旧 oh-my-zsh/ ディレクトリ (zinit へ移行済。ローカル削除待ち)
 oh-my-zsh/
+
+
+# APM dependencies
+apm_modules/
