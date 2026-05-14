@@ -1,0 +1,15 @@
+name: ca00622
+version: 1.0.0
+description: APM project for ca00622
+author: saxsir
+# Which agent platforms to deploy to (uncomment to pin):
+# targets:
+#   - copilot
+#   - claude
+
+dependencies:
+  apm:
+  - yoshiko-pg/difit
+  mcp: []
+includes: auto
+scripts: {}

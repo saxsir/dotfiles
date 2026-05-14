@@ -68,8 +68,9 @@ mise:
 	@command -v mise >/dev/null 2>&1 || { echo "mise が見つからない: make deps を先に実行"; exit 1; }
 	mise install
 
-# apm (Agent Package Manager) を install する (冪等)
+# apm (Agent Package Manager) を install して global skill を deploy する (冪等)
 # Homebrew formula がないため公式 curl installer を使う
+# ~/.apm/apm.yml の依存関係 (yoshiko-pg/difit 等) を ~/.claude/skills/ へ展開する
 apm:
 	@if command -v apm >/dev/null 2>&1; then \
 	  echo "[apm] already installed: $$(apm --version 2>&1 | head -1)"; \
@@ -78,6 +79,7 @@ apm:
 	  curl -sSL https://aka.ms/apm-unix | sh; \
 	  echo "[apm] installed: $$(apm --version 2>&1 | head -1)"; \
 	fi
+	apm install -g --runtime claude
 
 # macOS defaults を ~/.macos に従って一括適用する (デフォルト all には含めない: 副作用大)
 # 適用前に内容を確認するなら `cat ~/.macos`
@@ -99,4 +101,4 @@ help:
 	@echo "  mise     - ~/.config/mise/config.toml に従って mise install"
 	@echo "  macos    - ~/.macos の defaults を一括適用 (副作用大のため all には含めない)"
 	@echo "  hooks    - pre-commit hook を install (secretlint)"
-	@echo "  apm      - apm CLI を install (curl installer 経由、冪等)"
+	@echo "  apm      - apm CLI を install + ~/.apm/apm.yml の skill を deploy (冪等)"
