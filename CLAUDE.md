@@ -45,6 +45,7 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 - **Local overrides**: `zshrc.local` は `create_dot_zshrc.local` 由来。既存ファイルは上書きされない (machine-specific 設定保護)
 - **gitconfig template**: `dot_gitconfig.tmpl` に `{{ .name }}` / `{{ .email }}` を埋めており、初回 `chezmoi init` で対話的に入力 → `~/.config/chezmoi/chezmoi.toml` に保存
 - **chezmoi 管理外**: `Makefile`, `README.md`, `LICENSE`, `lima/`, `misc/` 等のリポメタは `.chezmoiignore` で適用対象から除外
+- **IMPORTANT**: 新規ディレクトリを chezmoi source に追加するときは、先に既存 source dir を確認する。`private_dot_X/` が存在する場合に `dot_X/` を別に作ると chezmoi apply 時に競合エラーになる。その場合は既存の `private_dot_X/` に追加する
 
 ### Key Components
 
@@ -64,6 +65,11 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 4. **Lima VM (Development Containers)**
    - Claude Code実行用VM: `lima/claude-dev.yaml` - Ubuntu 24.04 ARM64, Apple Virtualization.framework
    - ホストの`~/src`を読み書き可能でマウント、ホームは読み取り専用
+
+5. **Claude Code Skills (apm)**
+   - `private_dot_apm/apm.yml` の `dependencies.apm` に `owner/repo` を追記
+   - `make apm` で `~/.claude/skills/` へ自動デプロイ
+   - 更新は `apm update -g`
 
 ### NeoVim Keymap Reference
 
