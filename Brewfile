@@ -34,6 +34,9 @@ brew "coreutils"
 # エディタ ($EDITOR / alias vim='nvim')
 brew "neovim"
 
+# ファイルマネージャ
+brew "yazi"
+
 # CLAUDE.md rules で必須指定: gh / jq / git-secrets / aws-vault, claude-vm エイリアスで lima
 brew "gh"
 brew "jq"
