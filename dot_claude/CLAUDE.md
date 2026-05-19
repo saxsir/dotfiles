@@ -13,6 +13,7 @@
 - @rules/code-quality.md — コード品質基準
 - @rules/git-branch-workflow.md — Git ブランチワークフロー
 - @rules/github-workflow.md — GitHub ワークフロー (Issue / PR / レビュー)
+- @rules/implementation-notes.md — 実装タスクで Implementation Notes (.claude/notes/*.html) を生成
 
 # Env
 
