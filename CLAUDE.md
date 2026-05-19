@@ -179,6 +179,7 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 
 ### Deployment
 - IMPORTANT: After merging changes, run `make apply` (= `chezmoi apply`) to update files in `~/`
+- **Claude からは `chezmoi apply` を実行できない**。`~/.config/chezmoi/chezmoistate.boltdb` が sandbox allowOnly 外のため。dot_claude/ 等を編集した後はターミナルで `! make apply` を実行する
 - Reload shell with `source ~/.zshrc` or start a new shell session
 - Verify no errors occur during shell initialization
 
