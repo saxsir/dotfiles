@@ -5,12 +5,11 @@ description: master/main との diff を /review と /pr-review-toolkit:review-p
 
 ## Context
 
-- Base branch: !`git rev-parse --abbrev-ref origin/HEAD | sed 's|^origin/||'`
+- Base branch (remote/branch): !`git rev-parse --abbrev-ref origin/HEAD`
 - Current branch: !`git branch --show-current`
-- Commits vs base: !`base=$(git rev-parse --abbrev-ref origin/HEAD | sed 's|^origin/||'); git log --oneline "$base"..HEAD`
-- Diff stat vs base: !`base=$(git rev-parse --abbrev-ref origin/HEAD | sed 's|^origin/||'); git diff --stat "$base"..HEAD`
+- Commits vs base: !`git log --oneline origin/HEAD..HEAD`
+- Diff stat vs base: !`git diff --stat origin/HEAD..HEAD`
 - Uncommitted changes: !`git status --short`
-- difit: !`command -v difit >/dev/null 2>&1 && echo "installed: $(which difit)" || echo "not installed (will use npx difit)"`
 
 ## あなたのタスク
 
