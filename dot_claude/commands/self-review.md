@@ -105,73 +105,30 @@ Skill ツールで skill 名 `pr-review-toolkit:review-pr` を呼び出してく
 
 両エージェントの結果を受け取ったら次へ進む。
 
-### ステップ3: findings → `--comment` 変換
+### ステップ3+4: difit 表示を Task エージェントに委譲
 
-severity を絵文字にマップ:
+ステップ2で得た findings を渡す **Task エージェントを 1 つ dispatch する**。
+Task エージェントは allowed-tools の制限を受けないため、jq・bash 変数代入など自由に使える。
 
-| severity | 絵文字 |
-|---|---|
-| critical | 🔴 |
-| high / important | 🟠 |
-| medium | 🟡 |
-| low / suggestion | 🟢 |
+**Task エージェントへのプロンプト（<...> を実際の値に置き換えて渡す）:**
 
-各 finding について `jq -nc` で JSON を組み立て、`COMMENTS` 配列に追加する。
-**必ず `jq -nc` を使うこと（シェル特殊文字のエスケープ事故を防ぐため）。**
+```
+difit-review skill を使って、以下の findings を difit に表示してください。
 
-```bash
-# 範囲コメントの例（/review 由来）
-jq -nc \
-  --arg file "src/foo.ts" \
-  --argjson line_start 42 \
-  --argjson line_end 48 \
-  --arg body "🔴 [/review] description
+対象 diff: HEAD vs <base>（例: difit HEAD <base>）
 
-Evidence: ...
+[/review からの findings]
+<ステップ2 エージェント A の出力をそのまま貼り付け>
 
-Suggestion: ..." \
-  '{type:"thread",filePath:$file,position:{side:"new",line:{start:$line_start,end:$line_end}},body:$body}'
+[pr-review-toolkit からの findings]
+<ステップ2 エージェント B の出力をそのまま貼り付け>
 
-# 単一行の例（pr-review-toolkit 由来）
-jq -nc \
-  --arg file "src/bar.ts" \
-  --argjson line 10 \
-  --arg body "🟠 [pr-review-toolkit] description" \
-  '{type:"thread",filePath:$file,position:{side:"new",line:$line},body:$body}'
+表示ルール:
+- body 先頭に severity 絵文字（🔴critical / 🟠high|important / 🟡medium / 🟢low|suggestion）
+- body に origin タグ [/review] または [pr-review-toolkit] を付与
+- findings がゼロなら --comment なしで difit を起動し「指摘なし」と表示
+- difit を閉じた後、ユーザーのコメントがあれば報告。なければ「LGTM」として終了
 ```
 
-変換ルール:
-- `line_start == line_end` の場合は `line: N`（整数）、範囲は `line: {start: N, end: M}`
-- `side` は基本 `"new"`。削除側のコード（old line）を指す場合のみ `"old"`
-- body 先頭: `<絵文字> [/review]` または `<絵文字> [pr-review-toolkit]` の origin タグを付与
-- evidence / suggestion は body 内に改行で続けて含める
-
-全 finding を COMMENTS 配列に格納:
-
-```bash
-COMMENTS=()
-# 各 finding ごとに:
-COMMENTS+=(--comment "$(jq -nc ...)")
-```
-
-### ステップ4: difit を起動
-
-```bash
-DIFIT=$(command -v difit >/dev/null 2>&1 && echo difit || echo "npx difit")
-
-if [ ${#COMMENTS[@]} -eq 0 ]; then
-  echo "✅ 指摘なし。difit を素のまま開きます。"
-  $DIFIT HEAD "$base"
-else
-  $DIFIT HEAD "$base" "${COMMENTS[@]}"
-fi
-```
-
-- `npx difit` がネットワーク制限で失敗した場合は `npm i -g difit` を案内して終了
-- difit 起動後、ユーザーへ一言:
-  ```
-  difit でセルフレビューしてください。
-  コメントを書き込んで difit を閉じると、内容がここに返ってきます。
-  ```
-- ユーザーが difit を閉じてコメントが返ってきたら、その内容に基づいて修正作業に入る
-- コメントなしで閉じた場合は「指摘なし / LGTM」として扱い、終了する
+- Task エージェントが difit を起動し、ユーザーのセルフレビューを待つ
+- difit を閉じてコメントが返ってきたら、その内容に基づいて修正作業に入る
