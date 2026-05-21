@@ -1,6 +1,6 @@
 ---
-allowed-tools: Bash(git diff:*), Bash(git status:*), Bash(git rev-parse:*), Bash(git branch:*), Bash(git log:*), Bash(command -v difit:*), Bash(difit:*), Bash(npx difit:*), Bash(jq:*), Task(*)
-description: master/main との diff を /review と /pr-review-toolkit:review-pr で並列レビューし、findings を 1 つの difit に注入してセルフレビューする。draft PR 前の最終確認に使う
+allowed-tools: Bash(git diff:*), Bash(git status:*), Bash(git rev-parse:*), Bash(git branch:*), Bash(git log:*), Bash(git fetch:*), Bash(command -v difit:*), Bash(difit:*), Bash(npx difit:*), Bash(jq:*), Task(*)
+description: origin/master (main) との diff を /review と /pr-review-toolkit:review-pr で並列レビューし、findings を 1 つの difit に注入してセルフレビューする。draft PR 前の最終確認に使う
 ---
 
 ## Context
@@ -13,7 +13,7 @@ description: master/main との diff を /review と /pr-review-toolkit:review-p
 
 ## あなたのタスク
 
-master/main との差分を 2 つのレビュー skill で並列レビューし、findings を 1 つの difit に注入して開く。
+origin/master (main) との差分を 2 つのレビュー skill で並列レビューし、findings を 1 つの difit に注入して開く。
 
 ## ワークフロー
 
@@ -28,9 +28,11 @@ master/main との差分を 2 つのレビュー skill で並列レビューし�
 
 ### ステップ1: 事前チェック
 
-Context の結果から base ブランチ名を確定する。
+Context の結果から base ブランチ名を確定する。**`<BASE>` は必ず `origin/<branch>` 形式の remote-tracking ref（例: `origin/master`、`origin/main`）を使うこと。local の `master`/`main` は使わない。**
 
-- `<base>..HEAD` の diff がゼロかつ uncommitted もゼロ → 「レビュー対象なし」と表示して終了
+remote-tracking を最新化するため、先に `git fetch origin <branch>` を実行する（`<branch>` は `git rev-parse --abbrev-ref origin/HEAD` が指す名前の branch 部分、通常は `master` または `main`）。
+
+- `<BASE>..HEAD` の diff がゼロかつ uncommitted もゼロ → 「レビュー対象なし」と表示して終了
 - uncommitted changes がある場合は警告:
 
 ```
@@ -74,7 +76,7 @@ Skill ツールで skill 名 `review-local-changes` を呼び出してくださ�
 }
 ```
 
-**（`<BASE>` は実際の base ブランチ名に置き換えること）**
+**（`<BASE>` は実際の remote-tracking ref に置き換えること。例: `origin/master`、`origin/main`。local の `master`/`main` は使わない）**
 
 ---
 
@@ -99,7 +101,7 @@ Skill ツールで skill 名 `pr-review-toolkit:review-pr` を呼び出してく
 ]
 ```
 
-**（`<BASE>` は実際の base ブランチ名に置き換えること）**
+**（`<BASE>` は実際の remote-tracking ref に置き換えること。例: `origin/master`、`origin/main`。local の `master`/`main` は使わない）**
 
 ---
 
@@ -115,7 +117,7 @@ Task エージェントは allowed-tools の制限を受けないため、jq・b
 ```
 difit-review skill を使って、以下の findings を difit に表示してください。
 
-対象 diff: HEAD vs <base>（例: difit HEAD <base>）
+対象 diff: HEAD vs <base>（例: `difit HEAD origin/master`）。`<base>` は必ず remote-tracking ref（`origin/master` / `origin/main` など）であること。local の `master`/`main` を渡さない。
 
 [/review からの findings]
 <ステップ2 エージェント A の出力をそのまま貼り付け>
