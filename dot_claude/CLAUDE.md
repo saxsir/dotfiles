@@ -20,11 +20,10 @@
 
 - GitHub: saxsir
 - リポジトリ: ghq 管理（`~/src/github.com/owner/repo`）
-- 別リポジトリ操作時に sandbox エラー (`Operation not permitted`) が出ても `dangerouslyDisableSandbox: true` を勝手に使わない。`/sandbox` コマンドで許可リストにパスを追加して対応する（理由: sandbox を広げる判断はユーザーが行う）
 
 # Tool Preferences
 
-- MCP の配置先: OAuth / クラウド認証で完結するサービスは claude.ai Web 連携 MCP として設定する。localhost 依存または API token 認証が必要なものは `~/.claude.json` に登録する（理由: Web 連携 MCP はトークン管理が不要で、ローカル依存のものは direct 設定が必要なため）
+- MCP の配置先: OAuth / クラウド認証で完結するサービスは claude.ai Web 連携 MCP として設定する。localhost 依存または API token 認証が必要なものは `~/.claude.json` に登録する
 - JSON の処理には Python ではなく `jq` を使う
 - `gh api graphql` はエラー時も exit 0 を返す。必ずレスポンスの `.errors[]` を確認すること（理由: チェックしないと jq が invalid JSON を受け取って連鎖クラッシュする）
 - AWS の認証情報を要するコマンド (`aws`, `terraform`, `cdk`, `boto3` 等) は `aws-vault exec <profile> -- <command>` で実行する (平文 credential の利用を避ける)

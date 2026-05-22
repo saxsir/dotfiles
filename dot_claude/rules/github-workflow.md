@@ -4,10 +4,11 @@ GitHub Issue / PR を扱う際のルール。ローカル git 操作は Git ブ�
 
 ## Umbrella Issue
 
-複数の関連タスクをまとめる issue。粒度未確定の段階ではチェックリストで管理し、着手時に子 issue として切り出して GitHub の sub-issue で紐付ける。
+複数の関連タスクをまとめる issue。基本はチェックリストで管理する。
 
 - タイトル prefix `[Umbrella]` を付ける（例: `[Umbrella] zsh 起動高速化`）
-- 子 issue 切り出し: `gh issue create` → 内部 ID 取得 (`gh api repos/:owner/:repo/issues/<n> --jq .id`) → `gh api -X POST .../sub_issues -F sub_issue_id=<id>` で link → umbrella のチェックリスト行を `#<child>` に置き換え
+- 子 issue への切り出しはユーザーの判断に委ねる。ユーザーから指示があった場合のみ行う:
+  `gh issue create` → 内部 ID 取得 (`gh api repos/:owner/:repo/issues/<n> --jq .id`) → `gh api -X POST .../sub_issues -F sub_issue_id=<id>` で link → umbrella のチェックリスト行を `#<child>` に置き換え
 
 ## Issue から作業を始める
 
@@ -19,7 +20,6 @@ GitHub Issue / PR を扱う際のルール。ローカル git 操作は Git ブ�
 
 - 必ず draft で作る: `gh pr create --draft`
 - 作成後はブラウザで開く: `gh pr view --web`
-- Ready にするのはユーザーのみ。Claude は `gh pr ready` を**絶対に実行しない**
 - タイトルは Issue があればそのタイトルに合わせる (簡潔さのため調整可)
 
 ### 本文
