@@ -14,6 +14,7 @@
 - @rules/git-branch-workflow.md — Git ブランチワークフロー
 - @rules/github-workflow.md — GitHub ワークフロー (Issue / PR / レビュー)
 - @rules/implementation-notes.md — 実装タスクで Implementation Notes (.claude/notes/*.html) を生成
+- @rules/parallelization-and-subagents.md — 並列化と subagent（default は subagent 優先 / 並列優先）
 
 # Env
 
