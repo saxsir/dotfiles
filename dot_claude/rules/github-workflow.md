@@ -49,6 +49,15 @@ Closes #<Issue 番号>
 
 本文が 3 行以上、または手順 / ログ / コード片 / 表を含む場合は `<details><summary>1 行の要約</summary>本文</details>` で畳む。`<summary>` 直後に空行が必要。短い相槌はそのまま投稿。
 
+## 追加コミット後の description 確認
+
+既存 PR にコミットを追加した後（レビュー対応・仕様変更・追加実装など）は、必ず以下を確認する:
+
+1. **PR description** の What / Why が最新の変更内容を反映しているか
+2. **紐づく Issue** の description（再現手順・仕様・チェックリスト等）が古くなっていないか
+
+変更が必要な場合は「PR description の更新」セクションの手順に従って更新する。
+
 ## PR description の更新
 
 既存 PR の description を書き換える際は全文再生成して上書きしない。必ず `gh pr view <n> --json body --jq .body` で現在の body を取得してベースにし、変更箇所だけ編集した新 body の差分をユーザーに提示してから承認後に `gh pr edit` を実行する。
