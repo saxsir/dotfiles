@@ -54,7 +54,7 @@ Session.vim
 .claude/ralph-loop.local.md
 .serena
 CLAUDE.local.md
-.claude/note/
+.claude/notes/
 
 # pnpm
 node_modules/
