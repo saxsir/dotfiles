@@ -127,7 +127,9 @@
       "mcp__claude_ai_Slack__slack_schedule_message"
     ],
     "defaultMode": "plan",
-    "additionalDirectories": ["~/.claude"]
+    "additionalDirectories": [
+      "~/.claude"
+    ]
   },
   "hooks": {
     "PreToolUse": [
@@ -209,12 +211,11 @@
       "git"
     ]
   },
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
   "theme": "dark",
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754040541141
-  },
-  "model": "opusplan"
+  }
 }
