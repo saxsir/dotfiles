@@ -37,7 +37,7 @@ remote-tracking を最新化するため、先に `git fetch origin <branch>` �
 
 ```
 ⚠️  uncommitted changes があります。
-difit HEAD <base> は committed diff のみ表示します。
+difit <base> HEAD は committed diff のみ表示します。
 先にコミットしてから /self-review を再実行することを推奨します。
 ```
 
@@ -49,10 +49,10 @@ uncommitted がある場合でも、レビュー自体は続行する（committe
 
 ---
 
-**エージェント A — review-local-changes**
+**エージェント A — code-review**
 
 ```
-Skill ツールで skill 名 `review-local-changes` を呼び出してください。
+Skill ツールで skill 名 `code-review` を呼び出してください。
 
 引数: `--json --min-impact medium`
 
@@ -107,17 +107,18 @@ Skill ツールで skill 名 `pr-review-toolkit:review-pr` を呼び出してく
 
 両エージェントの結果を受け取ったら次へ進む。
 
-### ステップ3+4: difit 表示を Task エージェントに委譲
+### ステップ3+4: findings を整形して difit を起動する
 
-ステップ2で得た findings を渡す **Task エージェントを 1 つ dispatch する**。
+ステップ2で得た findings を **Task エージェント 1 つに渡し**、difit の起動まで担当させる。
 Task エージェントは allowed-tools の制限を受けないため、jq・bash 変数代入など自由に使える。
 
 **Task エージェントへのプロンプト（<...> を実際の値に置き換えて渡す）:**
 
 ```
-difit-review skill を使って、以下の findings を difit に表示してください。
+以下の findings を difit のコメントとして整形し、difit を起動してください。
 
-対象 diff: HEAD vs <base>（例: `difit HEAD origin/master`）。`<base>` は必ず remote-tracking ref（`origin/master` / `origin/main` など）であること。local の `master`/`main` を渡さない。
+対象 diff: <base> → HEAD（例: `difit origin/master HEAD`）
+`<base>` は必ず remote-tracking ref（`origin/master` / `origin/main` など）。local の `master`/`main` は渡さない。
 
 [/review からの findings]
 <ステップ2 エージェント A の出力をそのまま貼り付け>
@@ -125,11 +126,31 @@ difit-review skill を使って、以下の findings を difit に表示して�
 [pr-review-toolkit からの findings]
 <ステップ2 エージェント B の出力をそのまま貼り付け>
 
-表示ルール:
-- body 先頭に severity 絵文字（🔴critical / 🟠high|important / 🟡medium / 🟢low|suggestion）
-- body に origin タグ [/review] または [pr-review-toolkit] を付与
-- findings がゼロなら --comment なしで difit を起動し「指摘なし」と表示
-- difit を閉じた後、ユーザーのコメントがあれば報告。なければ「LGTM」として終了
+## 起動手順
+
+1. findings を /tmp/difit-comments.json に書き出す。
+   difit コメントの JSON スキーマ（1件ごとに以下の形式）:
+   ```json
+   {
+     "type": "thread",
+     "filePath": "app/foo.php",
+     "position": { "side": "new", "line": 42 },
+     "body": "..."
+   }
+   ```
+   - `type` は常に `"thread"`
+   - `position.side` は `"new"`（変更後側）または `"old"`（変更前側）。`"LEFT"`/`"RIGHT"` は不可
+   - body 先頭に severity 絵文字（🔴critical / 🟠high|important / 🟡medium / 🟢low|suggestion）
+   - body に origin タグ `[/review]` または `[pr-review-toolkit]` を付与
+   - 同一ファイル・同一行の重複指摘は 1 コメントにまとめる
+
+2. difit を起動:
+   ```bash
+   difit <base> HEAD --comment "$(cat /tmp/difit-comments.json)" --keep-alive
+   ```
+   findings がゼロなら `--comment` なしで起動し「指摘なし」と表示。
+
+3. difit を閉じた後、ユーザーのコメントがあれば報告。なければ「LGTM」として終了。
 ```
 
 - Task エージェントが difit を起動し、ユーザーのセルフレビューを待つ
