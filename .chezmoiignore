@@ -5,6 +5,7 @@
 # === ドキュメント (リポジトリ説明用) ===
 README.md
 LICENSE
+/CLAUDE.md
 
 # === ビルド / タスク定義 (Make や CI 側で使うもの) ===
 Makefile
