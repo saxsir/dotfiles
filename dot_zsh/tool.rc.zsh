@@ -22,6 +22,20 @@ zinit wait lucid for \
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=green,bold"
 
 # ============================================================
+# 補完 (compinit)
+# 以降の devbox/mise/gcloud/bun 等の補完登録は compdef を呼ぶため、
+# それらより前に compinit を済ませておく必要がある。
+# zinit プラグインは turbo (wait lucid) 読み込みで初回プロンプト後に
+# 展開されるため、ここで compinit しても影響しない。
+# ============================================================
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
+
+# ============================================================
 # starship (プロンプト)
 # ============================================================
 eval "$(starship init zsh)"
