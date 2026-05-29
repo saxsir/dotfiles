@@ -200,3 +200,17 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 - **Homebrew on Apple Silicon**: Some formulas may require Rosetta 2 or ARM-specific installation
 - **tmux key conflicts**: Custom vim-like bindings may conflict with some terminal applications
 
+## Agent skills
+
+### Issue tracker
+
+Issues と PRD は `.scratch/<feature>/` 配下の markdown ファイルで管理する。See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+5 つの正規 triage ロールを既定の文字列（`needs-triage` 等）で使う。See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context レイアウト（ルートに `CONTEXT.md` + `docs/adr/`）。See `docs/agents/domain.md`.
+
