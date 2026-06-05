@@ -54,9 +54,14 @@ Session.vim
 .claude/ralph-loop.local.md
 .serena
 CLAUDE.local.md
-.claude/note/
+.claude/notes/
+
+# superpowers の設計書・実装計画・実装記録（セッション作業ドキュメント。commit しない）
+docs/superpowers/
 
 # pnpm
 node_modules/
 .pnpm-store/
 pnpm-debug.log
+
+**/.claude/settings.local.json

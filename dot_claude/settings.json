@@ -208,12 +208,11 @@
       "git"
     ]
   },
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
   "theme": "dark",
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754040541141
-  },
-  "model": "opusplan"
+  }
 }
