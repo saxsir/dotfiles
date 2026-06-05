@@ -10,6 +10,7 @@ author: saxsir
 dependencies:
   apm:
   - yoshiko-pg/difit
+  - mattpocock/skills
   mcp: []
 includes: auto
 scripts: {}
