@@ -49,6 +49,10 @@ Closes #<Issue 番号>
 
 本文が 3 行以上、または手順 / ログ / コード片 / 表を含む場合は `<details><summary>1 行の要約</summary>本文</details>` で畳む。`<summary>` 直後に空行が必要。短い相槌はそのまま投稿。
 
+## 他 Issue / PR の参照
+
+description・コメント本文で他の Issue / PR を参照するときは完全な URL を使う（例: `https://github.com/owner/repo/pull/1234`）。同一リポジトリ内の `#番号`（`Closes #XXX` 等の自動クローズ含む）はそのままで良い（理由: GitHub の自動リンクは同一リポジトリ内の `#番号` しか確実に解決せず、別リポジトリの省略形 `owner/repo#番号` はリンクされないことがある）。
+
 ## 追加コミット後の description 確認
 
 既存 PR にコミットを追加した後（レビュー対応・仕様変更・追加実装など）は、必ず以下を確認する:
