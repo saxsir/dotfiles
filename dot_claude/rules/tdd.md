@@ -6,6 +6,11 @@ Kent Beck の TDD と和田卓人 (t-wada) の実践に従う。
 
 `Red → Green → Refactor` を厳密に守る。
 
+## スライスとテスト対象
+
+- 横（層ごと）ではなく **縦の tracer-bullet スライス** で進める。全層を貫く薄い一本を end-to-end で通し、increment ごとに太らせる。
+- テストは **public interface に対して書く**。実装詳細・private に結合させない（リファクタ耐性を保つため）。
+
 ## リファクタリング指針
 
 - リファクタリングは Green フェーズでしか行わない
