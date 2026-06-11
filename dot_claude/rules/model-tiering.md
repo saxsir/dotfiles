@@ -1,0 +1,32 @@
+# モデル階層と委譲 (Model Tiering)
+
+高コストモデルで動いているときは、安価なモデルでこなせる作業を自分の context で消費しない。
+
+## トリガ
+
+セッションの自分（main agent）のモデルが **Fable**（model ID `claude-fable-5`）のとき。
+環境情報の "You are powered by the model named ..." で自分のモデルを確認できる。
+（他の premium モデル（Opus 等）でコストを抑えたいときにも同じ判断を適用してよい）
+
+## 振る舞い
+
+- 小さく機械的なタスクは Sonnet subagent に **ちぎって投げる**。委譲対象の例:
+  - grep / ファイル探索 / 大量読み込み
+  - 定型修正・ボイラープレート生成・リネーム等の構造変更
+  - テスト実行・ログ確認・依存調査
+- 委譲時は `model: sonnet` を明示する（Agent tool の `model`、Workflow `agent()` の `opts.model`）。
+- 自分（Fable）は設計判断・統合・**全力のレビュー**・最終検証に専念する。
+  subagent の成果を鵜呑みにせず、必ず自分で査読してから採否を決める。
+
+## 避けるべき
+
+- Fable の context で grep やボイラープレート量産のような安価作業を直接やる
+- 真に自明な単発 lookup まで subagent に投げる（overhead が成果に見合わない。
+  委譲はまとまった量の機械的作業に対して行う。@rules/parallelization-and-subagents.md と同じ閾値）
+
+## Why
+
+- Fable は token 消費が大きい。高価なモデルの context は判断・レビューに使い、
+  量産できる実行は安価なモデルに降ろすのが費用対効果で正しい。
+- 実行者（Sonnet）と判定者（Fable）を分けるのは @rules/role-separation.md とも整合する。
+  自己生成物を別 context で査読することでバイアスも減る。
