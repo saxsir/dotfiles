@@ -18,6 +18,9 @@ eval "$(echo "${input}" | jq -r '
   "rate_7d=\(.rate_limits.seven_day.used_percentage // -1 | floor)"
 ')"
 
+# effortLevel は stdin JSON 未対応のため settings.json から読む
+effort=$(jq -r '.effortLevel // empty' ~/.claude/settings.json 2>/dev/null)
+
 dir_name=$(basename "${current_dir}")
 
 # ===== Git Cache Mechanism =====
@@ -127,4 +130,9 @@ fi
 # Model name
 if [ -n "${model_name}" ] && [ "${model_name}" != "unknown" ]; then
   printf ' %b%s%b' "${DIM}" "${model_name}" "${RESET}"
+fi
+
+# Effort level
+if [ -n "${effort}" ]; then
+  printf ' %b%s%b' "${DIM}" "${effort}" "${RESET}"
 fi
