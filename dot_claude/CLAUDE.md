@@ -20,6 +20,7 @@
 - @rules/non-sycophancy.md — 迎合の回避（根拠で応答し、ユーザーの提案にも即同意しない）
 - @rules/verification-by-declaration.md — 形名参同（完了条件を宣言し、実行確認してから完了と主張）
 - @rules/role-separation.md — 過程と結果の分離（不可逆操作はユーザーに委ねる）
+- @rules/brain-first.md — Brain-First（判断基準・過去の文脈が関わる話題は行動前に brain_ask で外部脳に問い合わせる）
 
 # Env
 
