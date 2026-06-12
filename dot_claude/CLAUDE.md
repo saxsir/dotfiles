@@ -13,6 +13,7 @@
 - @rules/code-quality.md — コード品質基準
 - @rules/git-branch-workflow.md — Git ブランチワークフロー
 - @rules/github-workflow.md — GitHub ワークフロー (Issue / PR / レビュー)
+- @rules/github-writing.md — GitHub に書く文章（人間向け本文＋AI 向け details の 2 層構造）
 - @rules/implementation-notes.md — 実装タスクで Implementation Notes (.claude/notes/*.html) を生成
 - @rules/parallelization-and-subagents.md — 並列化と subagent（default は subagent 優先 / 並列優先）
 - @rules/model-tiering.md — モデル階層（Fable 時は小タスクを Sonnet subagent に委譲し、自分はレビューに専念）
