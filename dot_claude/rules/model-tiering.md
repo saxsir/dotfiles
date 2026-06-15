@@ -4,9 +4,10 @@
 
 ## トリガ
 
-セッションの自分（main agent）のモデルが **Fable**（model ID `claude-fable-5`）のとき。
+セッションの自分（main agent）が **高コスト / premium モデル**で動いているとき。
+具体的には Opus 4.8（model ID `claude-opus-4-8`）等。
 環境情報の "You are powered by the model named ..." で自分のモデルを確認できる。
-（他の premium モデル（Opus 等）でコストを抑えたいときにも同じ判断を適用してよい）
+（model ID `claude-fable-5` の Fable で動く場合も同様に適用する。）
 
 ## 振る舞い
 
@@ -17,12 +18,12 @@
   - 戻りの大きい MCP 呼び出し（Google Drive / Slack / Snowflake 等のファイル内容・大量の検索結果）。
     read-only の subagent に実行させ、要約・抽出結果だけを受け取る。生データを自分の context に流さない
 - 委譲時は `model: sonnet` を明示する（Agent tool の `model`、Workflow `agent()` の `opts.model`）。
-- 自分（Fable）は設計判断・統合・**全力のレビュー**・最終検証に専念する。
+- 自分（高コストモデル側）は設計判断・統合・**全力のレビュー**・最終検証に専念する。
   subagent の成果を鵜呑みにせず、必ず自分で査読してから採否を決める。
 
 ## 避けるべき
 
-- Fable の context で grep やボイラープレート量産のような安価作業を直接やる
+- 高コストモデルの context で grep やボイラープレート量産のような安価作業を直接やる
 - 大規模・難易度の高い実装（横断的な変更、繊細なリファクタリング、原因不明のデバッグ）を
   Sonnet に委譲する（品質劣化 → レビュー差し戻しの往復が一番高くつく。これらは自分が直接やる）
 - 真に自明な単発 lookup まで subagent に投げる（overhead が成果に見合わない。
@@ -30,7 +31,7 @@
 
 ## Why
 
-- Fable は token 消費が大きい。高価なモデルの context は判断・レビューに使い、
+- 高コストモデルは単価・token 消費が大きい。高価なモデルの context は判断・レビューに使い、
   量産できる実行は安価なモデルに降ろすのが費用対効果で正しい。
-- 実行者（Sonnet）と判定者（Fable）を分けるのは @rules/role-separation.md とも整合する。
+- 実行者（Sonnet）と判定者（高コストモデル側）を分けるのは @rules/role-separation.md とも整合する。
   自己生成物を別 context で査読することでバイアスも減る。

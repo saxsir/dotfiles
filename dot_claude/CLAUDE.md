@@ -16,7 +16,7 @@
 - @rules/github-writing.md — GitHub に書く文章（人間向け本文＋AI 向け details の 2 層構造）
 - @rules/implementation-notes.md — 実装タスクで Implementation Notes (.claude/notes/*.html) を生成
 - @rules/parallelization-and-subagents.md — 並列化と subagent（default は subagent 優先 / 並列優先）
-- @rules/model-tiering.md — モデル階層（Fable 時は小タスクを Sonnet subagent に委譲し、自分はレビューに専念）
+- @rules/model-tiering.md — モデル階層（高コストモデル時は小タスクを Sonnet subagent に委譲し、自分はレビューに専念）
 - @rules/planning-workflow.md — 計画・設計のデフォルトレール（収束は mattpocock grill-with-docs→to-issues 寄り / superpowers は実行層）
 - @rules/non-sycophancy.md — 迎合の回避（根拠で応答し、ユーザーの提案にも即同意しない）
 - @rules/verification-by-declaration.md — 形名参同（完了条件を宣言し、実行確認してから完了と主張）
