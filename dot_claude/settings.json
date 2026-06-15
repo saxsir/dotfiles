@@ -131,7 +131,6 @@
       "~/.claude"
     ]
   },
-  "model": "claude-fable-5[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -212,7 +211,7 @@
       "git"
     ]
   },
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
   "theme": "dark",
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
