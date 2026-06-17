@@ -8,7 +8,7 @@
 - `/code-review`（組み込み）: current diff の correctness + reuse/簡素化/効率。`--effort low|medium|high|max`、`--comment`（PR インライン投稿）、`--fix`（working tree に適用）。
 - `/simplify`（組み込み）: バグ探索をせず構造改善だけを適用する。
 - `/pr-review-toolkit:review-pr`（プラグイン）: 6 専門エージェント（code-reviewer / test / silent-failure / type-design / comment / simplifier）。出力はチャット。
-- `/review`（組み込み）: PR を 1 回レビューする。
+- `/review`（組み込み）: PR を 1 回レビューする。単体はゲートで直接回さない。書く側は `/code-review` が同じ diff をカバーし、他人 PR は `review-and-post-inline` が内部で `/review` を使う。
 - `/security-review`: pending changes のセキュリティレビュー（whitebox/exploit/blackbox、issue 起票）。重い。
 - 複合スキル: `self-review`（書く側の境界ゲート）、`review-assigned-pr` / `review-and-post-inline`（他人の PR をレビュー）。
 
