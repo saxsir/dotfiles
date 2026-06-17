@@ -17,7 +17,8 @@
 コミット境界ではレビューしない。`@rules/commit-discipline.md` の可否判断（tests green / 警告解消 / 単一論理単位）だけで通す（速度・コスパ優先）。
 
 唯一の品質ゲートは **ブランチ境界**（draft PR 直前、または PR を作らないリポではローカル merge 直前）の `self-review`。
-ここで `/code-review --effort high` と `/pr-review-toolkit:review-pr` を並列で回し、findings をトリアージして difit に出す。
+ここで `/code-review --effort high` と `/pr-review-toolkit:review-pr` を Sonnet サブエージェントで並列に回し（`@rules/model-tiering.md`）、findings をトリアージして severity 順に markdown でチャットに出力する。
+**修正の自動適用はしない**。採否を見たユーザーが必要に応じて `/simplify` か `/code-review --fix` を明示的に追打ちする（`@rules/role-separation.md`）。
 
 ### Tidy First との両立
 
@@ -38,7 +39,7 @@ diff が次のいずれかに触れたら、self-review とは別に `/security-
 
 ## 両トラック共通: findings のトリアージ
 
-difit / GitHub に出す前に必ずトリアージする:
+チャット出力 / GitHub に出す前に必ずトリアージする:
 
 - `/code-review` と toolkit の findings をマージし、同一ファイル・同一行の重複を 1 件に統合する。
 - 低確信・ノイズの指摘を落とす。
