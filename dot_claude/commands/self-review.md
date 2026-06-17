@@ -1,6 +1,6 @@
 ---
-allowed-tools: Bash(git diff:*), Bash(git status:*), Bash(git rev-parse:*), Bash(git branch:*), Bash(git log:*), Bash(git fetch:*), Bash(command -v difit:*), Bash(difit:*), Bash(npx difit:*), Bash(jq:*), Task(*)
-description: origin/master (main) との diff を /review と /pr-review-toolkit:review-pr で並列レビューし、findings を 1 つの difit に注入してセルフレビューする。draft PR 前の最終確認に使う
+allowed-tools: Bash(git diff:*), Bash(git status:*), Bash(git rev-parse:*), Bash(git branch:*), Bash(git log:*), Bash(git fetch:*), Task(*)
+description: origin/master (main) との diff を /code-review と /pr-review-toolkit:review-pr で並列レビューし、findings をトリアージして difit に注入してセルフレビューする。draft PR / ローカル merge 前の最終ゲート
 ---
 
 ## Context
@@ -13,7 +13,8 @@ description: origin/master (main) との diff を /review と /pr-review-toolkit
 
 ## あなたのタスク
 
-origin/master (main) との差分を 2 つのレビュー skill で並列レビューし、findings を 1 つの difit に注入して開く。
+origin/master (main) との差分を 2 つのレビュー skill で並列レビューし、findings をトリアージして 1 つの difit に注入して開く。
+これは書く側の唯一の品質ゲート（`@rules/review-cycle.md` のトラック 1）。
 
 ## ワークフロー
 
@@ -22,8 +23,8 @@ origin/master (main) との差分を 2 つのレビュー skill で並列レビ�
 ```
 - [ ] ステップ1: 事前チェック（diff の有無、uncommitted の確認）
 - [ ] ステップ2: 2 つのレビュー skill を並列実行
-- [ ] ステップ3: findings をマージして --comment 引数に変換
-- [ ] ステップ4: difit を起動してユーザーにセルフレビューを促す
+- [ ] ステップ3: findings をトリアージ（マージ・重複統合・低確信除外・provenance タグ）
+- [ ] ステップ4: difit skill に渡して起動し、ユーザーにセルフレビューを促す
 ```
 
 ### ステップ1: 事前チェック
@@ -54,7 +55,8 @@ uncommitted がある場合でも、レビュー自体は続行する（committe
 ```
 Skill ツールで skill 名 `code-review` を呼び出してください。
 
-引数: `--json --min-impact medium`
+引数: `--json --effort high --min-impact medium`
+（取りこぼしを最小にするため effort は high。ブランチにつき 1 回だけ回るゲートなのでコストは許容する）
 
 追加指示（skill に渡してください）:
 - レビュー対象は uncommitted changes だけでなく `git diff <BASE>..HEAD` の変更も含める
@@ -107,51 +109,40 @@ Skill ツールで skill 名 `pr-review-toolkit:review-pr` を呼び出してく
 
 両エージェントの結果を受け取ったら次へ進む。
 
-### ステップ3+4: findings を整形して difit を起動する
+### ステップ3: findings をトリアージ
 
-ステップ2で得た findings を **Task エージェント 1 つに渡し**、difit の起動まで担当させる。
-Task エージェントは allowed-tools の制限を受けないため、jq・bash 変数代入など自由に使える。
+2 つのエージェントの findings を 1 つに統合する（`@rules/review-cycle.md` の共通トリアージ）:
 
-**Task エージェントへのプロンプト（<...> を実際の値に置き換えて渡す）:**
+- 同一ファイル・同一行の重複指摘を 1 件にまとめる。
+- 低確信・ノイズの指摘を落とす。
+- 各指摘に provenance タグを付ける: code-review 由来は `[code-review]`、toolkit 由来は `[toolkit:<観点>]`（例 `[toolkit:silent-failure]`）。観点が判別できなければ `[toolkit]`。
+- severity を difit 表示用に正規化する（critical / high / medium / low。toolkit の Critical / Important / Suggestion は high / medium / low に対応づける）。
+
+### ステップ4: difit skill に渡して起動する
+
+トリアージ済み findings の difit への注入と起動は、**自前で difit コマンドを組み立てず `difit` skill に委譲する**。
+difit の canonical な `--comment` スキーマ（1 件 1 フラグ・範囲は `{start,end}` オブジェクト）を単一の source of truth に保つため、ここでスキーマを再実装しない。
+
+**Task tool で 1 エージェントを dispatch し、以下を渡す（`<...>` を実際の値に置き換える）:**
 
 ```
-以下の findings を difit のコメントとして整形し、difit を起動してください。
+Skill ツールで skill 名 `difit` を呼び出し、以下の diff を difit で開いてください。
+トリアージ済み findings は startup comments（`--comment`）として注入してください。
 
-対象 diff: <base> → HEAD（例: `difit origin/master HEAD`）
-`<base>` は必ず remote-tracking ref（`origin/master` / `origin/main` など）。local の `master`/`main` は渡さない。
+対象 diff: `<base> HEAD`（例: `difit origin/master HEAD`）。
+`<base>` は必ず remote-tracking ref（`origin/master` / `origin/main`）。local の `master`/`main` は渡さない。
 
-[/review からの findings]
-<ステップ2 エージェント A の出力をそのまま貼り付け>
+各 finding を 1 件ずつ difit の thread コメントにすること。difit skill が知っている canonical スキーマに従う:
+- `type` は `"thread"`
+- `position.side` は変更後側なら `"new"`、削除側なら `"old"`
+- 複数行は `position.line` を `{"start":N,"end":M}` のオブジェクトに、単一行は数値にする
+- body 先頭に severity 絵文字（🔴critical / 🟠high / 🟡medium / 🟢low）と provenance タグ（`[code-review]` / `[toolkit:...]`）を付ける
 
-[pr-review-toolkit からの findings]
-<ステップ2 エージェント B の出力をそのまま貼り付け>
+findings がゼロなら `--comment` なしで difit を起動し「指摘なし」と伝える。
 
-## 起動手順
-
-1. findings を /tmp/difit-comments.json に書き出す。
-   difit コメントの JSON スキーマ（1件ごとに以下の形式）:
-   ```json
-   {
-     "type": "thread",
-     "filePath": "app/foo.php",
-     "position": { "side": "new", "line": 42 },
-     "body": "..."
-   }
-   ```
-   - `type` は常に `"thread"`
-   - `position.side` は `"new"`（変更後側）または `"old"`（変更前側）。`"LEFT"`/`"RIGHT"` は不可
-   - body 先頭に severity 絵文字（🔴critical / 🟠high|important / 🟡medium / 🟢low|suggestion）
-   - body に origin タグ `[/review]` または `[pr-review-toolkit]` を付与
-   - 同一ファイル・同一行の重複指摘は 1 コメントにまとめる
-
-2. difit を起動:
-   ```bash
-   difit <base> HEAD --comment "$(cat /tmp/difit-comments.json)" --keep-alive
-   ```
-   findings がゼロなら `--comment` なしで起動し「指摘なし」と表示。
-
-3. difit を閉じた後、ユーザーのコメントがあれば報告。なければ「LGTM」として終了。
+[トリアージ済み findings]
+<ステップ3 の結果を貼り付け>
 ```
 
-- Task エージェントが difit を起動し、ユーザーのセルフレビューを待つ
-- difit を閉じてコメントが返ってきたら、その内容に基づいて修正作業に入る
+- Task エージェントが difit を起動し、ユーザーのセルフレビューを待つ。
+- difit を閉じてユーザーのコメントが返ってきたら、その内容に基づいて修正作業に入る。コメントがなければ「LGTM」として終了する。
