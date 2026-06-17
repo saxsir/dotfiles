@@ -70,7 +70,7 @@ mise:
 
 # apm (Agent Package Manager) を install して global skill を deploy する (冪等)
 # Homebrew formula がないため公式 curl installer を使う
-# ~/.apm/apm.yml の依存関係 (yoshiko-pg/difit 等) を ~/.claude/skills/ へ展開する
+# ~/.apm/apm.yml の依存関係 (mattpocock/skills 等) を ~/.claude/skills/ へ展開する
 apm:
 	@if command -v apm >/dev/null 2>&1; then \
 	  echo "[apm] already installed: $$(apm --version 2>&1 | head -1)"; \
