@@ -183,34 +183,7 @@
   },
   "language": "Japanese",
   "sandbox": {
-    "enabled": true,
-    "autoAllowBashIfSandboxed": true,
-    "network": {
-      "allowedDomains": [
-        "api.github.com",
-        "github.com"
-      ]
-    },
-    "filesystem": {
-      "allowWrite": [
-        "~/.cache/pre-commit"
-      ],
-      "denyRead": [
-        "~/.ssh",
-        "~/.gnupg",
-        "~/.aws",
-        "~/.config/gcloud",
-        "~/.bash_history",
-        "~/.zsh_history"
-      ],
-      "allowRead": [
-        "~/.ssh/known_hosts"
-      ]
-    },
-    "enableWeakerNetworkIsolation": true,
-    "excludedCommands": [
-      "git"
-    ]
+    "enabled": false
   },
   "effortLevel": "xhigh",
   "theme": "dark",
