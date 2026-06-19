@@ -131,6 +131,7 @@
       "~/.claude"
     ]
   },
+  "model": "claude-opus-4-6",
   "hooks": {
     "PreToolUse": [
       {
