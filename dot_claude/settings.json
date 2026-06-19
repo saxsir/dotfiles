@@ -126,7 +126,7 @@
       "mcp__claude_ai_Slack__slack_send_message",
       "mcp__claude_ai_Slack__slack_schedule_message"
     ],
-    "defaultMode": "plan",
+    "defaultMode": "auto",
     "additionalDirectories": [
       "~/.claude"
     ]
