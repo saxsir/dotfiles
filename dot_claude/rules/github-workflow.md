@@ -1,63 +1,49 @@
 # GitHub ワークフロー
 
-GitHub Issue / PR を扱う際のルール。ローカル git 操作は Git ブランチワークフローを、文章の書き方は GitHub に書く文章を参照。
-
-## Umbrella Issue
-
-複数の関連タスクをまとめる issue。基本はチェックリストで管理する。
-
-- タイトル prefix `[Umbrella]` を付ける（例: `[Umbrella] zsh 起動高速化`）
-- 子 issue への切り出しはユーザーの判断に委ねる。ユーザーから指示があった場合のみ行う:
-  `gh issue create` → 内部 ID 取得 (`gh api repos/:owner/:repo/issues/<n> --jq .id`) → `gh api -X POST .../sub_issues -F sub_issue_id=<id>` で link → umbrella のチェックリスト行を `#<child>` に置き換え
+GitHub Issue / PR を扱うルール。git 操作は [[git-branch-workflow]]、文章規約は [[github-writing]]。
 
 ## Issue から作業を始める
 
-1. `gh issue view <number>` で Issue を読む
-2. ブランチを切って実装する
-3. 完了後に draft PR を作成
+`gh issue view <number>` → ブランチ → 実装 → draft PR。
 
 ## PR 作成
 
-- 必ず draft で作る: `gh pr create --draft`
-- 作成後はブラウザで開く: `gh pr view --web`
-- タイトルは Issue があればそのタイトルに合わせる (簡潔さのため調整可)
-
-### 本文
-
-`.github/` 配下に PR テンプレートがあればそれを埋める。なければ:
+- 必ず draft: `gh pr create --draft`
+- 作成後ブラウザで開く: `gh pr view --web`
+- タイトルは Issue タイトルに合わせる (調整可)
+- `.github/` にテンプレあればそれを埋める。なければ:
 
 ```markdown
 ## What
 何をしたか (1〜3 行)
 
 ## Why
-なぜこの変更が必要だったか
+なぜ必要か
 
-Closes #<Issue 番号>
+Closes #<n>
 ```
 
-- `Closes #XXX` で自動クローズ。しない場合は `Relates to #XXX` か `gh pr edit <n> --add-issue <n>`
+`Closes #XXX` で自動クローズ (しないなら `Relates to #XXX` か `gh pr edit <n> --add-issue <n>`)。
 
-## レビューコメントへの応答
+## レビューコメント応答
 
-1. unresolved コメントを取得: `gh api repos/{owner}/{repo}/pulls/<number>/comments`
-2. 修正前に**応答計画をユーザーに提示し承認を得る**
-3. コミットはコメント単位またはファイル単位で分ける
+1. `gh api repos/{owner}/{repo}/pulls/<n>/comments` で unresolved 取得
+2. **応答計画をユーザーに提示し承認を得る**
+3. コミットはコメント単位 / ファイル単位で分割
 4. Push 後、ユーザーの確認を得てからレビュースレッドに返信
 
 ## 他 Issue / PR の参照
 
-description・コメント本文で他の Issue / PR を参照するときは完全な URL を使う（例: `https://github.com/owner/repo/pull/1234`）。同一リポジトリ内の `#番号`（`Closes #XXX` 等の自動クローズ含む）はそのままで良い（理由: GitHub の自動リンクは同一リポジトリ内の `#番号` しか確実に解決せず、別リポジトリの省略形 `owner/repo#番号` はリンクされないことがある）。
+description / コメント本文で参照は **完全な URL** を使う (`https://github.com/owner/repo/pull/1234`)。同一リポ内の `#番号` (`Closes #XXX` 等) はそのままで良い (GitHub の自動リンクは同一リポ内の `#番号` しか確実に解決しないため)。
 
-## 追加コミット後の description 確認
+## 追加コミット後
 
-既存 PR にコミットを追加した後（レビュー対応・仕様変更・追加実装など）は、必ず以下を確認する:
-
-1. **PR description** の What / Why が最新の変更内容を反映しているか
-2. **紐づく Issue** の description（再現手順・仕様・チェックリスト等）が古くなっていないか
-
-変更が必要な場合は「PR description の更新」セクションの手順に従って更新する。
+既存 PR にコミットを追加したら、PR description の What/Why が最新変更を反映しているか、紐づく Issue description が古くなっていないかを確認・更新する。
 
 ## PR description の更新
 
-既存 PR の description を書き換える際は全文再生成して上書きしない。必ず `gh pr view <n> --json body --jq .body` で現在の body を取得してベースにし、変更箇所だけ編集した新 body の差分をユーザーに提示してから承認後に `gh pr edit` を実行する。
+全文再生成して上書きしない。必ず `gh pr view <n> --json body --jq .body` で現在の body を取得 → 変更箇所だけ編集 → 差分をユーザーに提示 → 承認後 `gh pr edit`。
+
+## Umbrella Issue
+
+タイトル prefix `[Umbrella]`、チェックリストで管理。子 issue 切り出しはユーザーの明示指示があるときのみ。
