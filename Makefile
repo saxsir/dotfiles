@@ -1,9 +1,9 @@
 PWD := $(shell pwd)
 
-.PHONY: all deps init apply diff edit re-add merge hooks mise macos apm help
+.PHONY: all deps init apply diff edit re-add merge hooks mise uvtools macos apm help
 
 # デフォルト: 依存ツールを揃えて apply、mise install、pre-commit hook を install
-all: deps apply mise hooks apm
+all: deps apply mise uvtools hooks apm
 
 deps:
 	@command -v brew >/dev/null 2>&1 || { echo "Homebrew が必要です: https://brew.sh"; exit 1; }
@@ -68,6 +68,11 @@ mise:
 	@command -v mise >/dev/null 2>&1 || { echo "mise が見つからない: make deps を先に実行"; exit 1; }
 	mise install
 
+# uv tool で global に入れる Python CLI を冪等に install (mise の pipx backend を使わず uv に寄せる)
+uvtools:
+	@command -v uv >/dev/null 2>&1 || { echo "uv が見つからない: make mise を先に実行"; exit 1; }
+	uv tool install --upgrade kaggle
+
 # apm (Agent Package Manager) を install して global skill を deploy する (冪等)
 # Homebrew formula がないため公式 curl installer を使う
 # ~/.apm/apm.yml の依存関係 (mattpocock/skills 等) を ~/.claude/skills/ へ展開する
@@ -99,6 +104,7 @@ help:
 	@echo "  re-add   - ~/ の編集内容を source に取り込み (FILE=... 任意)"
 	@echo "  merge    - 衝突時の 3-way merge (FILE=...)"
 	@echo "  mise     - ~/.config/mise/config.toml に従って mise install"
+	@echo "  uvtools  - uv tool で global に入れる Python CLI (kaggle 等) を install"
 	@echo "  macos    - ~/.macos の defaults を一括適用 (副作用大のため all には含めない)"
 	@echo "  hooks    - pre-commit hook を install (secretlint)"
 	@echo "  apm      - apm CLI を install + ~/.apm/apm.yml の skill を deploy (冪等)"
