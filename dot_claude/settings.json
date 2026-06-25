@@ -5,6 +5,7 @@
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "CLAUDE_CODE_DISABLE_GIT_INSTRUCTIONS": "1",
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+    "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
     "CLAUDE_CODE_NEW_INIT": "1",
     "ENABLE_LSP_TOOL": "1"
   },
@@ -131,7 +132,7 @@
       "~/.claude"
     ]
   },
-  "model": "claude-opus-4-6",
+  "model": "claude-opus-4-7",
   "hooks": {
     "PreToolUse": [
       {
@@ -187,6 +188,7 @@
   },
   "effortLevel": "xhigh",
   "theme": "dark",
+  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
   "feedbackSurveyState": {
