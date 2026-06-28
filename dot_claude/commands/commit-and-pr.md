@@ -32,7 +32,7 @@ description: Creates a commit, pushes to remote, and opens a draft pull request 
 - [ ] ステップ4: ブランチをリモートにpush
 - [ ] ステップ5: PRのタイトルと説明を生成
 - [ ] ステップ6: PR内容についてユーザーの承認を得る
-- [ ] ステップ7: コードレビューを実行（--skip-reviewが指定されていない場合）
+- [ ] ステップ7: 最終コードレビューを実行（--skip-reviewが指定されていない場合）
 - [ ] ステップ8: Draft Pull Requestを作成
 ```
 
@@ -148,24 +148,15 @@ Closes #123
 
 **ステップ7に進む前にユーザーの承認を得る必要があります。**
 
-### ステップ7: コードレビューを実行（--skip-reviewが指定されていない場合）
+### ステップ7: 最終コードレビューを実行（--skip-reviewが指定されていない場合）
 
 **デフォルトの動作:**
-- `--skip-review` オプションが指定されていない限り、PR作成前にコードレビューを実行
-- pr-review-toolkit を使用して包括的なレビューを実施
-
-**レビュー内容:**
-- **code-reviewer**: コード品質の一般的なチェック
-- **pr-test-analyzer**: テストカバレッジの確認
-- **silent-failure-hunter**: エラーハンドリングの検証（エラーハンドリングを変更した場合）
-- **comment-analyzer**: コメント精度の確認（コメント/ドキュメントを追加・修正した場合）
-- **type-design-analyzer**: 型設計のレビュー（型を追加・修正した場合）
+- `--skip-review` オプションが指定されていない限り、PR作成前に `/review` を 1 回回す
+- これはブランチ唯一の最終ゲート ([[review-cycle]])。修正の自動適用はしない（採否はユーザー、[[role-separation]]）
 
 **レビュー実行方法:**
-```bash
-# /review-pr スキル（pr-review-toolkit）を使用
-Task tool を使って適切なエージェントを起動
-```
+- Skill ツールで `review` を呼び出す
+- subagent に降ろす場合は **モデルに Opus を指定する** ([[review-cycle]] のモデル指定原則。Sonnet には降ろさない)
 
 **レビュー結果の処理:**
 - **Critical issues が見つかった場合**:
@@ -179,6 +170,9 @@ Task tool を使って適切なエージェントを起動
 
 - **問題が見つからなかった場合**:
   - ステップ8に進む
+
+**セキュリティ関連の diff の場合:**
+- diff が auth / 入力検証 / secret / 外部 API / SQL / template / SSRF / file upload などに触れたら、`/review` と別に `/security-review` の起動をユーザーに提案する ([[review-cycle]])
 
 **レビューをスキップする場合:**
 - `--skip-review` オプションが指定されている場合は、このステップを飛ばしてステップ8へ
