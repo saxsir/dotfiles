@@ -160,7 +160,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/superpowers/hooks/run-hook.cmd session-start",
+            "command": "~/.apm/apm_modules/obra/superpowers/hooks/run-hook.cmd session-start",
             "async": false
           }
         ]
