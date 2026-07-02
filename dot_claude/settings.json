@@ -160,7 +160,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"/Users/saxsir/.claude/hooks/superpowers/hooks/run-hook.cmd\" session-start",
+            "command": "~/.claude/hooks/superpowers/hooks/run-hook.cmd session-start",
             "async": false
           }
         ]
