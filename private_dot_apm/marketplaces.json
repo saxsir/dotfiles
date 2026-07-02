@@ -1,0 +1,11 @@
+{
+  "marketplaces": [
+    {
+      "name": "claude-plugins-official",
+      "url": "https://github.com/anthropics/claude-plugins-official",
+      "path": ".claude-plugin/marketplace.json",
+      "owner": "anthropics",
+      "repo": "claude-plugins-official"
+    }
+  ]
+}

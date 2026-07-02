@@ -27,6 +27,7 @@ dependencies:
   - mattpocock/skills/skills/productivity/teach
   - mattpocock/skills/skills/productivity/writing-great-skills
   - saxsir/skills
+  - obra/superpowers
   mcp: []
 includes: auto
 scripts: {}
