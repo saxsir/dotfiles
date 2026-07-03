@@ -68,8 +68,7 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 
 5. **Claude Code Skills (apm)**
    - `private_dot_apm/apm.yml` の `dependencies.apm` に `owner/repo` を追記
-   - `make apm` で `~/.claude/skills/` へ自動デプロイ
-   - 更新は `apm update -g`
+   - `make apm` で `~/.claude/skills/` へ自動デプロイ (内部で `apm update -g --yes` を実行し常に最新コミットへ追従)
 
 ### NeoVim Keymap Reference
 

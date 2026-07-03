@@ -1,15 +1,34 @@
-name: ca00622
+name: saxsir/dotfiles
 version: 1.0.0
-description: APM project for ca00622
+description: APM project for saxsir/dotfiles
 author: saxsir
-# Which agent platforms to deploy to (uncomment to pin):
-# targets:
-#   - copilot
-#   - claude
+targets:
+  - claude
 
 dependencies:
   apm:
-  - mattpocock/skills
+  - mattpocock/skills/skills/engineering/ask-matt
+  - mattpocock/skills/skills/engineering/codebase-design
+  - mattpocock/skills/skills/engineering/diagnosing-bugs
+  - mattpocock/skills/skills/engineering/domain-modeling
+  - mattpocock/skills/skills/engineering/grill-with-docs
+  - mattpocock/skills/skills/engineering/implement
+  - mattpocock/skills/skills/engineering/improve-codebase-architecture
+  - mattpocock/skills/skills/engineering/prototype
+  - mattpocock/skills/skills/engineering/resolving-merge-conflicts
+  - mattpocock/skills/skills/engineering/setup-matt-pocock-skills
+  - mattpocock/skills/skills/engineering/tdd
+  - mattpocock/skills/skills/engineering/to-issues
+  - mattpocock/skills/skills/engineering/to-prd
+  - mattpocock/skills/skills/engineering/triage
+  - mattpocock/skills/skills/productivity/grill-me
+  - mattpocock/skills/skills/productivity/grilling
+  - mattpocock/skills/skills/productivity/handoff
+  - mattpocock/skills/skills/productivity/teach
+  - mattpocock/skills/skills/productivity/writing-great-skills
+  - saxsir/skills
+  - obra/superpowers
+  - tomasz-tomczyk/crit/integrations/claude-code
   mcp: []
 includes: auto
 scripts: {}

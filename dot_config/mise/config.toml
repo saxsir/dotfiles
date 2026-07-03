@@ -1,5 +1,7 @@
 [tools]
+bun = "latest"
 node = "lts"
 pnpm = "latest"
 python = "latest"
 uv = "latest"
+"npm:@doist/todoist-cli" = "latest"

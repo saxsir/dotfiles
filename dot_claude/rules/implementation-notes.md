@@ -1,43 +1,22 @@
-# Implementation Notes (実装記録)
+# Implementation Notes
 
-PR を作成する可能性のある実装タスクを受けたら、**確認なしに**着手と同時に
-`.claude/notes/<YYYY-MM-DD>-<slug>.html` を作業中リポジトリに作成し、実装が進むたびに追記する。
+実装中に判断したことは commit message と PR description に残す。
 
-## 発火条件
+## 何を書くか
 
-**発火する（以下のいずれか）**:
-- 新機能・新設定の追加（`feat:` に相当する変更）
-- バグ修正（`fix:` に相当する変更）
-- リファクタリング・整理（複数ファイルにまたがる変更）
-- rule / skill / CLAUDE.md / dotfiles 設定の更新
-- フィーチャーブランチを切ることが想定される作業全般
+依頼から逸脱・解釈した点を残す (該当なしは省略可):
 
-**発火しない**:
-- 質問・調査・既存コードの説明のみ
-- タイポ修正など 1〜2 行の自明な小修正
-- ユーザーが「ノート不要」「notes いらない」と明示したタスク
+- **Design decisions**: 自分で決めざるを得なかった選択
+- **Deviations**: 依頼から意図的に外れた箇所と理由
+- **Tradeoffs**: 採用した案を選んだ理由
+- **Open questions**: ユーザーに確認・再検討してほしい事項
 
-## ノートに書くこと
+## どこに書くか
 
-「依頼内容からどう逸脱・解釈したか」を、ユーザーが後で読み返せる形で逐次追記する。
-該当が無い項目は省略してよい:
+- **commit に閉じる判断 (Design decisions / Tradeoffs)**: 当該 commit message の本文に書く ([[commit-discipline]] の "Commit log is Why")。
+- **PR 横断の判断 / 採否を求める事項 (Deviations / Open questions)**: PR description に書く。[[github-workflow]] のテンプレ (What / Why) に節を追加する形で載せる。
+- **Why-not がコード読解上必要なら**: コード内コメント ([[commit-discipline]] の "Comment is Why-not")。
 
-- **Design decisions**: 依頼内容が曖昧で、自分で決めざるを得なかった選択
-- **Deviations**: 依頼内容から意図的に外れた箇所と、その理由
-- **Tradeoffs**: 検討した代替案と、採用した案を選んだ理由
-- **Open questions**: ユーザーに確認 / 再検討してほしい事項
+## 完了報告
 
-## ファイル仕様
-
-- 配置: `.claude/notes/<YYYY-MM-DD>-<slug>.html`（作業中リポジトリのルートから）
-- 形式: HTML。ブラウザでそのまま開ける素朴な構造でよい（CSS / JS 不要）
-- `<slug>` はタスクを表す kebab-case の短い英語名（例: `add-docker-aliases`）
-- 1 タスク = 1 ファイル。同タスク内の進捗は同ファイルに追記する
-- `.claude/notes/` をコミットするかは各リポジトリの方針に従う
-
-## 完了時
-
-タスク完了報告の最後にノートファイルのパスを 1 行添える。
-パスは**ローカルの絶対パス**で書く（例: `/Users/ca00622/src/github.com/owner/repo/.claude/notes/...html`）。
-相対パスやリポジトリ名起点の表記はチャット上でリンクとして開けない。
-要点はチャットの最終応答にも残し、ユーザーがノートを開かなくても把握できるようにする。
+チャット末尾に該当カテゴリの判断があれば短く列挙する (commit / PR との重複可、「目を通して」用)。

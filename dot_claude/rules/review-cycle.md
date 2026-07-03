@@ -1,48 +1,37 @@
 # レビューサイクル
 
-コードレビューツールを開発フローに組み込む際の既定。「いつ・どれを・どの順で回すか」を規定する。
-原則は **レビューの重さを「コスト × 不可逆性」に合わせる** こと。安いチェックは頻繁に、重いチェックは境界で 1 回だけ。
+書く側のレビューは **2 トラック**。実装中は機械的に回し、PR 提出前にゲートを 1 回置く。**コミット境界では回さない** ([[commit-discipline]] の可否判断だけで通す、速度優先)。
 
-ツールの棲み分け（混同しやすいので明記）:
+## モデル指定の原則
 
-- `/code-review`（組み込み）: current diff の correctness + reuse/簡素化/効率。`--effort low|medium|high|max`、`--comment`（PR インライン投稿）、`--fix`（working tree に適用）。
-- `/simplify`（組み込み）: バグ探索をせず構造改善だけを適用する。
-- `/pr-review-toolkit:review-pr`（プラグイン）: 6 専門エージェント（code-reviewer / test / silent-failure / type-design / comment / simplifier）。出力はチャット。
-- `/review`（組み込み）: PR を 1 回レビューする。単体はゲートで直接回さない。書く側は `/code-review` が同じ diff をカバーし、他人 PR は `review-and-post-inline` が内部で `/review` を使う。
-- `/security-review`: pending changes のセキュリティレビュー（whitebox/exploit/blackbox、issue 起票）。重い。
-- 複合スキル: `self-review`（書く側の境界ゲート）、`review-assigned-pr` / `review-and-post-inline`（他人の PR をレビュー）。
+書く側のレビュー (`/simplify` / `/code-review` / `/review` / `/security-review`) を subagent に降ろす場合は、**モデルに Opus (現在使える最良モデル) を指定する**。Sonnet には降ろさない。これは [[delegation]] の Why (判断・レビューは高コストモデル側に置く) に従う例外であり、同 rule のデフォルト sonnet 委譲を上書きする。
 
-## トラック 1: 自分が書くとき
+## 書く側 (実装中)
 
-コミット境界ではレビューしない。`@rules/commit-discipline.md` の可否判断（tests green / 警告解消 / 単一論理単位）だけで通す（速度・コスパ優先）。
+### `/simplify` (構造改善)
 
-唯一の品質ゲートは **ブランチ境界**（draft PR 直前、または PR を作らないリポではローカル merge 直前）の `self-review`。
-ここで `/code-review --effort high` と `/pr-review-toolkit:review-pr` を Sonnet サブエージェントで並列に回し（`@rules/model-tiering.md`）、findings をトリアージして severity 順に markdown でチャットに出力する。
-**修正の自動適用はしない**。採否を見たユーザーが必要に応じて `/simplify` か `/code-review --fix` を明示的に追打ちする（`@rules/role-separation.md`）。
+実装初手 (Red 直前 / 編集する箇所を開いた瞬間) で「触りにくい・読みにくい・無関係な責務と絡んでいる」と感じたら、その瞬間に `/simplify` を回す。
 
-### Tidy First との両立
+**回す条件**: working tree が clean ([[tidy-first]] の構造/振る舞いコミット分離が機械的に保たれる)。
 
-`/code-review --fix` と `/simplify` の自動適用は、**working tree が clean（振る舞いの変更がコミット済み）なときにだけ** 回す。
-出力が定義上「構造変更だけ」になり、`@rules/tidy-first.md` のコミット分離が機械的に保たれる。
-authoring 中に correctness を見たいときは `/code-review`（`--fix` なし）を read-only で使い、指摘は手で振る舞いコミットに畳む。
+**コミット先の判断 (範囲の独立性基準)**:
+- simplify 対象が **feature の差分と物理的に重なる** ファイル中心 → 同ブランチで構造変更コミットを先頭に積む
+- 共有モジュール / 公開 API / ディレクトリ移動など **feature 差分と重ならない範囲** → 別 PR に切り出すかをユーザーに確認する (cherry-pick で分離)
 
-### security ゲート（条件付き）
+**気づきが遅れた場合 (Case 2)**: 実装が進んでから「先に simplify しておけばよかった」と気づいた場合は、その時点で `/simplify` を回し、**実装コミットの後ろ** に構造変更コミットを積む。tidy-first 順序は崩れるが、commit message で「構造変更」と明示すれば判別性は維持される。順序逆転は「気づきが遅れた」メタ情報として残す ([[role-separation]] の retrospective-codify 対象)。
 
-diff が次のいずれかに触れたら、self-review とは別に `/security-review` を回す:
-認証 / 認可 / 入力検証 / ファイルアップロード / redirect・SSRF / secret・credential / 外部 API 呼び出し / デシリアライズ / SQL・クエリ組立 / テンプレート描画。
-起動と target URL 等の対話セットアップは **ユーザーが確認する**（`@rules/role-separation.md`）。触れなければ回さない。
+### `/code-review xhigh --fix` (バグ修正)
 
-## トラック 2: 他人の PR をレビューするとき
+コミット前に `/code-review xhigh --fix` を回す。修正の自動適用込み。
 
-`review-assigned-pr` で対象を選び、findings をトリアージしたうえで **投稿予定コメント一覧をユーザーに提示し、承認を得てから** `review-and-post-inline` で GitHub インライン投稿する。
-インラインコメントは対外行為なので、投稿の締めはユーザーが持つ（`@rules/role-separation.md` / `@rules/github-writing.md`）。
+**回す条件**: working tree が clean。`/simplify` を先に回した場合は構造変更コミットを積んだ後で。
 
-## 両トラック共通: findings のトリアージ
+## 書く側 (PR 提出前)
 
-チャット出力 / GitHub に出す前に必ずトリアージする:
+draft PR / ローカル merge の **前** に `/review` を 1 回回す。これがブランチ唯一の品質ゲート。**修正の自動適用はしない** (採否はユーザー、[[role-separation]])。
 
-- `/code-review` と toolkit の findings をマージし、同一ファイル・同一行の重複を 1 件に統合する。
-- 低確信・ノイズの指摘を落とす。
-- どのツール / 専門エージェント発かが分かる provenance タグを付ける（例 `[code-review]`、`[toolkit:silent-failure]`）。
+diff が auth / 入力検証 / secret / 外部 API / SQL / template / SSRF / file upload などに触れたら、`/review` と別に `/security-review` を回す (起動はユーザー承認後)。
 
-高コストモデルで動いているときは、fan-out するレビュー実行を subagent に降ろし、自分は findings の査読・採否に専念する（`@rules/model-tiering.md`）。
+## 他人 PR
+
+自分にレビュー依頼 / アサインされている PR から対象を選定 → トリアージ → **投稿予定コメント一覧をユーザーに提示し承認後**、GitHub インラインコメントとして投稿 ([[github-writing]] の規約に従う)。投稿の締めはユーザー。専用 skill は退役済みで、手順はこの節が source of truth。

@@ -5,6 +5,7 @@
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "CLAUDE_CODE_DISABLE_GIT_INSTRUCTIONS": "1",
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+    "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
     "CLAUDE_CODE_NEW_INIT": "1",
     "ENABLE_LSP_TOOL": "1"
   },
@@ -14,6 +15,8 @@
       "Bash(git log *)",
       "Bash(git diff *)",
       "Bash(git branch *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
       "mcp__claude_ai_Slack__slack_list_channels",
       "mcp__claude_ai_Slack__slack_get_channel_history",
       "mcp__claude_ai_Slack__slack_get_thread_replies",
@@ -32,6 +35,8 @@
       "Bash(docker push *)",
       "Bash(git add .)",
       "Bash(git add -A)",
+      "Bash(git add --all)",
+      "Bash(git add --all *)",
       "Bash(git checkout .)",
       "Bash(git clean -f *)",
       "Bash(git commit --amend:*)",
@@ -41,6 +46,7 @@
       "Bash(git rebase:*)",
       "Bash(git reset:*)",
       "Bash(git reset --hard *)",
+      "Bash(gh pr merge:*)",
       "Bash(gcloud * --quiet)",
       "Bash(helm install *)",
       "Bash(helm upgrade *)",
@@ -114,11 +120,10 @@
       "Write(**/*.secret.*)"
     ],
     "ask": [
+      "Bash(gh pr ready:*)",
       "Bash(rm:*)",
       "Bash(wget:*)",
       "Bash(curl:*)",
-      "Bash(git add:*)",
-      "Bash(git commit *)",
       "Bash(git push *)",
       "Bash(npm install *)",
       "Bash(pip install *)",
@@ -131,7 +136,7 @@
       "~/.claude"
     ]
   },
-  "model": "claude-opus-4-8",
+  "model": "claude-fable-5",
   "hooks": {
     "PreToolUse": [
       {
@@ -144,29 +149,24 @@
           {
             "type": "command",
             "command": "~/.claude/hooks/block-sensitive-reads.sh"
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/block-pr-finalize.sh"
           }
         ]
       }
     ],
     "Notification": [],
     "Stop": [],
-    "SessionEnd": []
+    "SessionEnd": [],
+    "SessionStart": []
   },
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/statusline.sh"
   },
-  "enabledPlugins": {
-    "claude-code-setup@claude-plugins-official": true,
-    "claude-md-management@claude-plugins-official": true,
-    "gopls-lsp@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": false,
-    "php-lsp@claude-plugins-official": false,
-    "pr-review-toolkit@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": false
-  },
+  "enabledPlugins": {},
   "extraKnownMarketplaces": {
     "carta-agent-skills": {
       "source": {
@@ -185,11 +185,14 @@
   "sandbox": {
     "enabled": false
   },
-  "effortLevel": "xhigh",
+  "effortLevel": "high",
   "theme": "dark",
+  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
+  "skipWorkflowUsageWarning": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754040541141
-  }
+  },
+  "tui": "fullscreen"
 }

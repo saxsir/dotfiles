@@ -44,5 +44,8 @@ brew "git-secrets"
 brew "lima"
 brew "aws-vault"
 
+# crit skill (apm.yml の tomasz-tomczyk/crit) が呼び出す CLI 本体
+brew "crit"
+
 # ターミナルフォント (~/.config/ghostty/config で Monaspace Neon を指定)
 cask "font-monaspace"
