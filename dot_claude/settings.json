@@ -46,7 +46,6 @@
       "Bash(git rebase:*)",
       "Bash(git reset:*)",
       "Bash(git reset --hard *)",
-      "Bash(gh pr ready:*)",
       "Bash(gh pr merge:*)",
       "Bash(gcloud * --quiet)",
       "Bash(helm install *)",
@@ -121,6 +120,7 @@
       "Write(**/*.secret.*)"
     ],
     "ask": [
+      "Bash(gh pr ready:*)",
       "Bash(rm:*)",
       "Bash(wget:*)",
       "Bash(curl:*)",
