@@ -77,6 +77,8 @@ uvtools:
 # Homebrew formula がないため公式 curl installer を使う
 # ~/.apm/apm.yml の依存関係 (mattpocock/skills 等) を ~/.claude/skills/ へ展開する
 # install は ~/.apm/apm.lock.yaml のコミット固定を尊重するため、update で常に最新へ追従させる
+# apm update は ~/.claude/skills/ の apm 管理外 skill を削除するため、
+# 巻き添えで消える Doist 公式 todoist-cli skill を毎回 td で復元する
 apm:
 	@if command -v apm >/dev/null 2>&1; then \
 	  echo "[apm] already installed: $$(apm --version 2>&1 | head -1)"; \
@@ -87,6 +89,11 @@ apm:
 	fi
 	apm install -g --runtime claude
 	apm update -g --yes
+	@if command -v td >/dev/null 2>&1; then \
+	  td skill update claude-code || td skill install claude-code; \
+	else \
+	  echo "[apm] td が見つからないため todoist-cli skill の復元をスキップ"; \
+	fi
 
 # macOS defaults を ~/.macos に従って一括適用する (デフォルト all には含めない: 副作用大)
 # 適用前に内容を確認するなら `cat ~/.macos`
