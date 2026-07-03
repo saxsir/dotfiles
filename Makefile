@@ -90,7 +90,7 @@ apm:
 	apm install -g --runtime claude
 	apm update -g --yes
 	@if command -v td >/dev/null 2>&1; then \
-	  td skill update claude-code || td skill install claude-code; \
+	  td skill install claude-code --force; \
 	else \
 	  echo "[apm] td が見つからないため todoist-cli skill の復元をスキップ"; \
 	fi
