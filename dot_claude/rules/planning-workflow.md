@@ -30,7 +30,7 @@ skill のフェーズ別割り当て。明示指示があれば優先。重複�
 ## 5. 終了 / 改善
 
 - 書く側レビュー: [[review-cycle]] の 2 トラック
-- 他人 PR: `review-assigned-pr` → `review-and-post-inline` → `post-pr-review-comments`
+- 他人 PR: [[review-cycle]] の「他人 PR」節
 - レビュー受け: `superpowers:receiving-code-review` ([[non-sycophancy]] の実行手段)
 - ブランチ完了: `superpowers:finishing-a-development-branch`
 - skill 育成: `writing-great-skills` (執筆規範) / `superpowers:writing-skills` (pressure test)

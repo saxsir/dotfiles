@@ -4,7 +4,7 @@
 
 ## モデル指定の原則
 
-書く側のレビュー (`/simplify` / `/code-review` / `/review` / `/security-review`) を subagent に降ろす場合は、**モデルに Opus (現在使える最良モデル) を指定する**。Sonnet には降ろさない。これは [[model-tiering]] の「全力のレビューは高コストモデル側」の趣旨に従う例外であり、[[delegation]] のデフォルト sonnet を上書きする。
+書く側のレビュー (`/simplify` / `/code-review` / `/review` / `/security-review`) を subagent に降ろす場合は、**モデルに Opus (現在使える最良モデル) を指定する**。Sonnet には降ろさない。これは [[delegation]] の Why (判断・レビューは高コストモデル側に置く) に従う例外であり、同 rule のデフォルト sonnet 委譲を上書きする。
 
 ## 書く側 (実装中)
 
@@ -34,4 +34,4 @@ diff が auth / 入力検証 / secret / 外部 API / SQL / template / SSRF / fil
 
 ## 他人 PR
 
-`review-assigned-pr` で対象選定 → トリアージ → **投稿予定コメント一覧をユーザーに提示し承認後**、`review-and-post-inline` で GitHub インライン投稿。投稿の締めはユーザー。
+自分にレビュー依頼 / アサインされている PR から対象を選定 → トリアージ → **投稿予定コメント一覧をユーザーに提示し承認後**、GitHub インラインコメントとして投稿 ([[github-writing]] の規約に従う)。投稿の締めはユーザー。専用 skill は退役済みで、手順はこの節が source of truth。
