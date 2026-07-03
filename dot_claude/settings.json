@@ -199,6 +199,7 @@
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
+  "skipWorkflowUsageWarning": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754040541141
   },
