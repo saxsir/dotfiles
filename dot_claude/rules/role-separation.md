@@ -10,14 +10,9 @@
 - `git push --force` / `git reset --hard` (共有 ref)
 - 本番反映、外部サービス送信
 - `rm -rf` 等の不可逆な削除
+- 外部認証 CLI (`aws`, `terraform`, `kaggle` 等) の書き込み系コマンド (create / update / delete / submit / apply 等)。read-only (describe / list / get / logs 等) は承認不要で実行してよい
 
 承認不要 (通常運用の範囲): 通常の `git push`、`gh pr create --draft`。
-
-## 外部認証 CLI の書き込みはユーザーに委ねる
-
-外部サービスの認証情報を使う CLI (`aws`, `terraform`, `kaggle` 等) のうち、状態を変更するコマンド (create / update / delete / submit / apply 等) はコマンド本文を提示してユーザーに実行を依頼する。read-only (describe / list / get / logs 等) は Claude が直接実行してよい。
-
-Why: 認証済み CLI での書き込みは外部アカウントへの操作そのものであり、その採否・対外影響はユーザーの領分。
 
 ## 学びはファイルに固定する
 
