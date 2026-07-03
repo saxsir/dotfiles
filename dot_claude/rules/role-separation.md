@@ -10,6 +10,9 @@
 - `git push --force` / `git reset --hard` (共有 ref)
 - 本番反映、外部サービス送信
 - `rm -rf` 等の不可逆な削除
+- 外部認証 CLI (`aws`, `terraform`, `kaggle` 等) の書き込み系コマンド (create / update / delete / submit / apply 等)。read-only (describe / list / get / logs 等) は承認不要で実行してよい
+
+承認不要 (通常運用の範囲): 通常の `git push`、`gh pr create --draft`。
 
 ## 学びはファイルに固定する
 

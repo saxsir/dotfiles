@@ -36,7 +36,7 @@
 - 大量・機械的なデータ取得に MCP を使わない (取得内容が全部モデルを通り token 消費が激しい)。CLI / API 直叩きの script に落として Claude の外で実行し、MCP は少数ファイルの探索・形式確認・トリアージまでに使う
 - JSON の処理には Python ではなく `jq` を使う
 - `gh api graphql` はエラー時も exit 0 を返す。必ずレスポンスの `.errors[]` を確認すること (理由: チェックしないと jq が invalid JSON を受け取って連鎖クラッシュする)
-- AWS の認証情報を要するコマンド (`aws`, `terraform`, `cdk`, `boto3` 等) は `aws-vault exec <profile> -- <command>` で実行する (平文 credential の利用を避ける)
+- AWS の認証情報を要するコマンド (`aws`, `terraform`, `cdk`, `boto3` 等) は `aws-vault exec <profile> -- <command>` で実行する (平文 credential の利用を避ける)。書き込み系は承認を得てから実行する (rules/role-separation.md 参照)
 
 # Maintenance
 
