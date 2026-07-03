@@ -134,7 +134,7 @@
       "~/.claude"
     ]
   },
-  "model": "claude-opus-4-7",
+  "model": "claude-fable-5",
   "hooks": {
     "PreToolUse": [
       {
@@ -190,7 +190,7 @@
   "sandbox": {
     "enabled": false
   },
-  "effortLevel": "xhigh",
+  "effortLevel": "high",
   "theme": "dark",
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
