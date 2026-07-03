@@ -34,4 +34,4 @@ diff が auth / 入力検証 / secret / 外部 API / SQL / template / SSRF / fil
 
 ## 他人 PR
 
-対象選定 → トリアージ → **投稿予定コメント一覧をユーザーに提示し承認後**、GitHub インラインコメントとして投稿 ([[github-writing]] の規約に従う)。投稿の締めはユーザー。専用 skill は退役済みで、手順はこの節が source of truth。
+自分にレビュー依頼 / アサインされている PR から対象を選定 → トリアージ → **投稿予定コメント一覧をユーザーに提示し承認後**、GitHub インラインコメントとして投稿 ([[github-writing]] の規約に従う)。投稿の締めはユーザー。専用 skill は退役済みで、手順はこの節が source of truth。
