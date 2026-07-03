@@ -28,6 +28,7 @@ dependencies:
   - mattpocock/skills/skills/productivity/writing-great-skills
   - saxsir/skills
   - obra/superpowers
+  - tomasz-tomczyk/crit/integrations/claude-code
   mcp: []
 includes: auto
 scripts: {}

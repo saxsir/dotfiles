@@ -160,18 +160,7 @@
     "Notification": [],
     "Stop": [],
     "SessionEnd": [],
-    "SessionStart": [
-      {
-        "matcher": "startup|clear|compact",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.apm/apm_modules/obra/superpowers/hooks/run-hook.cmd session-start",
-            "async": false
-          }
-        ]
-      }
-    ]
+    "SessionStart": []
   },
   "statusLine": {
     "type": "command",
