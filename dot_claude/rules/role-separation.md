@@ -6,7 +6,8 @@
 
 ユーザーの明示承認なしに実行しない:
 
-- `gh pr ready` (絶対実行しない)
+- `gh pr merge` (絶対実行しない)
+- `gh pr ready` (permission prompt で承認を得る)
 - `git push --force` / `git reset --hard` (共有 ref)
 - 本番反映、外部サービス送信
 - `rm -rf` 等の不可逆な削除

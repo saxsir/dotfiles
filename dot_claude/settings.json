@@ -46,6 +46,7 @@
       "Bash(git rebase:*)",
       "Bash(git reset:*)",
       "Bash(git reset --hard *)",
+      "Bash(gh pr merge:*)",
       "Bash(gcloud * --quiet)",
       "Bash(helm install *)",
       "Bash(helm upgrade *)",
@@ -119,6 +120,7 @@
       "Write(**/*.secret.*)"
     ],
     "ask": [
+      "Bash(gh pr ready:*)",
       "Bash(rm:*)",
       "Bash(wget:*)",
       "Bash(curl:*)",
@@ -134,7 +136,7 @@
       "~/.claude"
     ]
   },
-  "model": "claude-opus-4-7",
+  "model": "claude-fable-5",
   "hooks": {
     "PreToolUse": [
       {
@@ -147,6 +149,10 @@
           {
             "type": "command",
             "command": "~/.claude/hooks/block-sensitive-reads.sh"
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/block-pr-finalize.sh"
           }
         ]
       }
@@ -190,11 +196,12 @@
   "sandbox": {
     "enabled": false
   },
-  "effortLevel": "xhigh",
+  "effortLevel": "high",
   "theme": "dark",
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
+  "skipWorkflowUsageWarning": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754040541141
   },
