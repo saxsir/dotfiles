@@ -149,6 +149,10 @@
           {
             "type": "command",
             "command": "~/.claude/hooks/block-sensitive-reads.sh"
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/block-pr-finalize.sh"
           }
         ]
       }
