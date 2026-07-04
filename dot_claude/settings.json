@@ -136,7 +136,7 @@
       "~/.claude"
     ]
   },
-  "model": "claude-fable-5",
+  "model": "claude-opus-4-7",
   "hooks": {
     "PreToolUse": [
       {
@@ -160,7 +160,30 @@
     "Notification": [],
     "Stop": [],
     "SessionEnd": [],
-    "SessionStart": []
+    "SessionStart": [
+      {
+        "matcher": "startup|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"/Users/saxsir/.claude/hooks/superpowers/hooks/run-hook.cmd\" session-start",
+            "async": false
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": "ExitPlanMode",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "crit plan-hook",
+            "timeout": 345600
+          }
+        ]
+      }
+    ]
   },
   "statusLine": {
     "type": "command",
@@ -185,14 +208,14 @@
   "sandbox": {
     "enabled": false
   },
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
+  "tui": "fullscreen",
+  "skipWorkflowUsageWarning": true,
   "theme": "dark",
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true,
-  "skipWorkflowUsageWarning": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754040541141
-  },
-  "tui": "fullscreen"
+  }
 }
