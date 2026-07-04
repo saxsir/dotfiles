@@ -6,7 +6,6 @@
 # Core Principles
 
 ## Core practices (always-on)
-@rules/tdd.md
 @rules/tidy-first.md
 @rules/non-sycophancy.md
 @rules/verification-by-declaration.md
