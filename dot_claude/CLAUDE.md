@@ -39,14 +39,6 @@
 - AWS の認証情報を要するコマンド (`aws`, `terraform`, `cdk`, `boto3` 等) は `aws-vault exec <profile> -- <command>` で実行する (平文 credential の利用を避ける)。書き込み系は承認を得てから実行する (rules/role-separation.md 参照)
 - モデル選択で 1M コンテキスト版 (`[1m]`) を使わない・指定しない (品質が落ちる体感がある)。「最良モデル」は常に非 1M の最上位を指す
 
-# Prompting (Claude 5 世代)
-
-Claude 5 世代は簡潔な指示への追従が強い。rule / skill / CLAUDE.md / 委譲プロンプトを書く・育てるとき全てに適用する:
-
-- 指示は短い原則で書く。挙動の網羅列挙や強調の連打 (IMPORTANT / YOU MUST) は旧モデル向けの過剰指定で、デフォルト挙動より品質を下げうる。追加前に「デフォルトで足りないか」を確認し、既存の指示もデフォルトの方が良ければ削る
-- 内部推論 (thinking) を応答テキストで再現・書き起こしさせる指示を書かない (reasoning_extraction 拒否をトリガーし fallback が増える)
-- 依頼には背景を添える (何のための作業で、出力が何を可能にするか)。subagent への委譲プロンプトにも同様に含めると、意図の推測でなく文脈への接続で動ける
-
 # Maintenance
 
 - `/audit-context` でグローバル設定 (CLAUDE.md / rules / ローカル MCP) のサイズ棚卸しができる。たまに思い出して実行する。
