@@ -28,7 +28,7 @@
 
 ## 書く側 (PR 提出前)
 
-draft PR / ローカル merge の **前** に `/review` を 1 回回す。これがブランチ唯一の品質ゲート。**修正の自動適用はしない** (採否はユーザー、[[role-separation]])。
+draft PR の **前** に `/review` を 1 回回す。これがブランチ唯一の品質ゲート。**修正の自動適用はしない** (採否はユーザー、[[role-separation]])。
 
 diff が auth / 入力検証 / secret / 外部 API / SQL / template / SSRF / file upload などに触れたら、`/review` と別に `/security-review` を回す (起動はユーザー承認後)。
 
