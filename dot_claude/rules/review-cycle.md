@@ -4,7 +4,7 @@
 
 ## モデル指定の原則
 
-書く側のレビュー (`/simplify` / `/code-review` / `/review` / `/security-review`) を subagent に降ろす場合は、**モデルに現在使える最良モデル (現在は Fable) を指定する**。Sonnet には降ろさない。これは [[delegation]] の Why (判断・レビューは高コストモデル側に置く) に従う例外であり、同 rule のデフォルト sonnet 委譲を上書きする。
+書く側のレビュー (`/simplify` / `/code-review` / `/review` / `/security-review`) を subagent に降ろす場合は、**モデルに現在使える最良モデルを指定する** (特定のモデル名で固定しない。1M コンテキスト版は最良とみなさない)。Sonnet には降ろさない。これは [[delegation]] の Why (判断・レビューは高コストモデル側に置く) に従う例外であり、同 rule のデフォルト sonnet 委譲を上書きする。
 
 ## 書く側 (実装中)
 

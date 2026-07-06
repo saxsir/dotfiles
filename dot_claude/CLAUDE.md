@@ -37,10 +37,11 @@
 - 個人プロジェクトの JS/TS ツールチェーンは bun をデフォルトにする (runtime / package manager / test runner)。新規プロジェクトは bun で始める。既存プロジェクトの移行は勝手に始めず提案に留める
 - `gh api graphql` はエラー時も exit 0 を返す。必ずレスポンスの `.errors[]` を確認すること (理由: チェックしないと jq が invalid JSON を受け取って連鎖クラッシュする)
 - AWS の認証情報を要するコマンド (`aws`, `terraform`, `cdk`, `boto3` 等) は `aws-vault exec <profile> -- <command>` で実行する (平文 credential の利用を避ける)。書き込み系は承認を得てから実行する (rules/role-separation.md 参照)
+- モデル選択で 1M コンテキスト版 (`[1m]`) を使わない・指定しない (品質が落ちる体感がある)。「最良モデル」は常に非 1M の最上位を指す
 
 # Prompting (Claude 5 世代)
 
-Fable 5 以降は簡潔な指示への追従が強い。rule / skill / CLAUDE.md / 委譲プロンプトを書く・育てるとき全てに適用する:
+Claude 5 世代は簡潔な指示への追従が強い。rule / skill / CLAUDE.md / 委譲プロンプトを書く・育てるとき全てに適用する:
 
 - 指示は短い原則で書く。挙動の網羅列挙や強調の連打 (IMPORTANT / YOU MUST) は旧モデル向けの過剰指定で、デフォルト挙動より品質を下げうる。追加前に「デフォルトで足りないか」を確認し、既存の指示もデフォルトの方が良ければ削る
 - 内部推論 (thinking) を応答テキストで再現・書き起こしさせる指示を書かない (reasoning_extraction 拒否をトリガーし fallback が増える)
