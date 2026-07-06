@@ -79,6 +79,9 @@ uvtools:
 # install は ~/.apm/apm.lock.yaml のコミット固定を尊重するため、update で常に最新へ追従させる
 # apm update は ~/.claude/skills/ の apm 管理外 skill を削除するため、
 # 巻き添えで消える Doist 公式 todoist-cli skill を毎回 td で復元する
+# また apm は hooks/hooks.json の command に書かれたファイル (run-hook.cmd) しか
+# deploy しないため、command 引数として呼ばれる session-start 等の実体が欠落する。
+# apm_modules 側にはフル一式があるので明示的に同期する
 apm:
 	@if command -v apm >/dev/null 2>&1; then \
 	  echo "[apm] already installed: $$(apm --version 2>&1 | head -1)"; \
@@ -89,6 +92,14 @@ apm:
 	fi
 	apm install -g --runtime claude
 	apm update -g --yes
+	@for hd in "$(PWD)"/apm_modules/*/*/hooks; do \
+	  [ -d "$$hd" ] || continue; \
+	  plugin=$$(basename $$(dirname "$$hd")); \
+	  dst="$$HOME/.claude/hooks/$$plugin/hooks"; \
+	  mkdir -p "$$dst"; \
+	  cp -pR "$$hd"/. "$$dst"/; \
+	  echo "[apm] synced hooks: $$hd -> $$dst"; \
+	done
 	@if command -v td >/dev/null 2>&1; then \
 	  td skill install claude-code --force; \
 	else \
