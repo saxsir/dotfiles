@@ -56,7 +56,6 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 2. **Development Tools Integration**
    - Git: Extensive aliases in `gitconfig`, git-secrets for AWS credential protection
    - Package managers: Homebrew (macOS), mise (version manager for multiple languages)
-   - Terminal multiplexer: tmux with vim-like keybindings
 
 3. **Editor Configurations**
    - NeoVim: Basic configuration with mini.deps support
@@ -197,7 +196,6 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 
 - **Slow startup**: If shell startup is slow, check lazy-loading configuration in `dot_zshrc`
 - **Homebrew on Apple Silicon**: Some formulas may require Rosetta 2 or ARM-specific installation
-- **tmux key conflicts**: Custom vim-like bindings may conflict with some terminal applications
 
 ## Agent skills
 
