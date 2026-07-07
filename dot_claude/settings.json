@@ -190,6 +190,9 @@
     "command": "bash ~/.claude/statusline.sh"
   },
   "enabledPlugins": {},
+  "skillOverrides": {
+    "claude-api": "off"
+  },
   "extraKnownMarketplaces": {
     "carta-agent-skills": {
       "source": {
