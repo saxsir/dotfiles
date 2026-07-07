@@ -172,7 +172,7 @@ ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
 4. Test changes using commands in "Testing and Validation" section
 5. Commit with descriptive message
 6. Push changes: `git push -u origin <branch-name>`
-7. Create pull request for review (if working in team)
+7. Create a draft pull request for review: `gh pr create --draft` (個人リポジトリでも PR 運用。merge はユーザーが行う)
 8. **IMPORTANT**: After creating a PR (including draft), always open it in browser with `gh pr view --web`
 9. After PR is merged and branch is no longer needed, clean up: `git switch master && git pull origin master && git branch -d <branch-name>`
 
