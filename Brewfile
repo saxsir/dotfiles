@@ -34,6 +34,9 @@ brew "coreutils"
 # エディタ ($EDITOR / alias vim='nvim')
 brew "neovim"
 
+# nvim mini.pick の grep_live (<Leader>fg) が優先ソースとして使う
+brew "ripgrep"
+
 # ファイルマネージャ
 brew "yazi"
 
@@ -43,6 +46,12 @@ brew "jq"
 brew "git-secrets"
 brew "lima"
 brew "aws-vault"
+
+# aws-vault が wrap する本体 CLI (dot_zsh/tool.rc.zsh の avt alias で使用)
+brew "awscli"
+
+# dot_gitconfig.tmpl が [filter "lfs"] required = true で LFS を要求している
+brew "git-lfs"
 
 # crit skill (apm.yml の tomasz-tomczyk/crit) が呼び出す CLI 本体
 brew "crit"
