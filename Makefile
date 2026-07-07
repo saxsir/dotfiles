@@ -79,9 +79,10 @@ uvtools:
 # install は ~/.apm/apm.lock.yaml のコミット固定を尊重するため、update で常に最新へ追従させる
 # apm update は ~/.claude/skills/ の apm 管理外 skill を削除するため、
 # 巻き添えで消える Doist 公式 todoist-cli skill を毎回 td で復元する
-# また apm は hooks/hooks.json の command に書かれたファイル (run-hook.cmd) しか
-# deploy しないため、command 引数として呼ばれる session-start 等の実体が欠落する。
-# apm_modules 側にはフル一式があるので明示的に同期する
+# また apm は plugin の hook 登録 (hooks.json 経由の command 参照) だけを settings.json に
+# 転記し、plugin ファイル本体は deploy しない。hook スクリプト (session-start 等) は実体
+# が欠落するし、それらが plugin_root/skills など兄弟ディレクトリを参照する場合もあるので、
+# plugin ディレクトリ全体を ~/.claude/hooks/<plugin>/ に同期する
 apm:
 	@if command -v apm >/dev/null 2>&1; then \
 	  echo "[apm] already installed: $$(apm --version 2>&1 | head -1)"; \
@@ -92,13 +93,13 @@ apm:
 	fi
 	apm install -g --runtime claude
 	apm update -g --yes
-	@for hd in "$(PWD)"/apm_modules/*/*/hooks; do \
-	  [ -d "$$hd" ] || continue; \
-	  plugin=$$(basename $$(dirname "$$hd")); \
-	  dst="$$HOME/.claude/hooks/$$plugin/hooks"; \
+	@for plugdir in "$$HOME"/.apm/apm_modules/*/*; do \
+	  [ -d "$$plugdir/hooks" ] || continue; \
+	  plugin=$$(basename "$$plugdir"); \
+	  dst="$$HOME/.claude/hooks/$$plugin"; \
 	  mkdir -p "$$dst"; \
-	  cp -pR "$$hd"/. "$$dst"/; \
-	  echo "[apm] synced hooks: $$hd -> $$dst"; \
+	  cp -pR "$$plugdir"/. "$$dst"/; \
+	  echo "[apm] synced plugin dir: $$plugdir -> $$dst"; \
 	done
 	@if command -v td >/dev/null 2>&1; then \
 	  td skill install claude-code --force; \
