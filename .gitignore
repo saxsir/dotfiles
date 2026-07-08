@@ -17,3 +17,6 @@ oh-my-zsh/
 
 # APM dependencies
 apm_modules/
+
+# git worktree fallback (using-git-worktrees skill)
+.worktrees/
