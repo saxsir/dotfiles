@@ -56,5 +56,10 @@ brew "git-lfs"
 # crit skill (apm.yml の tomasz-tomczyk/crit) が呼び出す CLI 本体
 brew "crit"
 
-# ターミナルフォント (~/.config/ghostty/config で Monaspace Neon を指定)
-cask "font-monaspace"
+# ターミナルフォント (~/.config/ghostty/config で Moralerspace Neon JPDOC を指定)
+# Moralerspace = Monaspace + IBM Plex Sans JP の等幅派生
+# -jpdoc: 「」、。等の Unicode 全角記号を JP 側 (IBM Plex Sans JP) で描画
+cask "font-moralerspace-jpdoc"
+# Moralerspace の JPDOC が拾わない ①②③ (Enclosed Alphanumerics) を全角描画するため。
+# Moralerspace 本体と同じ IBM Plex Sans JP なので字形が揃う (config の font-codepoint-map で使用)
+cask "font-ibm-plex-sans-jp"
