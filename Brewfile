@@ -53,6 +53,9 @@ brew "awscli"
 # dot_gitconfig.tmpl が [filter "lfs"] required = true で LFS を要求している
 brew "git-lfs"
 
+# git worktree 運用の補助 (git wt <branch> で作成/切り替え)
+brew "k1LoW/tap/git-wt"
+
 # crit skill (apm.yml の tomasz-tomczyk/crit) が呼び出す CLI 本体
 brew "crit"
 
