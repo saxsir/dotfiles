@@ -47,6 +47,15 @@ defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
 defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
 
 # ============================================================
+# cmux
+# ============================================================
+# cmux.json スキーマ外の beta フラグはここで固定する (schema 内の設定は
+# dot_config/cmux/private_cmux.json 側で管理)。domain は com.cmuxterm.app。
+defaults write com.cmuxterm.app "customSidebars.beta.enabled" -bool true
+defaults write com.cmuxterm.app "rightSidebar.beta.dock.enabled" -bool true
+defaults write com.cmuxterm.app "rightSidebar.beta.feed.enabled" -bool true
+
+# ============================================================
 # 反映 (該当プロセスを再起動)
 # ============================================================
 for app in "Dock" "Finder" "SystemUIServer"; do
