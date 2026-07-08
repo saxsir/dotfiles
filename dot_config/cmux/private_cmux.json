@@ -8,6 +8,34 @@
   // cmux creates this template on launch when ~/.config/cmux/cmux.json is missing.
   // Legacy settings.json files are read only as fallback for keys not present here.
 
+  // ---- file-managed: 意図して default から変えた値のみ書く (下の全キーコメントは参照用テンプレ) ----
+
+  "app": {
+    "openMarkdownInCmuxViewer": true,
+    "reorderOnNotification": false,  // サイドバーの並びは自分で管理する (通知で動かさない)
+    "newWorkspacePlacement": "end"   // 新規 workspace は末尾へ。既存の位置記憶を崩さない
+  },
+
+  "notifications": {
+    "sound": "none"  // 複数 agent 並行だと音は過剰。視覚シグナル (バッジ/リング) は default 維持
+  },
+
+  "sidebar": {
+    "hideAllDetails": true,
+    "showPullRequests": false
+  },
+
+  "browser": {
+    "openTerminalLinksInCmuxBrowser": false,       // リンクは外部ブラウザで開く
+    "hostsToOpenInEmbeddedBrowser": ["localhost"]  // localhost だけ埋め込みブラウザに残す
+  },
+
+  "shortcuts": {
+    "bindings": {
+      "findInDirectory": "cmd+shift+s"  // 既定 cmd+shift+f は Raycast のウィンドウ操作と衝突
+    }
+  },
+
   //   "app" : {
   //     "appearance" : "system",
   //     "appIcon" : "automatic",
