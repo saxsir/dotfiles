@@ -32,7 +32,7 @@
 
   "shortcuts": {
     "bindings": {
-      "findInDirectory": "cmd+shift+s"  // 既定 cmd+shift+f は Raycast のウィンドウ操作と衝突
+      "globalSearch": null  // 既定 cmd+opt+f はシステム全体ホットキーで Raycast のウィンドウ操作と衝突。未使用機能なので未割り当てに
     }
   },
 
