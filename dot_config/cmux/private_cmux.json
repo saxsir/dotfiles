@@ -36,6 +36,30 @@
     }
   },
 
+  // Catppuccin Mocha 由来のパレット。参照は herdr (https://herdr.dev, https://github.com/ogulcancelik/herdr)
+  // src/app/state.rs::Palette::catppuccin() から採取。cmux 既定は彩度が高すぎるので、
+  // Mocha 系の 16 色 (Brown / Olive は Mocha に無いので aesthetic を合わせて自作) に置き換える
+  "workspaceColors": {
+    "colors": {
+      "Amber":    "#F9E2AF",  // yellow
+      "Aqua":     "#89DCEB",  // sky
+      "Blue":     "#89B4FA",  // blue (accent)
+      "Brown":    "#B08968",  // Mocha に無いので dusty mocha 系を追加
+      "Charcoal": "#7F849C",  // overlay1
+      "Crimson":  "#EBA0AC",  // maroon
+      "Green":    "#A6E3A1",  // green
+      "Indigo":   "#B4BEFE",  // lavender
+      "Magenta":  "#F5C2E7",  // pink
+      "Navy":     "#74C7EC",  // sapphire
+      "Olive":    "#C6D07F",  // Mocha に無いので muted sage-olive を追加
+      "Orange":   "#FAB387",  // peach
+      "Purple":   "#CBA6F7",  // mauve
+      "Red":      "#F38BA8",  // red
+      "Rose":     "#F2CDCD",  // flamingo
+      "Teal":     "#94E2D5"   // teal
+    }
+  },
+
   //   "app" : {
   //     "appearance" : "system",
   //     "appIcon" : "automatic",
