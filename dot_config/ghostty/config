@@ -2,8 +2,14 @@
 # https://ghostty.org/docs/config
 
 # Font
-font-family = "Monaspace Neon"
+# Moralerspace Neon JPDOC = Moralerspace の JPDoc 派生。「」、。等の全角記号を JP 側 (IBM Plex Sans JP) で描画
+font-family = "Moralerspace Neon JPDOC"
 font-size = 13
+
+# Moralerspace の JPDOC は ①②③ (Enclosed Alphanumerics) を Monaspace 側の半角グリフで描く。
+# 全角で読みやすくするため、丸数字ブロックだけ IBM Plex Sans JP に強制マッピング
+# (Moralerspace の JP 側と同じ書体なので字形が揃う)
+font-codepoint-map = U+2460-U+24FF=IBM Plex Sans JP
 
 # Scrollback
 scrollback-limit = 50000
