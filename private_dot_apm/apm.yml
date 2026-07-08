@@ -29,6 +29,10 @@ dependencies:
   - saxsir/skills
   - obra/superpowers
   - tomasz-tomczyk/crit/integrations/claude-code
+  - manaflow-ai/cmux-skills/skills/cmux-cli
+  - manaflow-ai/cmux-skills/skills/cmux-workspace
+  - manaflow-ai/cmux-skills/skills/cmux-config
+  - manaflow-ai/cmux-skills/skills/cmux-sidebar-builder
   mcp: []
 includes: auto
 scripts: {}
