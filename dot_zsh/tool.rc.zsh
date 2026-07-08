@@ -133,3 +133,83 @@ function y() {
   [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
   command rm -f -- "$tmp"
 }
+
+# ============================================================
+# cmux: workspace の repo 単位自動グループ化
+# ============================================================
+# cmux 内の shell で ghq 管理 repo (~/src/<host>/<owner>/<repo>) に cd したら、
+# 現在の workspace を「<owner頭文字>/<repo>」名の sidebar グループへ移動する。
+# グループが無ければ repo root を anchor cwd として自動作成する。
+# worktree (repo/.wt/<branch>) も前方一致で本体 repo のグループに入る。
+function _cmux_auto_group() {
+  [[ -n "${CMUX_WORKSPACE_ID}" ]] || return 0
+  # socket が無い (cmux 停止中など) 間はキャッシュせず戻り、次の cd で再試行する
+  [[ -S "${CMUX_SOCKET_PATH:-}" ]] || return 0
+  command -v cmux > /dev/null || return 0
+  command -v jq > /dev/null || return 0
+
+  # ghq root は初回の呼び出しでのみ解決する (shell 起動時の subprocess 起動を避ける)
+  if [[ -z "${_cmux_auto_group_src_root:-}" ]]; then
+    _cmux_auto_group_src_root="$(ghq root 2> /dev/null)"
+    _cmux_auto_group_src_root="${_cmux_auto_group_src_root:-${HOME}/src}"
+  fi
+  local src_root="${_cmux_auto_group_src_root}"
+
+  # symlink 経由の cd も実パスで判定する
+  local pwd_real="${PWD:A}"
+  local rel="${pwd_real#"${src_root}"/}"
+  [[ "${rel}" != "${pwd_real}" ]] || return 0
+  local -a parts=("${(@s:/:)rel}")
+  # gist.github.com 等 owner 階層が無いパスは対象外
+  (( ${#parts} >= 3 )) || return 0
+  local host="${parts[1]}" owner="${parts[2]}" repo="${parts[3]}"
+  local repo_root="${src_root}/${host}/${owner}/${repo}"
+  # ghq root 配下でも repo でないディレクトリは対象外
+  [[ -e "${repo_root}/.git" ]] || return 0
+  local group_name="${owner[1,1]}/${repo}"
+
+  # 同一 repo 内の cd では何もしない
+  [[ "${repo_root}" != "${_cmux_auto_group_last_root:-}" ]] || return 0
+  _cmux_auto_group_last_root="${repo_root}"
+
+  # cd をブロックしないようバックグラウンドで cmux API を叩く。
+  # 複数 shell の同時起動でグループが重複作成されないよう flock で直列化し、
+  # ロック取得後に状態を読み直してから add / create を決める
+  (
+    zmodload zsh/system 2> /dev/null || return 0
+    local lockfile="${TMPDIR:-/tmp}/cmux-auto-group.lock"
+    : >> "${lockfile}"
+    zsystem flock -t 5 "${lockfile}" 2> /dev/null || return 0
+
+    local groups_json decision
+    groups_json="$(command cmux workspace group list --json --id-format both 2> /dev/null)" || return 0
+    decision="$(jq -r --arg ws "${CMUX_WORKSPACE_ID}" --arg name "${group_name}" '
+      if any(.groups[]?; .anchor_workspace_id == $ws) then "anchor"
+      else (first(.groups[]? | select(.name == $name)) // null) as $g
+        | if $g == null then "missing"
+          elif ($g.member_workspace_ids | index($ws)) != null then "member"
+          else $g.id
+          end
+      end' <<< "${groups_json}" 2> /dev/null)" || return 0
+
+    case "${decision}" in
+      # anchor: 自分がどこかのグループヘッダーのときは触らない (移動はグループ解散を招く)
+      anchor|member|"") ;;
+      missing)
+        command cmux workspace group create --name "${group_name}" --cwd "${repo_root}" \
+          --from "${CMUX_WORKSPACE_ID}" > /dev/null 2>&1
+        ;;
+      *)
+        command cmux workspace group add --group "${decision}" --workspace "${CMUX_WORKSPACE_ID}" > /dev/null 2>&1
+        ;;
+    esac
+  ) &!
+}
+
+autoload -Uz add-zsh-hook
+add-zsh-hook chpwd _cmux_auto_group
+# repo cwd で直接開かれた新規 workspace も起動時に整理する。
+# interactive 限定: `zsh -c 'source ~/.zshrc'` 等の検証コマンドが sidebar を書き換えないように
+if [[ -o interactive ]]; then
+  _cmux_auto_group
+fi
