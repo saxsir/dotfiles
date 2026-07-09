@@ -18,8 +18,8 @@ dependencies:
   - mattpocock/skills/skills/engineering/resolving-merge-conflicts
   - mattpocock/skills/skills/engineering/setup-matt-pocock-skills
   - mattpocock/skills/skills/engineering/tdd
-  - mattpocock/skills/skills/engineering/to-issues
-  - mattpocock/skills/skills/engineering/to-prd
+  - mattpocock/skills/skills/engineering/to-spec
+  - mattpocock/skills/skills/engineering/to-tickets
   - mattpocock/skills/skills/engineering/triage
   - mattpocock/skills/skills/productivity/grill-me
   - mattpocock/skills/skills/productivity/grilling

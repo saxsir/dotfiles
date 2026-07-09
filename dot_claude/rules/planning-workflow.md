@@ -8,9 +8,9 @@ skill のフェーズ別割り当て。明示指示があれば優先。重複�
 
 ## 2. 計画 / 作業場
 
-- PRD 化 (ready-for-agent): `to-prd`
-- 作業分解: `to-issues` →(`triage`)
-- 今すぐ自分で回す計画 (`to-prd`/`to-issues` の委譲前提と使い分け): `superpowers:writing-plans`
+- Spec 化 (ready-for-agent): `to-spec`
+- 作業分解: `to-tickets` →(`triage`)
+- 今すぐ自分で回す計画 (`to-spec`/`to-tickets` の委譲前提と使い分け): `superpowers:writing-plans`
 
 ## 3. 実行
 
