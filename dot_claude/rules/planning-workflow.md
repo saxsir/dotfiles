@@ -8,6 +8,7 @@ skill のフェーズ別割り当て。明示指示があれば優先。重複�
 
 ## 2. 計画 / 作業場
 
+- 1 セッションに収まらない大規模計画: `wayfinder` (issue tracker 上に map を張って fog を晴らす、自動発火なし)
 - Spec 化 (ready-for-agent): `to-spec`
 - 作業分解: `to-tickets` →(`triage`)
 - 今すぐ自分で回す計画 (`to-spec`/`to-tickets` の委譲前提と使い分け): `superpowers:writing-plans`
