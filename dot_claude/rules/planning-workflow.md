@@ -11,16 +11,13 @@ skill のフェーズ別割り当て。明示指示があれば優先。重複�
 - 1 セッションに収まらない大規模計画: `wayfinder` (issue tracker 上に map を張って fog を晴らす、自動発火なし)
 - Spec 化 (ready-for-agent): `to-spec`
 - 作業分解: `to-tickets` →(`triage`)
-- 今すぐ自分で回す計画 (`to-spec`/`to-tickets` の委譲前提と使い分け): `superpowers:writing-plans`
+- 今すぐ自分で回す計画 (`to-spec`/`to-tickets` の委譲前提と使い分け): `writing-plans`
 
 ## 3. 実行
 
 - ソロ実装: `implement` (自動発火なし)
-- 委譲・並列: `superpowers:subagent-driven-development` / `superpowers:dispatching-parallel-agents` ([[delegation]] の実行手段)
 - セッション越境: `handoff` (context 逼迫時、自動発火なし)
 
 ## 4. 終了 / 改善
 
-- 書く側レビュー: [[review-cycle]] の 2 トラック
-- 他人 PR: [[review-cycle]] の「他人 PR」節
 - skill 育成: `writing-great-skills` (執筆規範、自動発火なし)

@@ -1,6 +1,5 @@
 # Conversation Guidelines
 
-- ユーザーには日本語で応答する。思考は英語可。
 - 不明瞭な指示は質問して明確にする。
 
 # Core Principles
@@ -37,8 +36,3 @@
 - 個人プロジェクトの JS/TS ツールチェーンは bun をデフォルトにする (runtime / package manager / test runner)。新規プロジェクトは bun で始める。既存プロジェクトの移行は勝手に始めず提案に留める
 - `gh api graphql` はエラー時も exit 0 を返す。必ずレスポンスの `.errors[]` を確認すること (理由: チェックしないと jq が invalid JSON を受け取って連鎖クラッシュする)
 - AWS の認証情報を要するコマンド (`aws`, `terraform`, `cdk`, `boto3` 等) は `aws-vault exec <profile> -- <command>` で実行する (平文 credential の利用を避ける)。書き込み系は承認を得てから実行する (rules/role-separation.md 参照)
-- モデル選択で 1M コンテキスト版 (`[1m]`) を使わない・指定しない (品質が落ちる体感がある)。「最良モデル」は常に非 1M の最上位を指す
-
-# Maintenance
-
-- `/audit-context` でグローバル設定 (CLAUDE.md / rules / ローカル MCP) のサイズ棚卸しができる。たまに思い出して実行する。
