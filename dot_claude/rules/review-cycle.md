@@ -1,10 +1,10 @@
 # レビューサイクル
 
-書く側のレビューは **2 トラック**。実装中は機械的に回し、PR 提出前にゲートを 1 回置く。**コミット境界では回さない** ([[commit-discipline]] の可否判断だけで通す、速度優先)。
+書く側のレビューは **2 トラック**。実装中は構造改善を機械的に回し、PR 提出前にバグ検出のゲートを 1 回置く。**コミット境界では回さない** ([[commit-discipline]] の可否判断だけで通す、速度優先)。
 
 ## モデル指定の原則
 
-書く側のレビュー (`/simplify` / `/code-review` / `/review` / `/security-review`) を subagent に降ろす場合は、**モデルに現在使える最良モデルを指定する** (特定のモデル名で固定しない)。Sonnet には降ろさない。これは [[delegation]] の Why (判断・レビューは高コストモデル側に置く) に従う例外であり、同 rule のデフォルト sonnet 委譲を上書きする。
+書く側のレビュー (`/simplify` / `/review` / `/security-review`) を subagent に降ろす場合は、**モデルに現在使える最良モデルを指定する** (特定のモデル名で固定しない)。Sonnet には降ろさない。これは [[delegation]] の Why (判断・レビューは高コストモデル側に置く) に従う例外であり、同 rule のデフォルト sonnet 委譲を上書きする。
 
 ## 書く側 (実装中)
 
@@ -20,17 +20,17 @@
 
 **気づきが遅れた場合 (Case 2)**: 実装が進んでから「先に simplify しておけばよかった」と気づいた場合は、その時点で `/simplify` を回し、**実装コミットの後ろ** に構造変更コミットを積む。tidy-first 順序は崩れるが、commit message で「構造変更」と明示すれば判別性は維持される。順序逆転は「気づきが遅れた」メタ情報として残す ([[role-separation]] の retrospective-codify 対象)。
 
-### `/code-review xhigh --fix` (バグ修正)
-
-コミット前に `/code-review xhigh --fix` を回す。修正の自動適用込み。
-
-**回す条件**: working tree が clean。`/simplify` を先に回した場合は構造変更コミットを積んだ後で。
-
 ## 書く側 (PR 提出前)
 
-draft PR の **前** に `/review` → `/crit` の順で回す。`/review` がブランチ唯一の品質ゲート。**修正の自動適用はしない** (採否はユーザー、[[role-separation]])。`/crit` はユーザーが diff を対話レビューする場で、完了まで `gh pr create --draft` に進まない (plan のレビューは ExitPlanMode hook の `crit plan-hook` が自動発火するため、ここで扱うのは diff のみ)。
+draft PR の **前** に `/review` → `/crit` の順で回す。
+- `/review` がブランチ唯一の品質ゲート。**修正の自動適用はしない** (採否はユーザー、[[role-separation]])。
+- `/crit` はユーザーが diff を対話レビューする場。完了まで `gh pr create --draft` に進まない。
+- plan のレビューは ExitPlanMode hook の `crit plan-hook` が自動発火するため、ここで扱うのは diff のみ。
 
-`/review` の findings は terminal にしか出ないため、`crit comment --author 'Claude Code' <path>:<line>` でインラインコメントとして crit に流し込んでから `/crit` を開き、ユーザーの指摘と同じ画面で採否を判断する。
+`/review` の findings は terminal にしか出ないため、次の順で処理する。
+1. `crit comment` で各 finding を対象の `<path>:<line>` にインラインコメントとして流し込む。
+2. `/crit` を開く。
+3. ユーザーの指摘と同じ画面で採否を判断する。
 
 diff が auth / 入力検証 / secret / 外部 API / SQL / template / SSRF / file upload などに触れたら、`/review` と別に `/security-review` を回す (起動はユーザー承認後)。
 
