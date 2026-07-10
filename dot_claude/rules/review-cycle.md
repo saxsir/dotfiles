@@ -30,6 +30,8 @@
 
 draft PR の **前** に `/review` → `/crit` の順で回す。`/review` がブランチ唯一の品質ゲート。**修正の自動適用はしない** (採否はユーザー、[[role-separation]])。`/crit` はユーザーが diff を対話レビューする場で、完了まで `gh pr create --draft` に進まない (plan のレビューは ExitPlanMode hook の `crit plan-hook` が自動発火するため、ここで扱うのは diff のみ)。
 
+`/review` の findings は terminal にしか出ないため、`crit comment --author 'Claude Code' <path>:<line>` でインラインコメントとして crit に流し込んでから `/crit` を開き、ユーザーの指摘と同じ画面で採否を判断する。
+
 diff が auth / 入力検証 / secret / 外部 API / SQL / template / SSRF / file upload などに触れたら、`/review` と別に `/security-review` を回す (起動はユーザー承認後)。
 
 ## 他人 PR
