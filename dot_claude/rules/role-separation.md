@@ -7,9 +7,11 @@
 ユーザーの明示承認なしに実行しない:
 
 - 本番反映、外部サービス送信
+- `gh pr ready` (permission prompt で承認を得る)
+- `rm -rf` 等の不可逆な削除 (deny が捕捉しない形態も含む)
 - 外部認証 CLI (`aws`, `terraform`, `kaggle` 等) の書き込み系コマンド (create / update / delete / submit / apply 等)。read-only (describe / list / get / logs 等) は承認不要で実行してよい
 
-git / gh の破壊系 (`gh pr merge`, `gh pr ready`, `git push --force`, `git reset --hard`, `rm -rf` 等) は settings.json の deny/ask と hooks で機構的にブロック済み。そもそも試みない・提案しない。
+`gh pr merge`・共有 ref への `git push --force` / `git reset --hard` は settings.json の deny と hooks でもブロックされるが、機構任せにせず、そもそも試みない・提案しない。
 
 承認不要 (通常運用の範囲): 通常の `git push`、`gh pr create --draft`。
 
