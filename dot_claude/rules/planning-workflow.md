@@ -19,7 +19,9 @@ skill のフェーズ別割り当て。明示指示があれば優先。重複�
 - 実装者の分岐は「完了条件を宣言できる粒度まで分解済みか」の 1 軸のみ ([[delegation]] と同じ基準):
   - 分解済み (チケット / 計画あり) → `subagent-driven-development`
   - 未分解・小さい → ソロ実装: `implement` (自動発火なし)
-- 選択肢に含めないもの: `executing-plans` は subagent 不可環境向けフォールバック。`dispatching-parallel-agents` は計画実行用ではなく、独立した複数問題 (調査・バグ修正) の並列用
+- 選択肢に含めないもの:
+  - `executing-plans` は subagent 不可環境向けフォールバック
+  - `dispatching-parallel-agents` は計画実行用ではなく、独立した複数問題 (調査・バグ修正) の並列用
 - セッション越境: `handoff` (context 逼迫時、自動発火なし)
 
 ## 4. 終了 / 改善
