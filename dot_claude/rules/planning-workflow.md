@@ -15,7 +15,7 @@ skill のフェーズ別割り当て。明示指示があれば優先。重複�
 
 ## 3. 実行
 
-- 隔離: `using-git-worktrees` は常時前提 (分岐条件ではない。共有 checkout 対策も兼ねる)
+- 隔離: `using-git-worktrees` は常時前提 (分岐条件ではない。同一 checkout でブランチ切替時に作業状態が干渉する問題の対策も兼ねる)
 - 実装者の分岐は「完了条件を宣言できる粒度まで分解済みか」の 1 軸のみ ([[delegation]] と同じ基準):
   - 分解済み (チケット / 計画あり) → `subagent-driven-development`
   - 未分解・小さい → ソロ実装: `implement` (自動発火なし)

@@ -28,7 +28,7 @@ draft PR の **前** に `/review` → `/crit` の順で回す。
 - plan のレビューは ExitPlanMode hook の `crit plan-hook` が自動発火するため、ここで扱うのは diff のみ。
 
 `/review` の findings は terminal にしか出ないため、次の順で処理する。
-1. `crit comment --author 'Claude Code' <path>:<line>` でインラインコメントとして crit に流し込む。
+1. `crit comment` で各 finding を対象の `<path>:<line>` にインラインコメントとして流し込む。
 2. `/crit` を開く。
 3. ユーザーの指摘と同じ画面で採否を判断する。
 
