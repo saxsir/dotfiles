@@ -16,11 +16,8 @@ skill のフェーズ別割り当て。明示指示があれば優先。重複�
 ## 3. 実行
 
 - ソロ実装: `implement` (自動発火なし)
-- 委譲・並列: `subagent-driven-development` / `dispatching-parallel-agents` ([[delegation]] の実行手段)
 - セッション越境: `handoff` (context 逼迫時、自動発火なし)
 
 ## 4. 終了 / 改善
 
-- 書く側レビュー: [[review-cycle]] の 2 トラック
-- 他人 PR: [[review-cycle]] の「他人 PR」節
 - skill 育成: `writing-great-skills` (執筆規範、自動発火なし)
