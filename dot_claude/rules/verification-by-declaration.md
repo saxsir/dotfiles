@@ -4,4 +4,4 @@
 
 - **着手前**: 観測可能な完了条件を宣言する (通すべきテスト名・実行コマンド・確認する出力・閾値)。曖昧な宣言は不可、できる粒度まで分解する。
 
-完了主張前の検証手順は `superpowers:verification-before-completion` skill に一任する。
+完了主張前の検証手順は `verification-before-completion` skill に一任する。
