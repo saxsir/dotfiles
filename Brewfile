@@ -70,8 +70,12 @@ cask "font-ibm-plex-sans-jp"
 # Claude Code LSP plugin (settings.json の enabledPlugins) から呼ばれる言語サーバ本体。
 # plugin 自体は Claude Code 内蔵 LSP tool のスイッチで、実際の解析はここの binary が担う。
 # 参考: https://code.claude.com/docs/en/discover-plugins#code-intelligence
+# plugin → formula 対応:
+#   lua-lsp        → lua-language-server
+#   pyright-lsp    → pyright
+#   typescript-lsp → typescript-language-server
 # swift-lsp が使う sourcekit-lsp は Xcode に同梱されるため Brewfile では管理しない。
 # php-lsp が使う intelephense は brew formula が無いため Makefile deps で npm global に入れる。
-brew "lua-language-server"       # lua-lsp
-brew "pyright"                   # pyright-lsp
-brew "typescript-language-server" # typescript-lsp
+brew "lua-language-server"
+brew "pyright"
+brew "typescript-language-server"
