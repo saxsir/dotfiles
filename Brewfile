@@ -66,3 +66,12 @@ cask "font-moralerspace-jpdoc"
 # Moralerspace の JPDOC が拾わない ①②③ (Enclosed Alphanumerics) を全角描画するため。
 # Moralerspace 本体と同じ IBM Plex Sans JP なので字形が揃う (config の font-codepoint-map で使用)
 cask "font-ibm-plex-sans-jp"
+
+# Claude Code LSP plugin (settings.json の enabledPlugins) から呼ばれる言語サーバ本体。
+# plugin 自体は Claude Code 内蔵 LSP tool のスイッチで、実際の解析はここの binary が担う。
+# 参考: https://code.claude.com/docs/en/discover-plugins#code-intelligence
+# swift-lsp が使う sourcekit-lsp は Xcode に同梱されるため Brewfile では管理しない。
+# php-lsp が使う intelephense は brew formula が無いため Makefile deps で npm global に入れる。
+brew "lua-language-server"       # lua-lsp
+brew "pyright"                   # pyright-lsp
+brew "typescript-language-server" # typescript-lsp

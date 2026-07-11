@@ -11,6 +11,8 @@ deps:
 	@if [ -f package.json ]; then \
 	  npm install --silent; \
 	fi
+	# php-lsp (claude-plugins-official) が使う intelephense は brew formula が無いため npm global で管理
+	npm install -g intelephense
 
 # pre-commit hook を .git/hooks にインストール (secretlint 等を有効化)
 # core.hooksPath が孤児パス (実体なし) を指している場合は自動で unset する。
