@@ -7,4 +7,4 @@
 - **Code is How**: 具体実装
 - **Test is What**: 仕様・振る舞い
 - **Commit log is Why**: 変更の背景・目的
-- **Comment is Why-not**: なぜ他の選択肢でなくこの実装か
+- **Comment is Why-not**: なぜ他の選択肢でなくこの実装か。コードから読めない制約 (Why) も例外としてコメント可
