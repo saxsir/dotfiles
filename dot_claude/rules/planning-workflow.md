@@ -11,7 +11,7 @@ skill のフェーズ別割り当て。明示指示があれば優先。重複�
 - 1 セッションに収まらない大規模計画: `wayfinder` (issue tracker 上に map を張って fog を晴らす、自動発火なし)
 - Spec 化 (ready-for-agent): `to-spec`
 - 作業分解: `to-tickets` →(`triage`)
-- 今すぐ自分で回す計画 (`to-spec`/`to-tickets` の委譲前提と使い分け): `writing-plans`
+- 今すぐ自分で回す計画 (`to-spec`/`to-tickets` の委譲前提と使い分け): `writing-plans`。ただし `subagent-driven-development` の入力 plan を作る用途専用 (SDD の task-brief / Global Constraints 照合が writing-plans の形式を前提とするため)。SDD で実行しないなら計画は to-tickets / `implement` 側に寄せる
 
 ## 3. 実行
 
