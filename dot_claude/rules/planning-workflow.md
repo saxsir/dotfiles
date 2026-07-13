@@ -11,7 +11,7 @@ skill のフェーズ別割り当て。明示指示があれば優先。重複�
 - 1 セッションに収まらない大規模計画: `wayfinder` (issue tracker 上に map を張って fog を晴らす、自動発火なし)
 - Spec 化 (ready-for-agent): `to-spec`
 - 作業分解: `to-tickets` →(`triage`)
-- 今すぐ自分で回す計画 (`to-spec`/`to-tickets` の委譲前提と使い分け): `writing-plans`
+- 今すぐ自分で回す計画 (`to-spec`/`to-tickets` の委譲前提と使い分け): `writing-plans`。ただし `subagent-driven-development` の入力 plan を作る用途専用 (SDD の task-brief / Global Constraints 照合が writing-plans の形式を前提とするため)。SDD で実行しないなら計画は to-tickets / `implement` 側に寄せる
 
 ## 3. 実行
 
@@ -22,6 +22,7 @@ skill のフェーズ別割り当て。明示指示があれば優先。重複�
 - 選択肢に含めないもの:
   - `executing-plans` は subagent 不可環境向けフォールバック
   - `dispatching-parallel-agents` は計画実行用ではなく、独立した複数問題 (調査・バグ修正) の並列用
+  - `brainstorming` (superpowers) は使わない。起動・合意は `grill-with-docs` / `grill-me` が担当。日付付き spec を `docs/superpowers/specs/` に積む設計が [[docs-lifecycle]] (仕様の正は 1 箇所) と衝突するため
 - セッション越境: `handoff` (context 逼迫時、自動発火なし)
 
 ## 4. 終了 / 改善
