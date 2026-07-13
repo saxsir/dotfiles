@@ -22,6 +22,7 @@ skill のフェーズ別割り当て。明示指示があれば優先。重複�
 - 選択肢に含めないもの:
   - `executing-plans` は subagent 不可環境向けフォールバック
   - `dispatching-parallel-agents` は計画実行用ではなく、独立した複数問題 (調査・バグ修正) の並列用
+  - `brainstorming` (superpowers) は使わない。起動・合意は `grill-with-docs` / `grill-me` が担当。日付付き spec を `docs/superpowers/specs/` に積む設計が [[docs-lifecycle]] (仕様の正は 1 箇所) と衝突するため
 - セッション越境: `handoff` (context 逼迫時、自動発火なし)
 
 ## 4. 終了 / 改善
