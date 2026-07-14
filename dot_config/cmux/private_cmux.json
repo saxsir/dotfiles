@@ -30,6 +30,16 @@
     "hostsToOpenInEmbeddedBrowser": ["localhost"]  // localhost だけ埋め込みブラウザに残す
   },
 
+  // Agent Chat の font 上書き。omit だと Ghostty 設定にフォールバックし、
+  // JP 派生等幅 (Moralerspace 等) が本文にも使われて丸囲み数字 (①②③) の字形が小さく描画される。
+  // 参考: feedback_browser_monospace_font (Vivaldi 事故) と同じ根本原因。
+  "agentChat": {
+    "fonts": {
+      "sansFamily": "Hiragino Kaku Gothic ProN",  // 本文。丸囲み数字の字形が本文サイズと揃う
+      "monoFamily": "Menlo"                        // 等幅。Ghostty=Moralerspace と切り離す
+    }
+  },
+
   "shortcuts": {
     "bindings": {
       "globalSearch": null  // 既定 cmd+opt+f はシステム全体ホットキーで Raycast のウィンドウ操作と衝突。未使用機能なので未割り当てに
