@@ -3,8 +3,11 @@
 
 # Font
 # Moralerspace Neon JPDOC = Moralerspace の JPDoc 派生。「」、。等の全角記号を JP 側 (IBM Plex Sans JP) で描画
-font-family = "Moralerspace Neon JPDOC"
+font-family = "Moralerspace Neon JPDOC", monospace
+font-codepoint-map = U+2460-U+2473=Hiragino Maru Gothic ProN
+grapheme-width-method = legacy
 font-size = 13
+
 
 # Scrollback
 scrollback-limit = 50000
