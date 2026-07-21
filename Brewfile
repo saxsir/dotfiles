@@ -8,7 +8,10 @@ brew "starship"
 # pre-commit (secretlint hook の実行に必要)
 brew "pre-commit"
 
-# secretlint を npx 経由で動かすための Node
+# secretlint を bunx 経由で動かすための Bun
+brew "oven-sh/bun/bun"
+
+# 他ツール (npx / mise 経由でない system node を触るもの) が使う可能性のため残す
 brew "node"
 
 # プロジェクト単位の環境変数 / シェル切り替え

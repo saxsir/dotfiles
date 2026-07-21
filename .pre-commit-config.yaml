@@ -3,6 +3,6 @@ repos:
     hooks:
       - id: secretlint
         name: secretlint
-        entry: npx secretlint
+        entry: bunx secretlint
         language: system
         types: [text]
