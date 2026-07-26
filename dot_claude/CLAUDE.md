@@ -17,12 +17,15 @@
 @rules/implementation-notes.md
 @rules/delegation.md
 
-## Specialty (task-specific)
-@rules/github-workflow.md
-@rules/github-writing.md
-@rules/review-cycle.md
-@rules/planning-workflow.md
-@rules/brain-first.md
+## Specialty (必要時に Read で読む)
+
+常駐させない。該当場面になったら対応 rule を読んでから作業する:
+
+- GitHub Issue / PR の作成・更新・レビューコメント応答: `~/.claude/rules/github-workflow.md`
+- GitHub に文章を書く (issue / PR description / コメント): `~/.claude/rules/github-writing.md`
+- 実装中〜PR 提出前のレビュー運用 (`/simplify` `/review` `/crit` `/security-review`): `~/.claude/rules/review-cycle.md`
+- 計画・設計・作業分解フェーズの skill 選定: `~/.claude/rules/planning-workflow.md`
+- ユーザーの判断基準・好み・過去の文脈が関わる話題 (brain MCP): `~/.claude/rules/brain-first.md`
 
 # Env
 
