@@ -18,7 +18,7 @@
 
 ## Specialty (必要時に Read で読む)
 
-常駐させない。該当場面になったら対応 rule を読んでから作業する:
+常駐させない。以下の場面に入ったら **着手前に必ず** 対応 rule を Read してから作業する:
 
 - GitHub Issue / PR の作成・更新・レビューコメント応答: `~/.claude/rules/github-workflow.md`
 - GitHub に文章を書く (issue / PR description / コメント): `~/.claude/rules/github-writing.md`
