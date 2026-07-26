@@ -1,6 +1,6 @@
 # 計画・設計ワークフロー
 
-skill のフェーズ別割り当て。明示指示があれば優先。重複領域は rule ([[delegation]] [[verification-by-declaration]]) を source of truth とする。以下は自動発火しない skill (`disable-model-invocation: true`) を明示するのが主目的。自動発火する skill は description に任せる。
+skill のフェーズ別割り当て。明示指示があれば優先。重複領域は rule ([[delegation]]) を source of truth とする。以下は自動発火しない skill (`disable-model-invocation: true`) を明示するのが主目的。自動発火する skill は description に任せる。
 
 ## 1. 起動 / 合意
 
