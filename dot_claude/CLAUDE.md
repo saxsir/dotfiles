@@ -7,7 +7,6 @@
 ## Core practices (always-on)
 @rules/tidy-first.md
 @rules/non-sycophancy.md
-@rules/verification-by-declaration.md
 @rules/role-separation.md
 
 ## Coding workflow
