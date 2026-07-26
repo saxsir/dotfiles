@@ -137,7 +137,10 @@
       "~/.claude"
     ]
   },
-  "model": "claude-opus-4-7",
+  "model": "claude-opus-5",
+  "skillOverrides": {
+    "claude-api": "off"
+  },
   "hooks": {
     "PreToolUse": [
       {
@@ -197,9 +200,6 @@
     "swift-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true
   },
-  "skillOverrides": {
-    "claude-api": "off"
-  },
   "extraKnownMarketplaces": {
     "carta-agent-skills": {
       "source": {
@@ -218,7 +218,7 @@
   "sandbox": {
     "enabled": false
   },
-  "effortLevel": "xhigh",
+  "effortLevel": "high",
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,
   "theme": "dark",
