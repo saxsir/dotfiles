@@ -54,8 +54,37 @@ edit:
 # ~/ で直接編集した内容を ソース側に取り込む (target → source)
 # FILE 未指定なら全 managed file を一括取り込み
 # 例: make re-add FILE=~/.zshrc / make re-add
+#
+# chezmoi re-add は仕様上 template (*.tmpl) を上書きせず、警告も出さずに no-op になる
+# ("chezmoi will not overwrite templates")。そのため FILE の source が template の
+# ときは自前で書き戻す: home path を {{ .chezmoi.homeDir }} に戻すだけなら機械的に
+# 可逆なので sed で復元する (dot_claude/settings.json.tmpl がこのケース)。
+# homeDir 以外のテンプレート変数を含む template ({{ .name }} を持つ dot_gitconfig.tmpl 等)
+# は復元できないため、source を壊さずに abort して手動編集を促す。
 re-add:
-	chezmoi re-add --source "$(PWD)" $(FILE)
+	@if [ -z "$(FILE)" ]; then \
+	  chezmoi re-add --source "$(PWD)"; \
+	else \
+	  target=$$(printf '%s' "$(FILE)" | sed "s|^~|$(HOME)|"); \
+	  src=$$(chezmoi source-path --source "$(PWD)" "$$target") || exit 1; \
+	  case "$$src" in \
+	    *.tmpl) \
+	      others=$$(grep -o '{{[^}]*}}' "$$src" | grep -v '\.chezmoi\.homeDir' || true); \
+	      if [ -n "$$others" ]; then \
+	        echo "[re-add] $$src は homeDir 以外のテンプレート変数を含むため自動取り込みできません:"; \
+	        printf '%s\n' "$$others" | sort -u | sed 's/^/  /'; \
+	        echo "  source を直接編集してください"; \
+	        exit 1; \
+	      fi; \
+	      tmp="$$(dirname "$$src")/.re-add.tmp"; \
+	      sed "s|$(HOME)|{{ .chezmoi.homeDir }}|g" "$$target" > "$$tmp" && cat "$$tmp" > "$$src" || { rm -f "$$tmp"; exit 1; }; \
+	      rm -f "$$tmp"; \
+	      echo "[re-add] template として書き戻しました: $$target -> $$src"; \
+	      chezmoi diff --source "$(PWD)" "$$target"; \
+	      ;; \
+	    *) chezmoi re-add --source "$(PWD)" "$$target";; \
+	  esac; \
+	fi
 
 # ソースと target が両方変わって衝突したときの 3-way merge
 # 例: make merge FILE=~/.zshrc
@@ -122,7 +151,7 @@ help:
 	@echo "  apply    - source → ~/ に反映 (標準の方向)"
 	@echo "  diff     - apply 前の差分確認"
 	@echo "  edit     - source 側を編集して --apply (FILE=...)"
-	@echo "  re-add   - ~/ の編集内容を source に取り込み (FILE=... 任意)"
+	@echo "  re-add   - ~/ の編集内容を source に取り込み (FILE=... 任意、template も対応)"
 	@echo "  merge    - 衝突時の 3-way merge (FILE=...)"
 	@echo "  mise     - ~/.config/mise/config.toml に従って mise install"
 	@echo "  uvtools  - uv tool で global に入れる Python CLI (kaggle 等) を install"
