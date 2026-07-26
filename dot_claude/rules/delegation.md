@@ -7,6 +7,6 @@
   - やることが明確な実装: [[verification-by-declaration]] の完了条件を宣言できる粒度まで分解できたら降ろす (実行手段は `subagent-driven-development`)。分解できないうちは委譲せず、まず計画を詰める。
   - built-in 実行系 agent (`Explore` / `general-purpose` / `claude-code-guide` 等) の呼び出しは `model: sonnet` を明示する。`model` 省略 (`inherit`) は親モデル継承となり、Opus / Fable 実行時に機械的作業まで高コストで走る (計測: 全プロジェクト集計で Explore 呼び出しの 75% が未指定だった)。
 - **委譲プロンプトの構造**: `dispatching-parallel-agents` skill に従う ([[verification-by-declaration]] の完了条件宣言を委譲時にも適用)。
-- **避ける**: 大規模・繊細・原因不明の作業を Sonnet に委譲 (品質劣化の往復が一番高くつく)、自明な単発 lookup の委譲 (overhead が成果に見合わない)、自己検証・二重チェック目的の subagent (モデル自身の検証と重複して過検証になる。ユーザー起動のレビューゲートは [[review-cycle]] が正)。
+- **避ける**: 大規模・繊細・原因不明の作業を Sonnet に委譲 (品質劣化の往復が一番高くつく)、自己検証・二重チェック目的の subagent (モデル自身の検証と重複して過検証になる。ユーザー起動のレビューゲートは [[review-cycle]] が正)。
 
 Why: 高価なモデルの context は判断・レビューに使い、量産できる実行は安価なモデルに降ろすのが費用対効果で正しい。

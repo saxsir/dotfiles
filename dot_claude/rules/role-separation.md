@@ -6,7 +6,6 @@
 
 ユーザーの明示承認なしに実行しない:
 
-- 本番反映、外部サービス送信
 - `gh pr ready` (permission prompt で承認を得る)
 - `rm -rf` 等の不可逆な削除 (deny が捕捉しない形態も含む)
 - 外部認証 CLI (`aws`, `terraform`, `kaggle` 等) の書き込み系コマンド (create / update / delete / submit / apply 等)。read-only (describe / list / get / logs 等) は承認不要で実行してよい
