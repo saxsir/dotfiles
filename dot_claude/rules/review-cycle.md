@@ -1,39 +1,25 @@
 # レビューサイクル
 
-書く側のレビューは **2 トラック**。実装中は構造改善を機械的に回し、PR 提出前にバグ検出のゲートを 1 回置く。**コミット境界では回さない** ([[commit-discipline]] の可否判断だけで通す、速度優先)。
+書く側のレビューは 2 トラック。実装中は構造改善を回し、PR 提出前にバグ検出のゲートを 1 回置く。コミット境界では回さない ([[commit-discipline]] の可否判断だけで通す、速度優先)。
 
-## モデル指定の原則
+書く側のレビュー (`/simplify` / `/review` / `/security-review`) を subagent に降ろすときは、その時点で使える最良のモデルを指定する (特定のモデル名で固定しない)。Sonnet には降ろさない。[[delegation]] のデフォルト (機械的作業は sonnet) に対する例外で、判断・レビューは高コストモデル側に置くという同 rule の Why に従った結果。
 
-書く側のレビュー (`/simplify` / `/review` / `/security-review`) を subagent に降ろす場合は、**モデルに現在使える最良モデルを指定する** (特定のモデル名で固定しない)。Sonnet には降ろさない。これは [[delegation]] の Why (判断・レビューは高コストモデル側に置く) に従う例外であり、同 rule のデフォルト sonnet 委譲を上書きする。
+## 実装中: `/simplify`
 
-## 書く側 (実装中)
+編集する箇所を開いて「触りにくい・読みにくい・無関係な責務と絡んでいる」と感じたら、その場で回すのが理想。working tree が clean なときに回すと [[tidy-first]] の構造/振る舞いの分離が自然に保たれる。
 
-### `/simplify` (構造改善)
+構造変更が feature の差分と物理的に重なる範囲なら、同じブランチで構造変更コミットを先頭に積む。共有モジュール・公開 API・ディレクトリ移動など feature の差分と重ならない範囲なら、別 PR に切り出すかをユーザーに確認する (cherry-pick で分離できる)。
 
-実装初手 (Red 直前 / 編集する箇所を開いた瞬間) で「触りにくい・読みにくい・無関係な責務と絡んでいる」と感じたら、その瞬間に `/simplify` を回す。
+気づくのが遅れて実装コミットの後ろに積むことになっても、commit message で構造変更と分かるなら実害は小さい。順序が逆転したこと自体は retrospective-codify の材料として残す。
 
-**回す条件**: working tree が clean ([[tidy-first]] の構造/振る舞いコミット分離が機械的に保たれる)。
+## PR 提出前: `/review` → `/crit`
 
-**コミット先の判断 (範囲の独立性基準)**:
-- simplify 対象が **feature の差分と物理的に重なる** ファイル中心 → 同ブランチで構造変更コミットを先頭に積む
-- 共有モジュール / 公開 API / ディレクトリ移動など **feature 差分と重ならない範囲** → 別 PR に切り出すかをユーザーに確認する (cherry-pick で分離)
+draft PR を作る前にこの順で回す。`/review` がブランチ唯一の品質ゲートで、修正の自動適用はしない (採否はユーザー、[[role-separation]])。`/crit` はユーザーが diff を対話レビューする場なので、終わるまで `gh pr create --draft` に進まない。plan のレビューは ExitPlanMode hook の `crit plan-hook` が自動発火するので、ここで扱うのは diff だけ。
 
-**気づきが遅れた場合**: 気づいた時点で `/simplify` を回し、構造変更コミットを **実装コミットの後ろ** に積む。commit message で「構造変更」と明示し、順序逆転は retrospective-codify の対象として残す。
+`/review` の findings は terminal にしか残らない。`crit comment` で各 finding を対象の `<path>:<line>` にインラインコメントとして流し込んでから `/crit` を開くと、ユーザーの指摘と同じ画面で採否を捌ける。
 
-## 書く側 (PR 提出前)
+diff が auth / 入力検証 / secret / 外部 API / SQL / template / SSRF / file upload あたりに触れていたら、`/review` とは別に `/security-review` も回したい (起動はユーザー承認後)。
 
-draft PR の **前** に `/review` → `/crit` の順で回す。
-- `/review` がブランチ唯一の品質ゲート。**修正の自動適用はしない** (採否はユーザー、[[role-separation]])。
-- `/crit` はユーザーが diff を対話レビューする場。完了まで `gh pr create --draft` に進まない。
-- plan のレビューは ExitPlanMode hook の `crit plan-hook` が自動発火するため、ここで扱うのは diff のみ。
+## 他人の PR
 
-`/review` の findings は terminal にしか出ないため、次の順で処理する。
-1. `crit comment` で各 finding を対象の `<path>:<line>` にインラインコメントとして流し込む。
-2. `/crit` を開く。
-3. ユーザーの指摘と同じ画面で採否を判断する。
-
-diff が auth / 入力検証 / secret / 外部 API / SQL / template / SSRF / file upload などに触れたら、`/review` と別に `/security-review` を回す (起動はユーザー承認後)。
-
-## 他人 PR
-
-自分にレビュー依頼 / アサインされている PR から対象を選定 → トリアージ → **投稿予定コメント一覧をユーザーに提示し承認後**、GitHub インラインコメントとして投稿 ([[github-writing]] の規約に従う)。投稿の締めはユーザー。専用 skill は退役済みで、手順はこの節が source of truth。
+自分にレビュー依頼 / アサインされている PR から対象を選び、トリアージしてから、投稿予定のコメント一覧をユーザーに提示して承認を得る。承認後に GitHub のインラインコメントとして投稿する ([[github-writing]] の規約に従う)。投稿の締めはユーザー。専用 skill は退役済みで、この節が source of truth。

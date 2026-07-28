@@ -1,30 +1,25 @@
 # 計画・設計ワークフロー
 
-skill のフェーズ別割り当て。明示指示があれば優先。重複領域は rule ([[delegation]]) を source of truth とする。以下は自動発火しない skill (`disable-model-invocation: true`) を明示するのが主目的。自動発火する skill は description に任せる。
+skill のフェーズ別の割り当て。ユーザーの明示指示があればそちらが優先。重複する領域は [[delegation]] を source of truth とする。ここに書いてあるのは主に自動発火しない skill (`disable-model-invocation: true`) で、自動発火するものは skill 側の description に任せる。
 
-## 1. 起動 / 合意
+## 起動 / 合意
 
-- 収束・前提潰し: `grill-with-docs` (CONTEXT.md / docs/adr/ 前提) / 無いときは `grill-me` (いずれも自動発火なし)
+前提を潰して収束させるのは `grill-with-docs` (CONTEXT.md / docs/adr/ があることが前提)。無ければ `grill-me`。
 
-## 2. 計画 / 作業場
+## 計画 / 作業場
 
-- 1 セッションに収まらない大規模計画: `wayfinder` (issue tracker 上に map を張って fog を晴らす、自動発火なし)
-- Spec 化 (ready-for-agent): `to-spec`
-- 作業分解: `to-tickets` →(`triage`)
-- 今すぐ自分で回す計画 (`to-spec`/`to-tickets` の委譲前提と使い分け): `writing-plans`。ただし `subagent-driven-development` の入力 plan を作る用途専用 (SDD の task-brief / Global Constraints 照合が writing-plans の形式を前提とするため)。SDD で実行しないなら計画は to-tickets / `implement` 側に寄せる
+1 セッションに収まらない規模の計画は `wayfinder` で issue tracker 上に map を張って fog を晴らす。委譲を前提に spec 化するなら `to-spec`、作業分解は `to-tickets` (必要に応じて `triage`)。
 
-## 3. 実行
+`writing-plans` は `subagent-driven-development` の入力 plan を作る用途に限る。SDD の task-brief と Global Constraints の照合が writing-plans の形式を前提にしているため。SDD で実行しないなら、計画は to-tickets か `implement` 側に寄せる。
 
-- 隔離: `using-git-worktrees` は常時前提 (分岐条件ではない。同一 checkout でブランチ切替時に作業状態が干渉する問題の対策も兼ねる)
-- 実装者の分岐は「完了条件を宣言できる粒度まで分解済みか」の 1 軸のみ ([[delegation]] と同じ基準):
-  - 分解済み (チケット / 計画あり) → `subagent-driven-development`
-  - 未分解・小さい → ソロ実装: `implement` (自動発火なし)
-- 選択肢に含めないもの:
-  - `executing-plans` は subagent 不可環境向けフォールバック
-  - `dispatching-parallel-agents` は計画実行用ではなく、独立した複数問題 (調査・バグ修正) の並列用
-  - `brainstorming` (superpowers) は使わない。起動・合意は `grill-with-docs` / `grill-me` が担当。日付付き spec を `docs/superpowers/specs/` に積む設計が [[docs-lifecycle]] (仕様の正は 1 箇所) と衝突するため
-- セッション越境: `handoff` (context 逼迫時、自動発火なし)
+## 実行
 
-## 4. 終了 / 改善
+`using-git-worktrees` による隔離は常時の前提であって分岐条件ではない。同一 checkout でブランチを切り替えると作業状態が干渉する問題の対策も兼ねている。
 
-- skill 育成: `writing-great-skills` (執筆規範、自動発火なし)
+実装者の分岐は「完了条件を宣言できる粒度まで分解済みか」の 1 軸だけで見る ([[delegation]] と同じ基準)。分解済み (チケットか計画がある) なら `subagent-driven-development`、未分解で小さいならソロで `implement`。context が逼迫してセッションを跨ぐときは `handoff`。
+
+選択肢に入れないものが 3 つある。`executing-plans` は subagent が使えない環境向けのフォールバック。`dispatching-parallel-agents` は計画実行用ではなく、独立した複数の問題 (調査・バグ修正) を並列で回すためのもの。`brainstorming` (superpowers) は使わない — 起動・合意は grill 系が担当しており、日付付き spec を積む設計が [[docs-lifecycle]] (最新のものだけを残す) と衝突するため。
+
+## 終了 / 改善
+
+skill 自体を育てるときの執筆規範は `writing-great-skills`。
