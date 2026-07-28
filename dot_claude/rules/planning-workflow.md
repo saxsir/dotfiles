@@ -18,7 +18,7 @@ skill のフェーズ別の割り当て。ユーザーの明示指示があれ�
 
 実装者の分岐は「完了条件を宣言できる粒度まで分解済みか」の 1 軸だけで見る ([[delegation]] と同じ基準)。分解済み (チケットか計画がある) なら `subagent-driven-development`、未分解で小さいならソロで `implement`。context が逼迫してセッションを跨ぐときは `handoff`。
 
-選択肢に入れないものが 3 つある。`executing-plans` は subagent が使えない環境向けのフォールバック。`dispatching-parallel-agents` は計画実行用ではなく、独立した複数の問題 (調査・バグ修正) を並列で回すためのもの。`brainstorming` (superpowers) は使わない — 起動・合意は grill 系が担当しており、日付付き spec を積む設計が [[docs-lifecycle]] の「仕様の正は 1 箇所」と衝突するため。
+選択肢に入れないものが 3 つある。`executing-plans` は subagent が使えない環境向けのフォールバック。`dispatching-parallel-agents` は計画実行用ではなく、独立した複数の問題 (調査・バグ修正) を並列で回すためのもの。`brainstorming` (superpowers) は使わない — 起動・合意は grill 系が担当しており、日付付き spec を積む設計が [[docs-lifecycle]] (最新のものだけを残す) と衝突するため。
 
 ## 終了 / 改善
 
