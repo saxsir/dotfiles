@@ -4,10 +4,12 @@
 
 ## 仕様の正は 1 箇所
 
-- 正は `CONTEXT.md` (用語集) + 最新の spec 1 本。更新はファイル追加ではなく既存の書き換えで行う。
-- skill が生成する日付付き計画・設計ファイル (`docs/superpowers/plans/`, `docs/superpowers/specs/` 等) は下書き。恒久ドキュメントとして `docs/` に積まず、merge までに正の spec / CONTEXT.md へ反映して削除するか、`.scratch/` 等の使い捨て領域に置く。
+正は `CONTEXT.md` (用語集) と最新の spec 1 本。更新はファイルを足すのではなく既存を書き換えて行う。
+
+skill が吐く日付付きの計画・設計ファイルは下書きであって恒久ドキュメントではない。`docs/` に積まず、merge までに正の spec / CONTEXT.md へ反映して消すか、`.scratch/` のような使い捨て領域に置く。
 
 ## ADR は decision record であって journal ではない
 
-- `docs/adr/` に時系列連番で追加するのは、`domain-modeling` skill の 3 条件 (可逆性が低い / 文脈なしで見ると驚く / 本当のトレードオフの結果) を全て満たす決定のみ。
-- 紆余曲折 (試して捨てた案・方針転換・行き詰まり) の既定の置き場は commit log / PR description / issue ([[implementation-notes]]、wayfinder の ticket)。ADR はそこからの昇格先であり、既定の置き場ではない。
+`docs/adr/` に足すのは、可逆性が低く、文脈なしで見ると驚き、本当のトレードオフの結果である決定 (`domain-modeling` skill の 3 条件)。
+
+試して捨てた案・方針転換・行き詰まりの既定の置き場は commit log / PR description / issue の側で ([[implementation-notes]]、wayfinder の ticket)、ADR はそこからの昇格先。

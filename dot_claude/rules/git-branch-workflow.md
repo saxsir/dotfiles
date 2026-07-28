@@ -1,8 +1,3 @@
 # Git ブランチワークフロー
 
-実装は master/main から切ったフィーチャーブランチで作業。`git com` は default branch に switch するエイリアス。
-
-```bash
-git com && git pull
-git checkout -b <branch-name>
-```
+実装は default branch を最新化してから切ったフィーチャーブランチで行う。`git com` が default branch へ switch するエイリアス。
