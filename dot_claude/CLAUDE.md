@@ -5,6 +5,7 @@
 # Core Principles
 
 ## Core practices (always-on)
+@rules/writing-style.md
 @rules/tidy-first.md
 @rules/non-sycophancy.md
 @rules/role-separation.md
