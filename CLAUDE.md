@@ -1,150 +1,57 @@
 # CLAUDE.md
 
-<!-- このファイルは継続的に改善されます。Claudeとの作業で得た知見を随時追加してください -->
-
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Repository Overview
 
-This is a personal dotfiles repository that manages development environment configurations, primarily for macOS (Darwin) and Linux systems. The repository is managed by [chezmoi](https://www.chezmoi.io/); the Makefile is a thin wrapper that installs deps (Homebrew formulas) and runs `chezmoi apply`.
+macOS (Darwin) 中心の個人 dotfiles リポジトリ。Linux もサポートするが、最適化とツール統合の多くは macOS 前提になっている。管理は [chezmoi](https://www.chezmoi.io/) で、Makefile は依存 (Homebrew formula) を入れて `chezmoi apply` を呼ぶだけの薄いラッパー。
 
 ## Essential Commands
 
-### Setup and Installation
 ```bash
-# Complete setup (install deps + chezmoi apply)
-make
-
-# Individual targets
+make           # deps + apply
 make deps      # brew で chezmoi/starship/font 等を準備
 make apply     # chezmoi apply で ~/ にファイル配置 (初回は init で name/email プロンプト)
 make diff      # 適用前に差分確認
+make apm       # ~/.claude/skills/ へ skill をデプロイ (内部で apm update -g --yes)
 ```
 
-### Testing and Validation
-```bash
-# IMPORTANT: Always test configuration changes before committing
-# Test zsh configuration syntax
-zsh -n ~/.zshrc
-
-# Reload and verify zsh configuration
-zsh -c 'source ~/.zshrc && echo "OK"'
-
-# Dry-run chezmoi apply
-chezmoi diff
-
-# Test zsh startup performance (built-in profiling)
-# Set ENABLE_STARTUP_PROFILING=1 before starting new shell
-ENABLE_STARTUP_PROFILING=1 zsh -i -c exit
-```
+設定を触ったら、コミット前に反映して動くことを見ておきたい。zsh なら `zsh -n ~/.zshrc` で構文を見て、新しいシェルを開いて初期化がエラーなく通るか確かめる。起動時間が気になるときは `ENABLE_STARTUP_PROFILING=1 zsh -i -c exit` で内蔵プロファイラが回る。chezmoi の適用結果を先に見たいときは `chezmoi diff`。
 
 ## Architecture and Structure
 
 ### Configuration Management Pattern
+
 - **chezmoi-based**: リポジトリルートが chezmoi の source root。`chezmoi apply` でホームディレクトリに実ファイルとして配置される
-- **Local overrides**: `zshrc.local` は `create_dot_zshrc.local` 由来。既存ファイルは上書きされない (machine-specific 設定保護)
-- **gitconfig template**: `dot_gitconfig.tmpl` に `{{ .name }}` / `{{ .email }}` を埋めており、初回 `chezmoi init` で対話的に入力 → `~/.config/chezmoi/chezmoi.toml` に保存
+- **Local overrides**: `zshrc.local` は `create_dot_zshrc.local` 由来。`create_` prefix のため初回のみ作成され、既存ファイルは上書きされない (machine-specific 設定の保護)
+- **gitconfig template**: `dot_gitconfig.tmpl` が `{{ .name }}` / `{{ .email }}` を参照する。値は初回 `chezmoi init` で対話入力され `~/.config/chezmoi/chezmoi.toml` に入るので、リポジトリ側に個人情報は含まれない
 - **chezmoi 管理外**: `Makefile`, `README.md`, `LICENSE`, `lima/`, `misc/` 等のリポメタは `.chezmoiignore` で適用対象から除外
-- **IMPORTANT**: 新規ディレクトリを chezmoi source に追加するときは、先に既存 source dir を確認する。`private_dot_X/` が存在する場合に `dot_X/` を別に作ると chezmoi apply 時に競合エラーになる。その場合は既存の `private_dot_X/` に追加する
+- **新規ディレクトリを足すとき**: 先に既存の source dir を確認する。`private_dot_X/` があるのに `dot_X/` を別に作ると `chezmoi apply` が競合エラーになるので、その場合は既存の `private_dot_X/` に足す
 
 ### Key Components
 
-1. **Shell Environment (Zsh)**
-   - Main config: `dot_zshrc` - Core configuration with zinit (プラグインマネージャ), peco/ghq integration
-   - Performance optimizations: Lazy loading for heavy tools (nvm, pyenv), zcompile usage
+1. **Shell (Zsh)**: `dot_zshrc` が本体。zinit (プラグインマネージャ、`dot_zshrc` 内で自己 clone する) と peco/ghq 連携。nvm や pyenv のような重いツールは lazy loading と zcompile で起動時間を抑えている。起動が遅いときはこの辺りを見る
+2. **Development Tools**: git は `gitconfig` に大量のエイリアスがあり、AWS credential 保護に git-secrets を使う。パッケージ管理は Homebrew (macOS) と mise (言語バージョン管理)
+3. **Editors**: NeoVim は mini.deps ベースの基本構成。IdeaVim は vimrc を継承しつつ IntelliJ 固有の設定を足している
+4. **Lima VM**: `lima/claude-dev.yaml` が Claude Code 実行用 VM (Ubuntu 24.04 ARM64, Apple Virtualization.framework)。ホストの `~/src` を読み書き可能でマウントし、ホームは読み取り専用
+5. **Claude Code Skills (apm)**: `private_dot_apm/apm.yml` の `dependencies.apm` に `owner/repo` を追記して `make apm`
 
-2. **Development Tools Integration**
-   - Git: Extensive aliases in `gitconfig`, git-secrets for AWS credential protection
-   - Package managers: Homebrew (macOS), mise (version manager for multiple languages)
+## Code Style
 
-3. **Editor Configurations**
-   - NeoVim: Basic configuration with mini.deps support
-   - IdeaVim: Inherits vimrc with additional IntelliJ-specific settings
+Shell script は 2-space indent で、変数も関数も lowercase_with_underscores。変数展開は `"${variable}"` の形でクォートする (単語分割と glob 展開の事故を防ぐため)。
 
-4. **Lima VM (Development Containers)**
-   - Claude Code実行用VM: `lima/claude-dev.yaml` - Ubuntu 24.04 ARM64, Apple Virtualization.framework
-   - ホストの`~/src`を読み書き可能でマウント、ホームは読み取り専用
+OS 依存の分岐が必要になったら、その場で条件分岐を書かずに chezmoi template 化して `{{ if eq .chezmoi.os "darwin" }}` で分ける。マシン固有の設定は `~/.zshrc.local` に置く。
 
-5. **Claude Code Skills (apm)**
-   - `private_dot_apm/apm.yml` の `dependencies.apm` に `owner/repo` を追記
-   - `make apm` で `~/.claude/skills/` へ自動デプロイ (内部で `apm update -g --yes` を実行し常に最新コミットへ追従)
-
-### Important Patterns
-- **Lazy loading**: Heavy tools are loaded on-demand to improve shell startup time
-- **ghq + peco**: Repository management and navigation system (repos in `~/src`)
-- **zinit**: zsh プラグインマネージャ。`dot_zshrc` 内で自己 clone する
-
-## Code Style Guidelines
-
-### Shell Scripts (Zsh/Bash)
-- Use 2-space indentation
-- Variable naming: lowercase with underscores (e.g., `my_variable`)
-- IMPORTANT: Quote all variable expansions: `"${variable}"` not `$variable`
-- Function naming: lowercase with underscores
-- Always include error handling for critical operations
-
-### Configuration Files
-- Keep modifications organized by concern (aliases, functions, environment setup)
-- Document non-obvious configurations with inline comments
-- IMPORTANT: Platform-specific code は `dot_zshrc.tmpl` 化して `{{ if eq .chezmoi.os "darwin" }}` 等で分岐する
-- Machine-specific settings belong in `~/.zshrc.local` (chezmoi の `create_` prefix で初回のみ作成、上書きされない)
-
-### Git Practices
-- YOU MUST test changes in a new shell session before committing
-- Commit messages should explain the "why" for configuration changes
-- Keep commits focused on a single logical change
+macOS には Homebrew 経由で GNU coreutils が入っている。`date` 等は GNU 版なので、コマンドを提案するときは GNU 構文 (`date -d`, `date +%s`) で書く。
 
 ## Repository Workflow
 
-### Branch Strategy
-- Branch naming: `feat/`, `fix/`, `chore/` prefixes
-- IMPORTANT: Create feature branches from `master` branch
-- Example: `feat/add-docker-aliases`, `fix/zsh-startup-time`
+ブランチは `feat/` `fix/` `chore/` prefix で、`master` から切る (default branch が master であることに注意)。PR 運用と description の書き方はグローバルの `rules/github-workflow.md` に従う。個人リポジトリでも draft PR を経由し、merge はユーザーが行う。
 
-### Making Changes
-1. masterを最新化: `git switch master && git pull origin master`
-2. フィーチャーブランチを作成: `git checkout -b <branch-name>` (例: `git checkout -b feat/add-aliases`)
-3. Make changes to configuration files
-4. Test changes using commands in "Testing and Validation" section
-5. Commit with descriptive message
-6. Push changes: `git push -u origin <branch-name>`
-7. Create a draft pull request for review: `gh pr create --draft` (個人リポジトリでも PR 運用。merge はユーザーが行う)
-8. **IMPORTANT**: After creating a PR (including draft), always open it in browser with `gh pr view --web`
-9. After PR is merged and branch is no longer needed, clean up: `git switch master && git pull origin master && git branch -d <branch-name>`
-
-### Deployment
-- IMPORTANT: After merging changes, run `make apply` (= `chezmoi apply`) to update files in `~/`
-- **Claude からは `chezmoi apply` を実行できない**。`~/.config/chezmoi/chezmoistate.boltdb` が sandbox allowOnly 外のため。dot_claude/ 等を編集した後はターミナルで `! make apply` を実行する
-- Reload shell with `source ~/.zshrc` or start a new shell session
-- Verify no errors occur during shell initialization
-
-## Critical Notes
-
-1. **Git user info**: 初回 `chezmoi init` で対話的に入力 → `~/.config/chezmoi/chezmoi.toml` に保存。
-   `dot_gitconfig.tmpl` がそれを参照して展開する。リポジトリには個人情報は含まれない。
-
-2. **macOS focus**: While Linux is supported, most optimizations and tool integrations are macOS-centric.
-   OS 分岐が必要になったら chezmoi template (`{{ if eq .chezmoi.os "darwin" }}`) で書く。
-
-3. **GNU coreutils**: macOS環境にHomebrew経由でGNU coreutilsをインストール済み。
-   `date`コマンド等はGNU版を使用しているため、シェルスクリプトやコマンド提案時はGNU構文（例: `date -d`, `date +%s`）を使用すること。
-
-## Known Issues and Warnings
-
-- **Slow startup**: If shell startup is slow, check lazy-loading configuration in `dot_zshrc`
-- **Homebrew on Apple Silicon**: Some formulas may require Rosetta 2 or ARM-specific installation
+merge した変更を `~/` に反映するには `make apply` が要る。ただし **Claude からは `chezmoi apply` を実行できない** — `~/.config/chezmoi/chezmoistate.boltdb` が sandbox の allowOnly 外にあるため。`dot_claude/` 等を編集した後は、ユーザーにターミナルで `! make apply` を実行してもらう。適用後はシェルを開き直して初期化が通ることを確認する。
 
 ## Agent skills
 
-### Issue tracker
-
-Issues と PRD は `.scratch/<feature>/` 配下の markdown ファイルで管理する。See `docs/agents/issue-tracker.md`.
-
-### Triage labels
-
-5 つの正規 triage ロールを既定の文字列（`needs-triage` 等）で使う。See `docs/agents/triage-labels.md`.
-
-### Domain docs
-
-Single-context レイアウト（ルートに `CONTEXT.md` + `docs/adr/`）。See `docs/agents/domain.md`.
-
+- **Issue tracker**: Issues と PRD は `.scratch/<feature>/` 配下の markdown ファイルで管理する。See `docs/agents/issue-tracker.md`
+- **Triage labels**: 5 つの正規 triage ロールを既定の文字列 (`needs-triage` 等) で使う。See `docs/agents/triage-labels.md`
+- **Domain docs**: Single-context レイアウト (ルートに `CONTEXT.md` + `docs/adr/`)。See `docs/agents/domain.md`
