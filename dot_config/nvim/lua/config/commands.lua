@@ -57,6 +57,22 @@ vim.api.nvim_create_user_command("JunkfileOpen", function()
   end
 end, { desc = "Open junkfile with timestamp" })
 
+-- MarkdownPreview command: Preview current file in cmux markdown viewer
+vim.api.nvim_create_user_command("MarkdownPreview", function()
+  local file = vim.fn.expand("%:p")
+  if file == "" then
+    vim.notify("No file to preview", vim.log.levels.WARN)
+    return
+  end
+  vim.system({ "cmux", "markdown", "open", file }, {}, function(result)
+    if result.code ~= 0 then
+      vim.schedule(function()
+        vim.notify("cmux markdown failed: " .. (result.stderr or ""), vim.log.levels.ERROR)
+      end)
+    end
+  end)
+end, { desc = "Preview current file in cmux markdown viewer" })
+
 -- GHBrowse command: Open current line on GitHub
 vim.api.nvim_create_user_command("GHBrowse", function()
   local file = vim.fn.expand("%:p")
