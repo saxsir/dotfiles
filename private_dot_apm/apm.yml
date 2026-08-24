@@ -27,7 +27,7 @@ dependencies:
   - mattpocock/skills/skills/productivity/grilling
   - mattpocock/skills/skills/productivity/handoff
   - mattpocock/skills/skills/productivity/teach
-  - mattpocock/skills/skills/productivity/writing-great-skills
+  - mattpocock/skills/skills/productivity/writing-for-agents
   - saxsir/skills
   - obra/superpowers
   - tomasz-tomczyk/crit/integrations/claude-code
