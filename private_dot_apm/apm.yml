@@ -8,7 +8,6 @@ targets:
 dependencies:
   apm:
   - mattpocock/skills/skills/engineering/ask-matt
-  - mattpocock/skills/skills/engineering/code-review
   - mattpocock/skills/skills/engineering/codebase-design
   - mattpocock/skills/skills/engineering/diagnosing-bugs
   - mattpocock/skills/skills/engineering/domain-modeling
