@@ -15,8 +15,14 @@ eval "$(echo "${input}" | jq -r '
   "current_dir=\(.workspace.current_dir // "" | @sh)",
   "remaining_pct=\(.context_window.remaining_percentage // -1 | floor)",
   "rate_5h=\(.rate_limits.five_hour.used_percentage // -1 | floor)",
-  "rate_7d=\(.rate_limits.seven_day.used_percentage // -1 | floor)"
+  "rate_5h_reset=\(.rate_limits.five_hour.resets_at // -1)",
+  "rate_7d=\(.rate_limits.seven_day.used_percentage // -1 | floor)",
+  "rate_7d_reset=\(.rate_limits.seven_day.resets_at // -1)"
 ')"
+
+format_reset() {
+  date -d "@$1" +"$2" 2>/dev/null || date -r "$1" +"$2" 2>/dev/null
+}
 
 # effortLevel は stdin JSON 未対応のため settings.json から読む
 effort=$(jq -r '.effortLevel // empty' ~/.claude/settings.json 2>/dev/null)
@@ -87,9 +93,17 @@ fi
 limits=""
 if [ "${rate_5h}" -ge 0 ] 2>/dev/null; then
   limits="5h: ${rate_5h}%"
+  if [ "${rate_5h_reset}" -gt 0 ] 2>/dev/null; then
+    reset_str=$(format_reset "${rate_5h_reset}" "%H:%M")
+    [ -n "${reset_str}" ] && limits="${limits} (${reset_str})"
+  fi
 fi
 if [ "${rate_7d}" -ge 0 ] 2>/dev/null; then
   limits="${limits:+${limits} | }7d: ${rate_7d}%"
+  if [ "${rate_7d_reset}" -gt 0 ] 2>/dev/null; then
+    reset_str=$(format_reset "${rate_7d_reset}" "%m/%d %H:%M")
+    [ -n "${reset_str}" ] && limits="${limits} (${reset_str})"
+  fi
 fi
 
 # ===== Render Line 1 =====
