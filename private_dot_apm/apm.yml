@@ -35,6 +35,7 @@ dependencies:
   - manaflow-ai/cmux-skills/skills/cmux-workspace
   - manaflow-ai/cmux-skills/skills/cmux-config
   - manaflow-ai/cmux-skills/skills/cmux-sidebar-builder
+  - github/gh-stack/skills/gh-stack
   mcp: []
 includes: auto
 scripts: {}
