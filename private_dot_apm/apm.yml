@@ -36,6 +36,7 @@ dependencies:
   - manaflow-ai/cmux-skills/skills/cmux-config
   - manaflow-ai/cmux-skills/skills/cmux-sidebar-builder
   - github/gh-stack/skills/gh-stack
+  - anthropics/claude-plugins-community/eli5/skills/eli5
   mcp: []
 includes: auto
 scripts: {}
