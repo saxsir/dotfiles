@@ -8,9 +8,9 @@
 
 編集する箇所を開いて「触りにくい・読みにくい・無関係な責務と絡んでいる」と感じたら、その場で回すのが理想。working tree が clean なときに回すと [[tidy-first]] の構造/振る舞いの分離が自然に保たれる。
 
-構造変更が feature の差分と物理的に重なる範囲なら、同じブランチで構造変更コミットを先頭に積む。共有モジュール・公開 API・ディレクトリ移動など feature の差分と重ならない範囲なら、別 PR に切り出すかをユーザーに確認する (cherry-pick で分離できる)。
+構造変更 (refactor) と振る舞い変更は PR を分ける。実装中に構造変更したほうがよいと判断したら、先に refactor PR を作り、feature はその上に積む (refactor branch から feature branch を切るか、merge を待つ)。同じ PR に混ぜると、レビュワーが振る舞いの差分を構造の差分から選り分けることになる。
 
-気づくのが遅れて実装コミットの後ろに積むことになっても、commit message で構造変更と分かるなら実害は小さい。順序が逆転したこと自体は retrospective-codify の材料として残す。
+気づくのが遅れて feature branch に構造変更コミットが混ざったときは、cherry-pick で refactor PR に切り出す。分離できないほど絡んでいるときだけ同じ PR に残し、commit message で構造変更と分かるようにする ([[tidy-first]])。順序が逆転したこと自体は retrospective-codify の材料として残す。
 
 ## PR 提出前: `/review` → `/crit`
 
