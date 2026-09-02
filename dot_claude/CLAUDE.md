@@ -15,6 +15,7 @@
 @rules/docs-lifecycle.md
 @rules/git-branch-workflow.md
 @rules/implementation-notes.md
+@rules/scope.md
 @rules/delegation.md
 
 ## Specialty (task-specific)
