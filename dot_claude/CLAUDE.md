@@ -1,6 +1,6 @@
 # Conversation Guidelines
 
-- 不明瞭な指示は質問して明確にする。
+- 読み方によって成果物が大きく変わる不明瞭さだけ質問する。些細な解釈は自分で決めて進め、完了報告に書く ([[implementation-notes]])。
 
 # Core Principles
 
