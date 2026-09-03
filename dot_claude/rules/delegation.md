@@ -20,7 +20,7 @@
 
 ## 委譲の書き方
 
-- `Agent` 呼び出しで `model` を省くと、settings の `CLAUDE_CODE_SUBAGENT_MODEL` により sonnet になる。ただし built-in の `Explore` / `Plan` にはこの env が効かず、メイン会話のモデルを継承する (Explore は `~/.claude/agents/Explore.md` で sonnet に上書き済み)。高コストモデルが要るレビュー等は `model` を明示する。
+- `Agent` 呼び出しで `model` を省くと、settings の `CLAUDE_CODE_SUBAGENT_MODEL` により sonnet になる。ただし built-in の `Explore` / `Plan` にはこの env が効かず、メイン会話のモデルを継承する (Explore は `model` 未指定なら PreToolUse hook が sonnet を補う。Plan は判断側なので継承のまま)。高コストモデルが要るレビュー等は `model` を明示する。
 - プロンプトは self-contained に書く (subagent は自分の context を持たない)。ゴール、完了条件、触るファイル、報告形式を入れる。構造は `dispatching-parallel-agents` skill に従う。
 - 起動したら結果待ちで手を止めず、その結果に依存しない作業を先に進める。Agent tool はバックグラウンドで返り、完了は通知で届く。
 - 返り値はそのまま採らず検証する。件数の多い委譲で subagent が孫 subagent を生み、対象を読まずに内容を捏造した例がある。tool 使用回数が件数に対して極端に少ない、返ってきた内容が既知の事実と食い違う、が検知シグナル。

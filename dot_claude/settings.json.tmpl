@@ -168,6 +168,15 @@
             "command": "~/.claude/hooks/block-aws-vault-write.sh"
           }
         ]
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/pin-explore-model.sh"
+          }
+        ]
       }
     ],
     "Notification": [],
@@ -204,9 +213,9 @@
   },
   "enabledPlugins": {
     "lua-lsp@claude-plugins-official": true,
-    "php-lsp@claude-plugins-official": true,
+    "php-lsp@claude-plugins-official": false,
     "pyright-lsp@claude-plugins-official": true,
-    "swift-lsp@claude-plugins-official": true,
+    "swift-lsp@claude-plugins-official": false,
     "typescript-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
