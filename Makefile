@@ -1,16 +1,12 @@
 PWD := $(shell pwd)
 
-# make ghext で install する gh extension (OWNER/REPO を空白区切りで列挙)
-GH_EXTENSIONS := github/gh-stack
-
-.PHONY: all deps init apply diff edit re-add merge hooks mise uvtools macos apm ghext help
+.PHONY: all deps require-chezmoi init apply diff edit re-add merge hooks mise uvtools apm help
 
 # デフォルト: 依存ツールを揃えて apply、mise install、pre-commit hook を install
-all: deps apply mise uvtools hooks apm ghext
+all: deps apply mise uvtools hooks apm
 
+# Homebrew パッケージ (brew bundle) は macbook-provisioning の Brewfile で入れる
 deps:
-	@command -v brew >/dev/null 2>&1 || { echo "Homebrew が必要です: https://brew.sh"; exit 1; }
-	brew bundle --file=Brewfile
 	@if [ -f package.json ]; then \
 	  bun install --silent; \
 	fi
@@ -33,12 +29,17 @@ hooks:
 	fi
 	pre-commit install
 
+# chezmoi 未導入時に案内して止める (init / apply の前提)。chezmoi 本体は
+# saxsir/macbook-provisioning の Brewfile で入るため、そちらの make が未実行だと失敗する
+require-chezmoi:
+	@command -v chezmoi >/dev/null 2>&1 || { echo "chezmoi が見つからない。先に saxsir/macbook-provisioning の make を実行する (Homebrew と Brewfile はそちらで管理)" >&2; exit 1; }
+
 # 初回のみ: chezmoi の設定ファイル ~/.config/chezmoi/chezmoi.toml を生成
-init:
+init: require-chezmoi
 	chezmoi init --source "$(PWD)"
 
 # ソース → ~/ に反映 (chezmoi 標準の方向)
-apply:
+apply: require-chezmoi
 	@if [ ! -f "$(HOME)/.config/chezmoi/chezmoi.toml" ]; then \
 	  $(MAKE) init; \
 	fi
@@ -139,33 +140,10 @@ apm:
 	  echo "[apm] td が見つからないため todoist-cli skill の復元をスキップ"; \
 	fi
 
-# GH_EXTENSIONS に列挙した gh extension を install する (冪等)
-# gh 未認証だと install が API アクセスで失敗するため、その場合はスキップして通知だけする
-ghext:
-	@command -v gh >/dev/null 2>&1 || { echo "gh が見つからない: make deps を先に実行"; exit 1; }
-	@if gh auth status >/dev/null 2>&1; then \
-	  for ext in $(GH_EXTENSIONS); do \
-	    if gh extension list 2>/dev/null | grep -q "$$ext"; then \
-	      echo "[ghext] already installed: $$ext"; \
-	    else \
-	      gh extension install "$$ext"; \
-	    fi; \
-	  done; \
-	else \
-	  echo "[ghext] gh が未認証のためスキップ (gh auth login 後に make ghext)"; \
-	fi
-
-# macOS defaults を ~/.macos に従って一括適用する (デフォルト all には含めない: 副作用大)
-# 適用前に内容を確認するなら `cat ~/.macos`
-macos:
-	@[ "$$(uname)" = "Darwin" ] || { echo "macOS 専用です"; exit 1; }
-	@[ -x "$(HOME)/.macos" ] || { echo "~/.macos が無い: make apply を先に実行"; exit 1; }
-	"$(HOME)/.macos"
-
 help:
 	@echo "Targets:"
-	@echo "  all      - deps + apply + mise + hooks + apm + ghext (デフォルト)"
-	@echo "  deps     - brew bundle + bun install"
+	@echo "  all      - deps + apply + mise + hooks + apm (デフォルト)"
+	@echo "  deps     - bun install (Homebrew は macbook-provisioning の Brewfile で導入)"
 	@echo "  init     - 初回のみ chezmoi 設定ファイルを生成"
 	@echo "  apply    - source → ~/ に反映 (標準の方向)"
 	@echo "  diff     - apply 前の差分確認"
@@ -174,7 +152,5 @@ help:
 	@echo "  merge    - 衝突時の 3-way merge (FILE=...)"
 	@echo "  mise     - ~/.config/mise/config.toml に従って mise install"
 	@echo "  uvtools  - uv tool で global に入れる Python CLI (kaggle 等) を install"
-	@echo "  macos    - ~/.macos の defaults を一括適用 (副作用大のため all には含めない)"
 	@echo "  hooks    - pre-commit hook を install (secretlint)"
 	@echo "  apm      - apm CLI を install + ~/.apm/apm.yml の skill を最新コミットで deploy (冪等)"
-	@echo "  ghext    - GH_EXTENSIONS の gh extension を install (冪等)"

@@ -120,7 +120,7 @@ fi
 # bun completion
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
-# devbox completion (devbox 本体は Brewfile のコメント参照: 別途 curl install)
+# devbox completion (devbox 本体は macbook-provisioning の Brewfile のコメント参照: 別途 curl install)
 if command -v devbox >/dev/null 2>&1; then
   eval "$(devbox completion zsh)"
 fi
