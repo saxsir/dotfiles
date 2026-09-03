@@ -20,6 +20,19 @@
 
 リンクは完全な URL で書く。GitHub の自動リンクは同一リポ内の `#番号` しか確実に解決しないため、他リポの Issue / PR やソースコードを短縮形で指すと壊れる。同一リポ内の Issue / PR を指すだけなら `#番号` のままでよい。
 
+## 既存本文の更新
+
+PR / Issue の description と投稿済みコメントを直すときは、全文を書き直さず変更箇所だけを編集する。全文を再生成すると、前に書いた経緯や他人の追記が消える。
+
+手順は固定する。
+
+1. 現在値をファイルに取る (`gh pr view <n> --json body --jq .body > <scratch>/body.md`。Issue は `gh issue view`、コメントは `gh api` で取る)。
+2. そのファイルを Edit tool で局所編集する。書き直しではなく置換で直す。
+3. `diff` で元との差分を出してユーザーに見せ、承認を得る。
+4. `--body-file` で反映する (`gh pr edit <n> --body-file <scratch>/body.md`、コメントは `gh pr comment --edit-last --body-file`)。
+
+インラインの `--body` で既存本文を更新する呼び出しは hook がブロックする。GitHub MCP の書き込みツール (update_pull_request / issue_write 等) は全文差し替えしかできないので、既存本文の更新には使わない。新規作成 (`gh pr create`、新規コメント) はこの手順の対象外。
+
 ## コメント投稿
 
 短い相槌以外、手順・ログ・コード片・表を含むものは `<details><summary>1 行要約</summary>本文</details>` で畳む (summary の直後に空行を入れる)。

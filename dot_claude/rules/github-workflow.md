@@ -8,7 +8,7 @@ PR は draft で作り (`gh pr create --draft`)、作ったらブラウザで開
 
 本文は `.github/` にテンプレがあればそれに従う。無ければ「何をしたか」を数行と「なぜ必要か」、それに Issue との紐付けを書く。`Closes #n` を書けば merge 時に自動クローズされる。閉じたくないときは `Relates to #n` にするか `gh pr edit <n> --add-issue <n>` で紐付けだけ張る。
 
-description を後から直すときは、`gh pr view <n> --json body --jq .body` で現在の body を取ってから変更箇所だけ編集する。全文を再生成して上書きすると過去に書いた経緯が失われる。差分をユーザーに見せて承認を得てから `gh pr edit` する。既存 PR にコミットを積んだら、description と紐づく Issue description が古くなっていないか見ておきたい。
+description を後から直す手順は [[github-writing]] の「既存本文の更新」に従う (現在値を取り、変更箇所だけ編集し、差分の承認を得て `--body-file` で反映)。既存 PR にコミットを積んだら、description と紐づく Issue description が古くなっていないか見ておきたい。
 
 ## レビューコメントへの応答
 
