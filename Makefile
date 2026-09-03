@@ -3,7 +3,7 @@ PWD := $(shell pwd)
 # make ghext で install する gh extension (OWNER/REPO を空白区切りで列挙)
 GH_EXTENSIONS := github/gh-stack
 
-.PHONY: all deps require-chezmoi init apply diff edit re-add merge hooks mise uvtools macos apm ghext help
+.PHONY: all deps require-chezmoi init apply diff edit re-add merge hooks mise uvtools apm ghext help
 
 # デフォルト: 依存ツールを揃えて apply、mise install、pre-commit hook を install
 all: deps apply mise uvtools hooks apm ghext
@@ -159,13 +159,6 @@ ghext:
 	  echo "[ghext] gh が未認証のためスキップ (gh auth login 後に make ghext)"; \
 	fi
 
-# macOS defaults を ~/.macos に従って一括適用する (デフォルト all には含めない: 副作用大)
-# 適用前に内容を確認するなら `cat ~/.macos`
-macos:
-	@[ "$$(uname)" = "Darwin" ] || { echo "macOS 専用です"; exit 1; }
-	@[ -x "$(HOME)/.macos" ] || { echo "~/.macos が無い: make apply を先に実行"; exit 1; }
-	"$(HOME)/.macos"
-
 help:
 	@echo "Targets:"
 	@echo "  all      - deps + apply + mise + hooks + apm + ghext (デフォルト)"
@@ -178,7 +171,6 @@ help:
 	@echo "  merge    - 衝突時の 3-way merge (FILE=...)"
 	@echo "  mise     - ~/.config/mise/config.toml に従って mise install"
 	@echo "  uvtools  - uv tool で global に入れる Python CLI (kaggle 等) を install"
-	@echo "  macos    - ~/.macos の defaults を一括適用 (副作用大のため all には含めない)"
 	@echo "  hooks    - pre-commit hook を install (secretlint)"
 	@echo "  apm      - apm CLI を install + ~/.apm/apm.yml の skill を最新コミットで deploy (冪等)"
 	@echo "  ghext    - GH_EXTENSIONS の gh extension を install (冪等)"

@@ -1,0 +1,2 @@
+# chezmoi apply 時にホームから消す。~/.macos は macbook-provisioning の scripts/configure.sh に統合した
+.macos
