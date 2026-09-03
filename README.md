@@ -5,27 +5,28 @@ dotfiles
 
 ## Run
 
+前提: [saxsir/macbook-provisioning](https://github.com/saxsir/macbook-provisioning) の `make` を先に実行する (Homebrew と Brewfile、macOS defaults はそちらが担当する)。このリポジトリの `make` は chezmoi apply と mise / apm の適用だけを行う。
+
 ```
 $ make
 ```
 
-初回は Homebrew で chezmoi をインストールし、Git の `user.name` / `user.email` をプロンプトで聞かれる。
+初回は chezmoi の設定ファイルが無いため `chezmoi init` が走り、Git の `user.name` / `user.email` をプロンプトで聞かれる。
 入力した値は `~/.config/chezmoi/chezmoi.toml` に保存される (gitconfig は `dot_gitconfig.tmpl` で template 展開)。
 
 ## Layout
 
 - リポジトリルート — chezmoi の source root (`dot_*` / `*.tmpl` 等が並ぶ)
-- `Makefile` — `chezmoi apply` のエントリポイントと依存ツール (brew 等) のインストール
-- `Brewfile` — 依存パッケージ (chezmoi/starship/pre-commit/bun + フォント) を `brew bundle` で管理
+- `Makefile` — `chezmoi apply` のエントリポイントと mise / apm 適用の呼び出し (Homebrew と Brewfile は macbook-provisioning が担当)
 - `.pre-commit-config.yaml` / `.secretlintrc.json` / `package.json` — secretlint によるコミット時シークレット検出
-- `.chezmoiignore` — リポメタ (`Makefile` / `README.md` / `Brewfile` / `lima` / `misc` 等) を chezmoi 適用対象から除外
+- `.chezmoiignore` — リポメタ (`Makefile` / `README.md` / `lima` / `misc` 等) を chezmoi 適用対象から除外
 - `lima/`, `misc/` — chezmoi 管理外 (リポメタ)
 
 ## 主なコマンド
 
 ```
 make             # = make deps apply hooks
-make deps        # brew bundle + bun install (Brewfile + package.json)
+make deps        # bun install (package.json があれば。Homebrew は macbook-provisioning が担当)
 make apply       # chezmoi apply (~/ にファイル配置)
 make diff        # 適用前に差分確認
 make hooks       # pre-commit hook を install
@@ -58,8 +59,7 @@ bunx secretlint "**/*"
 ### 初回セットアップ
 
 ```bash
-# 1. age と age-keygen を入れる (Brewfile 同梱)
-make deps
+# 1. age と age-keygen を入れる (macbook-provisioning の Brewfile で導入する)
 
 # 2. age 鍵ペアを生成
 mkdir -p ~/.config/chezmoi
@@ -90,7 +90,7 @@ chezmoi edit ~/.aws/credentials
 
 ### 復元 (新マシン)
 
-1. `make deps` で age を入れる
+1. macbook-provisioning の `make` で age を入れる (Homebrew の Brewfile 経由)
 2. バックアップから秘密鍵を復元 (`cp /Volumes/USB/age-key-backup.txt ~/.config/chezmoi/key.txt && chmod 600 ~/.config/chezmoi/key.txt`)
 3. `chezmoi init` で recipient プロンプトに公開鍵を貼り付け (バックアップに併記しておくとラク)
 4. `make apply` で復号 + 配置

@@ -4,13 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-macOS (Darwin) 中心の個人 dotfiles リポジトリ。Linux もサポートするが、最適化とツール統合の多くは macOS 前提になっている。管理は [chezmoi](https://www.chezmoi.io/) で、Makefile は依存 (Homebrew formula) を入れて `chezmoi apply` を呼ぶだけの薄いラッパー。
+macOS (Darwin) 中心の個人 dotfiles リポジトリ。Linux もサポートするが、最適化とツール統合の多くは macOS 前提になっている。管理は [chezmoi](https://www.chezmoi.io/) で、Makefile は `chezmoi apply` と mise / apm の適用を呼ぶだけの薄いラッパー (Homebrew と Brewfile は saxsir/macbook-provisioning が担当)。
 
 ## Essential Commands
 
 ```bash
 make           # deps + apply
-make deps      # brew で chezmoi/starship/font 等を準備
+make deps      # bun install (package.json があれば。Homebrew 導入は macbook-provisioning が担当)
 make apply     # chezmoi apply で ~/ にファイル配置 (初回は init で name/email プロンプト)
 make diff      # 適用前に差分確認
 make apm       # ~/.claude/skills/ へ skill をデプロイ (内部で apm update -g --yes)
