@@ -1,11 +1,15 @@
 #!/bin/bash
-# GitHub の既存本文 (PR / Issue description、コメント) を丸ごと差し替える gh 呼び出しを
-# ブロックする PreToolUse フック (rules/github-writing.md「既存本文の更新」の機械的強制)。
-# 対象: gh pr/issue edit、gh pr/issue comment --edit-last、gh api の PATCH で
-# 本文をインライン (--body / -b / -f body=)、stdin (--body-file - / -F - / --input -)、
-# process substitution で渡すもの。ファイル渡し (--body-file f / -F body=@f) と
-# 新規作成 (create、新規 comment) は素通しする。Bash 経路だけが対象で、
-# GitHub MCP の書き込みツールは見ていない。差分編集そのものも hook では検証できない。
+# GitHub の既存本文 (PR / Issue description、コメント) の更新で、本文の「渡し方」を
+# 見て止める PreToolUse フック (rules/github-writing.md「既存本文の更新」の機械的強制)。
+# コマンド (gh pr/issue edit、comment --edit-last、gh api PATCH) 自体は止めない。
+# 規則どおり現在値をファイルに取って局所編集し、ファイル渡し
+# (--body-file <file> / -F body=@<file> / --input <file>) で反映する形は通す。
+# 止めるのは、本文をコマンド内に直書き (--body / -b / -f body=)、stdin
+# (--body-file - / -F - / --input - に heredoc)、process substitution で渡す形。
+# これらはモデルが全文を生成し直して流し込むときの書き方で、ファイルを経由しないため
+# 差分編集の手順を踏んでいない。新規作成 (create、新規 comment) は対象外。
+# Bash 経路だけが対象で、GitHub MCP の書き込みツールは見ていない。
+# 差分編集そのものは hook では検証できないので、規則側の手順と組で効かせる。
 INPUT=$(cat)
 CMD=$(echo "$INPUT" | jq -r '.tool_input.command')
 
