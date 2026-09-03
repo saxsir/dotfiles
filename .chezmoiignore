@@ -13,8 +13,6 @@ docs
 
 # === ビルド / タスク定義 (Make や CI 側で使うもの) ===
 Makefile
-Brewfile
-Brewfile.lock.json
 
 # === git / lint / secretlint まわりの運用ファイル ===
 .git

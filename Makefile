@@ -8,9 +8,8 @@ GH_EXTENSIONS := github/gh-stack
 # デフォルト: 依存ツールを揃えて apply、mise install、pre-commit hook を install
 all: deps apply mise uvtools hooks apm ghext
 
+# Homebrew パッケージ (brew bundle) は macbook-provisioning の Brewfile で入れる
 deps:
-	@command -v brew >/dev/null 2>&1 || { echo "Homebrew が必要です: https://brew.sh"; exit 1; }
-	brew bundle --file=Brewfile
 	@if [ -f package.json ]; then \
 	  bun install --silent; \
 	fi
@@ -165,7 +164,7 @@ macos:
 help:
 	@echo "Targets:"
 	@echo "  all      - deps + apply + mise + hooks + apm + ghext (デフォルト)"
-	@echo "  deps     - brew bundle + bun install"
+	@echo "  deps     - bun install (Homebrew は macbook-provisioning の Brewfile で導入)"
 	@echo "  init     - 初回のみ chezmoi 設定ファイルを生成"
 	@echo "  apply    - source → ~/ に反映 (標準の方向)"
 	@echo "  diff     - apply 前の差分確認"
