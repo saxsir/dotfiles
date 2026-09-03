@@ -3,7 +3,7 @@ PWD := $(shell pwd)
 # make ghext で install する gh extension (OWNER/REPO を空白区切りで列挙)
 GH_EXTENSIONS := github/gh-stack
 
-.PHONY: all deps init apply diff edit re-add merge hooks mise uvtools macos apm ghext help
+.PHONY: all deps require-chezmoi init apply diff edit re-add merge hooks mise uvtools macos apm ghext help
 
 # デフォルト: 依存ツールを揃えて apply、mise install、pre-commit hook を install
 all: deps apply mise uvtools hooks apm ghext
@@ -32,12 +32,17 @@ hooks:
 	fi
 	pre-commit install
 
+# chezmoi 未導入時に案内して止める (init / apply の前提)。chezmoi 本体は
+# saxsir/macbook-provisioning の Brewfile で入るため、そちらの make が未実行だと失敗する
+require-chezmoi:
+	@command -v chezmoi >/dev/null 2>&1 || { echo "chezmoi が見つからない。先に saxsir/macbook-provisioning の make を実行する (Homebrew と Brewfile はそちらで管理)" >&2; exit 1; }
+
 # 初回のみ: chezmoi の設定ファイル ~/.config/chezmoi/chezmoi.toml を生成
-init:
+init: require-chezmoi
 	chezmoi init --source "$(PWD)"
 
 # ソース → ~/ に反映 (chezmoi 標準の方向)
-apply:
+apply: require-chezmoi
 	@if [ ! -f "$(HOME)/.config/chezmoi/chezmoi.toml" ]; then \
 	  $(MAKE) init; \
 	fi
