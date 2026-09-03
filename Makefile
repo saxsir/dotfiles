@@ -1,12 +1,9 @@
 PWD := $(shell pwd)
 
-# make ghext で install する gh extension (OWNER/REPO を空白区切りで列挙)
-GH_EXTENSIONS := github/gh-stack
-
-.PHONY: all deps require-chezmoi init apply diff edit re-add merge hooks mise uvtools apm ghext help
+.PHONY: all deps require-chezmoi init apply diff edit re-add merge hooks mise uvtools apm help
 
 # デフォルト: 依存ツールを揃えて apply、mise install、pre-commit hook を install
-all: deps apply mise uvtools hooks apm ghext
+all: deps apply mise uvtools hooks apm
 
 # Homebrew パッケージ (brew bundle) は macbook-provisioning の Brewfile で入れる
 deps:
@@ -143,25 +140,9 @@ apm:
 	  echo "[apm] td が見つからないため todoist-cli skill の復元をスキップ"; \
 	fi
 
-# GH_EXTENSIONS に列挙した gh extension を install する (冪等)
-# gh 未認証だと install が API アクセスで失敗するため、その場合はスキップして通知だけする
-ghext:
-	@command -v gh >/dev/null 2>&1 || { echo "gh が見つからない: make deps を先に実行"; exit 1; }
-	@if gh auth status >/dev/null 2>&1; then \
-	  for ext in $(GH_EXTENSIONS); do \
-	    if gh extension list 2>/dev/null | grep -q "$$ext"; then \
-	      echo "[ghext] already installed: $$ext"; \
-	    else \
-	      gh extension install "$$ext"; \
-	    fi; \
-	  done; \
-	else \
-	  echo "[ghext] gh が未認証のためスキップ (gh auth login 後に make ghext)"; \
-	fi
-
 help:
 	@echo "Targets:"
-	@echo "  all      - deps + apply + mise + hooks + apm + ghext (デフォルト)"
+	@echo "  all      - deps + apply + mise + hooks + apm (デフォルト)"
 	@echo "  deps     - bun install (Homebrew は macbook-provisioning の Brewfile で導入)"
 	@echo "  init     - 初回のみ chezmoi 設定ファイルを生成"
 	@echo "  apply    - source → ~/ に反映 (標準の方向)"
@@ -173,4 +154,3 @@ help:
 	@echo "  uvtools  - uv tool で global に入れる Python CLI (kaggle 等) を install"
 	@echo "  hooks    - pre-commit hook を install (secretlint)"
 	@echo "  apm      - apm CLI を install + ~/.apm/apm.yml の skill を最新コミットで deploy (冪等)"
-	@echo "  ghext    - GH_EXTENSIONS の gh extension を install (冪等)"
