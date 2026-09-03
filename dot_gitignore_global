@@ -57,14 +57,14 @@ CLAUDE.local.md
 .claude/notes/
 
 # git worktree のローカル配置先
-# - .wt/               : git-wt (k1LoW/git-wt) のデフォルト basedir
+# - .wt/               : git-wt (k1LoW/git-wt) の旧 basedir。gitconfig の wt.basedir で .claude/worktrees/ に寄せた
 # - .worktrees/        : 旧 superpowers (using-git-worktrees) の配置先。既存 clone に残っている
-# - .claude/worktrees/ : Claude 系 skill が過去に使ったパターン
+# - .claude/worktrees/ : Claude Code の EnterWorktree tool / Agent isolation: worktree / git-wt (wt.basedir) の配置先
 .wt/
 .worktrees/
 .claude/worktrees/
 
-# 旧 superpowers が生成した設計書・実装計画（既存 clone にローカルで残っている。commit しない）
+# 旧 superpowers が生成した設計書・実装計画 (既存 clone にローカルで残っている。commit しない)
 docs/superpowers/
 
 # pnpm
