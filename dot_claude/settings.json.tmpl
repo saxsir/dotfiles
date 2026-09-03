@@ -6,6 +6,7 @@
     "CLAUDE_CODE_DISABLE_GIT_INSTRUCTIONS": "1",
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
     "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet",
     "CLAUDE_CODE_NEW_INIT": "1",
     "ENABLE_LSP_TOOL": "1",
     "PATH": "/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/opt/coreutils/libexec/gnubin:{{ .chezmoi.homeDir }}/.local/bin:{{ .chezmoi.homeDir }}/bin:/usr/local/bin:/Applications/cmux.app/Contents/Resources/bin:/usr/bin:/bin:/usr/sbin:/sbin"
@@ -160,7 +161,20 @@
           },
           {
             "type": "command",
+            "command": "~/.claude/hooks/block-gh-body-overwrite.sh"
+          },
+          {
+            "type": "command",
             "command": "~/.claude/hooks/block-aws-vault-write.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/pin-explore-model.sh"
           }
         ]
       }
