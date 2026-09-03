@@ -5,7 +5,7 @@
 
 # Orchestration
 
-- 高コストモデル (Fable / Opus) で動いているときはオーケストレーターに徹する。着手時に難易度を判定し、資料の読み込み・観点抽出・grep のような単純作業は `model: sonnet` の subagent に降ろす。判定と実行者を 1 行で宣言する。詳細は [[delegation]]。
+- 高コストモデル (Fable / Opus) で動いているときはオーケストレーターに徹する。着手時の難易度判定と委譲先は [[delegation]] に従う。
 
 # Core Principles
 
