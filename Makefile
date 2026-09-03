@@ -116,6 +116,8 @@ uvtools:
 # 転記し、plugin ファイル本体は deploy しない。hook スクリプト (session-start 等) は実体
 # が欠落するし、それらが plugin_root/skills など兄弟ディレクトリを参照する場合もあるので、
 # plugin ディレクトリ全体を ~/.claude/hooks/<plugin>/ に同期する
+# apm update は apm.yml から外した依存の apm_modules と hooks 同期先を消さないので自前で掃除する。
+# apm prune は subpath 依存 (mattpocock/skills/skills/...) の親 package を孤立と誤判定して消すため使わない
 apm:
 	@if command -v apm >/dev/null 2>&1; then \
 	  echo "[apm] already installed: $$(apm --version 2>&1 | head -1)"; \
@@ -126,6 +128,14 @@ apm:
 	fi
 	apm install -g --runtime claude
 	apm update -g --yes
+	@for pkgdir in "$$HOME"/.apm/apm_modules/*/*; do \
+	  pkg=$${pkgdir#"$$HOME"/.apm/apm_modules/}; \
+	  grep -q -E '^  - '"$$pkg"'(/|$$)' "$$HOME"/.apm/apm.yml && continue; \
+	  rm -rf "$$pkgdir"; \
+	  hookdir="$$HOME/.claude/hooks/$$(basename "$$pkgdir")"; \
+	  if [ -d "$$hookdir" ]; then rm -rf "$$hookdir"; fi; \
+	  echo "[apm] removed orphaned package: $$pkg"; \
+	done
 	@for plugdir in "$$HOME"/.apm/apm_modules/*/*; do \
 	  [ -d "$$plugdir/hooks" ] || continue; \
 	  plugin=$$(basename "$$plugdir"); \

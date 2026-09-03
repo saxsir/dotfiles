@@ -29,7 +29,6 @@ dependencies:
   - mattpocock/skills/skills/productivity/teach
   - mattpocock/skills/skills/productivity/writing-for-agents
   - saxsir/skills
-  - obra/superpowers
   - tomasz-tomczyk/crit/integrations/claude-code
   - manaflow-ai/cmux-skills/skills/cmux-cli
   - manaflow-ai/cmux-skills/skills/cmux-workspace

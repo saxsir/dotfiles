@@ -15,5 +15,5 @@ oh-my-zsh/
 # APM dependencies
 apm_modules/
 
-# git worktree fallback (using-git-worktrees skill)
+# 旧 superpowers (using-git-worktrees) が使った worktree 配置先
 .worktrees/
