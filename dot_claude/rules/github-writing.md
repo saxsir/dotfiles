@@ -26,12 +26,12 @@ PR / Issue の description と投稿済みコメントを直すときは、全�
 
 手順は固定する。
 
-1. 現在値をファイルに取る (`gh pr view <n> --json body --jq .body > <scratch>/body.md`。Issue は `gh issue view`、コメントは `gh api` で取る)。
+1. 現在値をファイルに取る (`gh pr view <n> --json body --jq .body > <scratch>/body.md`。Issue は `gh issue view`、コメントは `gh api repos/{owner}/{repo}/issues/comments/<id> --jq .body`)。
 2. そのファイルを Edit tool で局所編集する。書き直しではなく置換で直す。
 3. `diff` で元との差分を出してユーザーに見せ、承認を得る。
-4. `--body-file` で反映する (`gh pr edit <n> --body-file <scratch>/body.md`、コメントは `gh pr comment --edit-last --body-file`)。
+4. ファイル渡しで反映する (`gh pr edit <n> --body-file <scratch>/body.md`)。コメントは自分の最新のものだけ `gh pr comment --edit-last --body-file` で直せる。それ以外は `gh api -X PATCH repos/{owner}/{repo}/issues/comments/<id> -F body=@<scratch>/body.md` で渡す。
 
-インラインの `--body` で既存本文を更新する呼び出しは hook がブロックする。GitHub MCP の書き込みツール (update_pull_request / issue_write 等) は全文差し替えしかできないので、既存本文の更新には使わない。新規作成 (`gh pr create`、新規コメント) はこの手順の対象外。
+インラインの `--body`、stdin (`--body-file -`、heredoc)、`gh api` のインライン `-f body=` で既存本文を更新する呼び出しは hook がブロックする。GitHub MCP の書き込みツール (update_pull_request / issue_write 等) は全文差し替えしかできないので、既存本文の更新には使わない。新規作成 (`gh pr create`、新規コメント) はこの手順の対象外。
 
 ## コメント投稿
 
