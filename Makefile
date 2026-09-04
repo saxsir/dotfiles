@@ -15,7 +15,7 @@ deps:
 # core.hooksPath が孤児パス (実体なし) を指している場合は自動で unset する。
 # 実体があるパスを指している場合はユーザに通知して abort (意図的な設定の上書きを避ける)。
 hooks:
-	@command -v pre-commit >/dev/null 2>&1 || { echo "pre-commit が見つからない: make deps を先に実行"; exit 1; }
+	@command -v pre-commit >/dev/null 2>&1 || { echo "pre-commit が見つからない。先に saxsir/macbook-provisioning の make を実行する (Homebrew と Brewfile はそちらで管理)" >&2; exit 1; }
 	@hp=$$(git config --get core.hooksPath 2>/dev/null); \
 	if [ -n "$$hp" ]; then \
 	  if [ ! -d "$$hp" ]; then \
@@ -98,7 +98,7 @@ merge:
 
 # mise でランタイムを ~/.config/mise/config.toml の宣言通りに揃える (apply 後に実行する想定)
 mise:
-	@command -v mise >/dev/null 2>&1 || { echo "mise が見つからない: make deps を先に実行"; exit 1; }
+	@command -v mise >/dev/null 2>&1 || { echo "mise が見つからない。先に saxsir/macbook-provisioning の make を実行する (Homebrew と Brewfile はそちらで管理)" >&2; exit 1; }
 	mise install
 
 # uv tool で global に入れる Python CLI を冪等に install (mise の pipx backend を使わず uv に寄せる)
