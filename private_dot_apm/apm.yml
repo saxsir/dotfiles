@@ -39,6 +39,7 @@ dependencies:
   - anthropics/claude-plugins-community/eli5/skills/eli5
   - humanlayer/skills/plugins/show-me/skills/show-me
   - coji/natural-japanese/skills/natural-japanese
+  - voyagegroup/kairan/.claude/skills/kairan
   mcp: []
 includes: auto
 scripts: {}
