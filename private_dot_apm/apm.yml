@@ -37,6 +37,7 @@ dependencies:
   - github/gh-stack/skills/gh-stack
   - anthropics/claude-plugins-community/eli5/skills/eli5
   - humanlayer/skills/plugins/show-me/skills/show-me
+  - coji/natural-japanese/skills/natural-japanese
   mcp: []
 includes: auto
 scripts: {}
