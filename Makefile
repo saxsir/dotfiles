@@ -109,10 +109,14 @@ uvtools:
 # apm (Agent Package Manager) を install して global skill を deploy する (冪等)
 # Homebrew formula がないため公式 curl installer を使う
 # ~/.apm/apm.yml の依存関係 (mattpocock/skills 等) を ~/.claude/skills/ へ展開する
-# target に agent-skills を併記して ~/.agents/skills/ にも同じ skill を展開する。
+# apm.yml の targets に agent-skills を併記してあるので ~/.agents/skills/ にも展開される。
 # Codex CLI は user scope の skill を ~/.agents/skills/ から読むのでこれで共用できる。
 # codex target ではなく agent-skills を使うのは、codex target が hooks.json や
 # agents まで書き込み、Claude 向け plugin の hook が ~/.codex/hooks.json を汚すため
+# install に --target / --runtime を渡さないのは、install だけがフラグで targets を
+# 上書きし、続く update は ~/.apm/apm.yml から解決するため。両者がずれると update が
+# install の展開先を消す (apply 前に make apm を打つと .agents/skills/ が消えた)。
+# targets は apm.yml を単一の source of truth にして、先に make apply で反映する
 # install は ~/.apm/apm.lock.yaml のコミット固定を尊重するため、update で常に最新へ追従させる
 # apm update は ~/.claude/skills/ の apm 管理外 skill を削除するため、
 # 巻き添えで消える Doist 公式 todoist-cli skill を毎回 td で復元する
@@ -130,7 +134,7 @@ apm:
 	  curl -sSL https://aka.ms/apm-unix | sh; \
 	  echo "[apm] installed: $$(apm --version 2>&1 | head -1)"; \
 	fi
-	apm install -g --target claude,agent-skills
+	apm install -g
 	apm update -g --yes
 	@for pkgdir in "$$HOME"/.apm/apm_modules/*/*; do \
 	  pkg=$${pkgdir#"$$HOME"/.apm/apm_modules/}; \

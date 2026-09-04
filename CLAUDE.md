@@ -34,7 +34,7 @@ make apm       # ~/.claude/skills/ と ~/.agents/skills/ へ skill をデプロ�
 2. **Development Tools**: git は `gitconfig` に大量のエイリアスがあり、AWS credential 保護に git-secrets を使う。パッケージ管理は Homebrew (macOS) と mise (言語バージョン管理)
 3. **Editors**: NeoVim は mini.deps ベースの基本構成。IdeaVim は vimrc を継承しつつ IntelliJ 固有の設定を足している
 4. **Lima VM**: `lima/claude-dev.yaml` が Claude Code 実行用 VM (Ubuntu 24.04 ARM64, Apple Virtualization.framework)。ホストの `~/src` を読み書き可能でマウントし、ホームは読み取り専用
-5. **Agent Skills (apm)**: `private_dot_apm/apm.yml` の `dependencies.apm` に `owner/repo` を追記して `make apm`。`targets` が `claude` と `agent-skills` の両方なので、同じ skill が `~/.claude/skills/` (Claude Code) と `~/.agents/skills/` (Codex CLI の user scope) の両方に展開される
+5. **Agent Skills (apm)**: `private_dot_apm/apm.yml` の `dependencies.apm` に `owner/repo` を追記し、`make apply` で `~/.apm/apm.yml` に反映してから `make apm`。`targets` が `claude` と `agent-skills` の両方なので、apm 管理下の skill は `~/.claude/skills/` (Claude Code) と `~/.agents/skills/` (Codex CLI の user scope) の両方に展開される (apm 管理外の todoist-cli は `~/.claude/skills/` だけ)
 
 ## Code Style
 

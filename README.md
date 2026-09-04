@@ -42,8 +42,12 @@ make apm   # 未 install なら curl -sSL https://aka.ms/apm-unix | sh を実行
 ```
 
 skill の展開先は `private_dot_apm/apm.yml` の `targets` で決まる。`claude` と `agent-skills` を並べているので、
-同じ skill が `~/.claude/skills/` (Claude Code) と `~/.agents/skills/` (Codex CLI が user scope として読む場所) の
-両方に入る。Codex 側は追加設定なしでそのまま使える。
+apm 管理下の skill は `~/.claude/skills/` (Claude Code) と `~/.agents/skills/` (Codex CLI が user scope として
+読む場所) の両方に入る。Codex 側は追加設定なしでそのまま使える。apm 管理外の todoist-cli skill は
+`td` が Claude Code 向けにしか復元しないため `~/.claude/skills/` だけに入る。
+
+`targets` を書き換えたときは `make apply` で `~/.apm/apm.yml` に反映してから `make apm` を実行する。
+`make apm` の中の `apm update` は `~/.apm/apm.yml` を見るので、反映前だと展開先が食い違う。
 
 ユーザー global 設定 `~/.apm/config.json` は `private_dot_apm/config.json` として chezmoi 管理。
 設定を編集した場合は `make re-add FILE=~/.apm/config.json` でソース側に取り込む。
