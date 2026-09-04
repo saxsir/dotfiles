@@ -17,15 +17,18 @@ eval "$(echo "${input}" | jq -r '
   "rate_5h=\(.rate_limits.five_hour.used_percentage // -1 | floor)",
   "rate_5h_reset=\(.rate_limits.five_hour.resets_at // -1)",
   "rate_7d=\(.rate_limits.seven_day.used_percentage // -1 | floor)",
-  "rate_7d_reset=\(.rate_limits.seven_day.resets_at // -1)"
+  "rate_7d_reset=\(.rate_limits.seven_day.resets_at // -1)",
+  "effort=\(.effort.level // "" | @sh)",
+  "output_style=\(.output_style.name // "" | @sh)",
+  "cache_warm=\(.prompt_cache.warm // false)",
+  "cache_ttl=\(.prompt_cache.ttl // "" | @sh)",
+  "cache_expires=\(.prompt_cache.expires_at // -1)",
+  "cache_observed=\(.prompt_cache.caching_observed // false)"
 ')"
 
 format_reset() {
   date -d "@$1" +"$2" 2>/dev/null || date -r "$1" +"$2" 2>/dev/null
 }
-
-# effortLevel は stdin JSON 未対応のため settings.json から読む
-effort=$(jq -r '.effortLevel // empty' ~/.claude/settings.json 2>/dev/null)
 
 dir_name=$(basename "${current_dir}")
 
@@ -149,4 +152,28 @@ fi
 # Effort level
 if [ -n "${effort}" ]; then
   printf ' %b%s%b' "${DIM}" "${effort}" "${RESET}"
+fi
+
+# Output style (default は表示しない)
+if [ -n "${output_style}" ] && [ "${output_style}" != "default" ]; then
+  printf ' %b%s%b' "${DIM}" "style:${output_style}" "${RESET}"
+fi
+
+# Prompt cache status
+if [ "${cache_observed}" = "true" ]; then
+  now=$(date +%s)
+  if [ "${cache_warm}" = "true" ]; then
+    if [ "${cache_expires}" -le 0 ] 2>/dev/null; then
+      cache_str="cache:warm"
+    else
+      cache_mins=$(( (cache_expires - now) / 60 ))
+      cache_str="cache:${cache_mins}m"
+      [ -n "${cache_ttl}" ] && cache_str="${cache_str}(${cache_ttl})"
+    fi
+    printf ' %b%s%b' "${GREEN}" "${cache_str}" "${RESET}"
+  else
+    cache_str="cache:cold"
+    [ -n "${cache_ttl}" ] && cache_str="${cache_str}(${cache_ttl})"
+    printf ' %b%s%b' "${RED}" "${cache_str}" "${RESET}"
+  fi
 fi
