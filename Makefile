@@ -109,6 +109,10 @@ uvtools:
 # apm (Agent Package Manager) を install して global skill を deploy する (冪等)
 # Homebrew formula がないため公式 curl installer を使う
 # ~/.apm/apm.yml の依存関係 (mattpocock/skills 等) を ~/.claude/skills/ へ展開する
+# target に agent-skills を併記して ~/.agents/skills/ にも同じ skill を展開する。
+# Codex CLI は user scope の skill を ~/.agents/skills/ から読むのでこれで共用できる。
+# codex target ではなく agent-skills を使うのは、codex target が hooks.json や
+# agents まで書き込み、Claude 向け plugin の hook が ~/.codex/hooks.json を汚すため
 # install は ~/.apm/apm.lock.yaml のコミット固定を尊重するため、update で常に最新へ追従させる
 # apm update は ~/.claude/skills/ の apm 管理外 skill を削除するため、
 # 巻き添えで消える Doist 公式 todoist-cli skill を毎回 td で復元する
@@ -126,7 +130,7 @@ apm:
 	  curl -sSL https://aka.ms/apm-unix | sh; \
 	  echo "[apm] installed: $$(apm --version 2>&1 | head -1)"; \
 	fi
-	apm install -g --runtime claude
+	apm install -g --target claude,agent-skills
 	apm update -g --yes
 	@for pkgdir in "$$HOME"/.apm/apm_modules/*/*; do \
 	  pkg=$${pkgdir#"$$HOME"/.apm/apm_modules/}; \
@@ -163,4 +167,4 @@ help:
 	@echo "  mise     - ~/.config/mise/config.toml に従って mise install"
 	@echo "  uvtools  - uv tool で global に入れる Python CLI (kaggle 等) を install"
 	@echo "  hooks    - pre-commit hook を install (secretlint)"
-	@echo "  apm      - apm CLI を install + ~/.apm/apm.yml の skill を最新コミットで deploy (冪等)"
+	@echo "  apm      - apm CLI を install + ~/.apm/apm.yml の skill を最新コミットで deploy (Claude / Codex 共用、冪等)"

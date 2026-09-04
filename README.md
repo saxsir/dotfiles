@@ -41,6 +41,10 @@ make help        # 全 target 一覧
 make apm   # 未 install なら curl -sSL https://aka.ms/apm-unix | sh を実行、既存なら skip
 ```
 
+skill の展開先は `private_dot_apm/apm.yml` の `targets` で決まる。`claude` と `agent-skills` を並べているので、
+同じ skill が `~/.claude/skills/` (Claude Code) と `~/.agents/skills/` (Codex CLI が user scope として読む場所) の
+両方に入る。Codex 側は追加設定なしでそのまま使える。
+
 ユーザー global 設定 `~/.apm/config.json` は `private_dot_apm/config.json` として chezmoi 管理。
 設定を編集した場合は `make re-add FILE=~/.apm/config.json` でソース側に取り込む。
 

@@ -4,6 +4,7 @@ description: APM project for saxsir/dotfiles
 author: saxsir
 targets:
   - claude
+  - agent-skills
 
 dependencies:
   apm:
