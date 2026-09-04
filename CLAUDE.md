@@ -13,7 +13,7 @@ make           # deps + apply
 make deps      # bun install (package.json があれば。Homebrew 導入は macbook-provisioning が担当)
 make apply     # chezmoi apply で ~/ にファイル配置 (初回は init で name/email プロンプト)
 make diff      # 適用前に差分確認
-make apm       # ~/.claude/skills/ へ skill をデプロイ (内部で apm update -g --yes)
+make apm       # ~/.claude/skills/ と ~/.agents/skills/ へ skill をデプロイ (内部で apm update -g --yes)
 ```
 
 設定を触ったら、コミット前に反映して動くことを見ておきたい。zsh なら `zsh -n ~/.zshrc` で構文を見て、新しいシェルを開いて初期化がエラーなく通るか確かめる。起動時間が気になるときは `ENABLE_STARTUP_PROFILING=1 zsh -i -c exit` で内蔵プロファイラが回る。chezmoi の適用結果を先に見たいときは `chezmoi diff`。
@@ -34,7 +34,7 @@ make apm       # ~/.claude/skills/ へ skill をデプロイ (内部で apm upda
 2. **Development Tools**: git は `gitconfig` に大量のエイリアスがあり、AWS credential 保護に git-secrets を使う。パッケージ管理は Homebrew (macOS) と mise (言語バージョン管理)
 3. **Editors**: NeoVim は mini.deps ベースの基本構成。IdeaVim は vimrc を継承しつつ IntelliJ 固有の設定を足している
 4. **Lima VM**: `lima/claude-dev.yaml` が Claude Code 実行用 VM (Ubuntu 24.04 ARM64, Apple Virtualization.framework)。ホストの `~/src` を読み書き可能でマウントし、ホームは読み取り専用
-5. **Claude Code Skills (apm)**: `private_dot_apm/apm.yml` の `dependencies.apm` に `owner/repo` を追記して `make apm`
+5. **Agent Skills (apm)**: `private_dot_apm/apm.yml` の `dependencies.apm` に `owner/repo` を追記し、`make apply` で `~/.apm/apm.yml` に反映してから `make apm`。`targets` が `claude` と `agent-skills` の両方なので、apm 管理下の skill は `~/.claude/skills/` (Claude Code) と `~/.agents/skills/` (Codex CLI の user scope) の両方に展開される (apm 管理外の todoist-cli は `~/.claude/skills/` だけ)
 
 ## Code Style
 
