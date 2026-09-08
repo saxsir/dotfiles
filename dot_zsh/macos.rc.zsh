@@ -2,6 +2,7 @@
 # loader (dot_zshrc) で uname == Darwin の時だけ source される
 
 # Homebrew (Apple Silicon)
+# NOTE: 出力が実行時の PATH に依存する (cached_source でキャッシュすると PATH が壊れる)
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # GNU coreutils (date 等の構文を Linux と揃える)
