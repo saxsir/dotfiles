@@ -10,7 +10,8 @@ export CLAUDE_PATH="$HOME/.local/bin/claude"
 if [ -d "/usr/local/go/" ]; then
   export PATH=/usr/local/go/bin:$PATH
   export GOPATH=$HOME
-  export GOROOT=$(go env GOROOT)
+  # `go env GOROOT` は subprocess 1 回ぶん遅いだけで、この分岐では値が自明
+  export GOROOT=/usr/local/go
   export PATH=$GOPATH/bin:$PATH
 fi
 

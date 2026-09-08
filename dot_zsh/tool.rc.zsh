@@ -29,16 +29,27 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=green,bold"
 # 展開されるため、ここで compinit しても影響しない。
 # ============================================================
 autoload -Uz compinit
-if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
-  compinit
+# dump が 24h 以上古いときだけ完全な compinit を走らせ、通常は -C で fpath 走査を省く。
+# 判定を配列で書くのは [[ ]] の中では glob (qualifier) が展開されないため。
+# ZDOTDIR は未設定が既定なので、パスは compinit 自身と同じ ${ZDOTDIR:-$HOME} で組む
+_zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
+_zcompdump_stale=( ${_zcompdump}(N.mh+24) )
+if (( ${#_zcompdump_stale} )); then
+  compinit -d "${_zcompdump}"
+  # compinit -d は内容が変わらなければ dump を書き直さない。mtime を更新しないと
+  # 一度 24h を超えた dump が永久に stale 扱いになり、毎回フル compinit が走る
+  touch "${_zcompdump}"
 else
-  compinit -C
+  compinit -C -d "${_zcompdump}"
 fi
+unset _zcompdump _zcompdump_stale
 
 # ============================================================
 # starship (プロンプト)
 # ============================================================
-eval "$(starship init zsh)"
+# init 本体を直接キャッシュする (バージョンによっては `init zsh` が
+# 本体を再 eval するスタブを吐き、キャッシュしても subprocess が残るため)
+cached_source starship starship init zsh --print-full-init
 
 # ============================================================
 # 関数 (peco / ghq / fzf / aws-vault)
@@ -103,18 +114,19 @@ bindkey '^j' select_worktree
 # ============================================================
 
 # direnv
-if which direnv > /dev/null; then eval "$(direnv hook zsh)"; fi
+if command -v direnv > /dev/null; then cached_source direnv direnv hook zsh; fi
 
 # Google Cloud SDK
 if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then source "$HOME/google-cloud-sdk/path.zsh.inc"; fi
 if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then source "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
 
 # mise
+# NOTE: 出力に生成時点の PATH が絶対パスで埋まるのでキャッシュしない
 eval "$(mise activate zsh)"
 
 # git-wt
 if command -v git-wt &> /dev/null; then
-  eval "$(git wt --init zsh)"
+  cached_source git-wt git wt --init zsh
 fi
 
 # bun completion
@@ -122,7 +134,7 @@ fi
 
 # devbox completion (devbox 本体は macbook-provisioning の Brewfile のコメント参照: 別途 curl install)
 if command -v devbox >/dev/null 2>&1; then
-  eval "$(devbox completion zsh)"
+  cached_source devbox devbox completion zsh
 fi
 
 # yazi: 終了時に cd 先を引き継ぐラッパ (公式推奨)
@@ -148,10 +160,13 @@ function _cmux_auto_group() {
   command -v cmux > /dev/null || return 0
   command -v jq > /dev/null || return 0
 
-  # ghq root は初回の呼び出しでのみ解決する (shell 起動時の subprocess 起動を避ける)
+  # src root は初回の呼び出しでのみ解決する。
+  # この関数は shell 起動時にも呼ばれるので、`ghq root` (25ms) ではなく
+  # 同じ設定源である git config (1ms 未満) を読む。~ は自前で展開する
   if [[ -z "${_cmux_auto_group_src_root:-}" ]]; then
-    _cmux_auto_group_src_root="$(ghq root 2> /dev/null)"
+    _cmux_auto_group_src_root="${GHQ_ROOT:-$(command git config --get ghq.root 2> /dev/null)}"
     _cmux_auto_group_src_root="${_cmux_auto_group_src_root:-${HOME}/src}"
+    _cmux_auto_group_src_root="${_cmux_auto_group_src_root/#\~/${HOME}}"
   fi
   local src_root="${_cmux_auto_group_src_root}"
 
