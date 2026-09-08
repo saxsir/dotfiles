@@ -36,6 +36,9 @@ _zcompdump="${ZDOTDIR:-$HOME}/.zcompdump"
 _zcompdump_stale=( ${_zcompdump}(N.mh+24) )
 if (( ${#_zcompdump_stale} )); then
   compinit -d "${_zcompdump}"
+  # compinit -d は内容が変わらなければ dump を書き直さない。mtime を更新しないと
+  # 一度 24h を超えた dump が永久に stale 扱いになり、毎回フル compinit が走る
+  touch "${_zcompdump}"
 else
   compinit -C -d "${_zcompdump}"
 fi
@@ -44,7 +47,8 @@ unset _zcompdump _zcompdump_stale
 # ============================================================
 # starship (プロンプト)
 # ============================================================
-# --print-full-init を直接キャッシュする (`starship init zsh` は本体を再 eval するスタブを吐くだけ)
+# init 本体を直接キャッシュする (バージョンによっては `init zsh` が
+# 本体を再 eval するスタブを吐き、キャッシュしても subprocess が残るため)
 cached_source starship starship init zsh --print-full-init
 
 # ============================================================
@@ -156,8 +160,15 @@ function _cmux_auto_group() {
   command -v cmux > /dev/null || return 0
   command -v jq > /dev/null || return 0
 
-  # ghq root の subprocess は起動時に効くので、環境変数か既定値で済ませる
-  local src_root="${GHQ_ROOT:-${HOME}/src}"
+  # src root は初回の呼び出しでのみ解決する。
+  # この関数は shell 起動時にも呼ばれるので、`ghq root` (25ms) ではなく
+  # 同じ設定源である git config (1ms 未満) を読む。~ は自前で展開する
+  if [[ -z "${_cmux_auto_group_src_root:-}" ]]; then
+    _cmux_auto_group_src_root="${GHQ_ROOT:-$(command git config --get ghq.root 2> /dev/null)}"
+    _cmux_auto_group_src_root="${_cmux_auto_group_src_root:-${HOME}/src}"
+    _cmux_auto_group_src_root="${_cmux_auto_group_src_root/#\~/${HOME}}"
+  fi
+  local src_root="${_cmux_auto_group_src_root}"
 
   # symlink 経由の cd も実パスで判定する
   local pwd_real="${PWD:A}"
