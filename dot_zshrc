@@ -7,11 +7,13 @@
 # ============================================================
 # モジュール読み込み (~/.zsh/*.rc.zsh)
 # 役割分担:
+#   cache.rc.zsh - init 出力のキャッシュ (他モジュールより先に読む)
 #   macos.rc.zsh - macOS 固有 (Homebrew, GNU coreutils)
 #   env.rc.zsh   - 環境変数と PATH 追加
 #   tool.rc.zsh  - zinit, mise, peco/ghq, direnv 等のツール統合
 #   base.rc.zsh  - シェルオプション / alias / compinit
 # ============================================================
+[[ -f ~/.zsh/cache.rc.zsh ]] && source ~/.zsh/cache.rc.zsh
 [[ "$(uname)" = "Darwin" && -f ~/.zsh/macos.rc.zsh ]] && source ~/.zsh/macos.rc.zsh
 [[ -f ~/.zsh/env.rc.zsh ]] && source ~/.zsh/env.rc.zsh
 [[ -f ~/.zsh/tool.rc.zsh ]] && source ~/.zsh/tool.rc.zsh
