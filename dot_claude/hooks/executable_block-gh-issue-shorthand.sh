@@ -54,14 +54,16 @@ sub tokenize {
       }
       $i++;
     } elsif ($c eq q{\\} && $i + 1 < @chars) {
-      $i++; $cur .= $chars[$i]; $i++; $has = 1;
+      $i++;
+      if ($chars[$i] eq qq{\n}) { $i++; next }  # 行継続は消える (次の語と接着させない)
+      $cur .= $chars[$i]; $i++; $has = 1;
     } elsif ($c =~ /\s/) {
-      push @tokens, { v => $cur, sep => 0 } if $has;
+      push @tokens, { v => defined $cur ? $cur : q{}, sep => 0 } if $has;
       $cur = undef; $has = 0;
       push @tokens, { v => q{;}, sep => 1 } if $c eq qq{\n};
       $i++;
     } elsif ($c =~ /[;|&]/) {                 # コマンド区切り (引用の外だけ)
-      push @tokens, { v => $cur, sep => 0 } if $has;
+      push @tokens, { v => defined $cur ? $cur : q{}, sep => 0 } if $has;
       $cur = undef; $has = 0;
       $i++;
       $i++ while $i < @chars && $chars[$i] eq $c;
@@ -70,7 +72,7 @@ sub tokenize {
       $cur .= $c; $i++; $has = 1;
     }
   }
-  push @tokens, { v => $cur, sep => 0 } if $has;
+  push @tokens, { v => defined $cur ? $cur : q{}, sep => 0 } if $has;
   return @tokens;
 }
 
@@ -79,9 +81,13 @@ sub tokenize {
 # 検査対象から外す。details に貼るログや shebang での誤検知はここで消える。
 sub strip_code {
   my ($t) = @_;
-  $t =~ s/^[ \t]*(`{3,}|~{3,})[^\n]*\n.*?^[ \t]*\1[ \t]*$//gms;  # 閉じたフェンス
-  $t =~ s/^[ \t]*(`{3,}|~{3,})[^\n]*\n.*\z//ms;                  # 閉じ忘れは末尾まで
-  $t =~ s/(`+)(?:(?!\1).)*?\1//gs;                               # インラインコード
+  # 閉じフェンスは開きより長くてよい (CommonMark)。\1 だけで受けると長い閉じを
+  # 取り逃し、「閉じ忘れ」扱いで本文の残り全部を消してしまう。
+  $t =~ s/^[ \t]*(`{3,}|~{3,})[^\n]*\n.*?^[ \t]*\1[`~]*[ \t]*$//gms;
+  $t =~ s/^[ \t]*(`{3,}|~{3,})[^\n]*\n.*\z//ms;                  # 本当に閉じ忘れなら末尾まで
+  # インラインコードは行をまたがない。. を [^\n] にしないと、地の文に紛れた
+  # 対になっていないバックティックが次のバックティックまで本文を食う。
+  $t =~ s/(`+)(?:(?!\1)[^\n])*?\1//g;
   return $t;
 }
 
@@ -89,17 +95,24 @@ sub scan {
   my ($t) = @_;
   $t = strip_code($t);
   my @hits;
-  # 直前が行頭か空白・約物、直後が英数/_/- でないものだけ拾う。
-  # URL のフラグメント (…/pull/1#issuecomment-123) は直前が非空白なので外れる。
-  while ($t =~ /(?:^|[\s(\[{>,])\#(\d+)(?![0-9A-Za-z_-])/gm) { push @hits, $1 }
+  # 直前を文字クラスで「消費」すると、日本語の直後 (詳細は#123) や **#123** を
+  # 取り逃す。マルチバイトの末尾や約物を列挙しきれないので否定後読みにする。
+  # URL のフラグメントは #issuecomment-… / #L12 のように英字始まりなので
+  # \#(\d+) にそもそも当たらない。GitHub が解決しない見出しリンク ](#123) だけ外す。
+  while ($t =~ /(?<![0-9A-Za-z_])(?<!\]\()\#(\d+)(?![0-9A-Za-z_-])/g) { push @hits, $1 }
   return @hits;
 }
 
 sub read_body_file {
   my ($p) = @_;
   return () if !defined $p || $p eq q{-} || $p =~ /^<\(/;   # stdin / process substitution は読めない
-  $p =~ s/^~/$ENV{HOME}/;
+  $p =~ s{^~(?=/|\z)}{$ENV{HOME}};   # ~user は展開しない (壊れたパスにして fail-open させない)
   $p = "$ENV{CWD}/$p" if $p !~ m{^/} && defined $ENV{CWD} && $ENV{CWD} ne q{};
+  # 通常ファイル以外は開かない。writer の居ない FIFO は open でブロックし、
+  # /dev/zero は無限に読んでメモリを食う。どちらも hook の timeout まで
+  # Bash tool 全体を止めるので、読む前に弾く。
+  return () if !-f $p;
+  return () if -s $p > 1048576;                             # 巨大ファイルも素通し
   open my $fh, q{<}, $p or return ();                       # 読めなければ素通し (fail-open)
   local $/; my $c = <$fh>; close $fh;
   return defined $c ? ($c) : ();
@@ -118,9 +131,10 @@ push @cmds, [@cur] if @cur;
 my @found;
 for my $c (@cmds) {
   my @a = @$c;
-  # 先頭の環境変数代入を読み飛ばす
-  shift @a while @a && $a[0] =~ /^\w+=/;
-  next unless @a && $a[0] eq q{gh};
+  # 先頭の環境変数代入と command を読み飛ばす
+  shift @a while @a && ($a[0] =~ /^\w+=/ || $a[0] eq q{command});
+  # サブシェル ((gh …) / { gh …) と絶対パス指定も拾う
+  next unless @a && $a[0] =~ /(?:^|[\/(\{])gh$/;
 
   my @words = grep { !/^-/ } @a[1 .. $#a];
   my $is_api   = (grep { $_ eq q{api} } @words) ? 1 : 0;
@@ -133,11 +147,18 @@ for my $c (@cmds) {
     my $n = $i < $#a ? $a[$i + 1] : undef;
 
     if ($is_issue) {
-      # gh pr/issue: -F は --body-file の短縮形
-      push @bodies, $n            if ($t eq q{--body} || $t eq q{-b}) && defined $n;
-      push @bodies, $1            if $t =~ /^--body=(.*)$/s;
-      push @bodies, read_body_file($n) if ($t eq q{--body-file} || $t eq q{-F}) && defined $n;
+      # gh pr/issue: -F は --body-file の短縮形。
+      # pflag なので値の連結 (-b'#123') と bool との結合 (-db '#123') も成立する。
+      push @bodies, $1                 if $t =~ /^--body=(.*)$/s;
       push @bodies, read_body_file($1) if $t =~ /^--body-file=(.*)$/s;
+      push @bodies, $n                 if $t eq q{--body} && defined $n;
+      push @bodies, read_body_file($n) if $t eq q{--body-file} && defined $n;
+      if ($t =~ /^-[a-zA-Z]*b(.*)$/s) {
+        push @bodies, ($1 ne q{} ? $1 : (defined $n ? $n : ()));
+      }
+      if ($t =~ /^-[a-zA-Z]*F(.*)$/s) {
+        push @bodies, read_body_file($1 ne q{} ? $1 : $n);
+      }
     }
     if ($is_api) {
       # gh api: -F body=@<file> はファイル渡し、-f body= は直書き
@@ -158,7 +179,13 @@ for my $c (@cmds) {
 }
 
 my %seen; my @uniq = grep { !$seen{$_}++ } @found;
-print join(q{, }, map { qq{#$_} } @uniq) if @uniq;
+exit 0 unless @uniq;
+# stderr は Claude の context に入る。番号を無制限に並べると 1 回の誤ブロックで
+# context を埋めるので、先頭だけ出して残りは件数にまとめる。
+my $cap = 10;
+my @out = @uniq > $cap ? @uniq[0 .. $cap - 1] : @uniq;
+print join(q{, }, map { qq{#$_} } @out);
+printf q{ 他 %d 件}, scalar(@uniq) - $cap if @uniq > $cap;
 ')
 
 if [ -n "$FOUND" ]; then
