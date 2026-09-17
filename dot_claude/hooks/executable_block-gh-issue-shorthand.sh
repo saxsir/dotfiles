@@ -10,6 +10,9 @@
 # 偶然同じ番号があれば素通りする — 防ぎたい事故そのものなので採らない。
 # だから同一リポ参照も含めて一律に落とし、常にフル URL を書かせる。
 #
+# 唯一の例外は closing keyword (Closes / Fixes / Resolves) の行。GitHub の自動
+# クローズはフル URL を受け付けないので、短縮形以外に書きようがない。
+#
 # 本文の取得元は gh pr/issue 系の --body / -b / --body-file / -F <file> と、
 # gh api の -f body= / -F body=@<file> / --input <file>。
 # title は見ない (短縮参照が入る頻度が低く、検査を body に集中させる)。
@@ -91,9 +94,20 @@ sub strip_code {
   return $t;
 }
 
+# GitHub の closing keyword は #n / owner/repo#n しか受け付けず、フル URL では
+# 自動クローズが効かない (docs の構文表にフル URL は無い)。ここだけは短縮形で
+# 書くしかないので例外にする。行全体が keyword + 参照のときに限り、
+# 地の文に紛れた #123 まで免除が広がらないようにする。
+sub strip_closing_keywords {
+  my ($t) = @_;
+  $t =~ s/^[ \t]*((?:clos(?:e|es|ed)|fix(?:es|ed)?|resolv(?:e|es|ed))[ \t]*:?[ \t]+(?:[\w.-]+\/[\w.-]+)?\#\d+[ \t,]*)+$//gmi;
+  return $t;
+}
+
 sub scan {
   my ($t) = @_;
   $t = strip_code($t);
+  $t = strip_closing_keywords($t);
   my @hits;
   # 直前を文字クラスで「消費」すると、日本語の直後 (詳細は#123) や **#123** を
   # 取り逃す。マルチバイトの末尾や約物を列挙しきれないので否定後読みにする。
