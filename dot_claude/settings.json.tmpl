@@ -59,12 +59,10 @@
       "Bash(git add --all *)",
       "Bash(git checkout .)",
       "Bash(git clean -f *)",
-      "Bash(git commit --amend:*)",
       "Bash(git push -f:*)",
       "Bash(git push -f *)",
       "Bash(git push --force *)",
-      "Bash(git rebase:*)",
-      "Bash(git reset:*)",
+      "Bash(git push --force-with-lease*)",
       "Bash(git reset --hard *)",
       "Bash(gh pr merge:*)",
       "Bash(gcloud * --quiet)",
@@ -167,6 +165,10 @@
           {
             "type": "command",
             "command": "~/.claude/hooks/block-push-to-main.sh"
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/block-force-push.sh"
           },
           {
             "type": "command",
