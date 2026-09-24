@@ -119,12 +119,18 @@ function resume() {
   local file="${pending_dir}/${selected}.md"
   local dir
   dir=$(sed -n 's/^cwd: //p' "${file}" | head -1)
-  if [[ ! -d "${dir}" ]]; then
-    echo "cwd not found: ${dir} (${file})"
+  mkdir -p "${done_dir}"
+  # -n: 同名の done を上書きしない。移せなかったら古い doc で起動しないよう止める
+  mv -n "${file}" "${done_dir}/"
+  if [[ -e "${file}" ]]; then
+    echo "already exists in done: ${selected}.md"
     return 1
   fi
-  mkdir -p "${done_dir}"
-  mv "${file}" "${done_dir}/"
+  # merge 後に worktree を消した等で cwd が無い doc は、pending に残り続けないよう done に送って終える
+  if [[ ! -d "${dir}" ]]; then
+    echo "cwd not found, moved to done: ${dir} (${selected}.md)"
+    return 1
+  fi
   cd "${dir}" && claude "${done_dir}/${selected}.md を読んで、引き継ぎの続きから再開する"
 }
 
