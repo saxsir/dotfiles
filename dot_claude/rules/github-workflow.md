@@ -1,6 +1,6 @@
 # GitHub ワークフロー
 
-GitHub Issue / PR を扱うときの前提。git 操作は [[git-branch-workflow]]、文章規約は [[github-writing]]。
+GitHub Issue / PR を扱うときの前提。git 操作は [[git-branch-workflow]]、文章規約は `github-writing` skill (hook と連動する必須事項は `rules/github-writing.md`)。
 
 ## PR
 
