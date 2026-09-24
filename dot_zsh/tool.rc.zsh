@@ -101,6 +101,39 @@ function select_worktree() {
   zle clear-screen
 }
 
+# peco x handoff (/eod skill が書いた引き継ぎ doc を選んで Claude を再開)
+# 選んだ doc は done/ に移し、pending/ を未着手の引き継ぎ一覧として保つ
+function resume() {
+  local pending_dir="${HOME}/.claude/handoffs/pending"
+  local done_dir="${HOME}/.claude/handoffs/done"
+  local files=("${pending_dir}"/*.md(N))
+  if (( ${#files} == 0 )); then
+    echo "No pending handoffs in ${pending_dir}"
+    return 1
+  fi
+  local selected
+  selected=$(for f in "${files[@]}"; do
+    printf '%s\t%s\n' "${f:t:r}" "$(sed -n 's/^next: //p' "${f}" | head -1)"
+  done | peco | cut -f1)
+  [[ -n "${selected}" ]] || return 0
+  local file="${pending_dir}/${selected}.md"
+  local dir
+  dir=$(sed -n 's/^cwd: //p' "${file}" | head -1)
+  mkdir -p "${done_dir}"
+  # -n: 同名の done を上書きしない。移せなかったら古い doc で起動しないよう止める
+  mv -n "${file}" "${done_dir}/"
+  if [[ -e "${file}" ]]; then
+    echo "already exists in done: ${selected}.md"
+    return 1
+  fi
+  # merge 後に worktree を消した等で cwd が無い doc は、pending に残り続けないよう done に送って終える
+  if [[ ! -d "${dir}" ]]; then
+    echo "cwd not found, moved to done: ${dir} (${selected}.md)"
+    return 1
+  fi
+  cd "${dir}" && claude "${done_dir}/${selected}.md を読んで、引き継ぎの続きから再開する"
+}
+
 # キーバインド (peco/fzf 関数を ZLE に登録)
 zle -N peco-select-history
 zle -N peco-src
