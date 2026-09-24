@@ -48,7 +48,7 @@ draft PR を作る前に `review` → `crit` の gate を通す ([[review-cycle]
 
 ## 段の境界
 
-段が変わるところで、探索の dump と古い tool 出力を落とした要約を書く。圧縮を理由に gate を緩めない。セッションを跨ぐときの選択肢は、続ける / `clear` / `handoff` / subagent / `compact` の 5 つ。`handoff` は新しい harness・新しいディレクトリ・同僚に渡すときだけで、同一ディレクトリで続くなら `compact`。
+段が変わるところで、探索の dump と古い tool 出力を落とした要約を書く。圧縮を理由に gate を緩めない。セッションを跨ぐときの選択肢は、続ける / `clear` / `handoff` / subagent / `compact` の 5 つ。`handoff` は新しい harness・新しいディレクトリ・同僚に渡すときだけで、同一ディレクトリで続くなら `compact`。例外として、業務終了で日をまたぐセッションは `eod` で引き継ぎ doc に落とし、翌日はシェルの `resume` から新しいセッションで拾う (夜のうちに prompt cache が切れ、翌朝に長い context を読み直すことになるため)。
 
 ## 終了 / 改善
 
