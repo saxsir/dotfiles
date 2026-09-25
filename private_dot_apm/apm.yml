@@ -8,34 +8,34 @@ targets:
 
 dependencies:
   apm:
-  - mattpocock/skills/skills/engineering/ask-matt
-  - mattpocock/skills/skills/engineering/codebase-design
-  - mattpocock/skills/skills/engineering/diagnosing-bugs
-  - mattpocock/skills/skills/engineering/domain-modeling
-  - mattpocock/skills/skills/engineering/grill-with-docs
-  - mattpocock/skills/skills/engineering/implement
-  - mattpocock/skills/skills/engineering/improve-codebase-architecture
-  - mattpocock/skills/skills/engineering/prototype
-  - mattpocock/skills/skills/engineering/research
-  - mattpocock/skills/skills/engineering/resolving-merge-conflicts
-  - mattpocock/skills/skills/engineering/setup-matt-pocock-skills
-  - mattpocock/skills/skills/engineering/tdd
-  - mattpocock/skills/skills/engineering/to-spec
-  - mattpocock/skills/skills/engineering/to-tickets
-  - mattpocock/skills/skills/engineering/triage
-  - mattpocock/skills/skills/engineering/wayfinder
-  - mattpocock/skills/skills/productivity/grill-me
-  - mattpocock/skills/skills/productivity/grilling
-  - mattpocock/skills/skills/productivity/handoff
-  - mattpocock/skills/skills/productivity/teach
-  - mattpocock/skills/skills/productivity/writing-for-agents
-  - saxsir/skills
-  - tomasz-tomczyk/crit/integrations/claude-code
-  - github/gh-stack/skills/gh-stack
-  - anthropics/claude-plugins-community/eli5/skills/eli5
-  - humanlayer/skills/plugins/show-me/skills/show-me
-  - coji/natural-japanese/skills/natural-japanese
-  - voyagegroup/kairan/.claude/skills/kairan
+    - mattpocock/skills/skills/engineering/ask-matt
+    - mattpocock/skills/skills/engineering/codebase-design
+    - mattpocock/skills/skills/engineering/diagnosing-bugs
+    - mattpocock/skills/skills/engineering/domain-modeling
+    - mattpocock/skills/skills/engineering/grill-with-docs
+    - mattpocock/skills/skills/engineering/implement
+    - mattpocock/skills/skills/engineering/improve-codebase-architecture
+    - mattpocock/skills/skills/engineering/prototype
+    - mattpocock/skills/skills/engineering/research
+    - mattpocock/skills/skills/engineering/resolving-merge-conflicts
+    - mattpocock/skills/skills/engineering/setup-matt-pocock-skills
+    - mattpocock/skills/skills/engineering/tdd
+    - mattpocock/skills/skills/engineering/to-spec
+    - mattpocock/skills/skills/engineering/to-tickets
+    - mattpocock/skills/skills/engineering/triage
+    - mattpocock/skills/skills/engineering/wayfinder
+    - mattpocock/skills/skills/productivity/grill-me
+    - mattpocock/skills/skills/productivity/grilling
+    - mattpocock/skills/skills/productivity/handoff
+    - mattpocock/skills/skills/productivity/teach
+    - mattpocock/skills/skills/productivity/writing-for-agents
+    - saxsir/skills
+    - tomasz-tomczyk/crit/integrations/claude-code
+    - github/gh-stack/skills/gh-stack
+    - anthropics/claude-plugins-community/eli5/skills/eli5
+    - humanlayer/skills/plugins/show-me/skills/show-me
+    - coji/natural-japanese/skills/natural-japanese
+    - voyagegroup/kairan/.claude/skills/kairan
   mcp: []
 includes: auto
 scripts: {}
