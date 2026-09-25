@@ -138,7 +138,7 @@ apm:
 	apm update -g --yes
 	@for pkgdir in "$$HOME"/.apm/apm_modules/*/*; do \
 	  pkg=$${pkgdir#"$$HOME"/.apm/apm_modules/}; \
-	  grep -q -E '^  - '"$$pkg"'(/|$$)' "$$HOME"/.apm/apm.yml && continue; \
+	  grep -q -E '^[[:space:]]*- '"$$pkg"'(/|$$)' "$$HOME"/.apm/apm.yml && continue; \
 	  rm -rf "$$pkgdir"; \
 	  hookdir="$$HOME/.claude/hooks/$$(basename "$$pkgdir")"; \
 	  if [ -d "$$hookdir" ]; then rm -rf "$$hookdir"; fi; \
