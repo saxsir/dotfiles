@@ -8,11 +8,11 @@ PR は draft で作り (`gh pr create --draft`)、作ったらブラウザで開
 
 本文は `.github/` にテンプレがあればそれに従う。無ければ「何をしたか」を数行と「なぜ必要か」、それに Issue との紐付けを書く。`Closes #n` を書けば merge 時に自動クローズされる (別リポは `Closes owner/repo#n`)。自動クローズはフル URL を受け付けないので、closing keyword の行だけは短縮形で書く。閉じたくないときは `Relates to <URL>` にするか `gh pr edit <n> --add-issue <n>` で紐付けだけ張る。それ以外の Issue / PR 参照は短縮形 `#n` を使わずフル URL で書く ([[github-writing]] の「根拠を示す」)。
 
-description を後から直す手順は [[github-writing]] の「既存本文の更新」に従う (現在値を取り、変更箇所だけ編集し、差分の承認を得て `--body-file` で反映)。既存 PR にコミットを積んだら、description と紐づく Issue description が古くなっていないか見ておきたい。
+description を後から直す手順は [[github-writing]] の「既存本文の更新」に従う (現在値を取り、変更箇所だけ編集し、差分の承認を得て `--body-file` で反映)。既存 PR にコミットを積んだら、description と紐づく Issue description が古くなっていないか確かめ、古ければこの手順で直す。
 
 ## 画像・動画の添付
 
-Issue / PR / コメントにスクリーンショットや動画を載せるときは `gh` の `--attach` を使う (gh 2.99.0 以降、2026-09 追加)。対応コマンドは `gh issue create` / `issue edit` / `issue comment` / `pr create` / `pr edit` / `pr comment` で、フラグは複数回指定できる。
+Issue / PR / コメントにスクリーンショットや動画を載せるときは `gh` の `--attach` を使う (gh 2.99.0 以降)。対応コマンドは `gh issue create` / `issue edit` / `issue comment` / `pr create` / `pr edit` / `pr comment` で、フラグは複数回指定できる。
 
 ```bash
 gh pr comment 123 --attach './before.png#修正前' --attach './after.png#修正後'
