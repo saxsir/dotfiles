@@ -23,7 +23,7 @@
 | 局面 | skill |
 |---|---|
 | リポ初回 | `setup-matt-pocock-skills` (issue tracker / triage label / CONTEXT.md を整える) |
-| 前提を潰して収束させる | `grill-with-docs` (CONTEXT.md / docs/adr/ がある前提)。無ければ `grill-me` |
+| 前提を潰して収束させる | `grill-me`。`grill-with-docs` は CONTEXT.md / ADR を作るので使わない。決定は `to-spec` が立てる GitHub issue に残す |
 | 会話で決められない問い | `handoff` で切り出し、別セッションで `prototype`、`handoff` で戻す |
 | 巨大で全体が見えない | `wayfinder` で決定チケットの map を張る。晴れたら `to-spec` へ (直接 implement に流さない) |
 | 他人起点の issue / bug 報告 | `triage`。`to-tickets` 産のチケットには使わない |
