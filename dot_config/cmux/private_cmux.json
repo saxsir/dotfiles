@@ -25,11 +25,6 @@
     "showPullRequests": false
   },
 
-  "browser": {
-    "openTerminalLinksInCmuxBrowser": false,       // リンクは外部ブラウザで開く
-    "hostsToOpenInEmbeddedBrowser": ["localhost"]  // localhost だけ埋め込みブラウザに残す
-  },
-
   "shortcuts": {
     "bindings": {
       "globalSearch": null  // 既定 cmd+opt+f はシステム全体ホットキーで Raycast のウィンドウ操作と衝突。未使用機能なので未割り当てに
