@@ -1,6 +1,6 @@
 # GitHub に書く文章
 
-GitHub の Issue / PR / コメント / レビューコメントを書く・書き直すときは、投稿前に `github-writing` skill (saxsir/skills) を開いてそれに従う。構成 (TL;DR と `<details>` の 2 層構造)、種別ごとの骨格、文体プロファイル、推敲手順は skill が正本で、この rule には持たない。
+GitHub の Issue / PR / コメント / レビューコメントを書く・書き直すときは、投稿前に `github-writing` skill (saxsir/skills) を開いてそれに従う。構成 (「3行まとめ」と `<details>` の 2 層構造)、種別ごとの骨格、文体プロファイル、推敲手順は skill が正本で、この rule には持たない。
 
 この rule が持つのは hook が機械的に強制する 2 点だけ。hook の実装と揃える必要があるので、この 2 点はこの rule を正とする。
 
