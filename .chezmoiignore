@@ -5,7 +5,7 @@
 # === ドキュメント (リポジトリ説明用) ===
 README.md
 LICENSE
-/CLAUDE.md
+CLAUDE.md
 
 # === Agent skills 用ドキュメント / ローカル issue tracker (リポ運用ファイル) ===
 docs
