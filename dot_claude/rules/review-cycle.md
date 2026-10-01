@@ -4,7 +4,7 @@
 
 書く側のレビュー (`/simplify` / `/code-review` / `/security-review`) は必ず subagent (context を共有しない別セッション) で回す。呼び出したセッションのバイアス (実装意図・直前の議論・自分の書いたコードへの愛着) を持ち込ませず、diff だけを見て判断させるため。モデルはその時点で使える最良のものを指定する (特定のモデル名で固定しない)。Sonnet には降ろさない。[[delegation]] のデフォルト (機械的作業は sonnet) に対する例外で、判断・レビューは高コストモデル側に置くという同 rule の Why に従った結果。
 
-2 周目以降のレビューでは、同じ diff に対する過去ラウンドの findings も subagent に渡す。渡すのは findings だけで、実装側の議論は渡さない。過去の指摘を会話履歴からの復元で補わせると、一度決着した指摘が再浮上してループが収束しなくなる。
+2 周目以降のレビューでは、同じ diff に対する過去ラウンドの記録 (採用して直した指摘と、却下した指摘とその理由) も subagent に渡す。渡すのはこの記録だけで、実装側の議論は渡さない。過去の指摘を会話履歴からの復元で補わせると、一度決着した指摘が再浮上してループが収束しなくなる。
 
 ## 実装中: `/simplify`
 
@@ -16,11 +16,19 @@
 
 ## PR 提出前: `/code-review` → `/crit`
 
-実装が一段落したら (task 完了報告を出す前・draft PR を作る前) Claude が subagent で `/code-review` を自動発火する。ユーザーの承認は要らない — findings は表示のみで採否はユーザー ([[role-separation]] に反しない)。修正の自動適用もしない。`/crit` はユーザーが diff を対話レビューする場なので、終わるまで `gh pr create --draft` に進まない。plan のレビューは ExitPlanMode hook の `crit plan-hook` が自動発火するので、ここで扱うのは diff だけ。
+実装が一段落したら (task 完了報告を出す前・draft PR を作る前) Claude が subagent で `/code-review` を自動発火し、指摘が残らなくなるまで レビュー → 判定 → 修正 → 検証 のラウンドを回す。ユーザーの承認は要らない。指摘を直すのは実装の過程の品質で、[[role-separation]] では Claude が持つ側に入るからだ。止める条件は [[delegation]] のレビューループの条件に従い、1 ラウンドはこの 4 工程の 1 周と数える。
 
-`/code-review` の findings は terminal にしか残らない。`crit comment` で各 finding を対象の `<path>:<line>` にインラインコメントとして流し込んでから `/crit` を開くと、ユーザーの指摘と同じ画面で採否を捌ける。
+採否の判定はメインのセッションでしない。ラウンドごとに判定用の subagent を 1 体立て、そのラウンドの findings をまとめて渡し、各指摘を accept / reject / needs-user に振り分けさせる。メインはこの判定を覆さない。コードを書いたセッションが判定すると、書いた理由に引きずられて本物の指摘を却下し、却下した指摘は後のラウンドで誰も読み直さないためだ。判定役に渡すのは findings・diff の範囲・要件・過去ラウンドの記録で、実装側の議論は渡さない。モデルは reviewer と同じく最良のものを指定する。
 
-diff が auth / 入力検証 / secret / 外部 API / SQL / template / SSRF / file upload あたりに触れていたら、`/code-review` と並行で `/security-review` も subagent で自動発火する。該当するかは Claude が diff から判定する。
+直すのは accept のうち、放置すると誤動作する・要件を満たさない指摘だけ。それ以外 (Minor) は記録して直さない。好みの差を直し始めると、ラウンドごとに新しい指摘が出てループが収束しないからだ。バグの指摘は回帰テストを先に書いて失敗を確かめてから直す。修正後はプロジェクトの test / lint / typecheck を走らせ、出力を読んでから次のラウンドに進む。
+
+仕様・設計・好みのように人が決める判断が要る指摘は、判定役が needs-user に振る。needs-user が 1 件でも出たらそのラウンドは何も適用せずに止め、ユーザーに渡す。承認済みの設計を覆す指摘も直さず、計画に戻してユーザーに渡す。どちらも修正では決着しない問いで、再レビューしても答えが出ないからだ。
+
+ループが終わったら、ラウンド数・直した指摘・却下した指摘と理由・Minor・未解決の指摘を報告する。`/crit` はその後にユーザーが diff を対話レビューする場なので、終わるまで `gh pr create --draft` に進まない。plan のレビューは ExitPlanMode hook の `crit plan-hook` が自動発火するので、ここで扱うのは diff だけ。
+
+ループが残した指摘 (Minor・却下・未解決) は terminal にしか残らない。`crit comment` で各指摘を対象の `<path>:<line>` にインラインコメントとして流し込んでから `/crit` を開くと、ユーザーの指摘と同じ画面で採否を捌ける。
+
+diff が auth / 入力検証 / secret / 外部 API / SQL / template / SSRF / file upload あたりに触れていたら、`/code-review` と並行で `/security-review` も subagent で自動発火し、その findings も同じループで扱う。該当するかは Claude が diff から判定する。
 
 ## 他人の PR
 
