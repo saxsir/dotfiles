@@ -17,7 +17,6 @@ dependencies:
     - mattpocock/skills/skills/engineering/improve-codebase-architecture
     - mattpocock/skills/skills/engineering/prototype
     - mattpocock/skills/skills/engineering/research
-    - mattpocock/skills/skills/engineering/resolving-merge-conflicts
     - mattpocock/skills/skills/engineering/setup-matt-pocock-skills
     - mattpocock/skills/skills/engineering/tdd
     - mattpocock/skills/skills/engineering/to-spec
