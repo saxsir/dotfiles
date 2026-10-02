@@ -53,5 +53,4 @@ merge した変更を `~/` に反映するには `make apply` が要る。ただ
 ## Agent skills
 
 - **Issue tracker**: Issues と PRD は `.scratch/<feature>/` 配下の markdown ファイルで管理する。See `docs/agents/issue-tracker.md`
-- **Triage labels**: 5 つの正規 triage ロールを既定の文字列 (`needs-triage` 等) で使う。See `docs/agents/triage-labels.md`
 - **Domain docs**: Single-context レイアウト (ルートに `CONTEXT.md` + `docs/adr/`)。See `docs/agents/domain.md`
