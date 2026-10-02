@@ -21,6 +21,7 @@
 ## 委譲の書き方
 
 - `Agent` 呼び出しで `model` を省くと、settings の `CLAUDE_CODE_SUBAGENT_MODEL` により sonnet になる。ただし built-in の `Explore` / `Plan` にはこの env が効かず、メイン会話のモデルを継承する (Explore は `model` 未指定なら PreToolUse hook が sonnet を補う。Plan は判断側なので継承のまま)。高コストモデルが要るレビュー等は `model` を明示する。
+- 欲しいのが所在・件数だけの読み込みは、built-in の `Explore` に降ろす。`Explore` は CLAUDE.md と rules を読み込まないので、起動時の固定 context が general-purpose より小さく、1 起動が安い。抜粋を読んで場所を特定する agent なので、全文を読んだうえでの要約や、rules に従う必要がある作業には general-purpose を使う。
 - プロンプトは self-contained に書く (subagent は自分の context を持たない)。ゴール、完了条件、触るファイル、報告形式を入れる。独立した複数の問題を並列で回すときは、1 メッセージで複数の Agent を起こす。
 - 実装を降ろすプロンプトには次も入れる。聞ける相手がいない前提で最後までやり切る (止まるのは進めようがないときと危険な操作の前だけ)。変更を実際に動かす検証 (test / typecheck / build) を走らせて出力を報告し、走らせなかった検証は名指しする。依頼外の機能・テスト・docs・refactor は足さず、報告の末尾に提案として書く。作業は自分で行い、subagent を起こさない。worker が途中確認で止まると未完成のまま返ってくる。検証の省略と依頼外の追加は、返り値からは見分けにくい。
 - 起動したら結果待ちで手を止めず、その結果に依存しない作業を先に進める。Agent tool はバックグラウンドで返り、完了は通知で届く。
