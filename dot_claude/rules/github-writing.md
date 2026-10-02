@@ -8,7 +8,7 @@ GitHub の Issue / PR / コメント / レビューコメントを書く・書�
 
 Issue / PR の参照は `owner/repo#番号` で書く。リポジトリ名の無い `#番号` は、同一リポを指すときも使わない。`#番号` は投稿先のリポジトリ内でしか解決されないので、別リポの Issue を指すつもりで書くと、投稿先の無関係な同番号へ黙ってリンクされる。誤リンクは見た目が正常なリンクと変わらず、投稿後に気づく手がかりが無い。同一リポ参照を例外にすると、書くたびにどちらのつもりかを判断することになる。誤るのはその判断だ。だから例外を置かず、一律に owner/repo を付ける。
 
-closing keyword (`Closes` / `Fixes` / `Resolves`) の行も同じ書式で、`Closes owner/repo#番号` と書く。GitHub の自動クローズはこの構文を受け付け、フル URL では効かない ([GitHub Docs](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue))。別リポのつもりで書いた `Closes #番号` は、投稿先の無関係な Issue を merge 時に閉じる。
+closing keyword (`Closes` / `Fixes` / `Resolves`) の行も同じ書式で、`Closes owner/repo#番号` と書く。GitHub の自動クローズはこの構文を受け付ける ([GitHub Docs](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue))。別リポのつもりで書いた `Closes #番号` は、投稿先の無関係な Issue を merge 時に閉じる。
 
 短縮形で書けないもの (コメントの permalink、コードの行) は完全な URL で書く。
 
