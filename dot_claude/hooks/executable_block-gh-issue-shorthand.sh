@@ -8,10 +8,9 @@
 # hook に見えるのは本文の文字列だけで、その #123 が同一リポのつもりか
 # 別リポのつもりかは判別できない。実在確認で通そうとしても、現在のリポに
 # 偶然同じ番号があれば素通りする — 防ぎたい事故そのものなので採らない。
-# だから同一リポ参照も含めて一律に落とし、常にフル URL を書かせる。
-#
-# 唯一の例外は closing keyword (Closes / Fixes / Resolves) の行。GitHub の自動
-# クローズはフル URL を受け付けないので、短縮形以外に書きようがない。
+# だから同一リポ参照も含めて一律に落とし、owner/repo#番号 かフル URL を書かせる。
+# closing keyword (Closes / Fixes / Resolves) の行も同じ。Closes owner/repo#番号
+# なら自動クローズも効くので、免除は置かない。
 #
 # 本文の取得元は gh pr/issue 系の --body / -b / --body-file / -F <file> と、
 # gh api の -f body= / -F body=@<file> / --input <file>。
@@ -94,20 +93,9 @@ sub strip_code {
   return $t;
 }
 
-# GitHub の closing keyword は #n / owner/repo#n しか受け付けず、フル URL では
-# 自動クローズが効かない (docs の構文表にフル URL は無い)。ここだけは短縮形で
-# 書くしかないので例外にする。行全体が keyword + 参照のときに限り、
-# 地の文に紛れた #123 まで免除が広がらないようにする。
-sub strip_closing_keywords {
-  my ($t) = @_;
-  $t =~ s/^[ \t]*((?:clos(?:e|es|ed)|fix(?:es|ed)?|resolv(?:e|es|ed))[ \t]*:?[ \t]+(?:[\w.-]+\/[\w.-]+)?\#\d+[ \t,]*)+$//gmi;
-  return $t;
-}
-
 sub scan {
   my ($t) = @_;
   $t = strip_code($t);
-  $t = strip_closing_keywords($t);
   my @hits;
   # 直前を文字クラスで「消費」すると、日本語の直後 (詳細は#123) や **#123** を
   # 取り逃す。マルチバイトの末尾や約物を列挙しきれないので否定後読みにする。
@@ -203,7 +191,7 @@ printf q{ 他 %d 件}, scalar(@uniq) - $cap if @uniq > $cap;
 ')
 
 if [ -n "$FOUND" ]; then
-  echo "Blocked: 投稿本文に Issue / PR の短縮参照 ${FOUND} がある。短縮形は同一リポジトリ内でしか解決されず、別リポを指すつもりだと無関係な Issue へ黙ってリンクされる。フル URL (https://github.com/<owner>/<repo>/issues/<n>) で書き直す。指す先が同一リポかどうかは本文の文脈から判断する (rules/github-writing.md)" >&2
+  echo "Blocked: 投稿本文に Issue / PR の短縮参照 ${FOUND} がある。短縮形は同一リポジトリ内でしか解決されず、別リポを指すつもりだと無関係な Issue へ黙ってリンクされる。owner/repo#<n> (closing keyword も Closes owner/repo#<n>) かフル URL (https://github.com/<owner>/<repo>/issues/<n>) で書き直す。指す先が同一リポかどうかは本文の文脈から判断する (rules/github-writing.md)" >&2
   exit 2
 fi
 
