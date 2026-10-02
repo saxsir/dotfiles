@@ -6,11 +6,13 @@ GitHub の Issue / PR / コメント / レビューコメントを書く・書�
 
 ## 根拠を示す
 
-リンクは完全な URL で書く。`#番号` は同一リポを指すときも使わない。`#番号` は投稿先のリポジトリ内でしか解決されないので、別リポの Issue を指すつもりで書くと、投稿先の無関係な同番号へ黙ってリンクされる。誤リンクは見た目が正常なリンクと変わらず、投稿後に気づく手がかりが無い。同一リポ参照を例外にすると、書くたびにどちらのつもりかを判断することになる。誤るのはその判断だ。だから例外を置かず、一律にフル URL で書く。
+Issue / PR の参照は `owner/repo#番号` で書く。リポジトリ名の無い `#番号` は、同一リポを指すときも使わない。`#番号` は投稿先のリポジトリ内でしか解決されないので、別リポの Issue を指すつもりで書くと、投稿先の無関係な同番号へ黙ってリンクされる。誤リンクは見た目が正常なリンクと変わらず、投稿後に気づく手がかりが無い。同一リポ参照を例外にすると、書くたびにどちらのつもりかを判断することになる。誤るのはその判断だ。だから例外を置かず、一律に owner/repo を付ける。
 
-例外は closing keyword (`Closes` / `Fixes` / `Resolves`) の行だけ。GitHub の自動クローズが受け付ける構文は `KEYWORD #番号` と `KEYWORD owner/repo#番号` の 2 つで、フル URL では効かない ([GitHub Docs](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue))。短縮形以外に書きようがないのでここだけ許す。閉じたくないときの `Relates to` はこの制約が無いのでフル URL で書く。
+closing keyword (`Closes` / `Fixes` / `Resolves`) の行も同じ書式で、`Closes owner/repo#番号` と書く。GitHub の自動クローズはこの構文を受け付ける ([GitHub Docs](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue))。別リポのつもりで書いた `Closes #番号` は、投稿先の無関係な Issue を merge 時に閉じる。
 
-投稿本文に `#番号` が残っていると hook がブロックする (`hooks/block-gh-issue-shorthand.sh`)。検査するのは本文だけで、GitHub がリンク化しないコードブロック内とインラインコード内、それに行全体が closing keyword + 参照になっている行は対象外。
+短縮形で書けないもの (コメントの permalink、コードの行) は完全な URL で書く。
+
+投稿本文にリポジトリ名の無い `#番号` が残っていると hook がブロックする (`hooks/block-gh-issue-shorthand.sh`)。検査するのは本文だけで、GitHub がリンク化しないコードブロック内とインラインコード内は対象外。
 
 ## 既存本文の更新
 
