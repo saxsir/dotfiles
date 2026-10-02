@@ -1,10 +1,10 @@
 # レビューサイクル
 
-書く側のレビューは dude の完了ゲート (`implement-work` の Verify → `simplify-code` → `review-code`) が正本。ラウンドの進め方、直す指摘の範囲、止める条件は dude に従う。この rule が持つのは、dude と食い違う箇所でこの環境が採るほうと、dude に無いゲートだけ。コミット境界では回さない ([[commit-discipline]] の可否判断だけで通す、速度優先)。
+書く側のレビューは dude の完了ゲート (`implement-work` の Verify → `simplify-code` → `review-code`) が正本。ラウンドの進め方、直す指摘の範囲、止める条件は dude に従う。この rule が持つのは、dude と食い違う箇所でこの環境が採るほうと、dude に無いゲートだけ。完了ゲートはコミット境界では回さない ([[commit-discipline]] の可否判断だけで通す、速度優先)。`implement-work` の実行方法が自分の手順として持つタスク単位のレビューは、その手順に従う。
 
 ゲートを回すのは、ユーザーと対話しているメインのセッションだけ。subagent として起動されたセッションは、依頼された作業を検証して報告するところまでを担い、レビューや判定用の subagent は起こさない。rules は subagent にも読み込まれるので、ここで限定しないと worker が自分でゲートを発火して孫 subagent を生む ([[delegation]])。
 
-reviewer と判定役のモデルは、その時点で使える最良のものを指定する (特定のモデル名で固定しない)。Sonnet には降ろさない ([[delegation]] の検出系 worker の扱い)。
+完了ゲートの reviewer と判定役のモデルは、その時点で使える最良のものを指定する (特定のモデル名で固定しない)。Sonnet には降ろさない ([[delegation]] の検出系 worker の扱い)。
 
 ## 判定役は 1 ラウンドに 1 体
 
@@ -14,7 +14,7 @@ dude は指摘ごとに判定 worker を 1 体起こすが、この環境では�
 
 ## `/security-review` を並行で回す条件
 
-diff が auth / 入力検証 / secret / 外部 API / SQL / template / SSRF / file upload あたりに触れていたら、`review-code` と並行で `/security-review` も subagent で回し、その findings も同じラウンドの判定役に渡す。該当するかは Claude が diff から判定する。
+diff が auth / 入力検証 / secret / 外部 API / SQL / template / SSRF / file upload あたりに触れていたら、`review-code` と並行で `/security-review` も subagent で回し、その findings も同じラウンドの判定役に渡す。該当するかは Claude が diff から判定する。2 周目以降は、`/security-review` の subagent にも過去ラウンドの記録 (直した指摘と、却下した指摘とその理由) を渡す。
 
 ## 構造変更は PR を分ける
 

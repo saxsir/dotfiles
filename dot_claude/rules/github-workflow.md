@@ -26,6 +26,8 @@ gh pr comment 123 --attach './before.png#修正前' --attach './after.png#修正
 
 unresolved なコメントを集めて応答計画をユーザーに見せ、承認を得てから直す。コミットをコメント単位に分けておくと、どの指摘にどう答えたかを追いやすい。push した後の返信も、ユーザーの確認を得てから投稿する。
 
+dude の `pr-to-ready` のラウンド内は扱いが違う。修正は判定役の accept に従って承認なしで進め、承認を取るのは返信文と resolve の対象だけにする。修正は過程の品質で Claude が持つ側、返信と resolve は対外的な締めでユーザーが持つ側だからだ ([[role-separation]])。
+
 ## Umbrella Issue
 
-タイトル prefix は `[Umbrella]` で、進捗はチェックリストで管理する。子 issue の切り出しはユーザーの明示指示があるときだけ行う。
+タイトル prefix は `[Umbrella]` で、進捗はチェックリストで管理する。子 issue の切り出しはユーザーの明示指示があるときだけ行う。dude の `plan-work` が sub-issue を作る段では、作る前に分割案を見せて承認を得る。その承認が明示指示に当たる。
