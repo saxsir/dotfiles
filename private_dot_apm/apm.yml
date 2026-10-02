@@ -13,8 +13,6 @@ dependencies:
     - mattpocock/skills/skills/engineering/improve-codebase-architecture
     - mattpocock/skills/skills/engineering/prototype
     - mattpocock/skills/skills/engineering/research
-    - mattpocock/skills/skills/engineering/triage
-    - mattpocock/skills/skills/engineering/wayfinder
     - mattpocock/skills/skills/productivity/grill-me
     - mattpocock/skills/skills/productivity/grilling
     - mattpocock/skills/skills/productivity/handoff
