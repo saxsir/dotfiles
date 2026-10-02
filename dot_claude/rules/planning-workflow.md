@@ -23,7 +23,7 @@ git worktree による隔離は常時の前提で、作るかどうかをユー�
 
 | 局面 | skill |
 |---|---|
-| 前提を潰して収束させたい (ユーザー起動) | `grill-me`。`plan-work` の中の設計合意は dude どおり `superpowers:brainstorming` で行う。`grill-with-docs` は CONTEXT.md / ADR を作るので使わない |
+| 前提を潰して収束させたい (ユーザー起動) | `grill-me`。`plan-work` の中の設計合意は dude どおり `superpowers:brainstorming` で行う |
 | 会話で決められない問い | `handoff` で切り出し、別セッションで `prototype`、`handoff` で戻す |
 | 巨大で全体が見えない | `wayfinder` で決定チケットの map を張る。晴れたら `plan-work` へ |
 | 他人起点の issue / bug 報告 | `triage` |

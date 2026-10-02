@@ -10,7 +10,6 @@ dependencies:
   apm:
     - mattpocock/skills/skills/engineering/codebase-design
     - mattpocock/skills/skills/engineering/domain-modeling
-    - mattpocock/skills/skills/engineering/grill-with-docs
     - mattpocock/skills/skills/engineering/improve-codebase-architecture
     - mattpocock/skills/skills/engineering/prototype
     - mattpocock/skills/skills/engineering/research
