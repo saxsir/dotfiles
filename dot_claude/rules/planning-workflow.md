@@ -13,6 +13,7 @@
 | `review-code` と `pr-to-ready` は指摘ごとに判定 worker を 1 体起こす | 判定役は 1 ラウンドに 1 体 | [[review-cycle]] |
 | `implement-work` は完了ゲートの後に draft PR を作り、そのまま `pr-to-ready` に渡せる | draft PR の後、`pr-to-ready` の前にユーザーの `/crit` を挟む | [[review-cycle]] |
 | PR 本文の Issue 参照は、同一リポなら `#NNN` | 書式は rule に従う | [[github-writing]] の「根拠を示す」 |
+| `implement-work` の Execution は、メインが実装を書く場面を認める (設計判断の無い変更の lane の manual、些細で独立した変更の inline、理由付きの manual) | 高コストモデルで動いているときは、これらも worker に降ろす | [[delegation]] |
 
 git worktree による隔離は常時の前提で、作るかどうかをユーザーに尋ねない。同一 checkout でブランチを切り替えると、他のセッションの作業状態と干渉するためだ。配置先は `.claude/worktrees/<branch>`。dude の flow では、`implement-work` が決めた branch 名と base を指定して `git worktree add` で作る (EnterWorktree tool の新規作成は base を選べないので、既存の worktree に入るときだけ使う)。Agent tool の `isolation: worktree` は flow の外の単発の委譲に限る。
 
