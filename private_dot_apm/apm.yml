@@ -9,7 +9,6 @@ targets:
 dependencies:
   apm:
     - mattpocock/skills/skills/engineering/codebase-design
-    - mattpocock/skills/skills/engineering/diagnosing-bugs
     - mattpocock/skills/skills/engineering/domain-modeling
     - mattpocock/skills/skills/engineering/grill-with-docs
     - mattpocock/skills/skills/engineering/improve-codebase-architecture
