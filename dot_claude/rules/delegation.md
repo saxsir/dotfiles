@@ -18,7 +18,9 @@
 
 実装で「これぐらいなら自分で」と感じたら、委譲プロンプトが不足していると判断して指示文を書き直す。明確な実装は完了条件を宣言できる粒度まで分解できたら降ろす。分解できないうちは委譲せず、まず計画を詰める。
 
-dude の flow の中でも同じにする。`implement-work` の Execution はメインが実装を書く場面を認めるが (設計判断の無い変更の lane の manual、些細で独立した変更の inline、理由付きの manual)、高コストモデルで動いているときはこれらも worker に降ろす ([[planning-workflow]] の食い違い表)。降ろし先は、計画がある変更なら `implement-work` の既定の実行方法、計画を持たない lane と flow の外の単発なら Agent tool を直接起こす。完了ゲートや `pr-to-ready` で判定役が accept した修正の適用は、dude どおりメインが行う。修正の内容は判定役が返していて、メインに残るのは反映と検証だけだからだ。
+dude の flow の中でも同じにする。`implement-work` の Execution はメインが実装を書く場面を認めるが (設計判断の無い変更の lane の manual、些細で独立した変更の inline、理由付きの manual)、高コストモデルで動いているときはこれらも worker に降ろす ([[planning-workflow]] の食い違い表)。降ろし先は、計画がある変更なら `implement-work` の既定の実行方法、計画を持たない lane と flow の外の単発なら Agent tool を直接起こす。完了ゲートの Verify で未達の completion criterion を実装するときも、Agent tool を直接起こして降ろす。
+
+次の書き込みは dude どおりメインが行う。完了ゲートや `pr-to-ready` で判定役が accept した修正の適用。`simplify-code` で採用した提案の適用。`pr-to-ready` で診断の worker が返した CI 修正の適用。base を取り込んだときの conflict の解消。前の 3 つは、何を直すかを worker が返していて、メインに残るのは反映と検証だけだからだ。conflict の解消は、merge 途中の tree をその workspace で扱う必要があるので降ろせない。
 
 ## 委譲の書き方
 
