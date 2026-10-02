@@ -1,36 +1,34 @@
 # レビューサイクル
 
-書く側のレビューは 2 トラック。実装中は構造改善を回し、PR 提出前にバグ検出のゲートを 1 回置く。コミット境界では回さない ([[commit-discipline]] の可否判断だけで通す、速度優先)。
+書く側のレビューは dude の完了ゲート (`implement-work` の Verify → `simplify-code` → `review-code`) が正本。ラウンドの進め方、直す指摘の範囲、止める条件は dude に従う。この rule が持つのは、dude と食い違う箇所でこの環境が採るほうと、dude に無いゲートだけ。コミット境界では回さない ([[commit-discipline]] の可否判断だけで通す、速度優先)。
 
-書く側のレビュー (`/simplify` / `/code-review` / `/security-review`) は必ず subagent (context を共有しない別セッション) で回す。呼び出したセッションのバイアス (実装意図・直前の議論・自分の書いたコードへの愛着) を持ち込ませず、diff だけを見て判断させるため。モデルはその時点で使える最良のものを指定する (特定のモデル名で固定しない)。Sonnet には降ろさない。[[delegation]] のデフォルト (機械的作業は sonnet) に対する例外で、判断・レビューは高コストモデル側に置くという同 rule の Why に従った結果。
+ゲートを回すのは、ユーザーと対話しているメインのセッションだけ。subagent として起動されたセッションは、依頼された作業を検証して報告するところまでを担い、レビューや判定用の subagent は起こさない。rules は subagent にも読み込まれるので、ここで限定しないと worker が自分でゲートを発火して孫 subagent を生む ([[delegation]])。
 
-このサイクルを回すのは、ユーザーと対話しているメインのセッションだけ。subagent として起動されたセッションは、依頼された作業を検証して報告するところまでを担い、レビューや判定用の subagent は起こさない。rules は subagent にも読み込まれるので、ここで限定しないと worker が自分でゲートを発火して孫 subagent を生む ([[delegation]])。
+reviewer と判定役のモデルは、その時点で使える最良のものを指定する (特定のモデル名で固定しない)。Sonnet には降ろさない ([[delegation]] の検出系 worker の扱い)。
 
-2 周目以降のレビューでは、同じ diff に対する過去ラウンドの記録 (採用して直した指摘と、却下した指摘とその理由) も subagent に渡す。渡すのはこの記録だけで、実装側の議論は渡さない。過去の指摘を会話履歴からの復元で補わせると、一度決着した指摘が再浮上してループが収束しなくなる。
+## 判定役は 1 ラウンドに 1 体
 
-## 実装中: `/simplify`
+dude は指摘ごとに判定 worker を 1 体起こすが、この環境ではラウンドごとに 1 体だけ立て、そのラウンドの findings をまとめて渡す。最良 tier の subagent は起動のたびに初回 context の固定費が乗り、指摘の数だけ起こすとゲートの費用がそれに比例して増えるためだ。`pr-to-ready` が外部レビューの指摘を判定するときも同じにする。
 
-編集する箇所を開いて「触りにくい・読みにくい・無関係な責務と絡んでいる」と感じたら、その場で回すのが理想。working tree が clean なときに回すと [[tidy-first]] の構造/振る舞いの分離が自然に保たれる。
+それ以外は dude どおり。採否をメインのセッションで判定せず、メインは判定を覆さない。判定役に渡すのは findings・diff の範囲・要件・過去ラウンドの記録で、実装側の議論は渡さない。
 
-構造変更 (refactor) と振る舞い変更は PR を分ける。実装中に構造変更したほうがよいと判断したら、先に refactor PR を作り、feature はその上に積む (refactor branch から feature branch を切るか、merge を待つ)。同じ PR に混ぜると、レビュワーが振る舞いの差分を構造の差分から選り分けることになる。
+## `/security-review` を並行で回す条件
+
+diff が auth / 入力検証 / secret / 外部 API / SQL / template / SSRF / file upload あたりに触れていたら、`review-code` と並行で `/security-review` も subagent で回し、その findings も同じラウンドの判定役に渡す。該当するかは Claude が diff から判定する。
+
+## 構造変更は PR を分ける
+
+`simplify-code` が整えるのは、その PR が足した diff。既存コードの構造変更 (refactor) が要ると判断したら、先に refactor PR を作り、feature はその上に積む (refactor branch から feature branch を切るか、merge を待つ)。同じ PR に混ぜると、レビュワーが振る舞いの差分を構造の差分から選り分けることになる。
 
 気づくのが遅れて feature branch に構造変更コミットが混ざったときは、cherry-pick で refactor PR に切り出す。分離できないほど絡んでいるときだけ同じ PR に残し、commit message で構造変更と分かるようにする ([[tidy-first]])。順序が逆転したこと自体は retrospective-codify の材料として残す。
 
-## PR 提出前: `/code-review` → `/crit`
+## `/crit`: draft PR の後、`pr-to-ready` の前
 
-実装が一段落したら (task 完了報告を出す前・draft PR を作る前) Claude が subagent で `/code-review` を自動発火し、指摘が残らなくなるまで レビュー → 判定 → 修正 → 検証 のラウンドを回す。ユーザーの承認は要らない。指摘を直すのは実装の過程の品質で、[[role-separation]] では Claude が持つ側に入るからだ。止める条件は [[delegation]] のレビューループの条件に従い、1 ラウンドはこの 4 工程の 1 周と数える。
+`implement-work` が draft PR を作ったら、ゲートの結果 (ラウンド数・直した指摘・却下した指摘と理由・Minor・未解決の指摘) を報告して止まる。`/crit` はその後にユーザーが diff を対話レビューする場で、終わるまで `pr-to-ready` に進まない。`pr-to-ready` は外部の reviewer を呼び、スレッドへの返信まで進む flow なので、ユーザーが diff を見る前に始めない。
 
-採否の判定はメインのセッションでしない。ラウンドごとに判定用の subagent を 1 体立て、そのラウンドの findings をまとめて渡し、各指摘を accept / reject / needs-user に振り分けさせる。メインはこの判定を覆さない。コードを書いたセッションが判定すると、書いた理由に引きずられて本物の指摘を却下し、却下した指摘は後のラウンドで誰も読み直さないためだ。判定役に渡すのは findings・diff の範囲・要件・過去ラウンドの記録で、実装側の議論は渡さない。モデルは reviewer と同じく最良のものを指定する。
+ゲートが残した指摘 (Minor・却下・未解決) は terminal にしか残らない。`crit comment` で各指摘を対象の `<path>:<line>` にインラインコメントとして流し込んでから `/crit` を開くと、ユーザーの指摘と同じ画面で採否を捌ける。
 
-直すのは accept のうち、放置すると誤動作する・要件を満たさない指摘だけ。それ以外 (Minor) は記録して直さない。好みの差を直し始めると、ラウンドごとに新しい指摘が出てループが収束しないからだ。バグの指摘は回帰テストを先に書いて失敗を確かめてから直す。修正後はプロジェクトの test / lint / typecheck を走らせ、出力を読んでから次のラウンドに進む。
-
-仕様・設計・好みのように人が決める判断が要る指摘は、判定役が needs-user に振る。needs-user が 1 件でも出たらそのラウンドは何も適用せずに止め、ユーザーに渡す。承認済みの設計を覆す指摘も直さず、計画に戻してユーザーに渡す。どちらも修正では決着しない問いで、再レビューしても答えが出ないからだ。
-
-ループが終わったら、ラウンド数・直した指摘・却下した指摘と理由・Minor・未解決の指摘を報告する。`/crit` はその後にユーザーが diff を対話レビューする場なので、終わるまで `gh pr create --draft` に進まない。plan のレビューは ExitPlanMode hook の `crit plan-hook` が自動発火するので、ここで扱うのは diff だけ。
-
-ループが残した指摘 (Minor・却下・未解決) は terminal にしか残らない。`crit comment` で各指摘を対象の `<path>:<line>` にインラインコメントとして流し込んでから `/crit` を開くと、ユーザーの指摘と同じ画面で採否を捌ける。
-
-diff が auth / 入力検証 / secret / 外部 API / SQL / template / SSRF / file upload あたりに触れていたら、`/code-review` と並行で `/security-review` も subagent で自動発火し、その findings も同じループで扱う。該当するかは Claude が diff から判定する。
+plan のレビューは ExitPlanMode hook の `crit plan-hook` が自動発火するので、ここで扱うのは diff だけ。
 
 ## 他人の PR
 
