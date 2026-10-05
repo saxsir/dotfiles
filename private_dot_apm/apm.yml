@@ -28,6 +28,7 @@ dependencies:
     - mizchi/explainer/skills/explainer
     - mizchi/explainer/skills/explainer-book
     - mizchi/explainer/skills/first-reader
+    - mizchi/vlmkit
   mcp: []
 includes: auto
 scripts: {}
