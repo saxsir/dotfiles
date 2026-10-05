@@ -25,7 +25,10 @@ dependencies:
     - humanlayer/skills/plugins/show-me/skills/show-me
     - coji/natural-japanese/skills/natural-japanese
     - voyagegroup/kairan/.claude/skills/kairan
-    - mizchi/explainer
+    - mizchi/explainer/skills/explainer
+    - mizchi/explainer/skills/explainer-book
+    - mizchi/explainer/skills/first-reader
+    - mizchi/vlmkit
   mcp: []
 includes: auto
 scripts: {}
