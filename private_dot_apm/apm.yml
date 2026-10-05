@@ -25,6 +25,7 @@ dependencies:
     - humanlayer/skills/plugins/show-me/skills/show-me
     - coji/natural-japanese/skills/natural-japanese
     - voyagegroup/kairan/.claude/skills/kairan
+    - mizchi/explainer
   mcp: []
 includes: auto
 scripts: {}
