@@ -8,27 +8,27 @@ targets:
 
 dependencies:
   apm:
-    - mattpocock/skills/skills/engineering/codebase-design
-    - mattpocock/skills/skills/engineering/domain-modeling
-    - mattpocock/skills/skills/engineering/improve-codebase-architecture
-    - mattpocock/skills/skills/engineering/prototype
-    - mattpocock/skills/skills/engineering/research
-    - mattpocock/skills/skills/productivity/grill-me
-    - mattpocock/skills/skills/productivity/grilling
-    - mattpocock/skills/skills/productivity/handoff
-    - mattpocock/skills/skills/productivity/teach
-    - mattpocock/skills/skills/productivity/writing-for-agents
-    - saxsir/skills
-    - tomasz-tomczyk/crit/integrations/claude-code
-    - github/gh-stack/skills/gh-stack
-    - anthropics/claude-plugins-community/eli5/skills/eli5
-    - humanlayer/skills/plugins/show-me/skills/show-me
-    - coji/natural-japanese/skills/natural-japanese
-    - voyagegroup/kairan/.claude/skills/kairan
-    - mizchi/explainer/skills/explainer
-    - mizchi/explainer/skills/explainer-book
-    - mizchi/explainer/skills/first-reader
-    - mizchi/vlmkit
+    - mattpocock/skills/skills/engineering/codebase-design#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
+    - mattpocock/skills/skills/engineering/domain-modeling#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
+    - mattpocock/skills/skills/engineering/improve-codebase-architecture#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
+    - mattpocock/skills/skills/engineering/prototype#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
+    - mattpocock/skills/skills/engineering/research#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
+    - mattpocock/skills/skills/productivity/grill-me#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
+    - mattpocock/skills/skills/productivity/grilling#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
+    - mattpocock/skills/skills/productivity/handoff#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
+    - mattpocock/skills/skills/productivity/teach#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
+    - mattpocock/skills/skills/productivity/writing-for-agents#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
+    - saxsir/skills#98f24545c9aeb64a3e2784b67577c7eab178822d
+    - tomasz-tomczyk/crit/integrations/claude-code#16e9e0971143c9e7f41710b5e477e1650537b8ae
+    - github/gh-stack/skills/gh-stack#d4ab7ab47e5b3e3708a27c8c42abcdf4bc321419
+    - anthropics/claude-plugins-community/eli5/skills/eli5#f60f0454df3045f724c43c6346ec80bdcc3472b2
+    - humanlayer/skills/plugins/show-me/skills/show-me#ca7c8088db69e315a8b2deea43820270457f8f3c
+    - coji/natural-japanese/skills/natural-japanese#9a78a42964096da509b8f3e011f0085a5f080151
+    - voyagegroup/kairan/.claude/skills/kairan#35eeb050d036007c64207ebc1ff40599fdb166a8
+    - mizchi/explainer/skills/explainer#6abf6fc2ae92a81b140b47ab9b7c96894e5faecc
+    - mizchi/explainer/skills/explainer-book#6abf6fc2ae92a81b140b47ab9b7c96894e5faecc
+    - mizchi/explainer/skills/first-reader#6abf6fc2ae92a81b140b47ab9b7c96894e5faecc
+    - mizchi/vlmkit#e7f8d5d59ed8b5b7a45ff1014ef94567dfd119c8
   mcp: []
 includes: auto
 scripts: {}
