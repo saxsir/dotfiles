@@ -111,27 +111,48 @@ function resume() {
     echo "No pending handoffs in ${pending_dir}"
     return 1
   fi
+  # 各行: 連番  created  title  next (title は frontmatter の title: → 本文最初の H1 → 省略)
+  # 選択後は連番で files から引く。title に空白やタブがあっても壊れない
+  local lines=() i=1 f
+  for f in "${files[@]}"; do
+    lines+=("$(awk -v n="${i}" -v fallback="${${f:t}[1,10]}" '
+      NR == 1 && $0 == "---" { fm = 1; next }
+      fm && $0 == "---" { fm = 0; body = 1; next }
+      fm && /^created: / { created = substr($0, 10) }
+      fm && /^title: /   { title = substr($0, 8) }
+      fm && /^next: /    { next_action = substr($0, 7) }
+      body && /^```/     { fence = !fence }
+      body && !fence && h1 == "" && /^# / { h1 = substr($0, 3) }
+      END {
+        if (title == "") title = h1
+        if (created == "") created = fallback
+        line = sprintf("%2d  %s", n, created)
+        if (title != "") line = line "  " title
+        if (next_action != "") line = line "  " next_action
+        print line
+      }' "${f}")")
+    (( i++ ))
+  done
   local selected
-  selected=$(for f in "${files[@]}"; do
-    printf '%s\t%s\n' "${f:t:r}" "$(sed -n 's/^next: //p' "${f}" | head -1)"
-  done | peco | cut -f1)
+  selected=$(printf '%s\n' "${lines[@]}" | peco)
   [[ -n "${selected}" ]] || return 0
-  local file="${pending_dir}/${selected}.md"
+  local file="${files[${${=selected}[1]}]}"
+  local selected_name="${file:t:r}"
   local dir
   dir=$(sed -n 's/^cwd: //p' "${file}" | head -1)
   mkdir -p "${done_dir}"
   # -n: 同名の done を上書きしない。移せなかったら古い doc で起動しないよう止める
   mv -n "${file}" "${done_dir}/"
   if [[ -e "${file}" ]]; then
-    echo "already exists in done: ${selected}.md"
+    echo "already exists in done: ${selected_name}.md"
     return 1
   fi
   # merge 後に worktree を消した等で cwd が無い doc は、pending に残り続けないよう done に送って終える
   if [[ ! -d "${dir}" ]]; then
-    echo "cwd not found, moved to done: ${dir} (${selected}.md)"
+    echo "cwd not found, moved to done: ${dir} (${selected_name}.md)"
     return 1
   fi
-  cd "${dir}" && claude "${done_dir}/${selected}.md を読んで、引き継ぎの続きから再開する"
+  cd "${dir}" && claude "${done_dir}/${selected_name}.md を読んで、引き継ぎの続きから再開する"
 }
 
 # キーバインド (peco/fzf 関数を ZLE に登録)
