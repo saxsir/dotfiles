@@ -1,6 +1,6 @@
 PWD := $(shell pwd)
 
-.PHONY: all deps require-chezmoi init apply diff edit re-add merge hooks mise uvtools apm help
+.PHONY: all deps require-chezmoi init apply diff edit re-add merge hooks mise uvtools apm apm-bump help
 
 # デフォルト: 依存ツールを揃えて apply、mise install、pre-commit hook を install
 all: deps apply mise uvtools hooks apm
@@ -120,6 +120,7 @@ uvtools:
 # 依存は apm.yml で owner/repo[/subpath]#<40桁SHA> に pin し、install だけで済ませる。
 # apm update は pin の無い依存を毎回 upstream へ解決しに行き (21 依存で resolve だけ 80 秒超)、
 # pin もリリースタグへ書き換えるため使わない。pin を書き換えてから install すれば新しい SHA に追従する
+# pin を最新へ進めるのは make apm-bump (source の apm.yml を書き換え、反映は make apply apm)
 # apm の install/update は ~/.claude/skills/ の apm 管理外 skill を削除しうるため、
 # 巻き添えで消える Doist 公式 todoist-cli skill を毎回 td で復元する
 # また apm は plugin の hook 登録 (hooks.json 経由の command 参照) だけを settings.json に
@@ -160,6 +161,34 @@ apm:
 	  echo "[apm] td が見つからないため todoist-cli skill の復元をスキップ"; \
 	fi
 
+# apm.yml (source) の pin を各 repo の default branch の HEAD へ進める。反映は make apply apm
+# 例: make apm-bump / make apm-bump PKG=saxsir/skills
+# 書き換えは SHA 部分だけ (yq -i は書式を崩すため perl で置換する)
+apm-bump:
+	@command -v yq >/dev/null 2>&1 || { echo "yq が見つからない" >&2; exit 1; }
+	@src="$(PWD)/private_dot_apm/apm.yml"; \
+	deps=$$(yq -r '.dependencies.apm[]' "$$src") || exit 1; \
+	repos=$$(printf '%s\n' "$$deps" | sed -E 's|^([^/#]+/[^/#]+).*|\1|' | sort -u); \
+	if [ -n "$(PKG)" ]; then \
+	  repos=$$(printf '%s\n' "$$repos" | grep -Fx -- "$(PKG)" || true); \
+	  [ -n "$$repos" ] || { echo "[apm-bump] $(PKG) は apm.yml の依存に無い" >&2; exit 1; }; \
+	fi; \
+	changed=0; \
+	for repo in $$repos; do \
+	  out=$$(git ls-remote "https://github.com/$$repo" HEAD) || { echo "[apm-bump] ls-remote に失敗: $$repo" >&2; exit 1; }; \
+	  new=$${out%%[[:space:]]*}; \
+	  case "$$new" in *[!0-9a-f]*|"") echo "[apm-bump] HEAD の SHA を取得できない: $$repo" >&2; exit 1;; esac; \
+	  [ $${#new} -eq 40 ] || { echo "[apm-bump] HEAD の SHA を取得できない: $$repo" >&2; exit 1; }; \
+	  olds=$$(printf '%s\n' "$$deps" | grep -F -- "$$repo" | grep -E "^$$repo(/[^#]*)?#" | sed 's/.*#//' | sort -u); \
+	  [ "$$olds" = "$$new" ] && continue; \
+	  REPO="$$repo" NEW="$$new" perl -i -pe 's/^(\s+- \Q$$ENV{REPO}\E(?:\/[^#\s]*)?#)[0-9a-f]{40}/$$1$$ENV{NEW}/' "$$src"; \
+	  oldshort=$$(printf '%s\n' "$$olds" | cut -c1-7 | paste -sd, -); \
+	  echo "$$repo: $$oldshort -> $$(printf '%s' "$$new" | cut -c1-7)"; \
+	  changed=1; \
+	done; \
+	if [ "$$changed" -eq 0 ]; then echo "[apm-bump] 変化なし (すべて origin の HEAD に追従済み)"; \
+	else echo "[apm-bump] apm.yml を更新した。make apply apm で反映する"; fi
+
 help:
 	@echo "Targets:"
 	@echo "  all      - deps + apply + mise + hooks + apm (デフォルト)"
@@ -174,3 +203,4 @@ help:
 	@echo "  uvtools  - uv tool で global に入れる Python CLI (kaggle 等) を install"
 	@echo "  hooks    - pre-commit hook を install (secretlint)"
 	@echo "  apm      - apm CLI を install + ~/.apm/apm.yml の pin どおりに skill を deploy (Claude / Codex 共用、冪等)"
+	@echo "  apm-bump - source の apm.yml の pin を各 repo の HEAD へ更新 (PKG=owner/repo で限定。反映は make apply apm)"
