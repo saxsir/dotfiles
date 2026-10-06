@@ -47,7 +47,9 @@ apm 管理下の skill は `~/.claude/skills/` (Claude Code) と `~/.agents/skil
 `td` が Claude Code 向けにしか復元しないため `~/.claude/skills/` だけに入る。
 
 `targets` を書き換えたときは `make apply` で `~/.apm/apm.yml` に反映してから `make apm` を実行する。
-`make apm` の中の `apm update` は `~/.apm/apm.yml` を見るので、反映前だと展開先が食い違う。
+`make apm` の中の `apm install -g` は `~/.apm/apm.yml` を見るので、反映前だと展開先が食い違う。
+
+依存は `private_dot_apm/apm.yml` で `owner/repo[/subpath]#<40桁SHA>` に pin する。`make apm` は pin どおりの SHA を `apm install -g` で入れるだけで、`apm update` は使わない (pin の無い依存を毎回 upstream に解決して遅く、pin もリリースタグへ書き換えるため)。
 
 ユーザー global 設定 `~/.apm/config.json` は `private_dot_apm/config.json` として chezmoi 管理。
 設定を編集した場合は `make re-add FILE=~/.apm/config.json` でソース側に取り込む。
