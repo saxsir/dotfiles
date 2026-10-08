@@ -11,7 +11,7 @@
 
 read-only (describe / list / get / logs 等) は承認不要で実行してよい。通常の `git push` と `gh pr create --draft` も通常運用の範囲。
 
-未 push commit のローカルな書き換え (`git commit --amend`, `git rebase`) は許可されている。reflog で復元できるからだ。gate は書き換えた履歴を共有 ref へ push する時点にある。deny と hook がブロックする操作 (`gh pr merge`、`git reset --hard`、force push) も、機構任せにせず、そもそも試みない・提案しない。
+未 push commit のローカルな書き換え (`git commit --amend`, `git rebase`) は許可されている。reflog で復元できるからだ。gate は書き換えた履歴を共有 ref へ push する時点にある。deny と hook がブロックする操作 (`gh pr merge`、`git reset --hard`、force push) は、機構任せにせず、そもそも試みない・提案しない。
 
 ## deny / hook がブロックしたら迂回しない
 
