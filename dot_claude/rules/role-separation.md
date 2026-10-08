@@ -7,7 +7,7 @@
 不可逆・対外的な操作の前に確認を取るのは一般則だが、この環境では具体的に次が該当する。ユーザーの明示承認なしに実行しない。
 
 - `rm -rf` 等の不可逆な削除 (deny が捕捉しない形態も含む)
-- AWS 系以外の外部認証 CLI (`kaggle` 等) の書き込み系コマンド (create / update / delete / submit / apply 等)
+- 外部認証 CLI (`aws`, `terraform`, `kaggle` 等) の書き込み系コマンド (create / update / delete / submit / apply 等)
 
 read-only (describe / list / get / logs 等) は承認不要で実行してよい。通常の `git push` と `gh pr create --draft` も通常運用の範囲。
 
