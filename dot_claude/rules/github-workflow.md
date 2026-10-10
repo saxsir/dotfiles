@@ -6,7 +6,7 @@ GitHub Issue / PR を扱うときの前提。git 操作は [[git-branch-workflow
 
 PR は draft で作り (`gh pr create --draft`)、作ったらブラウザで開く (`gh pr view --web`)。ready にするのはユーザー ([[role-separation]])。タイトルは元の Issue に揃えるのが基本で、内容に合わせて調整してよい。
 
-本文は `.github/` にテンプレがあればそれに従う。無ければ「何をしたか」を数行と「なぜ必要か」、それに Issue との紐付けを書く。`Closes owner/repo#n` を書けば merge 時に自動クローズされる。閉じたくないときは `Relates to owner/repo#n` にするか `gh pr edit <n> --add-issue <n>` で紐付けだけ張る。Issue / PR の参照は同一リポでも `owner/repo#n` で書き、リポジトリ名の無い `#n` は使わない ([[github-writing]] の「根拠を示す」)。
+本文は `.github/` にテンプレがあればそれに従う。無ければ「何をしたか」を数行と「なぜ必要か」、それに Issue との紐付けを書く。`Closes owner/repo#n` を書けば merge 時に自動クローズされる。閉じたくないときは `Relates to owner/repo#n` にするか `gh pr edit <n> --add-issue <n>` で紐付けだけ張る。参照書式は [[github-writing]] に従う。
 
 description を後から直す手順は [[github-writing]] の「既存本文の更新」に従う (現在値を取り、変更箇所だけ編集し、差分の承認を得て `--body-file` で反映)。既存 PR にコミットを積んだら、description と紐づく Issue description が古くなっていないか確かめ、古ければこの手順で直す。
 

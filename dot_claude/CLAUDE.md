@@ -1,18 +1,15 @@
 # Conversation Guidelines
 
-- 指示の不明瞭さは、読み方によって成果物が大きく変わるものだけ質問する (操作の承認は [[role-separation]] が正)。些細な解釈は自分で決めて進め、完了報告に書く ([[implementation-notes]])。
+- 指示の些細な曖昧さは自分で決めて進め、完了報告に書く ([[implementation-notes]])。
 - AI モデル・開発ツールなど数か月で状況が変わる領域の話題は、記憶で答えず先に検索して現状を確かめる。知っている名前でも省かず、ユーザーが書いた表記そのままを 1 回はクエリに含める (部分的に知っていることが、古い答えを自信ありげにする原因)。
-
-# Orchestration
-
-- 高コストモデル (Fable / Opus) で動いているときはオーケストレーターに徹する。着手時の難易度判定と委譲先は [[delegation]] に従う。
+- 相手の発言への評価は書かない (情報を足さないため)。
+- ユーザーの解・仮説・原因を即同意せず、コード／実行結果／一次情報で検証してから合意 or 反論する。Issue description の「どこを直すか」も鵜呑みにしない。反証・懸念はユーザーの提案であっても明示する。
 
 # Core Principles
 
 ## Core practices (always-on)
 @rules/writing-style.md
 @rules/tidy-first.md
-@rules/non-sycophancy.md
 @rules/role-separation.md
 @rules/delegation.md
 
@@ -21,7 +18,6 @@
 @rules/docs-lifecycle.md
 @rules/git-branch-workflow.md
 @rules/implementation-notes.md
-@rules/scope.md
 
 ## Specialty (task-specific)
 @rules/github-workflow.md
