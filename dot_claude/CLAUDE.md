@@ -25,7 +25,6 @@
 @rules/review-cycle.md
 @rules/planning-workflow.md
 @rules/brain-first.md
-@rules/research-report.md
 
 # Env
 

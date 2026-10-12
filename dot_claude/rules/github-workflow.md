@@ -1,6 +1,6 @@
 # GitHub ワークフロー
 
-GitHub Issue / PR を扱うときの前提。git 操作は [[git-branch-workflow]]、文章規約は `github-writing` skill (hook と連動する必須事項は `rules/github-writing.md`)。
+GitHub Issue / PR を扱うときの前提。git 操作は [[git-branch-workflow]]、文章規約と画像・動画の添付 (`gh --attach`) は `github-writing` skill (hook と連動する必須事項は `rules/github-writing.md`)。
 
 ## PR
 
@@ -9,18 +9,6 @@ PR は draft で作り (`gh pr create --draft`)、作ったらブラウザで開
 本文は `.github/` にテンプレがあればそれに従う。無ければ「何をしたか」を数行と「なぜ必要か」、それに Issue との紐付けを書く。`Closes owner/repo#n` を書けば merge 時に自動クローズされる。閉じたくないときは `Relates to owner/repo#n` にするか `gh pr edit <n> --add-issue <n>` で紐付けだけ張る。参照書式は [[github-writing]] に従う。
 
 description を後から直す手順は [[github-writing]] の「既存本文の更新」に従う (現在値を取り、変更箇所だけ編集し、差分の承認を得て `--body-file` で反映)。既存 PR にコミットを積んだら、description と紐づく Issue description が古くなっていないか確かめ、古ければこの手順で直す。
-
-## 画像・動画の添付
-
-Issue / PR / コメントにスクリーンショットや動画を載せるときは `gh` の `--attach` を使う (gh 2.99.0 以降)。対応コマンドは `gh issue create` / `issue edit` / `issue comment` / `pr create` / `pr edit` / `pr comment` で、フラグは複数回指定できる。
-
-```bash
-gh pr comment 123 --attach './before.png#修正前' --attach './after.png#修正後'
-```
-
-`#` の後ろが alt text になる (省略時はファイル名)。本文に同じローカルパスへの参照があればそこが upload 後の URL に置き換わり、無ければ末尾に追記される。書きたい位置に置くなら本文側に `![alt](./before.png)` を先に書いておく。
-
-制約は次のとおり。画像・GIF は 10 MB まで、動画は Free 10 MB / 有料 100 MB まで、1 回の投稿で 50 ファイルまで。対応形式は PNG / JPEG / GIF / WebP / SVG / MP4 / MOV / WebM。リポジトリへの write 権限が要り、GitHub Enterprise Server では使えない。
 
 ## レビューコメントへの応答
 
