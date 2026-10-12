@@ -17,7 +17,7 @@
 
 git worktree による隔離は常時の前提で、作るかどうかをユーザーに尋ねない。同一 checkout でブランチを切り替えると、他のセッションの作業状態と干渉するためだ。配置先は `.claude/worktrees/<branch>`。dude の flow では、`implement-work` が決めた branch 名と base を指定して `git worktree add` で作る (EnterWorktree tool の新規作成は base を選べないので、既存の worktree に入るときだけ使う)。Agent tool の `isolation: worktree` は flow の外の単発の委譲に限る。
 
-`superpowers:brainstorming` と `superpowers:writing-plans` が出す設計文書と計画ファイルは、リポジトリに commit しない。決定は tracking issue のコメントに残す ([[docs-lifecycle]])。
+`superpowers:brainstorming` と `superpowers:writing-plans` が出す設計文書と計画ファイルは、リポジトリに commit しない。決定は tracking issue のコメントに残す ([[commit-discipline]])。
 
 ## dude に無い局面
 

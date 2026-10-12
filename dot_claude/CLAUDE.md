@@ -15,8 +15,6 @@
 
 ## Coding workflow
 @rules/commit-discipline.md
-@rules/docs-lifecycle.md
-@rules/git-branch-workflow.md
 @rules/implementation-notes.md
 
 ## Specialty (task-specific)
