@@ -12,6 +12,7 @@
 @rules/tidy-first.md
 @rules/role-separation.md
 @rules/delegation.md
+@rules/code-comments.md
 
 ## Coding workflow
 @rules/commit-discipline.md
