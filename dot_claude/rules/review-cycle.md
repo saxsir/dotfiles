@@ -4,11 +4,11 @@
 
 ゲートを回すのは、ユーザーと対話しているメインのセッションだけ。subagent として起動されたセッションは、依頼された作業を検証して報告するところまでを担い、レビューや判定用の subagent は起こさない。rules は subagent にも読み込まれるので、ここで限定しないと worker が自分でゲートを発火して孫 subagent を生む ([[delegation]])。
 
-完了ゲートの reviewer と判定役のモデルは、その時点で使える最良のものを指定する (特定のモデル名で固定しない)。Sonnet には降ろさない ([[delegation]] の検出系 worker の扱い)。
+完了ゲートの reviewer と判定役のモデルは、その時点で使える最良のものを指定する (特定のモデル名で固定しない)。Sonnet には降ろさない ([[delegation]] の検出系 worker の扱い)。dude の marked worker は `subagent_type: dude:highest-tier` で起こす (この agent 定義は `model: best` を持つ)。型も `model` も指定しないと、`CLAUDE_CODE_SUBAGENT_MODEL` により sonnet で動く。
 
 ## 判定役は 1 ラウンドに 1 体
 
-dude は指摘ごとに判定 worker を 1 体起こすが、この環境ではラウンドごとに 1 体だけ立て、そのラウンドの findings をまとめて渡す。最良 tier の subagent は起動のたびに初回 context の固定費が乗り、指摘の数だけ起こすとゲートの費用がそれに比例して増えるためだ。`pr-to-ready` が外部レビューの指摘を判定するときも同じにする。
+dude の `vet-code` と `pr-to-ready` は指摘ごとに判定 worker を 1 体起こすが、この環境ではラウンドごとに 1 体だけ立て、そのラウンドの findings をまとめて渡す。最良 tier の subagent は起動のたびに初回 context の固定費が乗り、指摘の数だけ起こすとゲートの費用がそれに比例して増えるためだ。`pr-to-ready` が外部レビューの指摘を判定するとき、`simplify-code` が提案を判定するときも同じにする。
 
 それ以外は dude どおり。採否をメインのセッションで判定せず、メインは判定を覆さない。判定役に渡すのは findings・diff の範囲・要件・過去ラウンドの記録で、実装側の議論は渡さない。
 
@@ -32,4 +32,4 @@ plan のレビューは ExitPlanMode hook の `crit plan-hook` が自動発火�
 
 ## 他人の PR
 
-自分にレビュー依頼 / アサインされている PR から対象を選び、トリアージしてから、投稿予定のコメント一覧をユーザーに提示して承認を得る。承認後に GitHub のインラインコメントとして投稿する (`github-writing` skill の規約に従う)。投稿の締めはユーザー。この節が source of truth。
+自分にレビュー依頼 / アサインされている PR から対象を選び、トリアージしてから dude の `review-pr` に渡す。`review-pr` が下書きを見せる前に、本文とインラインコメントを `github-writing` skill の規約 (ラベル、参照書式) に揃える。投稿の形 (approve / comment only / draft only) を選ぶのはユーザーで、選ばれなければ投稿しない。この節が source of truth。
