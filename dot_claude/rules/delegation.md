@@ -18,13 +18,13 @@
 
 実装で「これぐらいなら自分で」と感じたら、委譲プロンプトが不足していると判断して指示文を書き直す。明確な実装は完了条件を宣言できる粒度まで分解できたら降ろす。分解できないうちは委譲せず、まず計画を詰める。
 
-dude の flow の中でも同じにする。`implement-work` の Execution はメインが実装を書く場面を認めるが (設計判断の無い変更の lane の manual、些細で独立した変更の inline、理由付きの manual)、高コストモデルで動いているときはこれらも worker に降ろす ([[planning-workflow]] の食い違い表)。降ろし先は、計画がある変更なら `implement-work` の既定の実行方法、計画を持たない lane と flow の外の単発なら Agent tool を直接起こす。完了ゲートの Verify で未達の completion criterion を実装するときも、Agent tool を直接起こして降ろす。
+dude の flow の中でも同じにする。`implement-work` の Execution はメインが実装を書く場面を認めるが (設計判断の無い変更の lane の manual、些細で独立した変更の inline、理由付きの manual)、高コストモデルで動いているときはこれらも worker に降ろす ([[planning-workflow]] の食い違い表)。降ろし先は、計画がある変更なら `implement-work` の既定の実行方法、計画を持たない lane と flow の外の単発なら Agent tool を直接起こす。完了ゲートの Verify で未達の completion criterion を実装するときも、Agent tool を直接起こして降ろす。理由付きの manual のうち、理由が「分割できない」ものは、先に計画を詰め直して独立に検証できる単位へ割る。それでも割れず完了条件は宣言できるなら、割らないまま 1 体の worker (`model: opus`) に降ろす。完了条件を宣言できないなら設計が終わっていないので、`plan-work` に戻す。
 
 次の書き込みは dude どおりメインが行う。完了ゲートや `pr-to-ready` で判定役が accept した修正の適用。`simplify-code` で採用した提案の適用。`pr-to-ready` で診断の worker が返した CI 修正の適用。base を取り込んだときの conflict の解消。前の 3 つは、何を直すかを worker が返していて、メインに残るのは反映と検証だけだからだ。conflict の解消は、merge 途中の tree をその workspace で扱う必要があるので降ろせない。
 
 ## 委譲の書き方
 
-- `Agent` 呼び出しで `model` を省くと、settings の `CLAUDE_CODE_SUBAGENT_MODEL` により sonnet になる。ただし built-in の `Explore` / `Plan` にはこの env が効かず、メイン会話のモデルを継承する (Explore は `model` 未指定なら PreToolUse hook が sonnet を補う。Plan は判断側なので継承のまま)。高コストモデルが要るレビュー等は `model` を明示する。
+- `Agent` 呼び出しで `model` を省くと、settings の `CLAUDE_CODE_SUBAGENT_MODEL` により sonnet になる。ただし built-in の `Explore` / `Plan` にはこの env が効かず、メイン会話のモデルを継承する (Explore は `model` 未指定なら PreToolUse hook が sonnet を補う。Plan は判断側なので継承のまま)。高コストモデルが要るレビュー等は `model` を明示する。dude の marked worker の起こし方は [[review-cycle]] に従う。
 - 欲しいのが所在・件数だけの読み込みは、built-in の `Explore` に降ろす。`Explore` は CLAUDE.md と rules を読み込まないので、起動時の固定 context が general-purpose より小さく、1 起動が安い。抜粋を読んで場所を特定する agent なので、全文を読んだうえでの要約や、rules に従う必要がある作業には general-purpose を使う。
 - 委譲プロンプトには完了条件・触るファイル・報告形式を入れる。実装を降ろすプロンプトには次も入れる。聞ける相手がいない前提で最後までやり切る (止まるのは進めようがないときと危険な操作の前だけ)。変更を実際に動かす検証 (test / typecheck / build) を走らせて出力を報告し、走らせなかった検証は名指しする。依頼外の機能・テスト・docs・refactor は足さず、報告の末尾に提案として書く。作業は自分で行い、subagent を起こさない。worker が途中確認で止まると未完成のまま返ってくる。検証の省略と依頼外の追加は、返り値からは見分けにくい。
 - 起動したら結果待ちで手を止めず、その結果に依存しない作業を先に進める。
