@@ -26,3 +26,5 @@ PR / Issue の description と投稿済みコメントを直すときは、全�
 4. ファイル渡しで反映する (`gh pr edit <n> --body-file <scratch>/body.md`)。コメントは自分の最新のものだけ `gh pr comment --edit-last --body-file` で直せる。それ以外は `gh api -X PATCH repos/{owner}/{repo}/issues/comments/<id> -F body=@<scratch>/body.md` で渡す。
 
 インラインの `--body`、stdin (`--body-file -`、heredoc)、`gh api` のインライン `-f body=` で既存本文を更新する呼び出しは hook がブロックする。GitHub MCP の書き込みツール (update_pull_request / issue_write 等) は全文差し替えしかできないので、既存本文の更新には使わない。新規作成 (`gh pr create`、新規コメント) はこの手順の対象外。
+
+dude の `plan-work` が自分で投稿した設計コメントを `edit-plan-comment.sh` で編集するのも、この手順の対象外とする。そのコメントは `review-plan` の収束とユーザーの分割案承認を経た plan-work 自身の成果物で、他人の追記を消すおそれが無い。script の中の `gh` 呼び出しは hook の検査対象にならない。
