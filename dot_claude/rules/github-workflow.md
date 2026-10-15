@@ -16,7 +16,7 @@ unresolved なコメントを集めて応答計画をユーザーに見せ、承
 
 dude の `pr-to-ready` のラウンド内は扱いが違う。修正は判定役の accept に従って承認なしで進める。返信文と resolve の対象は、投稿する前に承認を取る。修正は過程の品質で Claude が持つ側、返信と resolve は対外的な締めでユーザーが持つ側だからだ ([[role-separation]])。
 
-返信と resolve 以外の `pr-to-ready` の書き込み (レビュアーへの依頼、requesting-code-review の指摘コメント、base の付け替え、verbose の集約コメント) は承認なしで進める。自分の PR の上で回すレビューの過程で、対外的な締めではないからだ。
+返信と resolve 以外の `pr-to-ready` の書き込み (レビュアーへの依頼、requesting-code-review の指摘コメント、base の付け替え、thread の無い指摘への判定コメント) は承認なしで進める。自分の PR の上で回すレビューの過程で、対外的な締めではないからだ。
 
 ## Umbrella Issue
 
