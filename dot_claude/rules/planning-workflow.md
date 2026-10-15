@@ -1,41 +1,22 @@
 # 計画・設計ワークフロー
 
-変更 (diff を出す作業) と調査の flow は dude plugin が正本。タスクの分類、入口、各段の手順は `dude:using-dude` に従う。この rule が持つのは、dude と食い違う箇所でこの環境が採るほうと、dude に無い局面で呼ぶ skill だけ。ユーザーの明示指示があればそちらが優先。委譲の基準は [[delegation]]、レビューの gate は [[review-cycle]] が source of truth。
+変更と調査の flow は dude plugin (`dude:using-dude`) が正本。dude と食い違う箇所でこの環境が採るほうは、該当する dude の skill 名を挙げて各 rule が持つ ([[delegation]]、[[review-cycle]]、[[github-workflow]]、[[github-writing]])。この rule は環境の前提と、dude に無い局面だけを持つ。
 
-## dude と食い違う箇所
+git worktree による隔離は常時の前提で、作るかどうかをユーザーに尋ねない (同一 checkout でのブランチ切り替えは他のセッションと干渉する)。配置先は `.claude/worktrees/<branch>`。dude の flow では `implement-work` が決めた branch 名と base で `git worktree add` する。EnterWorktree は base を選べないので既存の worktree に入るときだけ使う。Agent tool の `isolation: worktree` は flow の外の単発の委譲に限る。
 
-次の点は dude の既定ではなく、この環境の rule を採る。理由と詳細は右列の rule が持つ。
-
-| dude の既定 | この環境で採るもの | 正本 |
-|---|---|---|
-| `plan-work` は TODO の項目ごとに sub-issue を作る | 作る前に分割案を見せ、ユーザーの承認を得る | [[github-workflow]] の Umbrella Issue |
-| `pr-to-ready` はレビュースレッドへの返信と resolve を確認なしで行う | 返信文と resolve の対象を見せ、承認を得てから投稿する | [[github-workflow]] のレビューコメントへの応答 |
-| `vet-code` (`review-code`・`review-plan`・`review-pr` が 1 ラウンドを委ねる) と `pr-to-ready` は指摘ごとに判定 worker を 1 体起こす。`simplify-code` も提案ごとに 1 体起こす | 判定役は 1 ラウンドに 1 体 | [[review-cycle]] |
-| `implement-work` は draft PR を作ったら止まり、次の入口として `pr-to-ready` を名指す | `pr-to-ready` の前にユーザーの `/crit` を挟む | [[review-cycle]] |
-| PR 本文の Issue 参照は、同一リポなら `#NNN` | 書式は rule に従う | [[github-writing]] の「根拠を示す」 |
-| `implement-work` の Execution は、メインが実装を書く場面を認める (設計判断の無い変更の lane の manual、些細で独立した変更の inline、理由付きの manual)。完了ゲートの Verify は、未達の criterion をメインが実装する | 高コストモデルで動いているときは、これらも worker に降ろす | [[delegation]] |
-| `plan-work` は自分が投稿した設計コメントを承認なしで in place 編集する (sub-issue 一覧の追記、再承認した設計の反映) | dude どおり承認なしで編集してよい。それ以外の既存本文は差分の承認を取る | [[github-writing]] の「既存本文の更新」 |
-| `pr-to-ready` は冒頭で ready-on-clean を尋ね、yes なら `mark-ready.sh` で ready にする | 答えるのはユーザー。Claude が代わりに yes を選ばない | [[github-workflow]] の PR |
-| `review-pr` は渡された PR を vet し、判定済みの指摘を 1 件の review として投稿する | 対象の選定と、下書きの文面を github-writing に揃える工程を足す | [[review-cycle]] の他人の PR |
-
-git worktree による隔離は常時の前提で、作るかどうかをユーザーに尋ねない。同一 checkout でブランチを切り替えると、他のセッションの作業状態と干渉するためだ。配置先は `.claude/worktrees/<branch>`。dude の flow では、`implement-work` が決めた branch 名と base を指定して `git worktree add` で作る (EnterWorktree tool の新規作成は base を選べないので、既存の worktree に入るときだけ使う)。Agent tool の `isolation: worktree` は flow の外の単発の委譲に限る。
-
-`superpowers:brainstorming` と `superpowers:writing-plans` が出す設計文書と計画ファイルは、リポジトリに commit しない。決定は tracking issue のコメントに残す ([[commit-discipline]])。
+`superpowers:brainstorming` と `superpowers:writing-plans` が出す設計文書と計画ファイルは commit せず、決定は tracking issue のコメントに残す。
 
 ## dude に無い局面
 
 | 局面 | skill |
 |---|---|
-| 前提を潰して収束させたい (ユーザー起動) | `grill-me`。`plan-work` の中の設計合意は dude どおり `superpowers:brainstorming` で行う |
+| 前提を潰して収束させたい (ユーザー起動) | `grill-me`。`plan-work` の中の設計合意は dude どおり `superpowers:brainstorming` |
 | 会話で決められない問い | `handoff` で切り出し、別セッションで `prototype`、`handoff` で戻す |
 | 一次情報で 1 つの問いに答える | `research` |
 | architecture の改善候補を探す | `improve-codebase-architecture` |
 | issue を subagent への委譲で進めるよう指示された | `delegate-issue` |
+| rule・skill を書く、育てる | `writing-for-agents` |
 
 ## セッションの区切り
 
-セッションを跨ぐときの選択肢は、続ける / `clear` / `handoff` / subagent / `compact` の 5 つ。`handoff` は新しい harness・新しいディレクトリ・同僚に渡すときだけで、同一ディレクトリで続くなら `compact`。例外として、業務終了で日をまたぐセッションは `eod` で引き継ぎ doc に落とし、翌日はシェルの `resume` から新しいセッションで拾う (夜のうちに prompt cache が切れ、翌朝に長い context を読み直すことになるため)。
-
-## 終了 / 改善
-
-「最初に知っていれば遠回りしなかった」知見は `retrospective-codify` で固定する ([[role-separation]])。skill 自体を育てるときの執筆規範は `writing-for-agents`。
+同一ディレクトリで続くなら `compact`。`handoff` は新しい harness・新しいディレクトリ・同僚に渡すときだけ使う。業務終了で日をまたぐなら `eod` で引き継ぎ doc に落とし、翌日はシェルの `resume` から新しいセッションで拾う (夜のうちに prompt cache が切れ、翌朝に長い context を読み直すことになるため)。

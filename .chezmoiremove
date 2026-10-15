@@ -1,2 +1,8 @@
 # chezmoi apply 時にホームから消す。~/.macos は macbook-provisioning の scripts/configure.sh に統合した
 .macos
+# source から消した rules。chezmoi は source から消えたファイルを home から消さないので明示する
+.claude/rules/docs-lifecycle.md
+.claude/rules/scope.md
+.claude/rules/non-sycophancy.md
+.claude/rules/research-report.md
+.claude/rules/git-branch-workflow.md
