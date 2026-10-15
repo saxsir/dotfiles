@@ -32,4 +32,4 @@ plan のレビューは ExitPlanMode hook の `crit plan-hook` が自動発火�
 
 ## 他人の PR
 
-自分にレビュー依頼 / アサインされている PR から対象を選び、トリアージしてから dude の `review-pr` に渡す。`review-pr` が下書きを見せる前に、本文とインラインコメントを `github-writing` skill の規約 (ラベル、参照書式) に揃える。投稿の形 (approve / comment only / draft only) を選ぶのはユーザーで、選ばれなければ投稿しない。この節が source of truth。
+自分にレビュー依頼 / アサインされている PR から対象を選び、トリアージしてから dude の `review-pr` に渡す。`review-pr` が下書きを見せる前に、本文とインラインコメントを `github-writing` skill の規約 (ラベル、参照書式) に揃える。この節が source of truth。
