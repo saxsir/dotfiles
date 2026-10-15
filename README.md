@@ -59,14 +59,14 @@ pin を各 repo の default branch の HEAD へ進めるには `make apm-bump` �
 
 ## MCP の allowlist
 
-セッション開始時に読み込む MCP を `allowedMcpServers` で絞っている。claude.ai 連携 MCP は tool 名一覧と server instructions がセッション開始時の context に載るので、使わない連携を読み込まないぶん固定費が減る。
+セッション開始時に読み込む MCP を `allowedMcpServers` で絞っている。claude.ai 連携 MCP は tool 名一覧と server instructions が context に載るので、使わない連携を読み込まないぶん固定費が減る。
 
 allowlist は 2 層で持ち、settings の scope をまたいで union になる。
 
 - user settings (`dot_claude/settings.json.tmpl`) は全リポジトリ共通の baseline を持つ。`chrome-devtools`、`cmux-cua` (cmux が `--mcp-config` で渡す)、claude.ai Slack が対象
 - 各リポジトリの `.claude/settings.local.json` は、そのリポジトリで使う server を足す。gitignore 済みで chezmoi の管理外なので、リポジトリ固有の名前や host を dotfiles に置かずに済む
 
-main checkout の `.claude/settings.local.json` は linked worktree にも効く。claude.ai 連携と plugin の MCP も allowlist の対象になる。仕様は [Claude Code のドキュメント](https://code.claude.com/docs/en/managed-mcp) にある。
+main checkout の `.claude/settings.local.json` は linked worktree にも効く。仕様は [Claude Code のドキュメント](https://code.claude.com/docs/en/managed-mcp) にある。
 
 ### 注意
 
@@ -91,7 +91,8 @@ main checkout の `.claude/settings.local.json` は linked worktree にも効く
 
 - remote server (claude.ai 連携、`.mcp.json` の http、local scope の http) は `serverUrl`、stdio server は `serverName` で書く
 - `serverCommand` は使わない。1 つでも書くと、stdio server も `serverName` で照合されなくなる
-- `serverName` に使えるのは `[A-Za-z0-9_-]` だけで、`claude.ai Slack` のような連携名は書けない。allowlist に `serverUrl` が 1 つでもあると remote server は `serverName` で照合されず、baseline に claude.ai Slack の `serverUrl` があるので、どのリポジトリでもこの状態になる
+- `serverName` に使えるのは `[A-Za-z0-9_-]` だけで、`claude.ai Slack` のような連携名は書けない
+- allowlist に `serverUrl` が 1 つでもあると remote server は `serverName` で照合されない。baseline に claude.ai Slack の `serverUrl` があるので、どのリポジトリでもこの状態になる
 - `serverUrl` は query を含めた完全一致で照合される
 
 ### URL の調べ方
@@ -111,7 +112,11 @@ main checkout の `.claude/settings.local.json` は linked worktree にも効く
 
 ### 同じ host に 2 つあるとき
 
-claude.ai 連携と `.mcp.json` の server が同じ host にあるときは、残したい側の URL を完全一致で書く。たとえば `.mcp.json` 側が query で tool を絞った `https://mcp.example.com/mcp?toolsets=core`、連携側が query 無しの `https://mcp.example.com/mcp` なら、query 込みの URL を書くと `.mcp.json` 側だけが残り、query 無しの URL を書くと連携側だけが残る。URL がまったく同じときは、`.mcp.json` の server が有効なら (`disabledMcpjsonServers` で無効にしていなければ) 同じ URL の claude.ai 連携は表示されず、無効にしていれば連携側が表示される。plugin が持つ server は別で、連携と plugin の両方が表示される。
+claude.ai 連携と `.mcp.json` の server が同じ host にあるときは、残したい側の URL を完全一致で書く。
+
+- query が違うとき (`.mcp.json` 側が query で tool を絞った `https://mcp.example.com/mcp?toolsets=core`、連携側が query 無しの `https://mcp.example.com/mcp`) は、query 込みの URL を書くと `.mcp.json` 側だけが残り、query 無しの URL を書くと連携側だけが残る
+- URL がまったく同じときは、`.mcp.json` の server が有効なら (`disabledMcpjsonServers` で無効にしていなければ) 同じ URL の claude.ai 連携は表示されず、無効にしていれば連携側が表示される
+- plugin が持つ server は別で、連携と plugin の両方が表示される
 
 ## シークレット検出
 
