@@ -57,6 +57,62 @@ pin を各 repo の default branch の HEAD へ進めるには `make apm-bump` �
 ユーザー global 設定 `~/.apm/config.json` は `private_dot_apm/config.json` として chezmoi 管理。
 設定を編集した場合は `make re-add FILE=~/.apm/config.json` でソース側に取り込む。
 
+## MCP の allowlist
+
+セッション開始時に読み込む MCP を `allowedMcpServers` で絞っている。claude.ai 連携 MCP は tool 名一覧と server instructions がセッション開始時の context に載るので、使わない連携を読み込まないぶん固定費が減る。
+
+allowlist は 2 層で持ち、settings の scope をまたいで union になる。
+
+- user settings (`dot_claude/settings.json.tmpl`) は全リポジトリ共通の baseline を持つ。`chrome-devtools`、`cmux-cua` (cmux が `--mcp-config` で渡す)、claude.ai Slack が対象
+- 各リポジトリの `.claude/settings.local.json` は、そのリポジトリで使う server を足す。gitignore 済みで chezmoi の管理外なので、リポジトリ固有の名前や host を dotfiles に置かずに済む
+
+main checkout の `.claude/settings.local.json` は linked worktree にも効く。claude.ai 連携と plugin の MCP も allowlist の対象になる。仕様は [Claude Code のドキュメント](https://code.claude.com/docs/en/managed-mcp) にある。
+
+### 注意
+
+- allowlist から外れた server は、`/mcp` にも `claude mcp list` にも理由の表示なしに消える。MCP が見当たらないときは、まず allowlist を疑う
+- 新しく足した MCP (plugin が持つものを含む) も、どこかの allowlist に書くまで使えない
+- `deniedMcpServers` は allow より常に優先され、下位の scope から戻せない。リポジトリ単位で有効にしたい server は deny に入れず、allowlist に足して運用する
+
+### リポジトリに server を足す
+
+リポジトリの `.claude/settings.local.json` に `allowedMcpServers` を書く。既存のキーは残す。
+
+```json
+{
+  "allowedMcpServers": [
+    { "serverUrl": "https://mcp.example.com/mcp" },
+    { "serverName": "example-stdio-server" }
+  ]
+}
+```
+
+書き方の規則は次のとおり。
+
+- remote server (claude.ai 連携、`.mcp.json` の http、local scope の http) は `serverUrl`、stdio server は `serverName` で書く
+- `serverCommand` は使わない。1 つでも書くと、stdio server も `serverName` で照合されなくなる
+- `serverName` に使えるのは `[A-Za-z0-9_-]` だけで、`claude.ai Slack` のような連携名は書けない。allowlist に `serverUrl` が 1 つでもあると remote server は `serverName` で照合されず、baseline に claude.ai Slack の `serverUrl` があるので、どのリポジトリでもこの状態になる
+- `serverUrl` は query を含めた完全一致で照合される
+
+### URL の調べ方
+
+- claude.ai 連携は、user と local の settings を外して一覧する。allowlist から外れた連携は通常の `claude mcp list` に出ないためだ。stdio server の行は command line ごと表示され token を含みうるので、URL の行だけに絞る
+
+  ```
+  claude --setting-sources project mcp list | awk -F': ' '$2 ~ /^https?:\/\// { sub(/ - .*$/, ""); print }'
+  ```
+
+- `.mcp.json` の http server は、`url` の値を写す
+- local scope の http server は `~/.claude.json` の `projects` 配下にある。URL に token が含まれることがあるので、画面や共有先に出さない
+
+  ```
+  jq '.projects["<リポジトリの絶対パス>"].mcpServers | map_values(.url)' ~/.claude.json
+  ```
+
+### 同じ host に 2 つあるとき
+
+claude.ai 連携と `.mcp.json` の server が同じ host にあるときは、残したい側の URL を完全一致で書く。たとえば `.mcp.json` 側が query で tool を絞った `https://mcp.example.com/mcp?toolsets=core`、連携側が query 無しの `https://mcp.example.com/mcp` なら、query 込みの URL を書くと `.mcp.json` 側だけが残り、query 無しの URL を書くと連携側だけが残る。URL がまったく同じときは、`.mcp.json` の server が有効なら (`disabledMcpjsonServers` で無効にしていなければ) 同じ URL の claude.ai 連携は表示されず、無効にしていれば連携側が表示される。plugin が持つ server は別で、連携と plugin の両方が表示される。
+
 ## シークレット検出
 
 `pre-commit install` 後は `git commit` 時に `secretlint` が自動的に走り、AWS キーや GitHub トークン等が混入していると commit が失敗します。手動チェック:
