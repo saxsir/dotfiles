@@ -10,10 +10,13 @@
 |---|---|---|
 | `plan-work` は TODO の項目ごとに sub-issue を作る | 作る前に分割案を見せ、ユーザーの承認を得る | [[github-workflow]] の Umbrella Issue |
 | `pr-to-ready` はレビュースレッドへの返信と resolve を確認なしで行う | 返信文と resolve の対象を見せ、承認を得てから投稿する | [[github-workflow]] のレビューコメントへの応答 |
-| `review-code` と `pr-to-ready` は指摘ごとに判定 worker を 1 体起こす | 判定役は 1 ラウンドに 1 体 | [[review-cycle]] |
-| `implement-work` は完了ゲートの後に draft PR を作り、そのまま `pr-to-ready` に渡せる | draft PR の後、`pr-to-ready` の前にユーザーの `/crit` を挟む | [[review-cycle]] |
+| `vet-code` (`review-code`・`review-plan`・`review-pr` が 1 ラウンドを委ねる) と `pr-to-ready` は指摘ごとに判定 worker を 1 体起こす。`simplify-code` も提案ごとに 1 体起こす | 判定役は 1 ラウンドに 1 体 | [[review-cycle]] |
+| `implement-work` は draft PR を作ったら止まり、次の入口として `pr-to-ready` を名指す | `pr-to-ready` の前にユーザーの `/crit` を挟む | [[review-cycle]] |
 | PR 本文の Issue 参照は、同一リポなら `#NNN` | 書式は rule に従う | [[github-writing]] の「根拠を示す」 |
 | `implement-work` の Execution は、メインが実装を書く場面を認める (設計判断の無い変更の lane の manual、些細で独立した変更の inline、理由付きの manual)。完了ゲートの Verify は、未達の criterion をメインが実装する | 高コストモデルで動いているときは、これらも worker に降ろす | [[delegation]] |
+| `plan-work` は自分が投稿した設計コメントを承認なしで in place 編集する (sub-issue 一覧の追記、再承認した設計の反映) | dude どおり承認なしで編集してよい。それ以外の既存本文は差分の承認を取る | [[github-writing]] の「既存本文の更新」 |
+| `pr-to-ready` は冒頭で ready-on-clean を尋ね、yes なら `mark-ready.sh` で ready にする | 答えるのはユーザー。Claude が代わりに yes を選ばない | [[github-workflow]] の PR |
+| `review-pr` は渡された PR を vet し、判定済みの指摘を 1 件の review として投稿する | 対象の選定と、下書きの文面を github-writing に揃える工程を足す | [[review-cycle]] の他人の PR |
 
 git worktree による隔離は常時の前提で、作るかどうかをユーザーに尋ねない。同一 checkout でブランチを切り替えると、他のセッションの作業状態と干渉するためだ。配置先は `.claude/worktrees/<branch>`。dude の flow では、`implement-work` が決めた branch 名と base を指定して `git worktree add` で作る (EnterWorktree tool の新規作成は base を選べないので、既存の worktree に入るときだけ使う)。Agent tool の `isolation: worktree` は flow の外の単発の委譲に限る。
 
