@@ -9,7 +9,6 @@ CLAUDE.md
 
 # === Agent skills 用ドキュメント / ローカル issue tracker (リポ運用ファイル) ===
 docs
-.scratch
 
 # === ビルド / タスク定義 (Make や CI 側で使うもの) ===
 Makefile

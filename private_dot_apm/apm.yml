@@ -8,27 +8,27 @@ targets:
 
 dependencies:
   apm:
-    - mattpocock/skills/skills/engineering/codebase-design#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
-    - mattpocock/skills/skills/engineering/domain-modeling#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
-    - mattpocock/skills/skills/engineering/improve-codebase-architecture#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
-    - mattpocock/skills/skills/engineering/prototype#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
-    - mattpocock/skills/skills/engineering/research#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
-    - mattpocock/skills/skills/productivity/grill-me#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
-    - mattpocock/skills/skills/productivity/grilling#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
-    - mattpocock/skills/skills/productivity/handoff#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
-    - mattpocock/skills/skills/productivity/teach#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
-    - mattpocock/skills/skills/productivity/writing-for-agents#4588b32ecab9ecc9fc8cc6b6c5e7d675b6004b0d
+    - mattpocock/skills/skills/engineering/codebase-design#49dd158d1076134a641b33efb035946536778336
+    - mattpocock/skills/skills/engineering/domain-modeling#49dd158d1076134a641b33efb035946536778336
+    - mattpocock/skills/skills/engineering/improve-codebase-architecture#49dd158d1076134a641b33efb035946536778336
+    - mattpocock/skills/skills/engineering/prototype#49dd158d1076134a641b33efb035946536778336
+    - mattpocock/skills/skills/engineering/research#49dd158d1076134a641b33efb035946536778336
+    - mattpocock/skills/skills/productivity/grill-me#49dd158d1076134a641b33efb035946536778336
+    - mattpocock/skills/skills/productivity/grilling#49dd158d1076134a641b33efb035946536778336
+    - mattpocock/skills/skills/productivity/handoff#49dd158d1076134a641b33efb035946536778336
+    - mattpocock/skills/skills/productivity/teach#49dd158d1076134a641b33efb035946536778336
+    - mattpocock/skills/skills/productivity/writing-for-agents#49dd158d1076134a641b33efb035946536778336
     - saxsir/skills#c8f5147e3fd61c682c6942946641e3b37aa01d30
-    - tomasz-tomczyk/crit/integrations/claude-code#16e9e0971143c9e7f41710b5e477e1650537b8ae
-    - github/gh-stack/skills/gh-stack#d4ab7ab47e5b3e3708a27c8c42abcdf4bc321419
-    - anthropics/claude-plugins-community/eli5/skills/eli5#f60f0454df3045f724c43c6346ec80bdcc3472b2
-    - humanlayer/skills/plugins/show-me/skills/show-me#ca7c8088db69e315a8b2deea43820270457f8f3c
-    - coji/natural-japanese/skills/natural-japanese#9a78a42964096da509b8f3e011f0085a5f080151
-    - voyagegroup/kairan/.claude/skills/kairan#35eeb050d036007c64207ebc1ff40599fdb166a8
-    - mizchi/explainer/skills/explainer#6abf6fc2ae92a81b140b47ab9b7c96894e5faecc
-    - mizchi/explainer/skills/explainer-book#6abf6fc2ae92a81b140b47ab9b7c96894e5faecc
-    - mizchi/explainer/skills/first-reader#6abf6fc2ae92a81b140b47ab9b7c96894e5faecc
-    - mizchi/vlmkit#e7f8d5d59ed8b5b7a45ff1014ef94567dfd119c8
+    - tomasz-tomczyk/crit/integrations/claude-code#6b31901e66120434ca6018c3ab0e42103e16bee2
+    - github/gh-stack/skills/gh-stack#29a36d314be664583705f18e41cebdf2b61ad514
+    - anthropics/claude-plugins-community/eli5/skills/eli5#06ec7b6a0a82bdc4bec44bd82d4368c42f20d7c1
+    - humanlayer/skills/plugins/show-me/skills/show-me#653b6411c1f70c275a18e37673b042ff99f67ceb
+    - coji/natural-japanese/skills/natural-japanese#74647ae4331e310eb7ac93e3038a133d08be5acd
+    - voyagegroup/kairan/.claude/skills/kairan#5a14e189564f17261d4fc9fea98f80796069cd86
+    - mizchi/explainer/skills/explainer#ccdd7bacfb47451e38506d837af8a629504960b2
+    - mizchi/explainer/skills/explainer-book#ccdd7bacfb47451e38506d837af8a629504960b2
+    - mizchi/explainer/skills/first-reader#ccdd7bacfb47451e38506d837af8a629504960b2
+    - mizchi/vlmkit#201f57c526507e6d9e9b8f7d27d98779c26e377a
   mcp: []
 includes: auto
 scripts: {}
