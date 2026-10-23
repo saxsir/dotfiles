@@ -37,3 +37,4 @@ fi
 if [ ! -f ~/.zcompdump.zwc -o ~/.zcompdump -nt ~/.zcompdump.zwc ]; then
   zcompile ~/.zcompdump
 fi
+export PATH=/opt/homebrew/opt/mysql-client/bin:$PATH
