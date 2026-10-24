@@ -2,24 +2,66 @@
 # master/main ブランチへの push をブロックする PreToolUse フック
 INPUT=$(cat)
 CMD=$(echo "$INPUT" | jq -r '.tool_input.command')
+CWD=$(echo "$INPUT" | jq -r '.cwd // empty')
 
-# git push コマンドでなければスキップ
-echo "$CMD" | grep -qE '^\s*git\s+push' || exit 0
+# PUSH_RE と区切りの sed は block-force-push.sh と揃える。片方だけ直すと 2 つの hook で
+# push とみなす範囲がずれる。
+PUSH_RE="git([[:space:]]+-[^[:space:]]+([[:space:]]+(\"[^\"]*\"|'[^']*'|[^[:space:]-][^[:space:]]*))?)*[[:space:]]+push([[:space:]]|\$)"
 
-# 明示的に main/master が指定されている場合
-if echo "$CMD" | grep -qE '\s(main|master)(\s|$)'; then
-  echo "Blocked: push to main/master is not allowed: $CMD" >&2
-  exit 2
-fi
+echo "${CMD}" | grep -qE "${PUSH_RE}" || exit 0
 
-# 引数なし or リモート名のみの push → 現在のブランチを確認
-if echo "$CMD" | grep -qE '^\s*git\s+push\s*$' || \
-   echo "$CMD" | grep -qE '^\s*git\s+push\s+(-[a-zA-Z]+\s+)*[a-zA-Z0-9_.-]+\s*$'; then
-  CURRENT=$(git branch --show-current 2>/dev/null)
-  if [ "$CURRENT" = "main" ] || [ "$CURRENT" = "master" ]; then
-    echo "Blocked: currently on $CURRENT — push to main/master is not allowed" >&2
-    exit 2
+segments=$(echo "${CMD}" | sed -E -e 's/&&|;|\|/\n/g' -e 's/([^<>&])&([^&]|$)/\1\n\2/g')
+
+is_protected_ref() {
+  case "$1" in
+    main|master|refs/heads/main|refs/heads/master) return 0 ;;
+  esac
+  return 1
+}
+
+while IFS= read -r seg; do
+  echo "${seg}" | grep -qE "${PUSH_RE}" || continue
+
+  args=$(echo "${seg}" | sed -E "s/.*${PUSH_RE}//")
+  read -ra tokens <<< "${args}"
+
+  positionals=()
+  skip_next=0
+  for token in "${tokens[@]}"; do
+    if [ "${skip_next}" = "1" ]; then
+      skip_next=0
+      continue
+    fi
+    token="${token//\"/}"
+    token="${token//\'/}"
+    case "${token}" in
+      -o|--push-option|--repo|--receive-pack|--exec) skip_next=1 ;;
+      -*) ;;
+      *[\<\>]) skip_next=1 ;;
+      *[\<\>]*) ;;
+      *) positionals+=("${token}") ;;
+    esac
+  done
+
+  if [ "${#positionals[@]}" -ge 2 ]; then
+    for refspec in "${positionals[@]:1}"; do
+      dest="${refspec#+}"
+      dest="${dest##*:}"
+      if [ "${dest}" = "HEAD" ] || [ "${dest}" = "@" ]; then
+        dest=$(git -C "${CWD:-.}" branch --show-current 2>/dev/null)
+      fi
+      if is_protected_ref "${dest}"; then
+        echo "Blocked: push to main/master is not allowed: $CMD" >&2
+        exit 2
+      fi
+    done
+  else
+    CURRENT=$(git -C "${CWD:-.}" branch --show-current 2>/dev/null)
+    if [ "$CURRENT" = "main" ] || [ "$CURRENT" = "master" ]; then
+      echo "Blocked: currently on $CURRENT — push to main/master is not allowed" >&2
+      exit 2
+    fi
   fi
-fi
+done <<< "${segments}"
 
 exit 0
