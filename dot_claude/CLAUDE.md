@@ -21,8 +21,6 @@
 ## Specialty (task-specific)
 @rules/github-workflow.md
 @rules/github-writing.md
-@rules/review-cycle.md
-@rules/planning-workflow.md
 
 # Env
 
