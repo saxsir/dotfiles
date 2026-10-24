@@ -18,7 +18,7 @@ dependencies:
     - mattpocock/skills/skills/productivity/handoff#49dd158d1076134a641b33efb035946536778336
     - mattpocock/skills/skills/productivity/teach#49dd158d1076134a641b33efb035946536778336
     - mattpocock/skills/skills/productivity/writing-for-agents#49dd158d1076134a641b33efb035946536778336
-    - saxsir/skills#53a10974314d69a46eecb858e1d728a4e5d5607b
+    - saxsir/skills#d609f094541b44c2c86378cc73915f452fd0470b
     - tomasz-tomczyk/crit/integrations/claude-code#6b31901e66120434ca6018c3ab0e42103e16bee2
     - github/gh-stack/skills/gh-stack#29a36d314be664583705f18e41cebdf2b61ad514
     - anthropics/claude-plugins-community/eli5/skills/eli5#06ec7b6a0a82bdc4bec44bd82d4368c42f20d7c1
