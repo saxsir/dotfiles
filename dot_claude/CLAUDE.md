@@ -23,7 +23,6 @@
 @rules/github-writing.md
 @rules/review-cycle.md
 @rules/planning-workflow.md
-@rules/brain-first.md
 
 # Env
 
