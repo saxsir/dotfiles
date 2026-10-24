@@ -170,7 +170,18 @@
   ],
   "model": "claude-opus-5-5",
   "skillOverrides": {
-    "claude-api": "off"
+    "claude-api": "user-invocable-only",
+    "crit": "user-invocable-only",
+    "crit-story": "user-invocable-only",
+    "brain-distill": "user-invocable-only",
+    "memory-dream": "user-invocable-only",
+    "kairan": "user-invocable-only",
+    "eli5": "user-invocable-only",
+    "explainer-book": "user-invocable-only",
+    "webapp-security-review-whitebox": "name-only",
+    "webapp-security-review-exploit": "name-only",
+    "webapp-security-review-blackbox": "name-only",
+    "first-reader": "name-only"
   },
   "hooks": {
     "PreToolUse": [
