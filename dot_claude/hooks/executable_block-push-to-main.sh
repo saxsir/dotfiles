@@ -47,6 +47,9 @@ while IFS= read -r seg; do
     for refspec in "${positionals[@]:1}"; do
       dest="${refspec#+}"
       dest="${dest##*:}"
+      if [ "${dest}" = "HEAD" ] || [ "${dest}" = "@" ]; then
+        dest=$(git -C "${CWD:-.}" branch --show-current 2>/dev/null)
+      fi
       if is_protected_ref "${dest}"; then
         echo "Blocked: push to main/master is not allowed: $CMD" >&2
         exit 2
