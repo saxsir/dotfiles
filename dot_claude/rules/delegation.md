@@ -32,6 +32,7 @@
 ## 委譲の書き方
 
 - `model` を省くと `CLAUDE_CODE_SUBAGENT_MODEL` で sonnet になる。built-in の `Explore` / `Plan` はメインのモデルを継承する (Explore は hook が sonnet を補う)。高コストモデルが要るときは `model` を明示する。
+- dude の marked worker は tier に対応する agent 定義で起こす。`high` は `subagent_type: dude:high-tier`、`highest` は `dude:highest-tier`。型も `model` も指定しないと sonnet で動く。
 - 所在・件数だけ欲しい読み込みは `Explore` に降ろす (CLAUDE.md と rules を読まないので安い)。全文を読んだうえでの要約と、rules に従う作業は general-purpose にする。
 - 委譲プロンプトには完了条件・触るファイル・報告形式を入れる。実装なら次も入れる。聞ける相手がいない前提で最後までやる (止まるのは進めようがないときと危険な操作の前だけ)。test / typecheck / build を走らせて出力を報告し、走らせなかった検証を名指しする。依頼外の機能・テスト・docs・refactor は足さず報告末尾の提案に留める。subagent を起こさない。検証の省略と依頼外の追加は返り値から見分けにくい。
 - 起動後は、その結果に依存しない作業を先に進める。
@@ -41,6 +42,6 @@
 ## 避ける
 
 - 大規模・繊細・原因不明の作業を Sonnet に降ろす (品質劣化の往復が一番高くつく)。
-- 自己検証・二重チェック目的の subagent (過検証になる)。例外はユーザー起動のレビューゲートで、[[review-cycle]] が正。書く側レビューは Sonnet に降ろさない。
+- 自己検証・二重チェック目的の subagent (過検証になる)。例外は dude の完了ゲートと、ユーザーが起動したレビュー。書く側レビューは Sonnet に降ろさない。
 
 検出系の worker (レビュー・security-review) の tier は、修正側と独立に決める。見逃しが後段の gate (人が読む PR や plan、CI、後のレビュー) の読む範囲に残るなら `high`、どこにも現れないなら `highest`。
