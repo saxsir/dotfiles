@@ -54,6 +54,15 @@ function sectionOf(text, directory) {
   if (name) return { key: "repo:" + name, label: name, kind: "repo" };
   return { key: "other", label: "other", kind: "other" };
 }
+
+// 見出しと同じ "#番号" を行テキストから外す。"(#4179)" "PR #4204" の形もまとめて消す。
+function stripNum(text, label) {
+  if (!label) return text;
+  const n = label.slice(1);
+  return text
+    .replace(new RegExp("\\s*\\(?(?:PR\\s*)?#" + n + "(?!\\d)\\)?\\s*"), " ")
+    .trim();
+}
 // END pure
 
 const needsYou = (w) =>
@@ -69,7 +78,10 @@ const repoSections = computed(() => {
     const k = sectionOf(headline(w), w.directory);
     let sec = map.get(k.key);
     if (!sec) {
-      sec = { id: k.key, name: k.label, other: k.kind === "other", anchorId: null, rows: [] };
+      sec = {
+        id: k.key, name: k.label, other: k.kind === "other", anchorId: null, rows: [],
+        num: k.kind === "num" ? k.label : null,
+      };
       map.set(k.key, sec);
     }
     sec.rows.push(w);
@@ -89,15 +101,15 @@ const needsItems = computed(() =>
     .sort((a, b) => a.index - b.index)
 );
 
-function row(w, strong) {
+function row(w, strong, num) {
   const pr = () => w().pr;
   const repo = (x) => repoName(repoRoot(x));
   return HStack({ spacing: 8 }, [
     Circle({ size: 7 }).fill(() => (needsYou(w()) ? ORANGE : DOT_HIDDEN)),
     VStack({ spacing: 1 }, [
-      Text(() => headline(w()).replace(TAG_RE, ""))
+      Text(() => stripNum(headline(w()).replace(TAG_RE, ""), num))
         .font(12).weight(strong ? "semibold" : "regular")
-        .lineLimit(1).truncation("tail"),
+        .lineLimit(2).truncation("tail"),
       HStack({ spacing: 0 }, [
         Text(() => repo(w()))
           .font(10).color("tertiary").lineLimit(1).truncation("tail"),
@@ -155,7 +167,7 @@ function repoSection(s) {
       "tertiary",
       () => s().anchorId && cmux("workspace.select", { workspace_id: s().anchorId })
     ),
-    ForEach({ items: () => s().rows, key: (w) => w.id }, (w) => row(w, false)),
+    ForEach({ items: () => s().rows, key: (w) => w.id }, (w) => row(w, false, s().num)),
   ]);
 }
 
