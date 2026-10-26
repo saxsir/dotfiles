@@ -54,6 +54,14 @@ if ((all)); then
 fi
 
 [[ -z "${CMUX_WORKSPACE_ID:-}" ]] && exit 0
-title=$(gh pr view --json title --jq .title 2>/dev/null) || exit 0
+pr_json=$(gh pr view --json title,url 2>/dev/null) || exit 0
+title=$(printf '%s' "${pr_json}" | jq -r '.title // empty')
+url=$(printf '%s' "${pr_json}" | jq -r '.url // empty')
 set_description "${CMUX_WORKSPACE_ID}" "${title}"
+# Why: cmux の PR 自動検出は workspace の cwd の branch を見る。dude の作業は
+# worktree で進み workspace はリポジトリ直下 (default branch) に居るので、
+# 明示的に紐づけないと sidebar に PR も REVIEW lane も出ない。
+if [[ -n "${url}" ]] && ((!dry_run)); then
+  cmux pr "${url}" --workspace "${CMUX_WORKSPACE_ID}" >/dev/null 2>&1 || true
+fi
 exit 0
