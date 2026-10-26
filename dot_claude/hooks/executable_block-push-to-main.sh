@@ -19,10 +19,49 @@ is_protected_ref() {
   return 1
 }
 
+# 引用符を外し、~ を展開し、相対パスを effective dir 基準の絶対パスにする。
+resolve_dir() {
+  local d="$1" sq="'" tilde="~"
+  d="${d#"${d%%[![:space:]]*}"}"
+  d="${d%"${d##*[![:space:]]}"}"
+  case "${d}" in
+    \"*\") d="${d#\"}"; d="${d%\"}" ;;
+    "${sq}"*"${sq}") d="${d#"${sq}"}"; d="${d%"${sq}"}" ;;
+  esac
+  case "${d}" in
+    "") d="${HOME}" ;;
+    "${tilde}") d="${HOME}" ;;
+    "${tilde}/"*) d="${HOME}/${d#"${tilde}/"}" ;;
+    /*) ;;
+    *) d="${eff_dir}/${d}" ;;
+  esac
+  echo "${d}"
+}
+
+# cd - 、変数、サブシェルは追わない (静的に解決できず、誤った dir で判定するより
+# セッションの cwd のままにする方が安全側)。
+eff_dir="${CWD:-.}"
+cd_re='^[[:space:]]*cd([[:space:]]+(.*))?$'
+git_c_re="git[[:space:]]+(.*[[:space:]])?-C[[:space:]]+(\"[^\"]*\"|'[^']*'|[^[:space:]]+)"
+
 while IFS= read -r seg; do
+  if [[ "${seg}" =~ $cd_re ]]; then
+    # リダイレクトを dir に含めると存在しないパスになり、ブランチが取れず push を通してしまう。
+    cd_arg=$(echo "${BASH_REMATCH[2]}" | sed -E 's/[[:space:]]+[0-9]*&?[<>].*$//')
+    case "${cd_arg}" in
+      -|*[\$\`\(\)]*) ;;
+      *) eff_dir=$(resolve_dir "${cd_arg}") ;;
+    esac
+    continue
+  fi
   echo "${seg}" | grep -qE "${PUSH_RE}" || continue
 
   args=$(echo "${seg}" | sed -E "s/.*${PUSH_RE}//")
+  push_dir="${eff_dir}"
+  if [[ "${seg}" =~ $git_c_re ]]; then
+    push_dir=$(resolve_dir "${BASH_REMATCH[2]}")
+  fi
+
   read -ra tokens <<< "${args}"
 
   positionals=()
@@ -48,7 +87,7 @@ while IFS= read -r seg; do
       dest="${refspec#+}"
       dest="${dest##*:}"
       if [ "${dest}" = "HEAD" ] || [ "${dest}" = "@" ]; then
-        dest=$(git -C "${CWD:-.}" branch --show-current 2>/dev/null)
+        dest=$(git -C "${push_dir}" branch --show-current 2>/dev/null)
       fi
       if is_protected_ref "${dest}"; then
         echo "Blocked: push to main/master is not allowed: $CMD" >&2
@@ -56,7 +95,7 @@ while IFS= read -r seg; do
       fi
     done
   else
-    CURRENT=$(git -C "${CWD:-.}" branch --show-current 2>/dev/null)
+    CURRENT=$(git -C "${push_dir}" branch --show-current 2>/dev/null)
     if [ "$CURRENT" = "main" ] || [ "$CURRENT" = "master" ]; then
       echo "Blocked: currently on $CURRENT — push to main/master is not allowed" >&2
       exit 2
