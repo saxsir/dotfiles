@@ -4,6 +4,8 @@
 // 最初の #番号、どちらも無ければ repo root の basename (directory 無しは other)。
 // 最上部の NEEDS YOU 欄は、agent が入力待ち (needs_input) か workspace.status が
 // needs-attention の workspace を集める。該当が無いときは欄ごと出さない。
+// 動いている agent がいない workspace (ブラウザだけ残した後回しの作業など) は
+// タスク欄から外し、最下部の LATER 欄に薄く出す。
 // agents-board を元にしている。
 //   cmux sidebar open work-board
 
@@ -73,11 +75,15 @@ const needsYou = (w) =>
   w.status === "needs-attention" ||
   (w.agents ?? []).some((a) => a.status === "needs_input");
 
+const parked = (w) =>
+  !needsYou(w) && !(w.agents ?? []).some((a) => a.status !== "ended");
+
 // タスクごとのセクション。順序は所属 workspace の最小 index、other は末尾。
 const repoSections = computed(() => {
   const all = (data.workspaces() ?? []).slice().sort((a, b) => a.index - b.index);
   const map = new Map();
   for (const w of all) {
+    if (parked(w)) continue;
     const k = sectionOf(headline(w), w.directory);
     let sec = map.get(k.key);
     if (!sec) {
@@ -98,7 +104,11 @@ const needsItems = computed(() =>
     .sort((a, b) => a.index - b.index)
 );
 
-function row(w, strong, num) {
+const laterItems = computed(() =>
+  (data.workspaces() ?? []).filter(parked).sort((a, b) => a.index - b.index)
+);
+
+function row(w, strong, num, dim) {
   const pr = () => w().pr;
   const repo = (x) => repoName(repoRoot(x));
   return HStack({ spacing: 8 }, [
@@ -132,6 +142,7 @@ function row(w, strong, num) {
     .background(() => (w().selected ? "#7f7f7f40" : strong ? "#FF9F0A1a" : null))
     .hoverBackground(strong ? "#FF9F0A2e" : "#7f7f7f24")
     .frame({ maxWidth: "infinity" })
+    .opacity(dim ? 0.6 : 1)
     .onTap(() => cmux("workspace.select", { workspace_id: w().id }));
 }
 
@@ -155,6 +166,17 @@ function needsSection() {
   );
 }
 
+function laterSection() {
+  return ForEach(
+    { items: () => (laterItems().length ? [{ id: "later" }] : []), key: (x) => x.id },
+    () =>
+      VStack({ spacing: 3 }, [
+        header("LATER", () => String(laterItems().length), "tertiary"),
+        ForEach({ items: laterItems, key: (w) => w.id }, (w) => row(w, false, null, true)),
+      ])
+  );
+}
+
 function repoSection(s) {
   return VStack({ spacing: 3 }, [
     header(() => s().name, () => String(s().rows.length), "tertiary"),
@@ -167,6 +189,7 @@ sidebar(() =>
     Text("Work").font(14).weight("semibold").paddingHorizontal(10),
     needsSection(),
     ForEach({ items: repoSections, key: (s) => s.id }, repoSection),
+    laterSection(),
     Spacer(),
   ]).paddingHorizontal(6),
   { surface: "glass" }
