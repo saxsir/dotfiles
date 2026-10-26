@@ -46,7 +46,8 @@ git_c_re="git[[:space:]]+(.*[[:space:]])?-C[[:space:]]+(\"[^\"]*\"|'[^']*'|[^[:s
 
 while IFS= read -r seg; do
   if [[ "${seg}" =~ $cd_re ]]; then
-    cd_arg="${BASH_REMATCH[2]}"
+    # リダイレクトを dir に含めると存在しないパスになり、ブランチが取れず push を通してしまう。
+    cd_arg=$(echo "${BASH_REMATCH[2]}" | sed -E 's/[[:space:]]+[0-9]*&?[<>].*$//')
     case "${cd_arg}" in
       -|*[\$\`\(\)]*) ;;
       *) eff_dir=$(resolve_dir "${cd_arg}") ;;
