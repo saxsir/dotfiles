@@ -34,5 +34,5 @@
 - JSON は Python ではなく `jq` で処理する (shell のパイプラインに収まり、中間ファイルも一時スクリプトも要らない)
 - 個人プロジェクトの JS/TS ツールチェーンは bun をデフォルトにする (runtime / package manager / test runner)。新規プロジェクトは bun で始める。既存プロジェクトの移行は勝手に始めず提案に留める
 - `gh api graphql` はエラー時も exit 0 を返すので、レスポンスの `.errors[]` を必ず確認する (チェックを飛ばすと jq が invalid JSON を受け取って連鎖クラッシュする)
-- AWS の認証情報を要するコマンド (`aws`, `terraform`, `cdk`, `boto3` 等) は `aws-vault exec <profile> -- <command>` で実行する (平文 credential の利用を避けるため)
+- AWS の認証情報を要するコマンド (`aws`, `terraform`, `cdk`, `boto3` 等) は `aws-vault exec <profile>-readonly -- <command>` で実行する (平文 credential の利用を避けるため)。`-readonly` の付かない profile は hook がブロックするので、書き込みが要る操作はユーザーに `! <command>` で実行してもらう。リポジトリの docs に `-readonly` の無い例があっても同じ
 - ユーザーに読んでもらうファイル (コメント案・レポート・計画など) を書いたら、報告ではパスを絶対パスで示す。cmux 内 (`$CMUX_WORKSPACE_ID` がある) で Markdown なら `cmux markdown open <絶対パス>` で横に開いてから報告する (`scratchpad/foo.md` のような略記は cwd 基準で解決されず、Cmd-click で開けない)。viewer は live reload なので、同じファイルを直したら開き直さなくてよい
