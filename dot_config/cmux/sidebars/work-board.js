@@ -4,8 +4,6 @@
 // 最初の #番号、どちらも無ければ repo root の basename (directory 無しは other)。
 // 最上部の NEEDS YOU 欄は、agent が入力待ち (needs_input) か workspace.status が
 // needs-attention の workspace を集める。該当が無いときは欄ごと出さない。
-// パス表記の title (…/ / ~/ 始まり) を持つ workspace は元のフォルダ見出し (アンカー)
-// とみなして行にせず、リポジトリ見出しのタップでそれを選択する (タグ/番号の見出しは何もしない)。
 // agents-board を元にしている。
 //   cmux sidebar open work-board
 
@@ -29,17 +27,23 @@ function fmt(secs) {
   return h >= 48 ? Math.floor(h / 24) + "d" : h + "h";
 }
 
-function headline(w) {
-  const d = (w.description ?? "").split("\n")[0].trim();
-  return d || w.agents?.[0]?.title || w.title;
-}
-
-const isAnchor = (w) => /^(…\/|\/|~\/)/.test(w.title ?? "");
+const isPath = (t) => /^(…\/|\/|~\/)/.test(t ?? "");
 
 const repoRoot = (w) =>
   w.directory ? w.directory.split("/.claude/worktrees/")[0] : "";
 
 const repoName = (root) => root.split("/").filter((p) => p).pop() ?? "";
+
+// Claude セッションを閉じると title がパス表記に戻るので、ブラウザ等のタブ名、
+// それも無ければリポジトリ名で代える。
+function headline(w) {
+  const d = (w.description ?? "").split("\n")[0].trim();
+  if (d) return d;
+  if (w.agents?.[0]?.title) return w.agents[0].title;
+  if (!isPath(w.title)) return w.title;
+  const tab = (w.tabs ?? []).find((t) => t.title && !isPath(t.title));
+  return tab?.title || repoName(repoRoot(w)) || w.title;
+}
 
 // BEGIN pure
 const TAG_RE = /^\[([^\]]+)\]\s*/;
@@ -69,35 +73,28 @@ const needsYou = (w) =>
   w.status === "needs-attention" ||
   (w.agents ?? []).some((a) => a.status === "needs_input");
 
-// タスクごとのセクション。順序は所属 (アンカー以外の) workspace の最小 index、other は末尾。
+// タスクごとのセクション。順序は所属 workspace の最小 index、other は末尾。
 const repoSections = computed(() => {
   const all = (data.workspaces() ?? []).slice().sort((a, b) => a.index - b.index);
   const map = new Map();
   for (const w of all) {
-    if (isAnchor(w)) continue;
     const k = sectionOf(headline(w), w.directory);
     let sec = map.get(k.key);
     if (!sec) {
       sec = {
-        id: k.key, name: k.label, other: k.kind === "other", anchorId: null, rows: [],
+        id: k.key, name: k.label, other: k.kind === "other", rows: [],
         num: k.kind === "num" ? k.label : null,
       };
       map.set(k.key, sec);
     }
     sec.rows.push(w);
   }
-  for (const w of all) {
-    if (!isAnchor(w)) continue;
-    const name = repoName(repoRoot(w));
-    const sec = name && map.get("repo:" + name);
-    if (sec) sec.anchorId = sec.anchorId ?? w.id;
-  }
   return [...map.values()].sort((a, b) => (a.other ? 1 : 0) - (b.other ? 1 : 0)); // Map は挿入順 = 最小 index 順
 });
 
 const needsItems = computed(() =>
   (data.workspaces() ?? [])
-    .filter((w) => !isAnchor(w) && needsYou(w))
+    .filter(needsYou)
     .sort((a, b) => a.index - b.index)
 );
 
@@ -138,13 +135,12 @@ function row(w, strong, num) {
     .onTap(() => cmux("workspace.select", { workspace_id: w().id }));
 }
 
-function header(label, count, color, onTap) {
-  const h = HStack({ spacing: 6 }, [
+function header(label, count, color) {
+  return HStack({ spacing: 6 }, [
     Text(label).font(10).weight("semibold").color(color),
     Spacer(),
     Text(count).font(10).monospaced().color("tertiary"),
   ]).paddingHorizontal(10);
-  return onTap ? h.onTap(onTap) : h;
 }
 
 function needsSection() {
@@ -161,12 +157,7 @@ function needsSection() {
 
 function repoSection(s) {
   return VStack({ spacing: 3 }, [
-    header(
-      () => s().name,
-      () => String(s().rows.length),
-      "tertiary",
-      () => s().anchorId && cmux("workspace.select", { workspace_id: s().anchorId })
-    ),
+    header(() => s().name, () => String(s().rows.length), "tertiary"),
     ForEach({ items: () => s().rows, key: (w) => w.id }, (w) => row(w, false, s().num)),
   ]);
 }
