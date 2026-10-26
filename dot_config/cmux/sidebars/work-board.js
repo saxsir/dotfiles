@@ -1,22 +1,19 @@
-// work-board: workspace を状態 lane (workspace の status) ごとに並べ、
+// work-board: workspace をリポジトリ (directory の repo root) ごとに並べ、
 // 各行に「何の作業か」(description = PR タイトル) を出す。
-// agents-board を元にしている。agents-board は agent 単位の行だが、
-// こちらは workspace 単位の行で、lane は agent の status でなく workspace.status。
+// 最上部の NEEDS YOU 欄は、agent が入力待ち (needs_input) か workspace.status が
+// needs-attention の workspace を集める。該当が無いときは欄ごと出さない。
+// パス表記の title (…/ / ~/ 始まり) を持つ workspace は元のフォルダ見出し (アンカー)
+// とみなして行にせず、リポジトリ見出しのタップでそれを選択する。
+// agents-board を元にしている。
 //   cmux sidebar open work-board
 
-const LANES = [
-  { key: "needs-attention", label: "NEEDS YOU", color: "#FF9F0A", strong: true },
-  { key: "working", label: "WORKING", color: "#0A84FF", strong: false },
-  { key: "review", label: "REVIEW", color: "#BF5AF2", strong: false },
-  { key: "todo", label: "TODO", color: "#7f7f7f", strong: false },
-  { key: "done", label: "DONE", color: "#34C759", strong: false },
-];
+const ORANGE = "#FF9F0A";
 
 // agents[0].status の配色 (agents-board と同じ)
 const DOT = {
-  needs_input: "#FF9F0A",
+  needs_input: ORANGE,
   working: "#0A84FF",
-  idle: "#34C759",
+  idle: "#7f7f7f",
   ended: "#7f7f7f66",
 };
 const DOT_NONE = "#7f7f7f66";
@@ -38,19 +35,44 @@ function headline(w) {
   return d || w.agents?.[0]?.title || w.title;
 }
 
-function repoName(w) {
-  if (!w.directory) return "";
-  const root = w.directory.split("/.claude/worktrees/")[0];
-  return root.split("/").filter((p) => p).pop() ?? "";
-}
+const isAnchor = (w) => /^(…\/|\/|~\/)/.test(w.title ?? "");
 
-const byLane = (key) => () =>
+const repoRoot = (w) =>
+  w.directory ? w.directory.split("/.claude/worktrees/")[0] : "";
+
+const repoName = (root) => root.split("/").filter((p) => p).pop() ?? "";
+
+const needsYou = (w) =>
+  w.status === "needs-attention" ||
+  (w.agents ?? []).some((a) => a.status === "needs_input");
+
+// リポジトリごとのセクション。順序は所属 workspace の最小 index、directory 無しは末尾。
+const repoSections = computed(() => {
+  const all = (data.workspaces() ?? []).slice().sort((a, b) => a.index - b.index);
+  const map = new Map();
+  for (const w of all) {
+    const root = repoRoot(w);
+    let sec = map.get(root);
+    if (!sec) {
+      sec = { id: root || "\u0000other", name: root ? repoName(root) : "other", other: !root, anchorId: null, rows: [] };
+      map.set(root, sec);
+    }
+    if (isAnchor(w)) sec.anchorId = sec.anchorId ?? w.id;
+    else sec.rows.push(w);
+  }
+  return [...map.values()]
+    .filter((s) => s.rows.length > 0)
+    .sort((a, b) => (a.other ? 1 : 0) - (b.other ? 1 : 0)); // Map は挿入順 = 最小 index 順
+});
+
+const needsItems = computed(() =>
   (data.workspaces() ?? [])
-    .filter((w) => w.status === key)
-    .sort((a, b) => a.index - b.index);
+    .filter((w) => !isAnchor(w) && needsYou(w))
+    .sort((a, b) => a.index - b.index)
+);
 
-function row(w, lane) {
-  const strong = lane.strong;
+function row(w, strong) {
+  const pr = () => w().pr;
   return HStack({ spacing: 8 }, [
     Circle({ size: 7 }).fill(() => DOT[w().agents?.[0]?.status] ?? DOT_NONE),
     VStack({ spacing: 1 }, [
@@ -58,13 +80,12 @@ function row(w, lane) {
         .font(12).weight(strong ? "semibold" : "regular")
         .lineLimit(1).truncation("tail"),
       HStack({ spacing: 0 }, [
-        Text(() => repoName(w())).font(10).color("tertiary").lineLimit(1).truncation("tail"),
-        Text(() => (w().pr ? " · #" + w().pr.number : ""))
+        Text(() => (pr() ? "#" + pr().number : ""))
           .font(10).color("tertiary").lineLimit(1).fixedSize(),
-        Text(() => (w().pr ? " " + w().pr.status : ""))
-          .font(10).color(() => PR_COLOR[w().pr?.status] ?? "tertiary")
+        Text(() => (pr() ? " " + pr().status : ""))
+          .font(10).color(() => PR_COLOR[pr()?.status] ?? "tertiary")
           .lineLimit(1).fixedSize(),
-        Text(() => (w().latestAt ? " · " + fmt(epoch() - w().latestAt) : ""))
+        Text(() => (w().latestAt ? (pr() ? " · " : "") + fmt(epoch() - w().latestAt) : ""))
           .font(10).monospaced().color("tertiary").lineLimit(1).fixedSize(),
       ]),
     ]),
@@ -84,26 +105,44 @@ function row(w, lane) {
     .onTap(() => cmux("workspace.select", { workspace_id: w().id }));
 }
 
-function laneSection(lane) {
-  const items = byLane(lane.key);
+function header(label, count, color, onTap) {
+  const h = HStack({ spacing: 6 }, [
+    Text(label).font(10).weight("semibold").color(color),
+    Spacer(),
+    Text(count).font(10).monospaced().color("tertiary"),
+  ]).paddingHorizontal(10);
+  return onTap ? h.onTap(onTap) : h;
+}
+
+function needsSection() {
+  // 0 件のときは要素 0 の ForEach になり、見出しごと消える
+  return ForEach(
+    { items: () => (needsItems().length ? [{ id: "needs" }] : []), key: (x) => x.id },
+    () =>
+      VStack({ spacing: 3 }, [
+        header("NEEDS YOU", () => String(needsItems().length), ORANGE),
+        ForEach({ items: needsItems, key: (w) => w.id }, (w) => row(w, true)),
+      ])
+  );
+}
+
+function repoSection(s) {
   return VStack({ spacing: 3 }, [
-    HStack({ spacing: 6 }, [
-      Text(lane.label).font(10).weight("semibold")
-        .color(() => (items().length && lane.strong ? lane.color : "tertiary")),
-      Spacer(),
-      Text(() => (items().length ? String(items().length) : ""))
-        .font(10).monospaced().color("tertiary"),
-    ]).paddingHorizontal(10),
-    ForEach({ items, key: (w) => w.id }, (w) => row(w, lane)),
-    Text(() => (items().length === 0 ? "—" : ""))
-      .font(10).color("tertiary").paddingHorizontal(10),
+    header(
+      () => s().name,
+      () => String(s().rows.length),
+      "tertiary",
+      () => s().anchorId && cmux("workspace.select", { workspace_id: s().anchorId })
+    ),
+    ForEach({ items: () => s().rows, key: (w) => w.id }, (w) => row(w, false)),
   ]);
 }
 
 sidebar(() =>
   VStack({ spacing: 10 }, [
     Text("Work").font(14).weight("semibold").paddingHorizontal(10),
-    ...LANES.map(laneSection),
+    needsSection(),
+    ForEach({ items: repoSections, key: (s) => s.id }, repoSection),
     Spacer(),
   ]).paddingHorizontal(6),
   { surface: "glass" }
