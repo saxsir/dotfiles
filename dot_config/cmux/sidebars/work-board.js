@@ -1,9 +1,11 @@
-// work-board: workspace をリポジトリ (directory の repo root) ごとに並べ、
-// 各行に「何の作業か」(description = PR タイトル) を出す。
+// work-board: workspace をタスク単位のセクションに並べ、各行に「何の作業か」
+// (description = PR タイトル) とリポジトリ名・PR・経過時間を出す。
+// セクションのキーは行の 1 行目のテキストから決める。先頭の [タグ]、無ければ
+// 最初の #番号、どちらも無ければ repo root の basename (directory 無しは other)。
 // 最上部の NEEDS YOU 欄は、agent が入力待ち (needs_input) か workspace.status が
 // needs-attention の workspace を集める。該当が無いときは欄ごと出さない。
 // パス表記の title (…/ / ~/ 始まり) を持つ workspace は元のフォルダ見出し (アンカー)
-// とみなして行にせず、リポジトリ見出しのタップでそれを選択する。
+// とみなして行にせず、リポジトリ見出しのタップでそれを選択する (タグ/番号の見出しは何もしない)。
 // agents-board を元にしている。
 //   cmux sidebar open work-board
 
@@ -27,7 +29,8 @@ function fmt(secs) {
   if (s < 60) return s + "s";
   const m = Math.floor(s / 60);
   if (m < 60) return m + "m";
-  return Math.floor(m / 60) + "h";
+  const h = Math.floor(m / 60);
+  return h >= 48 ? Math.floor(h / 24) + "d" : h + "h";
 }
 
 function headline(w) {
@@ -42,27 +45,46 @@ const repoRoot = (w) =>
 
 const repoName = (root) => root.split("/").filter((p) => p).pop() ?? "";
 
+// BEGIN pure
+const TAG_RE = /^\[([^\]]+)\]\s*/;
+
+function sectionOf(text, directory) {
+  const t = TAG_RE.exec(text);
+  if (t) return { key: "tag:" + t[1], label: t[1], kind: "tag" };
+  const n = /#(\d+)/.exec(text);
+  if (n) return { key: "num:" + n[1], label: "#" + n[1], kind: "num" };
+  const root = directory ? directory.split("/.claude/worktrees/")[0] : "";
+  const name = repoName(root);
+  if (name) return { key: "repo:" + name, label: name, kind: "repo" };
+  return { key: "other", label: "other", kind: "other" };
+}
+// END pure
+
 const needsYou = (w) =>
   w.status === "needs-attention" ||
   (w.agents ?? []).some((a) => a.status === "needs_input");
 
-// リポジトリごとのセクション。順序は所属 workspace の最小 index、directory 無しは末尾。
+// タスクごとのセクション。順序は所属 (アンカー以外の) workspace の最小 index、other は末尾。
 const repoSections = computed(() => {
   const all = (data.workspaces() ?? []).slice().sort((a, b) => a.index - b.index);
   const map = new Map();
   for (const w of all) {
-    const root = repoRoot(w);
-    let sec = map.get(root);
+    if (isAnchor(w)) continue;
+    const k = sectionOf(headline(w), w.directory);
+    let sec = map.get(k.key);
     if (!sec) {
-      sec = { id: root || "\u0000other", name: root ? repoName(root) : "other", other: !root, anchorId: null, rows: [] };
-      map.set(root, sec);
+      sec = { id: k.key, name: k.label, other: k.kind === "other", anchorId: null, rows: [] };
+      map.set(k.key, sec);
     }
-    if (isAnchor(w)) sec.anchorId = sec.anchorId ?? w.id;
-    else sec.rows.push(w);
+    sec.rows.push(w);
   }
-  return [...map.values()]
-    .filter((s) => s.rows.length > 0)
-    .sort((a, b) => (a.other ? 1 : 0) - (b.other ? 1 : 0)); // Map は挿入順 = 最小 index 順
+  for (const w of all) {
+    if (!isAnchor(w)) continue;
+    const name = repoName(repoRoot(w));
+    const sec = name && map.get("repo:" + name);
+    if (sec) sec.anchorId = sec.anchorId ?? w.id;
+  }
+  return [...map.values()].sort((a, b) => (a.other ? 1 : 0) - (b.other ? 1 : 0)); // Map は挿入順 = 最小 index 順
 });
 
 const needsItems = computed(() =>
@@ -73,19 +95,22 @@ const needsItems = computed(() =>
 
 function row(w, strong) {
   const pr = () => w().pr;
+  const repo = (x) => repoName(repoRoot(x));
   return HStack({ spacing: 8 }, [
     Circle({ size: 7 }).fill(() => DOT[w().agents?.[0]?.status] ?? DOT_NONE),
     VStack({ spacing: 1 }, [
-      Text(() => headline(w()))
+      Text(() => headline(w()).replace(TAG_RE, ""))
         .font(12).weight(strong ? "semibold" : "regular")
         .lineLimit(1).truncation("tail"),
       HStack({ spacing: 0 }, [
-        Text(() => (pr() ? "#" + pr().number : ""))
+        Text(() => repo(w()))
+          .font(10).color("tertiary").lineLimit(1).truncation("tail"),
+        Text(() => (pr() ? (repo(w()) ? " · " : "") + "#" + pr().number : ""))
           .font(10).color("tertiary").lineLimit(1).fixedSize(),
-        Text(() => (pr() ? " " + pr().status : ""))
+        Text(() => (pr()?.status ? " " + pr().status : ""))
           .font(10).color(() => PR_COLOR[pr()?.status] ?? "tertiary")
           .lineLimit(1).fixedSize(),
-        Text(() => (w().latestAt ? (pr() ? " · " : "") + fmt(epoch() - w().latestAt) : ""))
+        Text(() => (w().latestAt ? (repo(w()) || pr() ? " · " : "") + fmt(epoch() - w().latestAt) : ""))
           .font(10).monospaced().color("tertiary").lineLimit(1).fixedSize(),
       ]),
     ]),
