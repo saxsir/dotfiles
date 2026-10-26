@@ -11,14 +11,10 @@
 
 const ORANGE = "#FF9F0A";
 
-// agents[0].status の配色 (agents-board と同じ)
-const DOT = {
-  needs_input: ORANGE,
-  working: "#0A84FF",
-  idle: "#7f7f7f",
-  ended: "#7f7f7f66",
-};
-const DOT_NONE = "#7f7f7f66";
+// Why-not: agents[0].status で working / idle を塗り分けない。cmux 0.65.2 では
+// sidebar-state や hook セッション記録が idle でも agents[].status が working の
+// まま残ることがあり、色が実態とずれる。ドットは NEEDS YOU と同じ判定だけ出す。
+const DOT_HIDDEN = "#00000000";
 
 const PR_COLOR = { open: "#34C759", merged: "#BF5AF2", closed: "#FF453A" };
 
@@ -97,7 +93,7 @@ function row(w, strong) {
   const pr = () => w().pr;
   const repo = (x) => repoName(repoRoot(x));
   return HStack({ spacing: 8 }, [
-    Circle({ size: 7 }).fill(() => DOT[w().agents?.[0]?.status] ?? DOT_NONE),
+    Circle({ size: 7 }).fill(() => (needsYou(w()) ? ORANGE : DOT_HIDDEN)),
     VStack({ spacing: 1 }, [
       Text(() => headline(w()).replace(TAG_RE, ""))
         .font(12).weight(strong ? "semibold" : "regular")
