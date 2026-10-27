@@ -11,6 +11,10 @@
 # だから同一リポ参照も含めて一律に落とし、owner/repo#番号 かフル URL を書かせる。
 # closing keyword (Closes / Fixes / Resolves) の行も同じ。Closes owner/repo#番号
 # なら自動クローズも効くので、免除は置かない。
+# 唯一の例外が、行全体が Blocked-By: #<n> に一致する行。dude の prereq-line.sh が
+# 同一リポの issue 番号として読む機械可読の行で、owner/repo#<n> と書くと dude 側で
+# MALFORMED になり書きようが無い。人が参照として書く #<n> ではなく、別リポのつもりで
+# 書く事故の余地も無い。dude と同じ完全一致の行だけを外し、近い形は従来どおり落とす。
 #
 # 本文の取得元は gh pr/issue 系の --body / -b / --body-file / -F <file> と、
 # gh api の -f body= / -F body=@<file> / --input <file>。
@@ -96,6 +100,7 @@ sub strip_code {
 sub scan {
   my ($t) = @_;
   $t = strip_code($t);
+  $t =~ s/^Blocked-By: \#[1-9][0-9]*\r?$//gm;   # dude の前提行 (行全体の完全一致だけ)
   my @hits;
   # 直前を文字クラスで「消費」すると、日本語の直後 (詳細は#123) や **#123** を
   # 取り逃す。マルチバイトの末尾や約物を列挙しきれないので否定後読みにする。

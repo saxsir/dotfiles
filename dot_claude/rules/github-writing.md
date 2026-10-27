@@ -14,6 +14,8 @@ closing keyword (`Closes` / `Fixes` / `Resolves`) の行も同じ書式で、`Cl
 
 投稿本文にリポジトリ名の無い `#番号` が残っていると hook がブロックする (`hooks/block-gh-issue-shorthand.sh`)。検査するのは本文だけで、GitHub がリンク化しないコードブロック内とインラインコード内は対象外。
 
+例外は、行全体が `Blocked-By: #<n>` に一致する行だけ。dude の `plan-work` が子 issue の本文に書く前提行で、`implement-work` が同一リポの issue 番号として読む機械可読の形式なので、`owner/repo#<n>` にすると dude 側で読めなくなる。人が書く参照には当てはまらず、`Blocked-by #<n>` や `- Blocked-By: #<n>` など近い形は従来どおりブロックする。
+
 ## 既存本文の更新
 
 PR / Issue の description と投稿済みコメントを直すときは、全文を書き直さず変更箇所だけを編集する。全文を再生成すると、前に書いた経緯や他人の追記が消える。
