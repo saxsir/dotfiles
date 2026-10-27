@@ -51,8 +51,7 @@ stale_owner=""
 create_lock() {
   mkdir "${ws_dir}/lock" 2> /dev/null || return 1
   if ! echo "$$ $(date +%s)" > "${ws_dir}/lock/owner" 2> /dev/null; then
-    rm -f "${ws_dir}/lock/owner"
-    rmdir "${ws_dir}/lock" 2> /dev/null
+    rm -rf "${ws_dir}/lock"
     return 1
   fi
   return 0
