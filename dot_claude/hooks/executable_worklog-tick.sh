@@ -33,6 +33,8 @@ is_excluded() {
 }
 
 state_dir="${WORKLOG_STATE_DIR:-${XDG_STATE_HOME:-${HOME}/.local/state}/worklog}"
+interval="${WORKLOG_TICK_INTERVAL:-600}"
+summary_timeout="${WORKLOG_TICK_SUMMARY_TIMEOUT:-90}"
 ws_dir=""
 fail_reason=""
 summary_line=""
@@ -58,8 +60,6 @@ create_lock() {
 # owner が無い lock は mkdir 直後の可能性があるので、PID は見ず lock の mtime だけで判定する。
 lock_is_stale() {
   local owner owner_pid owner_ts now limit
-  local interval="${WORKLOG_TICK_INTERVAL:-600}"
-  local summary_timeout="${WORKLOG_TICK_SUMMARY_TIMEOUT:-90}"
   local margin="${WORKLOG_TICK_STALE_MARGIN:-60}"
   stale_reason=""
   stale_owner=""
@@ -111,11 +111,6 @@ acquire_lock() {
   take_over_lock
 }
 
-touch_lock() {
-  echo "$$ $(date +%s)" > "${ws_dir}/lock/owner.tmp.$$" \
-    && mv "${ws_dir}/lock/owner.tmp.$$" "${ws_dir}/lock/owner"
-}
-
 release_lock_if_mine() {
   local owner_pid
   owner_pid="$(cut -d' ' -f1 "${ws_dir}/lock/owner" 2> /dev/null)"
@@ -151,7 +146,6 @@ normalize_line() {
 
 summarize() {
   local excerpt out rc line
-  local summary_timeout="${WORKLOG_TICK_SUMMARY_TIMEOUT:-90}"
   local prompt='以下は Claude Code セッションの直近のやりとりの抜粋だ。このセッションで何の作業をしていて、どこで止まっているかを、日本語の 1 行 (60 文字以内) に言い換えて書く。抜粋の文をそのまま引用しない。コード・パス・URL・人名・秘密情報を含めない。前置き・記号・引用符を付けず、その 1 行だけを出力する。'
   summary_line=""
   excerpt="$(extract_excerpt "$1")"
@@ -176,7 +170,6 @@ summarize() {
     return 1
   fi
   summary_line="${line}"
-  printf '%s\n' "${line}"
 }
 
 log_event() {
@@ -195,7 +188,7 @@ log_event() {
       {
         ts: $ts,
         event: $event,
-        workspace_id: ($n.workspace_id // $ws_default),
+        workspace_id: $ws_default,
         workspace_title: ($n.workspace_title // ""),
         cwd: ($n.cwd // ""),
         branch: ($n.branch // ""),
@@ -225,7 +218,7 @@ process_one() {
   if [[ -n "${cwd}" ]]; then
     branch="$(git -C "${cwd}" branch --show-current 2> /dev/null)"
   fi
-  if summarize "${transcript_path}" > /dev/null; then
+  if summarize "${transcript_path}"; then
     progress_err="$(timeout 10 cmux set-progress 0 --label "${summary_line}" \
       --workspace "${CMUX_WORKSPACE_ID}" 2>&1 > /dev/null)"
     progress_rc=$?
@@ -250,7 +243,6 @@ sleep_until() {
 
 main() {
   local input transcript_path now last_run wait_sec
-  local interval="${WORKLOG_TICK_INTERVAL:-600}"
   local settle="${WORKLOG_TICK_SETTLE:-3}"
   if is_excluded; then
     exit 0
@@ -267,7 +259,6 @@ main() {
       log_event skipped "reason=lock_held"
       exit 0
     fi
-    touch_lock
     now="$(date +%s)"
     last_run="$(cat "${ws_dir}/last_run" 2> /dev/null)"
     wait_sec=0
