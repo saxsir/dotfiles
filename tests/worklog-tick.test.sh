@@ -392,6 +392,154 @@ test_no_wait_when_interval_passed() {
   assert_eq 1 "$(count_event summarized)" "summarized lines"
 }
 
+start_live_pid() {
+  sleep 30 &
+  live_pid=$!
+  trap 'kill "${live_pid}" 2> /dev/null' EXIT
+}
+
+write_owner() {
+  mkdir -p "${ws_dir}/lock"
+  echo "$1 $2" > "${ws_dir}/lock/owner"
+}
+
+assert_takeover() {
+  assert_eq 1 "$(count_event takeover)" "takeover lines"
+  assert_eq "$1" "$(tick_log | jq -r 'select(.event == "takeover") | .reason')" "takeover reason"
+  assert_eq 1 "$(count_event summarized)" "summarized lines"
+  assert_no_leftovers
+}
+
+test_takeover_dead_pid() {
+  prepare_summary
+  local dead_pid
+  dead_pid="$(bash -c 'echo $$')"
+  write_owner "${dead_pid}" "$(date +%s)"
+  run_hook
+  assert_takeover dead_pid
+}
+
+test_takeover_expired() {
+  prepare_summary
+  start_live_pid
+  write_owner "${live_pid}" "$(( $(date +%s) - 700 ))"
+  WORKLOG_TICK_INTERVAL=600 WORKLOG_TICK_SUMMARY_TIMEOUT=5 WORKLOG_TICK_STALE_MARGIN=60 run_hook
+  assert_takeover expired
+}
+
+test_fresh_lock_is_kept() {
+  prepare_summary
+  start_live_pid
+  local now owner
+  now="$(date +%s)"
+  owner="${live_pid} ${now}"
+  write_owner "${live_pid}" "${now}"
+  run_hook
+  assert_eq 1 "$(count_event skipped)" "skipped lines"
+  assert_eq lock_held "$(tick_log | jq -r .reason)" reason
+  assert_eq 0 "$(count_event takeover)" "takeover lines"
+  assert_eq "${owner}" "$(cat "${ws_dir}/lock/owner")" owner
+  assert_eq "${tmp}/t1.jsonl" "$(jq -r .transcript_path "${ws_dir}/pending")" "pending transcript_path"
+}
+
+test_lock_without_owner_is_not_stale_when_fresh() {
+  prepare_summary
+  mkdir -p "${ws_dir}/lock"
+  run_hook
+  assert_eq 1 "$(count_event skipped)" "skipped lines"
+  assert_eq 0 "$(count_event takeover)" "takeover lines"
+  [[ -d "${ws_dir}/lock" ]] || fail "lock/ removed"
+}
+
+test_takeover_does_not_steal_fresh_lock() {
+  prepare_summary
+  write_owner 11111 1
+  # shellcheck source=/dev/null
+  source "${script}"
+  ws_dir="${WORKLOG_STATE_DIR}/ws/ws-test"
+  # shellcheck disable=SC2034 # take_over_lock が読む
+  stale_owner="11111 1"
+  # shellcheck disable=SC2034
+  stale_reason=dead_pid
+  echo "22222 $(date +%s)" > "${ws_dir}/lock/owner"
+  local new_owner tk_rc
+  new_owner="$(cat "${ws_dir}/lock/owner")"
+  take_over_lock
+  tk_rc=$?
+  assert_eq 1 "${tk_rc}" "take_over_lock rc"
+  assert_eq "${new_owner}" "$(cat "${ws_dir}/lock/owner")" owner
+  if compgen -G "${ws_dir}/lock.stale.*" > /dev/null; then
+    fail "lock.stale.* left"
+  fi
+  assert_eq 0 "$(count_event takeover)" "takeover lines"
+}
+
+test_lock_is_stale_false_for_fresh_owner() {
+  prepare_summary
+  start_live_pid
+  write_owner "${live_pid}" "$(date +%s)"
+  # shellcheck source=/dev/null
+  source "${script}"
+  ws_dir="${WORKLOG_STATE_DIR}/ws/ws-test"
+  if lock_is_stale; then
+    fail "fresh lock judged stale (reason=${stale_reason})"
+  fi
+}
+
+# 待機中の hook を background で起動し、waiting 行の pid を hook_pid に入れる。
+start_waiting_hook() {
+  prepare_summary
+  mkdir -p "${ws_dir}"
+  date +%s > "${ws_dir}/last_run"
+  WORKLOG_TICK_INTERVAL=30 run_hook_with "${input_file}" bg &
+  hook_pid=""
+  for _ in $(seq 1 50); do
+    hook_pid="$(tick_log | jq -r 'select(.event == "waiting") | .pid')"
+    [[ -n "${hook_pid}" ]] && break
+    sleep 0.1
+  done
+  [[ -n "${hook_pid}" ]] || fail "waiting line not found"
+  trap 'kill -KILL "${hook_pid}" 2> /dev/null; wait' EXIT
+}
+
+# 最大 3 秒、条件が成り立つまで待つ。
+poll_until() {
+  for _ in $(seq 1 30); do
+    "$@" && return 0
+    sleep 0.1
+  done
+  return 1
+}
+
+hook_exited() {
+  ! kill -0 "${hook_pid}" 2> /dev/null
+}
+
+test_term_releases_own_lock() {
+  start_waiting_hook
+  [[ -d "${ws_dir}/lock" ]] || fail "lock/ missing while waiting"
+  kill -TERM "${hook_pid}"
+  poll_until test ! -e "${ws_dir}/lock" || fail "lock/ not released within 3s"
+}
+
+test_trap_keeps_lock_of_other_owner() {
+  start_waiting_hook
+  echo "99999999 $(date +%s)" > "${ws_dir}/lock/owner"
+  kill -TERM "${hook_pid}"
+  poll_until hook_exited || fail "hook did not exit within 3s"
+  [[ -d "${ws_dir}/lock" ]] || fail "lock/ removed"
+  assert_eq "99999999" "$(cut -d' ' -f1 "${ws_dir}/lock/owner")" "owner pid"
+}
+
+test_kill9_waiting_hook_then_next_stop_resumes() {
+  start_waiting_hook
+  kill -KILL "${hook_pid}"
+  wait
+  [[ -d "${ws_dir}/lock" ]] || fail "lock/ removed by kill -9"
+  WORKLOG_TICK_INTERVAL=0 run_hook
+  assert_takeover dead_pid
+}
+
 main() {
   local tests=("$@") name passed=0 failed=0
   if [[ ${#tests[@]} -eq 0 ]]; then

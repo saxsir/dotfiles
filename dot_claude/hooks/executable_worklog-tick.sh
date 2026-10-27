@@ -43,13 +43,72 @@ write_pending() {
     && mv "${ws_dir}/pending.tmp.$$" "${ws_dir}/pending"
 }
 
-acquire_lock() {
+stale_reason=""
+stale_owner=""
+
+create_lock() {
   mkdir "${ws_dir}/lock" 2> /dev/null || return 1
   if ! echo "$$ $(date +%s)" > "${ws_dir}/lock/owner" 2> /dev/null; then
     rmdir "${ws_dir}/lock" 2> /dev/null
     return 1
   fi
   return 0
+}
+
+# owner が無い lock は mkdir 直後の可能性があるので、PID は見ず lock の mtime だけで判定する。
+lock_is_stale() {
+  local owner owner_pid owner_ts now limit
+  local interval="${WORKLOG_TICK_INTERVAL:-600}"
+  local summary_timeout="${WORKLOG_TICK_SUMMARY_TIMEOUT:-90}"
+  local margin="${WORKLOG_TICK_STALE_MARGIN:-60}"
+  stale_reason=""
+  stale_owner=""
+  [[ -d "${ws_dir}/lock" ]] || return 1
+  now="$(date +%s)"
+  limit=$((now - (interval + summary_timeout + margin)))
+  if [[ -f "${ws_dir}/lock/owner" ]]; then
+    owner="$(cat "${ws_dir}/lock/owner" 2> /dev/null)"
+    stale_owner="${owner}"
+    owner_pid="${owner%% *}"
+    owner_ts="${owner#* }"
+    if [[ "${owner_pid}" =~ ^[0-9]+$ ]] && ! kill -0 "${owner_pid}" 2> /dev/null; then
+      stale_reason="dead_pid"
+      return 0
+    fi
+  else
+    owner_ts="$(date -r "${ws_dir}/lock" +%s 2> /dev/null)"
+  fi
+  if [[ "${owner_ts}" =~ ^[0-9]+$ && ${owner_ts} -lt ${limit} ]]; then
+    stale_reason="expired"
+    return 0
+  fi
+  return 1
+}
+
+# 退避した lock の owner が lock_is_stale で読んだ値と違えば、別の hook が先に奪って新しい lock を作っている。
+# 戻すときに lock が既にあれば mv せず消す (mv は既存 dir の中に入れ子にする。mv -T は GNU 依存で空 dir を黙って置換する)。
+take_over_lock() {
+  local retired="${ws_dir}/lock.stale.$$" retired_owner
+  mv "${ws_dir}/lock" "${retired}" 2> /dev/null || return 1
+  retired_owner="$(cat "${retired}/owner" 2> /dev/null)"
+  if [[ "${retired_owner}" != "${stale_owner}" ]]; then
+    if [[ -e "${ws_dir}/lock" ]]; then
+      rm -rf "${retired}"
+    else
+      mv "${retired}" "${ws_dir}/lock" 2> /dev/null || rm -rf "${retired}"
+    fi
+    return 1
+  fi
+  rm -rf "${retired}"
+  create_lock || return 1
+  log_event takeover "reason=${stale_reason}"
+  return 0
+}
+
+acquire_lock() {
+  create_lock && return 0
+  lock_is_stale || return 1
+  take_over_lock
 }
 
 touch_lock() {
