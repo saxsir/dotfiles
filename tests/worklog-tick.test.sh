@@ -106,7 +106,7 @@ run_hook() {
   rc=$?
 }
 
-# 親プロセスの argv を指定して script を起動する。argv0 は claude にする。
+# is_headless は親の argv0 の basename を見るので、exec -a で claude に見せる。
 run_hook_under_claude() {
   bash -c 'exec -a claude bash -c "\"\$1\" < \"\$2\"; true" claude "$0" "$1" "${@:2}"' \
     "${script}" "${input_file}" "$@" > "${tmp}/stdout" 2> "${tmp}/stderr"
@@ -486,7 +486,6 @@ test_lock_is_stale_false_for_fresh_owner() {
   fi
 }
 
-# 待機中の hook を background で起動し、waiting 行の pid を hook_pid に入れる。
 start_waiting_hook() {
   prepare_summary
   mkdir -p "${ws_dir}"
