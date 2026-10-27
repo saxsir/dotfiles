@@ -177,7 +177,7 @@ log_event() {
   shift
   local -a args=()
   ts="$(date +%Y-%m-%dT%H:%M:%S%z | sed 's/\([0-9][0-9]\)$/:\1/')"
-  args+=(--arg ts "${ts}" --arg event "${event}" --arg pid "$$" --arg ws_default "${CMUX_WORKSPACE_ID}")
+  args+=(--arg ts "${ts}" --arg event "${event}" --arg pid "$$" --arg workspace_id "${CMUX_WORKSPACE_ID}")
   for kv in "$@"; do
     args+=(--arg "${kv%%=*}" "${kv#*=}")
   done
@@ -188,7 +188,7 @@ log_event() {
       {
         ts: $ts,
         event: $event,
-        workspace_id: $ws_default,
+        workspace_id: $workspace_id,
         workspace_title: ($n.workspace_title // ""),
         cwd: ($n.cwd // ""),
         branch: ($n.branch // ""),

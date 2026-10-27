@@ -502,7 +502,6 @@ start_waiting_hook() {
   trap 'kill -KILL "${hook_pid}" 2> /dev/null; wait' EXIT
 }
 
-# 最大 3 秒、条件が成り立つまで待つ。
 poll_until() {
   for _ in $(seq 1 30); do
     "$@" && return 0
