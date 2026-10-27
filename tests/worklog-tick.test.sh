@@ -243,6 +243,7 @@ test_claude_called_with_disable_env() {
   assert_contains "${args}" "--disable-slash-commands"
   stdin="$(cat "${tmp}/claude.stdin")"
   assert_contains "${stdin}" MARKER_A_7f3
+  assert_not_contains "${stdin}" '"U: '
   assert_not_contains "${stdin}" "tool output"
   assert_not_contains "${stdin}" META_ONLY_9c1
 }

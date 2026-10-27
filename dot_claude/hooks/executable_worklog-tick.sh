@@ -121,7 +121,7 @@ release_lock_if_mine() {
 }
 
 extract_excerpt() {
-  jq -nR '
+  jq -rnR '
     [ inputs | fromjson?
       | select((.isMeta // false) != true and (.isSidechain // false) != true)
       | .type as $t
