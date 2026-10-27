@@ -50,6 +50,10 @@ if [[ "$1" == "workspace" && "$2" == "list" ]]; then
   if [[ "${rc}" != "0" ]]; then
     exit "${rc}"
   fi
+  if [[ -n "${STUB_WS_TITLE_NULL-}" ]]; then
+    echo '{"workspaces":[{"id":"ws-test","title":null}]}'
+    exit 0
+  fi
   printf '{"workspaces":[{"id":"ws-test","title":"%s"}]}\n' "${STUB_WS_TITLE-}"
   exit 0
 fi
@@ -234,6 +238,9 @@ test_claude_called_with_disable_env() {
   assert_contains "${args}" "--model"
   assert_contains "${args}" "haiku"
   assert_contains "${args}" "--no-session-persistence"
+  assert_contains "${args}" $'--tools\n\n'
+  assert_contains "${args}" "--strict-mcp-config"
+  assert_contains "${args}" "--disable-slash-commands"
   stdin="$(cat "${tmp}/claude.stdin")"
   assert_contains "${stdin}" MARKER_A_7f3
   assert_not_contains "${stdin}" "tool output"
@@ -295,6 +302,30 @@ test_title_empty_when_cmux_list_fails() {
   STUB_CMUX_LIST_RC=1 run_hook
   assert_eq "" "$(tick_log | jq -r .workspace_title)" workspace_title
   assert_eq summarized "$(tick_log | jq -r .event)" event
+}
+
+test_null_title_logged_as_empty() {
+  prepare_summary
+  STUB_WS_TITLE_NULL=1 run_hook
+  assert_eq "" "$(tick_log | jq -r .workspace_title)" workspace_title
+  assert_eq summarized "$(tick_log | jq -r .event)" event
+}
+
+test_truncated_last_line_still_summarized() {
+  prepare_summary
+  printf '{"type":"assistant","mess' >> "${tmp}/t1.jsonl"
+  run_hook
+  assert_eq summarized "$(tick_log | jq -r .event)" event
+  assert_contains "$(cat "${tmp}/claude.stdin")" MARKER_A_7f3
+}
+
+test_empty_owner_with_old_lock_is_taken_over() {
+  prepare_summary
+  mkdir -p "${ws_dir}/lock"
+  : > "${ws_dir}/lock/owner"
+  touch -t 202001010000 "${ws_dir}/lock"
+  run_hook
+  assert_takeover expired
 }
 
 test_no_conversation_text_persisted() {

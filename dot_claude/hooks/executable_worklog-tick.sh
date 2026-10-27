@@ -51,6 +51,7 @@ stale_owner=""
 create_lock() {
   mkdir "${ws_dir}/lock" 2> /dev/null || return 1
   if ! echo "$$ $(date +%s)" > "${ws_dir}/lock/owner" 2> /dev/null; then
+    rm -f "${ws_dir}/lock/owner"
     rmdir "${ws_dir}/lock" 2> /dev/null
     return 1
   fi
@@ -75,9 +76,8 @@ lock_is_stale() {
       stale_reason="dead_pid"
       return 0
     fi
-  else
-    owner_ts="$(date -r "${ws_dir}/lock" +%s 2> /dev/null)"
   fi
+  [[ "${owner_ts-}" =~ ^[0-9]+$ ]] || owner_ts="$(date -r "${ws_dir}/lock" +%s 2> /dev/null)"
   if [[ "${owner_ts}" =~ ^[0-9]+$ && ${owner_ts} -lt ${limit} ]]; then
     stale_reason="expired"
     return 0
@@ -115,15 +115,14 @@ release_lock_if_mine() {
   local owner_pid
   owner_pid="$(cut -d' ' -f1 "${ws_dir}/lock/owner" 2> /dev/null)"
   if [[ "${owner_pid}" == "$$" ]]; then
-    rm -f "${ws_dir}/lock/owner"
-    rmdir "${ws_dir}/lock" 2> /dev/null
+    rm -rf "${ws_dir}/lock"
   fi
   return 0
 }
 
 extract_excerpt() {
-  jq -rs '
-    [ .[]
+  jq -nR '
+    [ inputs | fromjson?
       | select((.isMeta // false) != true and (.isSidechain // false) != true)
       | .type as $t
       | .message.content as $c
@@ -212,7 +211,7 @@ process_one() {
   cwd="$(jq -r '.cwd // ""' <<< "${pending}")"
   session_id="$(jq -r '.session_id // ""' <<< "${pending}")"
   title="$(timeout 5 cmux workspace list --json 2> /dev/null \
-    | jq -r --arg id "${CMUX_WORKSPACE_ID}" '.workspaces[] | select(.id == $id) | .title' 2> /dev/null \
+    | jq -r --arg id "${CMUX_WORKSPACE_ID}" '.workspaces[] | select(.id == $id) | .title // ""' 2> /dev/null \
     | head -n 1)"
   branch=""
   if [[ -n "${cwd}" ]]; then
