@@ -231,7 +231,17 @@
       }
     ],
     "Notification": [],
-    "Stop": [],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/worklog-tick.sh",
+            "async": true
+          }
+        ]
+      }
+    ],
     "SessionEnd": [],
     "SessionStart": [],
     "PermissionRequest": [
