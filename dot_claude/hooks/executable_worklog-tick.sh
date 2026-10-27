@@ -181,8 +181,18 @@ process_one() {
   return 0
 }
 
+# 1 回の長い sleep にしないのは、bash が前景の子の終了まで trap を遅らせ、
+# TERM で lock を外すのが最大で間隔ぶん遅れるため。sleep & wait は script に & を持ち込むので採らない。
+sleep_until() {
+  while [[ "$(date +%s)" -lt "$1" ]]; do
+    sleep 1
+  done
+}
+
 main() {
-  local input transcript_path
+  local input transcript_path now last_run wait_sec
+  local interval="${WORKLOG_TICK_INTERVAL:-600}"
+  local settle="${WORKLOG_TICK_SETTLE:-3}"
   if is_excluded; then
     exit 0
   fi
@@ -191,12 +201,31 @@ main() {
   [[ -n "${transcript_path}" ]] || exit 0
   ws_dir="${state_dir}/ws/${CMUX_WORKSPACE_ID}"
   write_pending "${input}" || exit 0
-  acquire_lock || exit 0
   trap 'release_lock_if_mine' EXIT
   trap 'exit 0' TERM INT HUP
-  sleep "${WORKLOG_TICK_SETTLE:-3}"
-  process_one
-  exit 0
+  while true; do
+    if ! acquire_lock; then
+      log_event skipped "reason=lock_held"
+      exit 0
+    fi
+    touch_lock
+    now="$(date +%s)"
+    last_run="$(cat "${ws_dir}/last_run" 2> /dev/null)"
+    wait_sec=0
+    if [[ "${last_run}" =~ ^[0-9]+$ ]]; then
+      wait_sec=$((last_run + interval - now))
+    fi
+    if [[ ${wait_sec} -gt 0 ]]; then
+      log_event waiting "wait_sec=${wait_sec}"
+    fi
+    if [[ ${wait_sec} -lt ${settle} ]]; then
+      wait_sec="${settle}"
+    fi
+    sleep_until $((now + wait_sec))
+    process_one
+    release_lock_if_mine
+    [[ -f "${ws_dir}/pending" ]] || exit 0
+  done
 }
 
 [[ "${BASH_SOURCE[0]}" == "${0}" ]] && main "$@"

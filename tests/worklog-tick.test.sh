@@ -305,6 +305,93 @@ test_no_conversation_text_persisted() {
   fi
 }
 
+prepare_interval() {
+  prepare_summary
+  export WORKLOG_TICK_INTERVAL=3
+  mkdir -p "${ws_dir}"
+}
+
+make_input_for() {
+  local marker="$1"
+  make_transcript "${tmp}/t-${marker}.jsonl" "${marker}"
+  hook_input "${tmp}/t-${marker}.jsonl" "${work_dir}" > "${tmp}/input-${marker}.json"
+  echo "${tmp}/input-${marker}.json"
+}
+
+run_hook_with() {
+  "${script}" < "$1" > "${tmp}/stdout-$2" 2> "${tmp}/stderr-$2"
+}
+
+count_event() {
+  tick_log | jq -c --arg e "$1" 'select(.event == $e)' | wc -l | tr -d ' '
+}
+
+test_waits_until_interval() {
+  prepare_interval
+  date +%s > "${ws_dir}/last_run"
+  local start end wait_sec
+  start="$(date +%s)"
+  run_hook
+  end="$(date +%s)"
+  (( end - start >= 2 )) || fail "elapsed $((end - start))s < 2s"
+  assert_eq 1 "$(count_event waiting)" "waiting lines"
+  wait_sec="$(tick_log | jq -r 'select(.event == "waiting") | .wait_sec')"
+  (( wait_sec >= 2 && wait_sec <= 3 )) || fail "wait_sec ${wait_sec} not in 2..3"
+  assert_eq 1 "$(count_event summarized)" "summarized lines"
+}
+
+test_consecutive_stops_coalesce_to_latest() {
+  prepare_interval
+  local in_a in_b in_c stdin
+  in_a="$(make_input_for MARKER_A_c01)"
+  in_b="$(make_input_for MARKER_B_c02)"
+  in_c="$(make_input_for MARKER_C_c03)"
+  date +%s > "${ws_dir}/last_run"
+  run_hook_with "${in_a}" a &
+  sleep 0.3
+  run_hook_with "${in_b}" b &
+  sleep 0.3
+  run_hook_with "${in_c}" c &
+  wait
+  assert_eq 1 "$(count_event summarized)" "summarized lines"
+  assert_eq 1 "$(wc -l < "${tmp}/claude.count" | tr -d ' ')" "claude calls"
+  stdin="$(cat "${tmp}/claude.stdin")"
+  assert_contains "${stdin}" MARKER_C_c03
+  assert_not_contains "${stdin}" MARKER_A_c01
+  assert_not_contains "${stdin}" MARKER_B_c02
+  assert_eq 1 "$(count_event waiting)" "waiting lines"
+  assert_eq 2 "$(tick_log | jq -c 'select(.event == "skipped" and .reason == "lock_held")' | wc -l | tr -d ' ')" "skipped lock_held lines"
+  assert_no_leftovers
+}
+
+test_pending_after_release_is_processed() {
+  prepare_interval
+  local in_a in_b second_part first_ts second_ts
+  in_a="$(make_input_for MARKER_A_r01)"
+  in_b="$(make_input_for MARKER_B_r02)"
+  date +%s > "${ws_dir}/last_run"
+  export STUB_CLAUDE_SLEEP=2
+  run_hook_with "${in_a}" a &
+  sleep 3.5
+  run_hook_with "${in_b}" b &
+  wait
+  assert_eq 2 "$(count_event summarized)" "summarized lines"
+  second_part="$(awk '/^--- call ---$/ { n++ } n >= 2' "${tmp}/claude.stdin")"
+  assert_contains "${second_part}" MARKER_B_r02
+  first_ts="$(sed -n 1p "${tmp}/claude.count")"
+  second_ts="$(sed -n 2p "${tmp}/claude.count")"
+  (( second_ts - first_ts >= 2 )) || fail "second summary started $((second_ts - first_ts))s after first"
+  assert_no_leftovers
+}
+
+test_no_wait_when_interval_passed() {
+  prepare_interval
+  echo "$(( $(date +%s) - 10 ))" > "${ws_dir}/last_run"
+  run_hook
+  assert_eq 0 "$(count_event waiting)" "waiting lines"
+  assert_eq 1 "$(count_event summarized)" "summarized lines"
+}
+
 main() {
   local tests=("$@") name passed=0 failed=0
   if [[ ${#tests[@]} -eq 0 ]]; then
