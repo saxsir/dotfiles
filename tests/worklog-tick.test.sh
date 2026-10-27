@@ -170,6 +170,141 @@ test_interactive_parent_is_not_headless() {
   [[ -d "${WORKLOG_STATE_DIR}/ws/ws-test" ]] || fail "ws/ws-test/ not created"
 }
 
+prepare_summary() {
+  setup_env
+  export STUB_WS_TITLE=作業A
+  work_dir="${tmp}/work"
+  mkdir -p "${work_dir}"
+  git -C "${work_dir}" init -q -b feat/x
+  make_transcript "${tmp}/t1.jsonl" MARKER_A_7f3
+  input_file="${tmp}/input.json"
+  hook_input "${tmp}/t1.jsonl" "${work_dir}" > "${input_file}"
+  ws_dir="${WORKLOG_STATE_DIR}/ws/ws-test"
+}
+
+assert_no_leftovers() {
+  assert_file_absent "${ws_dir}/lock"
+  assert_file_absent "${ws_dir}/pending"
+  assert_file_absent "${ws_dir}/processing"
+}
+
+test_summarized_line_fields() {
+  prepare_summary
+  run_hook
+  assert_eq 0 "${rc}" "exit code"
+  assert_eq 1 "$(tick_log | wc -l | tr -d ' ')" "log lines"
+  local log
+  log="$(tick_log)"
+  assert_eq summarized "$(jq -r .event <<< "${log}")" event
+  assert_eq ws-test "$(jq -r .workspace_id <<< "${log}")" workspace_id
+  assert_eq 作業A "$(jq -r .workspace_title <<< "${log}")" workspace_title
+  assert_eq "${work_dir}" "$(jq -r .cwd <<< "${log}")" cwd
+  assert_eq feat/x "$(jq -r .branch <<< "${log}")" branch
+  assert_eq テスト用の要約 "$(jq -r .line <<< "${log}")" line
+  assert_eq 0 "$(jq -r .progress_rc <<< "${log}")" progress_rc
+  jq -e '.pid | type == "number"' <<< "${log}" > /dev/null || fail "pid not number"
+  jq -e '.ts | test("^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9:]{8}[+-][0-9]{2}:[0-9]{2}$")' <<< "${log}" > /dev/null || fail "ts format: $(jq -r .ts <<< "${log}")"
+  assert_eq "set-progress
+0
+--label
+テスト用の要約
+--workspace
+ws-test" "$(cat "${tmp}/cmux.calls")" "cmux.calls"
+  assert_no_leftovers
+  [[ -f "${ws_dir}/last_run" ]] || fail "last_run missing"
+}
+
+test_progress_rc_is_recorded_on_failure() {
+  prepare_summary
+  STUB_PROGRESS_RC=3 STUB_PROGRESS_ERR=denied run_hook
+  local log
+  log="$(tick_log)"
+  assert_eq summarized "$(jq -r .event <<< "${log}")" event
+  assert_eq 3 "$(jq -r .progress_rc <<< "${log}")" progress_rc
+  assert_eq denied "$(jq -r .progress_err <<< "${log}")" progress_err
+}
+
+test_claude_called_with_disable_env() {
+  prepare_summary
+  run_hook
+  assert_eq 1 "$(cat "${tmp}/claude.env")" "claude env"
+  local args stdin
+  args="$(cat "${tmp}/claude.args")"
+  assert_contains "${args}" "-p"
+  assert_contains "${args}" "--model"
+  assert_contains "${args}" "haiku"
+  assert_contains "${args}" "--no-session-persistence"
+  stdin="$(cat "${tmp}/claude.stdin")"
+  assert_contains "${stdin}" MARKER_A_7f3
+  assert_not_contains "${stdin}" "tool output"
+  assert_not_contains "${stdin}" META_ONLY_9c1
+}
+
+test_summary_timeout_logs_failed() {
+  prepare_summary
+  WORKLOG_TICK_SUMMARY_TIMEOUT=1 STUB_CLAUDE_SLEEP=5 run_hook
+  local log
+  log="$(tick_log)"
+  assert_eq failed "$(jq -r .event <<< "${log}")" event
+  assert_eq timeout "$(jq -r .reason <<< "${log}")" reason
+  assert_eq null "$(jq -c .progress_rc <<< "${log}")" progress_rc
+  assert_file_absent "${tmp}/cmux.calls"
+  assert_no_leftovers
+}
+
+test_claude_error_logs_failed() {
+  prepare_summary
+  STUB_CLAUDE_RC=2 run_hook
+  assert_eq "claude_rc=2" "$(tick_log | jq -r .reason)" reason
+}
+
+test_empty_summary_logs_failed() {
+  prepare_summary
+  STUB_CLAUDE_OUT=$'\n  \n' run_hook
+  assert_eq failed "$(tick_log | jq -r .event)" event
+  assert_eq empty "$(tick_log | jq -r .reason)" reason
+}
+
+test_missing_transcript_logs_failed() {
+  prepare_summary
+  hook_input "${tmp}/nonexistent.jsonl" "${work_dir}" > "${input_file}"
+  run_hook
+  assert_eq failed "$(tick_log | jq -r .event)" event
+  assert_eq no_excerpt "$(tick_log | jq -r .reason)" reason
+  assert_file_absent "${tmp}/claude.count"
+  assert_file_absent "${tmp}/cmux.calls"
+  assert_no_leftovers
+}
+
+test_line_is_single_and_truncated() {
+  prepare_summary
+  local kanji out
+  kanji="$(printf '漢%.0s' $(seq 1 100))"
+  out=$'\n  "'"${kanji}"$'"\n2 行目'
+  STUB_CLAUDE_OUT="${out}" run_hook
+  local line expected
+  line="$(tick_log | jq -r .line)"
+  expected="$(printf '漢%.0s' $(seq 1 80))"
+  assert_eq "${expected}" "${line}" line
+  assert_not_contains "${line}" $'\n'
+  assert_eq "${expected}" "$(sed -n 4p "${tmp}/cmux.calls")" "label"
+}
+
+test_title_empty_when_cmux_list_fails() {
+  prepare_summary
+  STUB_CMUX_LIST_RC=1 run_hook
+  assert_eq "" "$(tick_log | jq -r .workspace_title)" workspace_title
+  assert_eq summarized "$(tick_log | jq -r .event)" event
+}
+
+test_no_conversation_text_persisted() {
+  prepare_summary
+  run_hook
+  if grep -rq MARKER_A_7f3 "${WORKLOG_STATE_DIR}"; then
+    fail "conversation text found in state dir"
+  fi
+}
+
 main() {
   local tests=("$@") name passed=0 failed=0
   if [[ ${#tests[@]} -eq 0 ]]; then
