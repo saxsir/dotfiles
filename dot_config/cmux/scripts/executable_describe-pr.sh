@@ -4,6 +4,7 @@
 #
 # Usage:
 #   describe-pr.sh              # $CMUX_WORKSPACE_ID に、cwd の branch の PR タイトルを設定
+#   describe-pr.sh --url <PR URL>  # cwd の branch でなく、指定 PR のタイトルを設定
 #   describe-pr.sh --all        # PR を持ち description が空の全 workspace に設定 (backfill)
 #   describe-pr.sh [--all] --dry-run   # 設定せず "<workspace ref>\t<description>" を表示
 #
@@ -18,11 +19,17 @@ set -uo pipefail
 
 all=0
 dry_run=0
-for arg in "$@"; do
-  case "${arg}" in
+pr_ref=""
+while (($#)); do
+  case "$1" in
     --all) all=1 ;;
     --dry-run) dry_run=1 ;;
+    --url)
+      pr_ref="${2:-}"
+      shift
+      ;;
   esac
+  shift
 done
 
 for cmd in cmux gh jq; do
@@ -54,14 +61,28 @@ if ((all)); then
 fi
 
 [[ -z "${CMUX_WORKSPACE_ID:-}" ]] && exit 0
-pr_json=$(gh pr view --json title,url 2>/dev/null) || exit 0
+pr_args=()
+[[ -n "${pr_ref}" ]] && pr_args=("${pr_ref}")
+pr_json=$(gh pr view ${pr_args[@]+"${pr_args[@]}"} --json title,url 2>/dev/null) || exit 0
 title=$(printf '%s' "${pr_json}" | jq -r '.title // empty')
 url=$(printf '%s' "${pr_json}" | jq -r '.url // empty')
 set_description "${CMUX_WORKSPACE_ID}" "${title}"
 # Why: cmux の PR 自動検出は workspace の cwd の branch を見る。dude の作業は
 # worktree で進み workspace はリポジトリ直下 (default branch) に居るので、
 # 明示的に紐づけないと sidebar に PR も REVIEW lane も出ない。
+#
+# Why-not: `cmux pr` は cwd のリポジトリで PR を検証し、別リポの PR だと
+# "does not belong to the detected repository" で失敗する。hook は Claude
+# session の cwd で走るため、PR のリポジトリの checkout (ghq) を cwd にして呼ぶ。
 if [[ -n "${url}" ]] && ((!dry_run)); then
-  cmux pr "${url}" --workspace "${CMUX_WORKSPACE_ID}" >/dev/null 2>&1 || true
+  repo_dir=""
+  if command -v ghq >/dev/null 2>&1 &&
+    [[ "${url}" =~ ^https?://github\.com/([^/]+)/([^/]+)/pull/ ]]; then
+    repo_dir=$(ghq list -p -e "github.com/${BASH_REMATCH[1]}/${BASH_REMATCH[2]}" 2>/dev/null | head -n 1) || true
+  fi
+  (
+    [[ -n "${repo_dir}" ]] && { cd "${repo_dir}" 2>/dev/null || true; }
+    cmux pr "${url}" --workspace "${CMUX_WORKSPACE_ID}" >/dev/null 2>&1 || true
+  )
 fi
 exit 0
