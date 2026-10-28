@@ -7,7 +7,8 @@
 #   1. cmux が紐づけた PR (`cmux sidebar-state` の `pr=` 行の URL)
 #   2. title / description 中の `owner/repo#n`、issue / PR の URL、
 #      GitHub のページタイトル形式 (`Pull Request #n · owner/repo`)
-# PR は closingIssuesReferences の先頭 issue を起点にし、parent を辿る。
+# PR は closingIssuesReferences の先頭 issue を起点にし、parent を辿る。closes が無ければ
+# 本文の `Relates to` 等の行、無ければ本文で最初に出る issue を起点にする。
 # 起点に parent があれば root の group、parent が無く sub-issue を持てば
 # 起点自身の group、どちらでもなければ repo group (directory の repo root)。
 #
@@ -58,7 +59,8 @@ log() { printf '[cmux-auto-group] %s %s\n' "$(date -u +%FT%TZ)" "$*" >&2; }
 gh_resource() {
   local url="$1" key cache_file resp
   key=$(printf '%s' "${url}" | tr -c 'A-Za-z0-9' '_')
-  cache_file="${cache_dir}/${key}.json"
+  # Why: PullRequest に body を足した時点で形が変わった。.v2 で古い cache を読まない。
+  cache_file="${cache_dir}/${key}.v2.json"
   if [[ -n "$(find "${cache_file}" -mmin "-${cache_ttl_min}" 2>/dev/null)" ]]; then
     cat "${cache_file}"
     return 0
@@ -68,7 +70,7 @@ gh_resource() {
     query($url: URI!) {
       resource(url: $url) {
         __typename
-        ... on PullRequest { closingIssuesReferences(first: 1) { nodes { url } } }
+        ... on PullRequest { body closingIssuesReferences(first: 1) { nodes { url } } }
         ... on Issue { url number title parent { url } subIssues { totalCount } }
       }
     }' 2>/dev/null) || return 1
@@ -112,6 +114,20 @@ extract_ref_url() {
     return 0
   fi
   return 1
+}
+
+# PR 本文から参照 issue の URL 候補を出現順に最大 5 件返す (1 行 1 件)。
+# `Relates to` / `Refs` / `Ref` / `Part of` の行の参照を先に、続けて本文全体の参照を並べる。
+# owner/repo#n は issue か PR か区別できないので /issues/ で返す。
+body_ref_urls() {
+  local body="$1" ref_re line
+  ref_re='https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/(issues|pull)/[0-9]+|(^|[^A-Za-z0-9_./-])[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#[0-9]+'
+  {
+    printf '%s\n' "${body}" | grep -Ei '^[[:space:]>*-]*(relates to|refs?|part of)\b' |
+      while IFS= read -r line; do printf '%s\n' "${line}" | grep -Eo "${ref_re}"; done
+    printf '%s\n' "${body}" | grep -Eo "${ref_re}"
+  } | sed -E 's|^[^A-Za-z0-9_.-]?([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)#([0-9]+)$|https://github.com/\1/issues/\2|' |
+    awk '!seen[$0]++' | head -n 5
 }
 
 # workspace の repo root。worktree は main checkout に寄せる。
@@ -165,7 +181,23 @@ target_of() {
           issue=$(gh_resource "${closing}") || return 1
           src="${src} ${start_url} -> closes ${closing}"
         else
-          src="${src} ${start_url} (closes なし)"
+          # closes が無い PR は、本文が参照する最初の issue (PR は飛ばす) で代用する。
+          local cand cand_res related=""
+          while IFS= read -r cand; do
+            [[ -z "${cand}" || "${cand}" == "${start_url}" ]] && continue
+            cand_res=$(gh_resource "${cand}") || return 1
+            if [[ "$(printf '%s' "${cand_res}" | jq -r '.__typename // empty')" == "Issue" &&
+              "$(printf '%s' "${cand_res}" | jq -r '.url // empty')" != */pull/* ]]; then
+              related=$(printf '%s' "${cand_res}" | jq -r '.url')
+              issue="${cand_res}"
+              break
+            fi
+          done < <(body_ref_urls "$(printf '%s' "${res}" | jq -r '.body // ""')")
+          if [[ -n "${related}" ]]; then
+            src="${src} ${start_url} -> relates ${related}"
+          else
+            src="${src} ${start_url} (closes なし)"
+          fi
         fi
         ;;
       Issue)
