@@ -12,6 +12,10 @@
 # 起点に parent があれば root の group、parent が無く sub-issue を持てば
 # 起点自身の group、どちらでもなければ repo group (directory の repo root)。
 #
+# 常駐させず、Claude Code の hook (SessionStart と `gh pr create` の後。
+# dot_claude/hooks/executable_cmux-auto-group.sh) から --once で走らせる前提で使う。
+# --once は全 workspace を見直すので、hook が走らなかった間の変化も次の実行で追いつく。
+#
 # Usage:
 #   ~/.config/cmux/scripts/auto-group.sh              # reconcile 後、events を監視
 #   ~/.config/cmux/scripts/auto-group.sh --once       # reconcile 1 回で終了

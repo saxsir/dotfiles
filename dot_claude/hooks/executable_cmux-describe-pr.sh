@@ -24,4 +24,7 @@ if [[ -n "${pr_url}" ]]; then
 else
   (cd "${cwd}" && "${describe_pr}") >/dev/null 2>&1 || true
 fi
+
+# auto-group は PR の紐づけを根拠にするので、紐づけの後に走らせる。
+"$(dirname "${BASH_SOURCE[0]}")/cmux-auto-group.sh" </dev/null >/dev/null 2>&1 || true
 exit 0
