@@ -28,6 +28,11 @@ misc
 tests
 tmp
 
+# === macOS 専用 (launchd の LaunchAgent は Linux に無いため darwin 以外では配置しない) ===
+{{ if ne .chezmoi.os "darwin" }}
+Library
+{{ end }}
+
 # === Claude Code がランタイムで生成するキャッシュ / 状態 ===
 # 永続的なユーザー設定 (settings.json, CLAUDE.md 等) は管理対象に残す
 .claude/sessions

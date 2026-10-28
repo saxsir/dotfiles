@@ -1,0 +1,13 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# plist hash: {{ include "private_Library/LaunchAgents/com.saxsir.cmux-auto-group.plist.tmpl" | sha256sum }}
+# plist の内容が変わったときだけ LaunchAgent を登録し直す。
+set -u
+
+label="com.saxsir.cmux-auto-group"
+domain="gui/$(id -u)"
+plist="${HOME}/Library/LaunchAgents/${label}.plist"
+
+launchctl bootout "${domain}/${label}" 2>/dev/null || true
+launchctl bootstrap "${domain}" "${plist}"
+{{- end }}
