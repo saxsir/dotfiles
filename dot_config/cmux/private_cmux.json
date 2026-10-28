@@ -27,7 +27,9 @@
 
   "shortcuts": {
     "bindings": {
-      "globalSearch": null  // 既定 cmd+opt+f はシステム全体ホットキーで Raycast のウィンドウ操作と衝突。未使用機能なので未割り当てに
+      "globalSearch": null,  // 既定 cmd+opt+f はシステム全体ホットキーで Raycast のウィンドウ操作と衝突。未使用機能なので未割り当てに
+      "nextSidebarTab": "cmd+ctrl+j",  // vim 風に j/k で workspace を上下移動。cmd+k は画面クリア、ctrl+j/k はターミナル内アプリと衝突するので cmd+ctrl
+      "prevSidebarTab": "cmd+ctrl+k"
     }
   },
 
