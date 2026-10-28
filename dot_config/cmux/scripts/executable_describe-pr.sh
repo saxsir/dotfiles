@@ -70,7 +70,19 @@ set_description "${CMUX_WORKSPACE_ID}" "${title}"
 # Why: cmux の PR 自動検出は workspace の cwd の branch を見る。dude の作業は
 # worktree で進み workspace はリポジトリ直下 (default branch) に居るので、
 # 明示的に紐づけないと sidebar に PR も REVIEW lane も出ない。
+#
+# Why-not: `cmux pr` は cwd のリポジトリで PR を検証し、別リポの PR だと
+# "does not belong to the detected repository" で失敗する。hook は Claude
+# session の cwd で走るため、PR のリポジトリの checkout (ghq) を cwd にして呼ぶ。
 if [[ -n "${url}" ]] && ((!dry_run)); then
-  cmux pr "${url}" --workspace "${CMUX_WORKSPACE_ID}" >/dev/null 2>&1 || true
+  repo_dir=""
+  if command -v ghq >/dev/null 2>&1 &&
+    [[ "${url}" =~ ^https?://github\.com/([^/]+)/([^/]+)/pull/ ]]; then
+    repo_dir=$(ghq list -p -e "github.com/${BASH_REMATCH[1]}/${BASH_REMATCH[2]}" 2>/dev/null | head -n 1) || true
+  fi
+  (
+    [[ -n "${repo_dir}" ]] && { cd "${repo_dir}" 2>/dev/null || true; }
+    cmux pr "${url}" --workspace "${CMUX_WORKSPACE_ID}" >/dev/null 2>&1 || true
+  )
 fi
 exit 0
