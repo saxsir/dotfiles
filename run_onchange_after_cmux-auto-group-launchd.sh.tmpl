@@ -8,6 +8,9 @@ label="com.saxsir.cmux-auto-group"
 domain="gui/$(id -u)"
 plist="${HOME}/Library/LaunchAgents/${label}.plist"
 
+# launchd はログの出力先ディレクトリを作らないので、新しいマシンでは先に作る。
+mkdir -p "${HOME}/.local/state/cmux"
+
 launchctl bootout "${domain}/${label}" 2>/dev/null || true
 launchctl bootstrap "${domain}" "${plist}"
 {{- end }}
