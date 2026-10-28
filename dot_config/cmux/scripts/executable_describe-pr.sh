@@ -4,6 +4,7 @@
 #
 # Usage:
 #   describe-pr.sh              # $CMUX_WORKSPACE_ID に、cwd の branch の PR タイトルを設定
+#   describe-pr.sh --url <PR URL>  # cwd の branch でなく、指定 PR のタイトルを設定
 #   describe-pr.sh --all        # PR を持ち description が空の全 workspace に設定 (backfill)
 #   describe-pr.sh [--all] --dry-run   # 設定せず "<workspace ref>\t<description>" を表示
 #
@@ -18,11 +19,17 @@ set -uo pipefail
 
 all=0
 dry_run=0
-for arg in "$@"; do
-  case "${arg}" in
+pr_ref=""
+while (($#)); do
+  case "$1" in
     --all) all=1 ;;
     --dry-run) dry_run=1 ;;
+    --url)
+      pr_ref="${2:-}"
+      shift
+      ;;
   esac
+  shift
 done
 
 for cmd in cmux gh jq; do
@@ -54,7 +61,9 @@ if ((all)); then
 fi
 
 [[ -z "${CMUX_WORKSPACE_ID:-}" ]] && exit 0
-pr_json=$(gh pr view --json title,url 2>/dev/null) || exit 0
+pr_args=()
+[[ -n "${pr_ref}" ]] && pr_args=("${pr_ref}")
+pr_json=$(gh pr view ${pr_args[@]+"${pr_args[@]}"} --json title,url 2>/dev/null) || exit 0
 title=$(printf '%s' "${pr_json}" | jq -r '.title // empty')
 url=$(printf '%s' "${pr_json}" | jq -r '.url // empty')
 set_description "${CMUX_WORKSPACE_ID}" "${title}"
