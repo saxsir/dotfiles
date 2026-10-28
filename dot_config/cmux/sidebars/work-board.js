@@ -6,6 +6,7 @@
 // needs-attention の workspace を集める。該当が無いときは欄ごと出さない。
 // 動いている agent がいない workspace (ブラウザだけ残した後回しの作業など) は
 // タスク欄から外し、最下部の LATER 欄に薄く出す。
+// 各行の 2 行目に worklog tick の 1 行 (progress.label) を出す。
 // agents-board を元にしている。
 //   cmux sidebar open work-board
 
@@ -117,6 +118,8 @@ function row(w, strong, num, dim) {
       Text(() => stripNum(headline(w()).replace(TAG_RE, ""), num))
         .font(12).weight(strong ? "semibold" : "regular")
         .lineLimit(2).truncation("tail"),
+      Text(() => w().progress?.label ?? "")
+        .font(10).color("tertiary").lineLimit(1).truncation("tail"),
       HStack({ spacing: 0 }, [
         Text(() => repo(w()))
           .font(10).color("tertiary").lineLimit(1).truncation("tail"),
