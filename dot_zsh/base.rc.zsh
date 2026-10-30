@@ -39,4 +39,5 @@ alias gce='git commit --allow-empty'
 # else
 alias claude="$HOME/.local/bin/claude"
 # fi
+alias claude-vanilla="CLAUDE_CONFIG_DIR=\$HOME/.claude-vanilla $HOME/.local/bin/claude"
 alias claude-vm="limactl shell claude-dev -- bash -c 'claude --dangerously-skip-permissions'"
