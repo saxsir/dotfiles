@@ -30,3 +30,23 @@ PR / Issue の description と投稿済みコメントを直すときは、全�
 インラインの `--body`、stdin (`--body-file -`、heredoc)、`gh api` のインライン `-f body=` で既存本文を更新する呼び出しは hook がブロックする。GitHub MCP の書き込みツール (update_pull_request / issue_write 等) は全文差し替えしかできないので、既存本文の更新には使わない。新規作成 (`gh pr create`、新規コメント) はこの手順の対象外。
 
 dude の `plan-work` が自分で投稿した設計コメントを `edit-plan-comment.sh` で編集するのも、この手順の対象外とする。そのコメントは `review-plan` の収束とユーザーの分割案承認を経た plan-work 自身の成果物で、他人の追記を消すおそれが無い。script の中の `gh` 呼び出しは hook の検査対象にならない。
+
+## dude の pr-to-ready が投稿するラウンドのコメント
+
+`pr-to-ready` がラウンドごとに投稿する結果コメント (vet-code の findings) と判定コメント (各 finding の verdict) は、要約を 1 行に出し、本文を `<details>` に畳んで投稿する。これらは記録として PR に残すもので、人が PR を読むときに要るのは要約だけだ。畳まずに並べると、ラウンドが進むたびに PR の会話欄が機械の出力で埋まる。
+
+dude の Replies 節の決まり (冒頭に reviewed commit SHA を書く、vet-code の findings を逐語で転記する、Copilot と Claude の指摘は言い換える、メンションを入れない) は `<details>` の中の本文で守る。この rule が上書きするのは外側の書式だけだ。
+
+```
+Reviewed commit: <SHA>
+<ラウンドとコメント種別、件数の内訳。例: vet-code round 1 の結果: Minor 2 件 / 判定見送り 4 件>
+
+<details>
+<summary>詳細</summary>
+
+<dude の決まりどおりの本文>
+
+</details>
+```
+
+needs-user の判定に付ける質問は人が答えるものなので、`<details>` の外、要約行の直後に置く。
