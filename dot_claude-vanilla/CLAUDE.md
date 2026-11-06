@@ -5,3 +5,4 @@
 # GitHub
 
 - Issue / PR / コメントに画像や動画を載せるときは `gh` の `--attach` で直接アップロードできる (`gh issue create|edit|comment`, `gh pr create|edit|comment`)。書式は `gh pr comment --help` を見る。
+- チャットの応答で PR / Issue を挙げるときは `[owner/repo#123](https://github.com/owner/repo/pull/123)` のような Markdown リンクで書く。`#123` だけだとターミナルからリンクで飛べない。
