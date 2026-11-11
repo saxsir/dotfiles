@@ -1,3 +1,7 @@
+{{- /* fluct の entryplug を clone してある端末（会社の端末）でだけ fluct の plugin を足す。
+     entryplug の devbox は CLAUDE_CONFIG_DIR ごと差し替えて個人設定と共存できないため、vanilla 側に取り込む。
+     fluct-core は claude.ai の組織配布で入るので、ここでは足さない（足すと二重になる）。 */ -}}
+{{- $entryplug := stat (joinPath .chezmoi.homeDir ".config/fluct/entryplug") -}}
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "model": "claude-opus-5-5",
@@ -20,6 +24,11 @@
     "superpowers@claude-plugins-official": true,
     "php-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true
+{{- if $entryplug }},
+    "fluct-ops@fluct": true,
+    "fluct-design@fluct": true,
+    "fluct-review@fluct": true
+{{- end }}
   },
   "extraKnownMarketplaces": {
     "dude": {
@@ -29,6 +38,14 @@
       },
       "autoUpdate": true
     }
+{{- if $entryplug }},
+    "fluct": {
+      "source": {
+        "source": "directory",
+        "path": "~/.config/fluct/entryplug"
+      }
+    }
+{{- end }}
   },
   "language": "Japanese",
   "effortLevel": "medium",
@@ -47,5 +64,13 @@
     {
       "serverUrl": "https://*.snowflakecomputing.com/*"
     }
+{{- if $entryplug }},
+    {
+      "serverUrl": "https://*.api.scs.splunk.com/*"
+    },
+    {
+      "serverName": "ingred-design-system"
+    }
+{{- end }}
   ]
 }
