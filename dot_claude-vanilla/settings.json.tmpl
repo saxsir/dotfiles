@@ -1,16 +1,27 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "model": "claude-opus-5-5",
   "permissions": {
     "allow": [
       "Bash(crit comment *)",
       "Bash(crit comments *)"
     ]
   },
+  "model": "claude-opus-5-5",
   "skillOverrides": {
     "crit": "user-invocable-only",
     "crit-story": "user-invocable-only"
   },
+  "allowedMcpServers": [
+    {
+      "serverName": "chrome-devtools"
+    },
+    {
+      "serverUrl": "https://mcp.slack.com/mcp"
+    },
+    {
+      "serverUrl": "https://*.snowflakecomputing.com/*"
+    }
+  ],
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/statusline.sh"
@@ -19,13 +30,29 @@
     "dude@dude": true,
     "superpowers@claude-plugins-official": true,
     "php-lsp@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true,
+    "yomiyasu@yomiyasu": true,
+    "natural-japanese@natural-japanese": true
   },
   "extraKnownMarketplaces": {
     "dude": {
       "source": {
         "source": "github",
         "repo": "yowcow/dude"
+      },
+      "autoUpdate": true
+    },
+    "yomiyasu": {
+      "source": {
+        "source": "github",
+        "repo": "nanaism/yomiyasu"
+      },
+      "autoUpdate": true
+    },
+    "natural-japanese": {
+      "source": {
+        "source": "github",
+        "repo": "coji/natural-japanese"
       },
       "autoUpdate": true
     }
@@ -37,15 +64,5 @@
     "{{ .chezmoi.homeDir }}/.claude/**"
   ],
   "theme": "dark",
-  "allowedMcpServers": [
-    {
-      "serverName": "chrome-devtools"
-    },
-    {
-      "serverUrl": "https://mcp.slack.com/mcp"
-    },
-    {
-      "serverUrl": "https://*.snowflakecomputing.com/*"
-    }
-  ]
+  "advisorModel": "fable"
 }
