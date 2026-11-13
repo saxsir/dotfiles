@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Splunk Observability の MCP gateway に mcp-remote で繋ぐラッパー。
+# トークンをリポジトリや ~/.claude.json に書かないよう、起動時に取り出して渡す。
+#
+# トークンの置き場所 (先に見つかった方を使う):
+#   1. 環境変数 SPLUNK_MCP_TOKEN
+#   2. macOS Keychain の generic password (service: splunk-mcp)
+#      登録: security add-generic-password -U -a "${USER}" -s splunk-mcp -w '<token>'
+#
+# realm と gateway の URL は環境変数で上書きできる。
+set -euo pipefail
+
+realm="${SPLUNK_MCP_REALM:-us1}"
+url="${SPLUNK_MCP_URL:-https://region-pdx10.api.scs.splunk.com/system/mcp-gateway/v1/}"
+token="${SPLUNK_MCP_TOKEN:-}"
+
+if [[ -z "${token}" ]] && command -v security >/dev/null 2>&1; then
+  token="$(security find-generic-password -s splunk-mcp -w 2>/dev/null || true)"
+fi
+
+if [[ -z "${token}" ]]; then
+  echo "splunk-mcp: トークンが見つからない。SPLUNK_MCP_TOKEN を設定するか Keychain (service: splunk-mcp) に登録する" >&2
+  exit 1
+fi
+
+exec bunx -y mcp-remote "${url}" \
+  --transport http-only \
+  --header "X-SF-TOKEN: ${token}" \
+  --header "X-SF-REALM: ${realm}"
