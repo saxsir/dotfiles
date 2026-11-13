@@ -1,8 +1,10 @@
+{{- if dig "observabilityMcp" false . -}}
 #!/usr/bin/env bash
 # どのリポジトリで起動したセッションでも使いたい MCP を、Claude Code の user scope に登録する。
 # 登録先は ~/.claude.json (CLAUDE_CONFIG_DIR 未設定) と ~/.claude-vanilla/.claude.json の両方。
 # ~/.claude.json は Claude Code の状態ファイルなので chezmoi で丸ごと管理せず、claude mcp コマンドで書き込む。
 # chezmoi はこのスクリプトの中身が変わったときだけ再実行する (run_onchange_)。
+# chezmoi のデータ observabilityMcp が true のマシンでだけ中身を出力する。false なら空になり、chezmoi は実行しない。
 set -uo pipefail
 
 claude_bin="$(command -v claude || true)"
@@ -37,3 +39,4 @@ for config_dir in "" "${HOME}/.claude-vanilla"; do
   register "${config_dir}" splunk-mcp-server "${splunk_json}"
   register "${config_dir}" datadog "${datadog_json}"
 done
+{{ end -}}

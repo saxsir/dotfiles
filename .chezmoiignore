@@ -61,3 +61,8 @@ tmp
 .claude/*.bak
 .claude/*.jsonl
 .claude/*-cache.json
+
+# === observabilityMcp が false のマシンでは Splunk MCP のラッパーを置かない ===
+{{ if not (dig "observabilityMcp" false .) }}
+.local/bin/splunk-mcp
+{{ end }}

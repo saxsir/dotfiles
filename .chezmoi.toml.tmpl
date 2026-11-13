@@ -1,6 +1,8 @@
 {{- $name := promptStringOnce . "name" "Git user.name" -}}
 {{- $email := promptStringOnce . "email" "Git user.email" -}}
 {{- /* age 公開鍵 (recipient)。空なら encryption ブロックを出力せず暗号化機能は無効。 */ -}}
+{{- /* Splunk / Datadog の MCP を Claude Code の user scope に登録するか。使うマシンでだけ true にする。 */ -}}
+{{- $observabilityMcp := promptBoolOnce . "observabilityMcp" "Splunk / Datadog の MCP をこのマシンの Claude Code に登録する?" false -}}
 {{- $ageRecipient := promptStringOnce . "ageRecipient" "Age recipient (公開鍵 age1...)。暗号化を使わないなら空のまま" "" -}}
 
 sourceDir = {{ .chezmoi.sourceDir | quote }}
@@ -17,3 +19,4 @@ encryption = "age"
     name  = {{ $name | quote }}
     email = {{ $email | quote }}
     ageRecipient = {{ $ageRecipient | quote }}
+    observabilityMcp = {{ $observabilityMcp }}
