@@ -14,5 +14,6 @@
 .claude/hooks/cmux-describe-pr.sh
 .claude/hooks/pin-explore-model.sh
 .claude/hooks/worklog-tick.sh
+# hook と rules 以外で source から消したファイル
 .claude/style-profile.md
 .config/cmux/scripts/auto-group.sh
