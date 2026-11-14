@@ -63,7 +63,7 @@ pin を各 repo の default branch の HEAD へ進めるには `make apm-bump` �
 
 allowlist は 2 層で持ち、settings の scope をまたいで union になる。
 
-- user settings (`dot_claude/settings.json.tmpl`) は全リポジトリ共通の baseline を持つ。`chrome-devtools`、`cmux-cua` (cmux が `--mcp-config` で渡す)、claude.ai Slack が対象
+- user settings (`dot_claude/settings.json.tmpl`) は全リポジトリ共通の baseline を持つ。`chrome-devtools`、`cmux-cua` (cmux が `--mcp-config` で渡す)、claude.ai Slack、Snowflake、`splunk-mcp-server`、Datadog が対象
 - 各リポジトリの `.claude/settings.local.json` は、そのリポジトリで使う server を足す。gitignore 済みで chezmoi の管理外なので、リポジトリ固有の名前や host を dotfiles に置かずに済む
 
 main checkout の `.claude/settings.local.json` は linked worktree にも効く。仕様は [Claude Code のドキュメント](https://code.claude.com/docs/en/managed-mcp) にある。
