@@ -1,38 +1,19 @@
-# Conversation Guidelines
+# 日本語の文章
 
-- 指示の些細な曖昧さは自分で決めて進め、完了報告に書く ([[implementation-notes]])。
-- AI モデル・開発ツールなど数か月で状況が変わる領域の話題は、記憶で答えず先に検索して現状を確かめる。知っている名前でも省かず、ユーザーが書いた表記そのままを 1 回はクエリに含める (部分的に知っていることが、古い答えを自信ありげにする原因)。
-- 相手の発言への評価は書かない (情報を足さないため)。
-- ユーザーの解・仮説・原因を即同意せず、コード／実行結果／一次情報で検証してから合意 or 反論する。Issue description の「どこを直すか」も鵜呑みにしない。反証・懸念はユーザーの提案であっても明示する。
+## 常に守ること
 
-# Core Principles
+- 前置きを書かずに結論から書く
+- 確かでないことだけを推量で書き、確かなことは言い切る
+- PR・Issue・コミットメッセージも日本語で書く
 
-## Core practices (always-on)
-@rules/writing-style.md
-@rules/tidy-first.md
-@rules/role-separation.md
-@rules/delegation.md
-@rules/code-comments.md
+## スキルの使い分け
 
-## Coding workflow
-@rules/commit-discipline.md
-@rules/implementation-notes.md
+- 人が読む既存の日本語の文書（報告書・記事など）を推敲するときは `yomiyasu:yomiyasu`、素材から新しく文書を書くときは `natural-japanese:natural-japanese` を使う。両方に当てはまりそうなら、元の文をどれだけ残すかで決める（残すなら yomiyasu）。
+- PR・Issue の本文を書くときも `natural-japanese:natural-japanese` を使う。構成はリポジトリのテンプレートに従い、スキルは文の中身にだけ当てる。
+- 提案書や報告書の論旨を検査してほしいとユーザーが頼んだときだけ `natural-japanese:critical-thinking` を使う。
+- チャットの応答、コミットメッセージ、PR・Issue へのコメントのような短い文にはどちらも使わない。
 
-## Specialty (task-specific)
-@rules/github-workflow.md
-@rules/github-writing.md
+# GitHub
 
-# Env
-
-- GitHub: saxsir
-- リポジトリ: ghq 管理 (`~/src/github.com/owner/repo`)
-
-# Tool Preferences
-
-- MCP の配置先: OAuth / クラウド認証で完結するサービスは claude.ai Web 連携 MCP として設定する。localhost 依存または API token 認証が必要なものは `~/.claude.json` に登録する
-- 大量・機械的なデータ取得に MCP を使わない (取得内容が全部モデルを通り token 消費が激しい)。CLI / API 直叩きの script に落として Claude の外で実行し、MCP は少数ファイルの探索・形式確認・トリアージまでに使う
-- JSON は Python ではなく `jq` で処理する (shell のパイプラインに収まり、中間ファイルも一時スクリプトも要らない)
-- 個人プロジェクトの JS/TS ツールチェーンは bun をデフォルトにする (runtime / package manager / test runner)。新規プロジェクトは bun で始める。既存プロジェクトの移行は勝手に始めず提案に留める
-- `gh api graphql` はエラー時も exit 0 を返すので、レスポンスの `.errors[]` を必ず確認する (チェックを飛ばすと jq が invalid JSON を受け取って連鎖クラッシュする)
-- AWS の認証情報を要するコマンド (`aws`, `terraform`, `cdk`, `boto3` 等) は `aws-vault exec <profile>-readonly -- <command>` で実行する (平文 credential の利用を避けるため)。`-readonly` の付かない profile は hook がブロックするので、書き込みが要る操作はユーザーに `! <command>` で実行してもらう。リポジトリの docs に `-readonly` の無い例があっても同じ
-- ユーザーに読んでもらうファイル (コメント案・レポート・計画など) を書いたら、報告ではパスを絶対パスで示す。cmux 内 (`$CMUX_WORKSPACE_ID` がある) で Markdown なら `cmux markdown open <絶対パス>` で横に開いてから報告する (`scratchpad/foo.md` のような略記は cwd 基準で解決されず、Cmd-click で開けない)。viewer は live reload なので、同じファイルを直したら開き直さなくてよい
+- Issue / PR / コメントに画像や動画を載せるときは `gh` の `--attach` で直接アップロードできる (`gh issue create|edit|comment`, `gh pr create|edit|comment`)。書式は `gh pr comment --help` を見る。
+- チャットの応答で PR / Issue を挙げるときは `[owner/repo#123](https://github.com/owner/repo/pull/123)` のような Markdown リンクで書く。
