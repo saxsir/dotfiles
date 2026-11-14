@@ -1,157 +1,16 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "cleanupPeriodDays": 1095,
-  "env": {
-    "CLAUDE_CODE_DISABLE_GIT_INSTRUCTIONS": "1",
-    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
-    "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet",
-    "CLAUDE_CODE_NEW_INIT": "1",
-    "PATH": "{{ .chezmoi.homeDir }}/.local/share/mise/shims:/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/opt/coreutils/libexec/gnubin:{{ .chezmoi.homeDir }}/.local/bin:{{ .chezmoi.homeDir }}/bin:/usr/local/bin:/Applications/cmux.app/Contents/Resources/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-  },
   "permissions": {
     "allow": [
-      "Bash(git status *)",
-      "Bash(git log *)",
-      "Bash(git diff *)",
-      "Bash(git branch *)",
-      "Bash(git add *)",
-      "Bash(git commit *)",
-      "Bash(brew list *)",
-      "Bash(brew leaves *)",
-      "Bash(brew info *)",
-      "Bash(chezmoi diff *)",
-      "Bash(chezmoi managed *)",
       "Bash(crit comment *)",
-      "Bash(crit comments *)",
-      "mcp__chrome-devtools__take_screenshot",
-      "mcp__chrome-devtools__list_pages",
-      "mcp__chrome-devtools__navigate_page",
-      "mcp__chrome-devtools__new_page",
-      "mcp__chrome-devtools__resize_page",
-      "mcp__claude_ai_Slack__slack_read_channel",
-      "mcp__claude_ai_Slack__slack_read_thread",
-      "mcp__claude_ai_Slack__slack_read_user_profile",
-      "mcp__claude_ai_Slack__slack_search_channels",
-      "mcp__claude_ai_Slack__slack_search_users",
-      "mcp__claude_ai_Slack__slack_search_public",
-      "mcp__claude_ai_Slack__slack_search_public_and_private",
-      "mcp__claude_ai_Google_Calendar__list_events",
-      "mcp__claude_ai_Google_Calendar__list_calendars",
-      "mcp__claude_ai_Google_Calendar__get_event",
-      "mcp__claude_ai_Google_Calendar__search_events"
-    ],
-    "deny": [
-      "Bash(chmod 777 /*)",
-      "Bash(chmod -R *)",
-      "Bash(chown root:*)",
-      "Bash(chown -R *)",
-      "Bash(docker system prune:*)",
-      "Bash(docker push *)",
-      "Bash(git add .)",
-      "Bash(git add -A)",
-      "Bash(git add --all)",
-      "Bash(git add --all *)",
-      "Bash(git checkout .)",
-      "Bash(git clean -f *)",
-      "Bash(git push -f:*)",
-      "Bash(git push -f *)",
-      "Bash(git push --force *)",
-      "Bash(git push --force-with-lease*)",
-      "Bash(git reset --hard *)",
-      "Bash(gh pr merge:*)",
-      "Bash(gcloud * --quiet)",
-      "Bash(helm install *)",
-      "Bash(helm upgrade *)",
-      "Bash(kill -9 *)",
-      "Bash(killall *)",
-      "Bash(kubectl apply *)",
-      "Bash(kubectl delete *)",
-      "Bash(npm publish *)",
-      "Bash(osascript *)",
-      "Bash(open *)",
-      "Bash(pnpm publish *)",
-      "Bash(pkill *)",
-      "Bash(rm -rf /)",
-      "Bash(rm -rf /*)",
-      "Bash(rm -rf ~)",
-      "Bash(rm -rf ~/*)",
-      "Bash(rm -rf:*)",
-      "Bash(rsync *)",
-      "Bash(scp *)",
-      "Bash(ssh *)",
-      "Bash(su *)",
-      "Bash(sudo:*)",
-      "Bash(terraform apply *)",
-      "Bash(terraform destroy *)",
-      "Bash(curl *|*sh)",
-      "Bash(wget *|*sh)",
-      "Bash(yarn publish *)",
-      "Bash(cdk deploy *)",
-      "Bash(npx cdk deploy *)",
-      "Bash(bunx cdk deploy *)",
-      "Bash(make deploy*)",
-      "Bash(serverless deploy *)",
-      "Bash(gh workflow run *)",
-      "Bash(aws * --no-cli-pager)",
-      "Bash(defaults write *)",
-      "Read(**/credentials)",
-      "Read(**/credentials.json)",
-      "Read(**/credentials.csv)",
-      "Read(**/.credentials)",
-      "Read(**/id_rsa)",
-      "Read(**/id_ed25519)",
-      "Read(**/id_ecdsa)",
-      "Read(**/id_dsa)",
-      "Read(**/*.key)",
-      "Read(**/*.pem)",
-      "Read(**/*.p12)",
-      "Read(**/*.pfx)",
-      "Read(**/secrets.json)",
-      "Read(**/secrets.yaml)",
-      "Read(**/secrets.yml)",
-      "Read(**/.secrets)",
-      "Read(**/*.secret)",
-      "Read(**/*.secret.*)",
-      "Read(**/.env)",
-      "Read(**/.env.*)",
-      "Read(.env)",
-      "Read(.env.development)",
-      "Read(.env.local)",
-      "Read(.env.production)",
-      "Edit(**/.env)",
-      "Edit(**/.env.*)",
-      "Edit(.env)",
-      "Edit(.env.development)",
-      "Edit(.env.local)",
-      "Edit(.env.production)",
-      "Edit(**/*.pem)",
-      "Edit(**/*.key)",
-      "Edit(**/credentials)",
-      "Edit(**/credentials.json)",
-      "Edit(**/.credentials)",
-      "Edit(**/secrets.json)",
-      "Edit(**/secrets.yaml)",
-      "Edit(**/secrets.yml)",
-      "Edit(**/.secrets)",
-      "Edit(**/*.secret)",
-      "Edit(**/*.secret.*)"
-    ],
-    "ask": [
-      "Bash(gh pr ready:*)",
-      "Bash(*mark-ready.sh*)",
-      "Bash(rm:*)",
-      "Bash(wget:*)",
-      "Bash(npm install *)",
-      "Bash(pip install *)",
-      "Bash(brew install *)",
-      "mcp__claude_ai_Slack__slack_send_message",
-      "mcp__claude_ai_Slack__slack_schedule_message"
-    ],
-    "defaultMode": "auto",
-    "additionalDirectories": [
-      "~/.claude"
+      "Bash(crit comments *)"
     ]
+  },
+  "model": "claude-opus-5-5",
+  "skillOverrides": {
+    "crit": "user-invocable-only",
+    "crit-story": "user-invocable-only"
   },
   "allowedMcpServers": [
     {
@@ -164,126 +23,26 @@
       "serverUrl": "https://mcp.slack.com/mcp"
     },
     {
+      "serverUrl": "https://*.snowflakecomputing.com/*"
+    },
+    {
       "serverName": "splunk-mcp-server"
     },
     {
       "serverUrl": "https://mcp.datadoghq.com/*"
     }
   ],
-  "model": "claude-opus-5-5",
-  "skillOverrides": {
-    "claude-api": "user-invocable-only",
-    "crit": "user-invocable-only",
-    "crit-story": "user-invocable-only",
-    "memory-dream": "user-invocable-only",
-    "kairan": "user-invocable-only",
-    "eli5": "user-invocable-only",
-    "explainer-book": "user-invocable-only",
-    "webapp-security-review-whitebox": "name-only",
-    "webapp-security-review-exploit": "name-only",
-    "webapp-security-review-blackbox": "name-only",
-    "first-reader": "name-only"
-  },
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/block-push-to-main.sh"
-          },
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/block-force-push.sh"
-          },
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/block-pr-finalize.sh"
-          },
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/block-gh-body-overwrite.sh"
-          },
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/block-gh-issue-shorthand.sh"
-          },
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/block-aws-vault-write.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "Agent",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/pin-explore-model.sh"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/cmux-describe-pr.sh"
-          }
-        ]
-      }
-    ],
-    "Notification": [],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/worklog-tick.sh",
-            "async": true
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/cmux-auto-group.sh"
-          }
-        ]
-      }
-    ],
-    "PermissionRequest": [
-      {
-        "matcher": "ExitPlanMode",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "crit plan-hook",
-            "timeout": 345600
-          }
-        ]
-      }
-    ]
-  },
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/statusline.sh"
   },
   "enabledPlugins": {
     "dude@dude": true,
-    "gopls-lsp@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true,
-    "php-lsp@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true
+    "php-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "yomiyasu@yomiyasu": true,
+    "natural-japanese@natural-japanese": true
   },
   "extraKnownMarketplaces": {
     "dude": {
@@ -292,28 +51,25 @@
         "repo": "yowcow/dude"
       },
       "autoUpdate": true
+    },
+    "yomiyasu": {
+      "source": {
+        "source": "github",
+        "repo": "nanaism/yomiyasu"
+      },
+      "autoUpdate": true
+    },
+    "natural-japanese": {
+      "source": {
+        "source": "github",
+        "repo": "coji/natural-japanese"
+      },
+      "autoUpdate": true
     }
   },
   "language": "Japanese",
-  "sandbox": {
-    "enabled": false
-  },
   "effortLevel": "medium",
-  "modelSettings": {
-    "claude-fable-5-1": {
-      "effortLevel": "medium"
-    },
-    "claude-opus-5-5": {
-      "effortLevel": "medium"
-    }
-  },
   "tui": "fullscreen",
-  "skipWorkflowUsageWarning": true,
   "theme": "dark",
-  "agentPushNotifEnabled": true,
-  "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true,
-  "feedbackSurveyState": {
-    "lastShownTime": 1754040541141
-  }
+  "advisorModel": "fable"
 }
