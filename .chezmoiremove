@@ -3,3 +3,16 @@
 # source から消したファイル。chezmoi は source から消えたファイルを home から消さないので明示する
 # rules は source に 1 本も残らないので、ディレクトリごと消す
 .claude/rules
+# hooks は make apm が ~/.claude/hooks/<plugin>/ を同期しうるので、ディレクトリでなくファイルを名指しする
+.claude/hooks/block-aws-vault-write.sh
+.claude/hooks/block-force-push.sh
+.claude/hooks/block-gh-body-overwrite.sh
+.claude/hooks/block-gh-issue-shorthand.sh
+.claude/hooks/block-pr-finalize.sh
+.claude/hooks/block-push-to-main.sh
+.claude/hooks/cmux-auto-group.sh
+.claude/hooks/cmux-describe-pr.sh
+.claude/hooks/pin-explore-model.sh
+.claude/hooks/worklog-tick.sh
+.claude/style-profile.md
+.config/cmux/scripts/auto-group.sh

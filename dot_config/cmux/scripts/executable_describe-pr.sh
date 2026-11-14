@@ -14,7 +14,7 @@
 # Why-not: `--all` は `cmux workspace list --json` に PR 情報が無い (0.65.2 で確認)
 # ため、workspace ごとに `cmux sidebar-state` の `pr=` 行から URL を取る。
 #
-# どの前提が欠けても何もせず exit 0 (hook から呼ばれても Claude を妨げない)。
+# どの前提が欠けても何もせず exit 0。
 set -uo pipefail
 
 all=0
