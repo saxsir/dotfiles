@@ -36,9 +36,8 @@ make apm-bump  # apm.yml の pin を各 repo の HEAD へ更新 (PKG=owner/repo 
 3. **Editors**: NeoVim は mini.deps ベースの基本構成。IdeaVim は vimrc を継承しつつ IntelliJ 固有の設定を足している
 4. **Lima VM**: `lima/claude-dev.yaml` が Claude Code 実行用 VM (Ubuntu 24.04 ARM64, Apple Virtualization.framework)。ホストの `~/src` を読み書き可能でマウントし、ホームは読み取り専用
 5. **Agent Skills (apm)**: `private_dot_apm/apm.yml` の `dependencies.apm` に `owner/repo[/subpath]#<40桁SHA>` の形で pin して追記する (追記後に `make apm-bump PKG=owner/repo` で最新 SHA を入れてもよい)。依存を最新へ進めるときは `make apm-bump` で source の apm.yml を書き換え、`make apply` で `~/.apm/apm.yml` に反映してから `make apm`。依存は SHA で pin し、`make apm` は `apm install -g` だけを呼ぶ (`apm update` は pin の無い依存を毎回 upstream に解決して遅く、pin もタグへ書き換えるため使わない)。`targets` が `claude` と `agent-skills` の両方なので、apm 管理下の skill は `~/.claude/skills/` (Claude Code) と `~/.agents/skills/` (Codex CLI の user scope) の両方に展開される (apm 管理外の todoist-cli は `~/.claude/skills/` だけ)
-6. **開発フロー (dude)**: 変更と調査の flow は Claude Code plugin の dude (yowcow/dude) を基盤にする。`dot_claude/rules/` は dude に無い部分と、dude との食い違いだけを持つ。版は固定せず、`dot_claude/settings.json.tmpl` の `extraKnownMarketplaces.dude.autoUpdate` で起動時に marketplace と plugin を最新へ上げる。`autoUpdate` は `source` の中でなく marketplace エントリの直下に置く (`source` の中に書くと無視され、third-party marketplace は自動更新されない)。上流の skill 名が変わったら、dude の skill 名を挙げている rules の記述を見直す
+6. **開発フロー (dude)**: 変更と調査の flow は Claude Code plugin の dude (yowcow/dude) を基盤にする。版は固定せず、`dot_claude/settings.json.tmpl` の `extraKnownMarketplaces.dude.autoUpdate` で起動時に marketplace と plugin を最新へ上げる。`autoUpdate` は `source` の中でなく marketplace エントリの直下に置く (`source` の中に書くと無視され、third-party marketplace は自動更新されない)
 7. **MCP の許可リスト**: `dot_claude/settings.json.tmpl` と `dot_claude-vanilla/settings.json.tmpl` の `allowedMcpServers` に無い MCP は、user scope でもリポジトリの `.mcp.json` でも読み込まれない (`claude mcp add` は "not allowed by enterprise policy" で失敗する)。許可リストはここで管理し、サーバーの登録 (`claude mcp add -s user`) と秘密情報はマシンごとにローカルで行う。公開リポジトリなので、勤務先が推定できる URL やサーバー名は入れない
-8. **cmux 自動グループ分け**: `dot_config/cmux/scripts/executable_auto-group.sh` は常駐させず、Claude Code の hook から `--once` で走らせる。SessionStart と、`gh pr create` の後 (`cmux-describe-pr.sh` が PR を紐づけた後) に、`dot_claude/hooks/executable_cmux-auto-group.sh` が裏で起動する
 
 ## Code Style
 
@@ -50,7 +49,7 @@ macOS には Homebrew 経由で GNU coreutils が入っている。`date` 等は
 
 ## Repository Workflow
 
-ブランチは `feat/` `fix/` `chore/` prefix で、`master` から切る (default branch が master であることに注意)。PR 運用は dude とグローバルの rules に従う。個人リポジトリでも draft PR を経由し、merge はユーザーが行う。
+ブランチは `feat/` `fix/` `chore/` prefix で、`master` から切る (default branch が master であることに注意)。PR 運用は dude に従う。個人リポジトリでも draft PR を経由し、merge はユーザーが行う。
 
 merge した変更を `~/` に反映するには `make apply` が要る。ただし **Claude からは `chezmoi apply` を実行できない** — `~/.config/chezmoi/chezmoistate.boltdb` が sandbox の allowOnly 外にあるため。`dot_claude/` 等を編集した後は、ユーザーにターミナルで `! make apply` を実行してもらう。適用後はシェルを開き直して初期化が通ることを確認する。
 
