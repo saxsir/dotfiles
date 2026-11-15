@@ -120,6 +120,23 @@ claude.ai 連携と `.mcp.json` の server が同じ host にあるときは、�
 - URL がまったく同じときは、`.mcp.json` の server が有効なら (`disabledMcpjsonServers` で無効にしていなければ) 同じ URL の claude.ai 連携は表示されず、無効にしていれば連携側が表示される
 - plugin が持つ server は別で、連携と plugin の両方が表示される
 
+## vanilla 環境からの移行
+
+以前の `claude-vanilla` (`~/.claude-vanilla`) で溜めた会話履歴、入力履歴、auto-memory、`NOTES.md` は、`misc/bin/migrate-claude-vanilla.sh` で `~/.claude` へ移す。vanilla を使っていたマシンごとに 1 回実行する。
+
+```
+# Claude Code のセッションを全部終了してから実行する (history.jsonl を書き換えるため)
+bash misc/bin/migrate-claude-vanilla.sh --dry-run   # 何をするかだけ表示する
+bash misc/bin/migrate-claude-vanilla.sh
+```
+
+- `~/.claude-vanilla` からコピーするだけで、元は消さない。`~/.claude-vanilla` が無いマシンでは何もしない
+- 同じプロジェクトの memory が両方にあるときは vanilla 側を採る。上書きした `~/.claude` 側のファイルは `~/.claude/vanilla-migration-backup/` に退避する
+- `history.jsonl` は両方の行をつなげ、重複を除いて時刻順に並べ直す。元のファイルは同じ退避先に置く
+- 同じ内容のファイルは写さないので、続けてもう一度実行しても何も変わらない。退避先に同じ名前のファイルが既にあるときは、上書きせずにエラーで止まる
+
+実行後に `claude --resume` で vanilla のセッションが開けることと、memory が `~/.claude/projects/` にあることを確かめてから、`~/.claude-vanilla` と退避先を手で消す。`file-history` や `.claude.json` (user scope の MCP 登録など) は移さない。
+
 ## シークレット検出
 
 `pre-commit install` 後は `git commit` 時に `secretlint` が自動的に走り、AWS キーや GitHub トークン等が混入していると commit が失敗します。手動チェック:
