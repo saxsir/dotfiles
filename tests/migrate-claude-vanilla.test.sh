@@ -16,6 +16,7 @@ setup() {
   trap 'rm -rf "${tmp}"' EXIT
   export VANILLA_DIR="${tmp}/vanilla"
   export MAIN_DIR="${tmp}/main"
+  export SKIP_RUNNING_CHECK=1
   mkdir -p "${VANILLA_DIR}/projects/-p1/s1" "${VANILLA_DIR}/projects/-p1/memory" \
     "${VANILLA_DIR}/projects/-p2/memory" \
     "${MAIN_DIR}/projects/-p1/memory" "${MAIN_DIR}/projects/-p3"
@@ -69,6 +70,25 @@ test_second_run_changes_nothing() {
   [[ "$(snapshot)" == "${before}" ]] || fail "second run changed files"
 }
 
+test_rerun_after_main_changed_keeps_main() {
+  setup
+  migrate
+  echo m-new > "${MAIN_DIR}/projects/-p2/memory/MEMORY.md"
+  echo s1-appended >> "${MAIN_DIR}/projects/-p1/s1.jsonl"
+  local before
+  before="$(snapshot)"
+  migrate
+  [[ "$(snapshot)" == "${before}" ]] || fail "rerun reverted main"
+}
+
+test_nested_memory_dir_in_session_is_copied() {
+  setup
+  mkdir -p "${VANILLA_DIR}/projects/-p1/s1/memory"
+  echo nested > "${VANILLA_DIR}/projects/-p1/s1/memory/x.md"
+  migrate
+  [[ "$(cat "${MAIN_DIR}/projects/-p1/s1/memory/x.md")" == nested ]] || fail "nested memory dir skipped"
+}
+
 test_no_vanilla_dir_is_noop() {
   setup
   rm -rf "${VANILLA_DIR}"
@@ -89,6 +109,7 @@ test_differing_file_is_backed_up_before_overwrite() {
 test_existing_backup_is_never_overwritten() {
   setup
   migrate
+  rm "${MAIN_DIR}/.vanilla-migrated"
   echo m-new > "${MAIN_DIR}/projects/-p1/memory/MEMORY.md"
   local backup_before
   backup_before="$(cat "${MAIN_DIR}/vanilla-migration-backup/projects/-p1/memory/MEMORY.md")"
@@ -109,8 +130,10 @@ test_dry_run_changes_nothing() {
 }
 
 tests=("$@")
-if [[ ${#tests[@]} -eq 0 ]]; then
-  mapfile -t tests < <(declare -F | awk '{print $3}' | grep '^test_')
+if [[ $# -eq 0 ]]; then
+  while IFS= read -r t; do
+    tests+=("${t}")
+  done < <(declare -F | awk '{print $3}' | grep '^test_')
 fi
 
 status=0

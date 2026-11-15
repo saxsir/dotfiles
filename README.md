@@ -133,7 +133,8 @@ bash misc/bin/migrate-claude-vanilla.sh
 - `~/.claude-vanilla` からコピーするだけで、元は消さない。`~/.claude-vanilla` が無いマシンでは何もしない
 - 同じプロジェクトの memory が両方にあるときは vanilla 側を採る。上書きした `~/.claude` 側のファイルは `~/.claude/vanilla-migration-backup/` に退避する
 - `history.jsonl` は両方の行をつなげ、重複を除いて時刻順に並べ直す。元のファイルは同じ退避先に置く
-- 同じ内容のファイルは写さないので、続けてもう一度実行しても何も変わらない。退避先に同じ名前のファイルが既にあるときは、上書きせずにエラーで止まる
+- 終わると `~/.claude/.vanilla-migrated` を置き、以降の実行は何もしない。移行後に `~/.claude` 側で更新された memory などを、古い vanilla 版で戻さないためである
+- 退避先に同じ名前のファイルが既にあるときは、上書きせずにエラーで止まる。Claude Code が動いているときも止まる
 
 実行後に `claude --resume` で vanilla のセッションが開けることと、memory が `~/.claude/projects/` にあることを確かめてから、`~/.claude-vanilla` と退避先を手で消す。`file-history` や `.claude.json` (user scope の MCP 登録など) は移さない。
 
