@@ -136,7 +136,7 @@ bash misc/bin/migrate-claude-vanilla.sh
 - 終わると `~/.claude/.vanilla-migrated` を置き、以降の実行は何もしない。移行後に `~/.claude` 側で更新された memory などを、古い vanilla 版で戻さないためである
 - 退避先に同じ名前のファイルが既にあるときは、上書きせずにエラーで止まる。Claude Code が動いているときも止まる
 
-実行後に `claude --resume` で vanilla のセッションが開けることと、memory が `~/.claude/projects/` にあることを確かめてから、`~/.claude-vanilla` と退避先を手で消す。`file-history` や `.claude.json` (user scope の MCP 登録など) は移さない。
+実行後に `claude --resume` で vanilla のセッションが開けることと、memory が `~/.claude/projects/` にあることを確かめてから、`~/.claude-vanilla` と退避先を手で消す。`~/.claude/.vanilla-migrated` は消さない (消してから流し直すと、移行後に更新した memory が古い vanilla 版で戻る)。`file-history` や `.claude.json` (user scope の MCP 登録など) は移さない。
 
 ## シークレット検出
 

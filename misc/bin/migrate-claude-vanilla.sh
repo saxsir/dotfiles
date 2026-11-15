@@ -9,7 +9,7 @@
 # - 終わったら ~/.claude/.vanilla-migrated を置き、以降の実行は何もしない。~/.claude-vanilla が無いときも何もしない
 #
 # 使い方: bash misc/bin/migrate-claude-vanilla.sh [--dry-run]
-# 移す元と先は環境変数 VANILLA_DIR / MAIN_DIR で変えられる (テスト用)
+# 移す元と先は環境変数 VANILLA_DIR / MAIN_DIR で変えられる。SKIP_RUNNING_CHECK=1 で Claude Code 稼働中の確認を外す (どれもテスト用)
 set -euo pipefail
 
 vanilla_dir="${VANILLA_DIR:-${HOME}/.claude-vanilla}"
