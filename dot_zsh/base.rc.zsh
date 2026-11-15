@@ -39,4 +39,6 @@ alias gce='git commit --allow-empty'
 # else
 alias claude="$HOME/.local/bin/claude"
 # fi
+# ~/.claude の設定を読まない素の Claude Code。状態は ~/.cache/claude-clean に溜まり、そこを消すと初期状態に戻る。
+alias claude-clean="CLAUDE_CONFIG_DIR=\$HOME/.cache/claude-clean $HOME/.local/bin/claude"
 alias claude-vm="limactl shell claude-dev -- bash -c 'claude --dangerously-skip-permissions'"
