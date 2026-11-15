@@ -121,8 +121,6 @@ uvtools:
 # apm update は pin の無い依存を毎回 upstream へ解決しに行き (21 依存で resolve だけ 80 秒超)、
 # pin もリリースタグへ書き換えるため使わない。pin を書き換えてから install すれば新しい SHA に追従する
 # pin を最新へ進めるのは make apm-bump (source の apm.yml を書き換え、反映は make apply apm)
-# apm の install/update は ~/.claude/skills/ の apm 管理外 skill を削除しうるため、
-# 巻き添えで消える Doist 公式 todoist-cli skill を毎回 td で復元する
 # また apm は plugin の hook 登録 (hooks.json 経由の command 参照) だけを settings.json に
 # 転記し、plugin ファイル本体は deploy しない。hook スクリプト (session-start 等) は実体
 # が欠落するし、それらが plugin_root/skills など兄弟ディレクトリを参照する場合もあるので、
@@ -155,14 +153,9 @@ apm:
 	  cp -pR "$$plugdir"/. "$$dst"/; \
 	  echo "[apm] synced plugin dir: $$plugdir -> $$dst"; \
 	done
-	@if command -v td >/dev/null 2>&1; then \
-	  td skill install claude-code --force; \
-	else \
-	  echo "[apm] td が見つからないため todoist-cli skill の復元をスキップ"; \
-	fi
 
 # apm.yml (source) の pin を各 repo の default branch の HEAD へ進める。反映は make apply apm
-# 例: make apm-bump / make apm-bump PKG=saxsir/skills
+# 例: make apm-bump / make apm-bump PKG=tomasz-tomczyk/crit
 # 書き換えは SHA 部分だけ (yq -i は書式を崩すため perl で置換する)
 apm-bump:
 	@command -v yq >/dev/null 2>&1 || { echo "yq が見つからない" >&2; exit 1; }
