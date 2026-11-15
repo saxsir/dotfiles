@@ -8,30 +8,14 @@ targets:
 
 dependencies:
   apm:
-    - mattpocock/skills/skills/engineering/codebase-design#49dd158d1076134a641b33efb035946536778336
-    - mattpocock/skills/skills/engineering/domain-modeling#49dd158d1076134a641b33efb035946536778336
-    - mattpocock/skills/skills/engineering/improve-codebase-architecture#49dd158d1076134a641b33efb035946536778336
-    - mattpocock/skills/skills/engineering/prototype#49dd158d1076134a641b33efb035946536778336
-    - mattpocock/skills/skills/engineering/research#49dd158d1076134a641b33efb035946536778336
     - mattpocock/skills/skills/engineering/retro#49dd158d1076134a641b33efb035946536778336
     - mattpocock/skills/skills/productivity/grill-me#49dd158d1076134a641b33efb035946536778336
     - mattpocock/skills/skills/productivity/grilling#49dd158d1076134a641b33efb035946536778336
     - mattpocock/skills/skills/productivity/handoff#49dd158d1076134a641b33efb035946536778336
-    - mattpocock/skills/skills/productivity/teach#49dd158d1076134a641b33efb035946536778336
     - mattpocock/skills/skills/productivity/writing-for-agents#49dd158d1076134a641b33efb035946536778336
-    - saxsir/skills#d609f094541b44c2c86378cc73915f452fd0470b
     - tomasz-tomczyk/crit/integrations/claude-code/skills/crit#6b31901e66120434ca6018c3ab0e42103e16bee2
     - tomasz-tomczyk/crit/integrations/claude-code/skills/crit-cli#6b31901e66120434ca6018c3ab0e42103e16bee2
     - tomasz-tomczyk/crit/integrations/claude-code/skills/crit-story#6b31901e66120434ca6018c3ab0e42103e16bee2
-    - github/gh-stack/skills/gh-stack#29a36d314be664583705f18e41cebdf2b61ad514
-    - anthropics/claude-plugins-community/eli5/skills/eli5#06ec7b6a0a82bdc4bec44bd82d4368c42f20d7c1
-    - humanlayer/skills/plugins/show-me/skills/show-me#653b6411c1f70c275a18e37673b042ff99f67ceb
-    - coji/natural-japanese/skills/natural-japanese#74647ae4331e310eb7ac93e3038a133d08be5acd
-    - voyagegroup/kairan/.claude/skills/kairan#5a14e189564f17261d4fc9fea98f80796069cd86
-    - mizchi/explainer/skills/explainer#ccdd7bacfb47451e38506d837af8a629504960b2
-    - mizchi/explainer/skills/explainer-book#ccdd7bacfb47451e38506d837af8a629504960b2
-    - mizchi/explainer/skills/first-reader#ccdd7bacfb47451e38506d837af8a629504960b2
-    - mizchi/vlmkit#201f57c526507e6d9e9b8f7d27d98779c26e377a
   mcp: []
 includes: auto
 scripts: {}

@@ -44,15 +44,17 @@ make apm   # 未 install なら curl -sSL https://aka.ms/apm-unix | sh を実行
 
 skill の展開先は `private_dot_apm/apm.yml` の `targets` で決まる。`claude` と `agent-skills` を並べているので、
 apm 管理下の skill は `~/.claude/skills/` (Claude Code) と `~/.agents/skills/` (Codex CLI が user scope として
-読む場所) の両方に入る。Codex 側は追加設定なしでそのまま使える。apm 管理外の todoist-cli skill は
-`td` が Claude Code 向けにしか復元しないため `~/.claude/skills/` だけに入る。
+読む場所) の両方に入る。Codex 側は追加設定なしでそのまま使える。
+
+依存は mattpocock/skills の 5 本 (grill-me、grilling、handoff、retro、writing-for-agents) と
+tomasz-tomczyk/crit の skill (crit、crit-cli、crit-story) だけにしている。
 
 `targets` を書き換えたときは `make apply` で `~/.apm/apm.yml` に反映してから `make apm` を実行する。
 `make apm` の中の `apm install -g` は `~/.apm/apm.yml` を見るので、反映前だと展開先が食い違う。
 
 依存は `private_dot_apm/apm.yml` で `owner/repo[/subpath]#<40桁SHA>` に pin する。`make apm` は pin どおりの SHA を `apm install -g` で入れるだけで、`apm update` は使わない (pin の無い依存を毎回 upstream に解決して遅く、pin もリリースタグへ書き換えるため)。
 
-pin を各 repo の default branch の HEAD へ進めるには `make apm-bump` を実行する (`PKG=saxsir/skills` で 1 repo に限定)。source の apm.yml の SHA だけを書き換えるので、`make apply apm` で反映する。依存を追加するときは SHA 付きで書くか、追記後に `make apm-bump PKG=owner/repo` で SHA を入れる。
+pin を各 repo の default branch の HEAD へ進めるには `make apm-bump` を実行する (`PKG=tomasz-tomczyk/crit` で 1 repo に限定)。source の apm.yml の SHA だけを書き換えるので、`make apply apm` で反映する。依存を追加するときは SHA 付きで書くか、追記後に `make apm-bump PKG=owner/repo` で SHA を入れる。
 
 ユーザー global 設定 `~/.apm/config.json` は `private_dot_apm/config.json` として chezmoi 管理。
 設定を編集した場合は `make re-add FILE=~/.apm/config.json` でソース側に取り込む。
