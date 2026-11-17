@@ -46,8 +46,12 @@ skill の展開先は `private_dot_apm/apm.yml` の `targets` で決まる。`cl
 apm 管理下の skill は `~/.claude/skills/` (Claude Code) と `~/.agents/skills/` (Codex CLI が user scope として
 読む場所) の両方に入る。Codex 側は追加設定なしでそのまま使える。
 
-依存は mattpocock/skills の 5 本 (grill-me、grilling、handoff、retro、writing-for-agents)、
-saxsir/skills の understand、tomasz-tomczyk/crit の skill (crit、crit-cli、crit-story) だけにしている。
+依存は次の skill だけにしている。
+
+- mattpocock/skills の 5 本 (grill-me、grilling、handoff、retro、writing-for-agents)
+- saxsir/skills の understand
+- tomasz-tomczyk/crit の skill (crit、crit-cli、crit-story)
+
 saxsir/skills は private repo なので、取得に GitHub の認証が要る。`make apm` が認証エラーで止まったら
 `GITHUB_APM_PAT=$(gh auth token) make apm` でトークンを渡す。
 
