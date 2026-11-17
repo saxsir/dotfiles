@@ -53,8 +53,9 @@ apm 管理下の skill は `~/.claude/skills/` (Claude Code) と `~/.agents/skil
 - tomasz-tomczyk/crit の skill (crit、crit-cli、crit-story)
 
 saxsir/skills は private repo なので、`make apm` と `make apm-bump` には GitHub の認証が要る。
-`make apm-bump` は `git ls-remote` で HEAD を取り、gitconfig の `insteadOf` で SSH に切り替わるので、saxsir/skills を読める SSH 鍵を GitHub に登録しておく。
-`make apm` が認証エラーで止まったら `GITHUB_APM_PAT=$(gh auth token) make apm` でトークンを渡す。
+
+- `make apm-bump`: `git ls-remote` で HEAD を取り、gitconfig の `insteadOf` で SSH に切り替わるので、saxsir/skills を読める SSH 鍵を GitHub に登録しておく。
+- `make apm`: 認証エラーで止まったら `GITHUB_APM_PAT=$(gh auth token) make apm` でトークンを渡す。
 
 `targets` を書き換えたときは `make apply` で `~/.apm/apm.yml` に反映してから `make apm` を実行する。
 `make apm` の中の `apm install -g` は `~/.apm/apm.yml` を見るので、反映前だと展開先が食い違う。
