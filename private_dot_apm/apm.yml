@@ -13,6 +13,7 @@ dependencies:
     - mattpocock/skills/skills/productivity/grilling#49dd158d1076134a641b33efb035946536778336
     - mattpocock/skills/skills/productivity/handoff#49dd158d1076134a641b33efb035946536778336
     - mattpocock/skills/skills/productivity/writing-for-agents#49dd158d1076134a641b33efb035946536778336
+    - saxsir/skills/skills/understand#61c95942fa9e63f6e838145d2d78b6fffa0aa790
     - tomasz-tomczyk/crit/integrations/claude-code/skills/crit#6b31901e66120434ca6018c3ab0e42103e16bee2
     - tomasz-tomczyk/crit/integrations/claude-code/skills/crit-cli#6b31901e66120434ca6018c3ab0e42103e16bee2
     - tomasz-tomczyk/crit/integrations/claude-code/skills/crit-story#6b31901e66120434ca6018c3ab0e42103e16bee2

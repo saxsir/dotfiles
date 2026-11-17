@@ -46,8 +46,16 @@ skill の展開先は `private_dot_apm/apm.yml` の `targets` で決まる。`cl
 apm 管理下の skill は `~/.claude/skills/` (Claude Code) と `~/.agents/skills/` (Codex CLI が user scope として
 読む場所) の両方に入る。Codex 側は追加設定なしでそのまま使える。
 
-依存は mattpocock/skills の 5 本 (grill-me、grilling、handoff、retro、writing-for-agents) と
-tomasz-tomczyk/crit の skill (crit、crit-cli、crit-story) だけにしている。
+依存は次の skill だけにしている。
+
+- mattpocock/skills の 5 本 (grill-me、grilling、handoff、retro、writing-for-agents)
+- saxsir/skills の understand
+- tomasz-tomczyk/crit の skill (crit、crit-cli、crit-story)
+
+saxsir/skills は private repo なので、`make apm` と `make apm-bump` には GitHub の認証が要る。
+
+- `make apm-bump`: `git ls-remote` で HEAD を取り、gitconfig の `insteadOf` で SSH に切り替わるので、saxsir/skills を読める SSH 鍵を GitHub に登録しておく。
+- `make apm`: apm は環境変数のトークンが無ければ `gh auth token` を使うので、`gh auth login` を済ませておく。`GITHUB_TOKEN` や `GH_TOKEN` に saxsir/skills を読めないトークンが入っていると、そちらが先に使われて認証エラーになる。そのときは `GITHUB_APM_PAT=$(gh auth token) make apm` で上書きする。
 
 `targets` を書き換えたときは `make apply` で `~/.apm/apm.yml` に反映してから `make apm` を実行する。
 `make apm` の中の `apm install -g` は `~/.apm/apm.yml` を見るので、反映前だと展開先が食い違う。
