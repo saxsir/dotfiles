@@ -282,3 +282,7 @@ add-zsh-hook chpwd _cmux_auto_group
 if [[ -o interactive ]]; then
   _cmux_auto_group
 fi
+
+# cmux 内蔵ブラウザの GitHub セッションが切れたら、Vivaldi の Cookie を取り込み直す。
+# ソケットは既定の cmuxOnly のままなので、cmux 内の shell からだけ通る (launchd での定期実行はしない)
+alias cmux-gh-cookies='cmux browser import --non-interactive --from vivaldi --domain github.com'
