@@ -48,6 +48,7 @@ apm 管理下の skill は `~/.claude/skills/` (Claude Code) と `~/.agents/skil
 
 依存は次の skill だけにしている。
 
+- anthropics/claude-plugins-community の eli5
 - mattpocock/skills の 5 本 (grill-me、grilling、handoff、retro、writing-for-agents)
 - saxsir/skills の understand
 - tomasz-tomczyk/crit の skill (crit、crit-cli、crit-story)
