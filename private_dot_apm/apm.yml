@@ -8,6 +8,7 @@ targets:
 
 dependencies:
   apm:
+    - anthropics/claude-plugins-community/eli5/skills/eli5#24479d5a1fb7a1c4f068a6d3b74d0c0fbc1acfda
     - mattpocock/skills/skills/engineering/retro#49dd158d1076134a641b33efb035946536778336
     - mattpocock/skills/skills/productivity/grill-me#49dd158d1076134a641b33efb035946536778336
     - mattpocock/skills/skills/productivity/grilling#49dd158d1076134a641b33efb035946536778336
